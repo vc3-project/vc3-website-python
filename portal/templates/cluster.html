@@ -114,6 +114,7 @@
         									</thead>
         									<tbody data-link="row" class="rowlink">
         										{% for cluster in clusters %}
+                              {% if cluster.public %}
         										<tr>
         											<td><a href="{{ url_for('view_cluster', name=cluster.name) }}" title="View Cluster Template">{{ cluster.displayname }}</a></td>
                               <td>
@@ -141,6 +142,7 @@
                                 {% endif %}
                               </td>
         										</tr>
+                              {% endif %}
         										{% endfor %}
         									</tbody>
         								</table>

@@ -52,7 +52,10 @@
                       multiple name="packagelist"
                       tabindex="2" id="form-resource-list"
                       required data-live-search="true" data-actions-box="true"
-                      data-header="Select Packages">
+                      data-header="Select Packages"
+                      onmousedown="if(this.options.length>8){this.size=8;}"
+                      onchange='this.size=0;'
+                      onblur="this.size=0;">
                         <option value="" selected disabled>Please Select Package List</option>
                         {% for recipe in recipes %}
                         <option data-tokens="{{recipe}}" value="{{recipe}}">{{ recipe }}</option>

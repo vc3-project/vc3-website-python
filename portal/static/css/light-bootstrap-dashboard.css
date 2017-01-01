@@ -2519,6 +2519,7 @@ textarea {
 }
 .bootstrap-select .open{
   max-height: 322.184px !important;
+  overflow: scroll;
 }
 .disabled {
    pointer-events: none;
@@ -2581,9 +2582,18 @@ ALLOCATION LIST PAGE
 }
 
 #vc3diagram {
-  /* padding-top: 20px; */
+  padding-top: 20px;
   width: 80%;
   height: 80%;
+}
+
+#vc3diagram-portal {
+  width: 70%;
+  height: 70%;
+}
+
+#portal-diagram #accordion {
+  max-width: 70%;
 }
 
 .breadcrumb {

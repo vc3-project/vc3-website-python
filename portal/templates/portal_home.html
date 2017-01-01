@@ -17,10 +17,10 @@
               <li class="breadcrumb-item active"><a href="{{url_for('portal')}}">Portal Home</a></li>
               <!-- <li class="breadcrumb-item active">Profile</li> -->
             </ol>
-            <h2 class="title">
+            <h3 class="title">
                 Welcome <span style="color:#2b2b2b">{{profile.displayname}}</span>
-            </h2>
-            <a href="{{url_for('show_profile_page')}}" class="btn btn-primary btn-sm" title="Edit Profile">Edit Profile</a>
+            </h3>
+            <!-- <a href="{{url_for('show_profile_page')}}" class="btn btn-primary btn-sm" title="Edit Profile">Edit Profile</a> -->
 						<hr/>
           </div>
 
@@ -42,9 +42,6 @@
                     <div class="tab-content">
 
                       <div id="portal-diagram" class="tab-pane fade in active">
-                        <div class="row">
-                          <img id="vc3diagram" src="{{url_for('static', filename='img/vc3_portal_diagram_num.png')}}">
-                        </div>
                         <div class="row">
 
                           <!-- <h2 class="title">
@@ -76,6 +73,9 @@
 
                           </div><!-- /.accordion-->
                         </div><!-- /.row -->
+                        <div class="row">
+                          <img id="vc3diagram-portal" src="{{url_for('static', filename='img/vc3_portal_diagram_num.png')}}">
+                        </div>
                       </div>
 
                       <div id="internal-diagram" class="tab-pane fade in">

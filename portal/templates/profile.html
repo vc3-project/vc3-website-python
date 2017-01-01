@@ -1,6 +1,6 @@
 {%extends "loginbase.html"%}
 
-{%block title%}User: {{profile.name}} ({{ session['displayname'] }}){%endblock%}
+{%block title%}User: {% if profile.name %}{{profile.name}} ({{ session['displayname'] }}){% endif %}{%endblock%}
 
 {%block body%}
 {%include 'messages.html'%}
