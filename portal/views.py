@@ -26,6 +26,11 @@ def news():
     """Send the user to the news page"""
     return render_template('news.jinja2')
 
+@app.route('/news/toydemo', methods=['GET'])
+def toydemo():
+    """Send the user to the toy demo page"""
+    return render_template('toydemo.jinja2')
+
 @app.route('/documentations', methods=['GET'])
 def documentations():
     """Send the user to documentations page"""

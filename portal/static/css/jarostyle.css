@@ -636,6 +636,7 @@ body.mobile-nav-active #mobile-nav-toggle {
 
 #team .member .pic img {
   max-width: 100%;
+  max-height: 100%;
 }
 
 #team .member h4 {
@@ -649,22 +650,99 @@ body.mobile-nav-active #mobile-nav-toggle {
   font-size: 13px;
 }
 
-#team .member .social {
+#team .social {
+  text-align: center;
   margin-top: 15px;
 }
 
-#team .member .social a {
+#team .social a {
   color: #b3b3b3;
 }
 
-#team .member .social a:hover {
+#team .social a:hover {
   color: #03C4EB;
 }
 
-#team .member .social i {
+#team .social i {
   font-size: 18px;
   margin: 0 2px;
 }
+
+/*Team Captions*/
+
+.caption-style-3{
+		list-style-type: none;
+		margin: 0px;
+		padding: 0px;
+
+	}
+	.caption-style-3 .member{
+		/*float: left;*/
+		padding: 0px;
+		position: relative;
+		overflow: hidden;
+	}
+	.caption-style-3 .member:hover .caption{
+		opacity: 1;
+		transform: translateY(-100px);
+		-webkit-transform:translateY(-100px);
+		-moz-transform:translateY(-100px);
+		-ms-transform:translateY(-100px);
+		-o-transform:translateY(-100px);
+	}
+	.caption-style-3 .member:hover img{
+		opacity: 1;
+		transform: translateY(-40px);
+		-webkit-transform:translateY(-40px);
+		-moz-transform:translateY(-40px);
+		-ms-transform:translateY(-40px);
+		-o-transform:translateY(-40px);
+	}
+	.caption-style-3 img{
+		margin: 0px;
+		padding: 0px;
+		/*float: left;*/
+		z-index: 4;
+	}
+	.caption-style-3 .caption{
+		cursor: pointer;
+		position: absolute;
+		opacity: 0;
+		top:300px;
+		-webkit-transition:all 0.15s ease-in-out;
+		-moz-transition:all 0.15s ease-in-out;
+		-o-transition:all 0.15s ease-in-out;
+		-ms-transition:all 0.15s ease-in-out;
+		transition:all 0.15s ease-in-out;
+	}
+	.caption-style-3 img{
+		-webkit-transition:all 0.15s ease-in-out;
+		-moz-transition:all 0.15s ease-in-out;
+		-o-transition:all 0.15s ease-in-out;
+		-ms-transition:all 0.15s ease-in-out;
+		transition:all 0.15s ease-in-out;
+	}
+	.caption-style-3 .blur{
+		background-color: rgb(3, 196, 235);
+		height: 300px;
+		width: 400px;
+		z-index: 5;
+		position: absolute;
+	}
+	.caption-style-3 .caption-text h1{
+		text-transform: uppercase;
+		font-size: 18px;
+	}
+	.caption-style-3 .caption-text{
+		z-index: 10;
+		color: #fff;
+		position: absolute;
+		width: 400px;
+		height: 100px;
+		text-align: center;
+		top:20px;
+	}
+
 
 /* Contact Section
 --------------------------------*/
@@ -954,4 +1032,26 @@ position: relative;
   }
 .carousel {
   width: 80%;
+}
+
+/*News - Toy Demo*/
+#news {
+  padding-top: 20px;
+}
+
+#toydemo {
+  padding-top: 20px;
+}
+
+#toydemo h2{
+  /*color: rgb(3, 196, 235);*/
+  color: rgb(0, 178, 234);
+}
+
+.container .demo-videos {
+	width: 100%;
+}
+
+.panel {
+	width: 100%;
 }

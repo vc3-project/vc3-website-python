@@ -1,0 +1,54 @@
+{%extends "base.jinja2"%}
+
+{%block title%}News - Toy Demo{%endblock%}
+
+{%block body%}
+
+<section id="toydemo">
+  <div class="container">
+    <h2>Play toy demos of primordial VC3 components</h2>
+    <p>September 8, 2016</p>
+    <p>Our goal for the fall is to create a "capability demonstrator".  As we're
+    just getting started we'll build from existing software and applications and
+    mold them to higher level abstractions. The examples below demonstrate prototyping
+    features of a VC3 pilot and factory service.</p>
+
+    <h2>Deploy a global file system on the fly</h2>
+
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <code>$ vc3-pilot --require cvmfs</code>
+          </div>
+        </div>
+
+          <div class="container demo-videos">
+          <script type="text/javascript" src="https://asciinema.org/a/40j5dnd6m67yog3y4qa4tw957.js" id="asciicast-40j5dnd6m67yog3y4qa4tw957" async data-size="small" data-theme="monokai"></script>
+        </div>
+
+    <h2>Deploy the MAKER application on the fly</h2>
+
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <code>$ vc3-pilot --require maker-ecoli-example-01</code>
+          </div>
+        </div>
+
+        <div class="container demo-videos">
+          <script type="text/javascript" src="https://asciinema.org/a/4qzmcrpmrzssxen6s1knkgw86.js" id="asciicast-4qzmcrpmrzssxen6s1knkgw86" async data-size="small" data-theme="monokai"></script>
+        </div>
+
+    <h2>Send VC3 pilots to a remote cluster via ssh "glide in"</h2>
+
+        <div class="container demo-videos">
+          <script type="text/javascript" src="https://asciinema.org/a/7a9ku2k4z3ujtnr1v4cjo6mq3.js" id="asciicast-7a9ku2k4z3ujtnr1v4cjo6mq3" async data-size="small" data-theme="monokai"></script>
+        </div>
+
+    <h2>Start VC3 pilots on a resource requiring 2-factor authentication</h2>
+
+        <div class="container demo-videos">
+          <script type="text/javascript" src="https://asciinema.org/a/84798.js" id="asciicast-84798" async data-size="small" data-theme="monokai"></script>
+        </div>
+  </div>
+</section>
+
+{%endblock%}
