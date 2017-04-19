@@ -16,8 +16,15 @@ if __name__ == '__main__':
     server = cherrypy._cpserver.Server()
 
     # Configure the server object
-    server.socket_host = "0.0.0.0"
+    server.socket_host = "192.170.227.145"
     server.socket_port = 8080
     server.thread_pool = 30
 
-    app.run(host='localhost', ssl_context=('./ssl/server.crt', './ssl/server.key'))
+    # Subscribe this server
+    server.subscribe()
+
+    # Start the server engine (Option 1 *and* 2)
+    cherrypy.engine.start()
+    cherrypy.engine.block()
+
+    # app.run(host='server.socket_host', ssl_context=('./ssl/server.crt', './ssl/server.key'))
