@@ -48,4 +48,4 @@ if __name__ == '__main__':
     cherrypy.engine.start()
     cherrypy.engine.block()
 
-    # app.run(host='server.socket_host', ssl_context=('./ssl/server.crt', './ssl/server.key'))
+    # app.run(host='localhost', ssl_context=('./ssl/server.crt', './ssl/server.key'))

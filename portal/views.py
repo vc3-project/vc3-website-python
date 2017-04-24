@@ -21,15 +21,30 @@ def home():
     """Home page - play with it if you must!"""
     return render_template('home.jinja2')
 
+# -----------------------------------------
+# CURRENT NEWS PAGE AND ALL ARTICLE ROUTES
+# -----------------------------------------
+
 @app.route('/news', methods=['GET'])
 def news():
     """Send the user to the news page"""
     return render_template('news.jinja2')
 
-@app.route('/news/toydemo', methods=['GET'])
+@app.route('/news/toy-demo', methods=['GET'])
 def toydemo():
     """Send the user to the toy demo page"""
     return render_template('toydemo.jinja2')
+
+@app.route('/news/ngns-meeting', methods=['GET'])
+def ngnsMeeting():
+    """Send the user to the ngns-meeting page"""
+    return render_template('ngns-meeting.jinja2')
+
+@app.route('/news/kickoff-meeting', methods=['GET'])
+def kickoffMeeting():
+    """Send the user to the kickoff-meeting page"""
+    return render_template('kickoff-meeting.jinja2')
+
 
 @app.route('/documentations', methods=['GET'])
 def documentations():

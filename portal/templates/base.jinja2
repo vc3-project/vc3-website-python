@@ -30,16 +30,26 @@
     <script type="text/javascript" src="{{url_for('static', filename='js/custom.js')}}"></script>
 
     <!-- Required JavaScript Libraries -->
-    <script src="{{url_for('static', filename='lib/jquery/jquery-migrate.min.js')}}"></script>
-    <script src="{{url_for('static', filename='lib/bootstrap/js/bootstrap.min.js')}}"></script>
-    <script src="{{url_for('static', filename='lib/superfish/hoverIntent.js')}}"></script>
-    <script src="{{url_for('static', filename='lib/superfish/superfish.min.js')}}"></script>
+    <!-- <script src="{{url_for('static', filename='lib/jquery/jquery-migrate.min.js')}}"></script> -->
+    <!-- <script src="{{url_for('static', filename='lib/bootstrap/js/bootstrap.min.js')}}"></script> -->
+    <!-- <script src="{{url_for('static', filename='lib/superfish/hoverIntent.js')}}"></script> -->
+    <!-- <script src="{{url_for('static', filename='lib/superfish/superfish.min.js')}}"></script> -->
     <script src="{{url_for('static', filename='lib/morphext/morphext.min.js')}}"></script>
-    <script src="{{url_for('static', filename='lib/wow/wow.min.js')}}"></script>
-    <script src="{{url_for('static', filename='lib/stickyjs/sticky.js')}}"></script>
-    <script src="{{url_for('static', filename='lib/easing/easing.js')}}"></script>
+    <!-- <script src="{{url_for('static', filename='lib/wow/wow.min.js')}}"></script> -->
+    <!-- <script src="{{url_for('static', filename='lib/stickyjs/sticky.js')}}"></script> -->
+    <!-- <script src="{{url_for('static', filename='lib/easing/easing.js')}}"></script> -->
+    <!-- <script src="contactform/contactform.js"></script> -->
 
-    <script src="contactform/contactform.js"></script>
+    <!-- JavaScript Library CDN -->
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-migrate/3.0.0/jquery-migrate.min.js"></script>
+    <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="http://cdn.sobekrepository.org/includes/superfish/1.7.5/hoverIntent.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/superfish/1.7.9/js/superfish.min.js"></script>
+    <script type="text/javascript" src=""></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/wow/1.1.2/wow.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery.sticky/1.0.4/jquery.sticky.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.js"></script>
+    <script type="text/javascript" src=""></script>
 
   </head>
   <body>
@@ -66,6 +76,12 @@
             <!-- Change the condition below to an actual test -->
             {%if session.get('is_authenticated')%}
               <li>
+                <a href="{{url_for('news')}}">News</a>
+              </li>
+              <li>
+                <a href="{{url_for('documentations')}}">Documentations</a>
+              </li>
+              <li>
                 <a href="{{url_for('transfer')}}">Transfer</a>
               </li>
               <!-- <li class="divider">|</li> -->
@@ -73,7 +89,7 @@
                 <a href="{{url_for('graph')}}">Graph</a>
               </li>
               <!-- <li class="divider">|</li> -->
-              <li class="menu-has-children"><a href="{{url_for('profile')}}">Profile</a>
+              <!-- <li class="menu-has-children"><a href="{{url_for('profile')}}">Profile</a> -->
                 <!-- <ul>
                   <li><a href="#">Drop Down 1</a></li>
                   <li class="menu-has-children"><a href="#">Drop Down 2</a>
@@ -92,19 +108,33 @@
               </li>
               <!-- <li class="divider">|</li> -->
               <li>
-                <a href="{{url_for('logout')}}">Logout</a>
+                <a href="{{url_for('team')}}">Team</a>
+              </li>
+              <li>
+                <a href="{{url_for('contact')}}">Contact Us</a>
               </li>
               <!-- <li class="divider">|</li> -->
               <li>
                 <a href="{{url_for('profile')}}">{{session["primary_username"]}}</a>
               </li>
+              <li>
+                <a href="{{url_for('logout')}}">Logout</a>
+              </li>
             <!-- Display these links if user is not authenticated -->
             {%else%}
-              <li><a href="{{url_for('news')}}">News</a></li>
-              <li><a href="{{url_for('documentations')}}">Documentations</a></li>
-              <li><a href="{{url_for('team')}}">Team</a></li>
-              <li><a href="{{url_for('contact')}}">Contact Us</a></li>
-               <li>
+              <li>
+                <a href="{{url_for('news')}}">News</a>
+              </li>
+              <li>
+                <a href="{{url_for('documentations')}}">Documentations</a>
+              </li>
+              <li>
+                <a href="{{url_for('team')}}">Team</a>
+              </li>
+              <li>
+                <a href="{{url_for('contact')}}">Contact Us</a>
+              </li>
+              <li>
                 <a href="{{url_for('login')}}">Login</a>
               </li>
               <li>
