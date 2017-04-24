@@ -25,20 +25,24 @@ def home():
 # CURRENT NEWS PAGE AND ALL ARTICLE ROUTES
 # -----------------------------------------
 
+
 @app.route('/news', methods=['GET'])
 def news():
     """Send the user to the news page"""
     return render_template('news.jinja2')
+
 
 @app.route('/news/toy-demo', methods=['GET'])
 def toydemo():
     """Send the user to the toy demo page"""
     return render_template('toydemo.jinja2')
 
+
 @app.route('/news/ngns-meeting', methods=['GET'])
 def ngnsMeeting():
     """Send the user to the ngns-meeting page"""
     return render_template('ngns-meeting.jinja2')
+
 
 @app.route('/news/kickoff-meeting', methods=['GET'])
 def kickoffMeeting():
@@ -51,15 +55,18 @@ def documentations():
     """Send the user to documentations page"""
     return render_template('documentations.jinja2')
 
+
 @app.route('/team', methods=['GET'])
 def team():
     """Send the user to team page"""
     return render_template('team.jinja2')
 
+
 @app.route('/contact', methods=['GET'])
 def contact():
     """Send the user to contact page"""
     return render_template('contact.jinja2')
+
 
 @app.route('/signup', methods=['GET'])
 def signup():
@@ -208,7 +215,7 @@ def authcallback():
             session['institution'] = institution
         else:
             return redirect(url_for('profile',
-                            next=url_for('transfer')))
+                                    next=url_for('transfer')))
 
         return redirect(url_for('transfer'))
 

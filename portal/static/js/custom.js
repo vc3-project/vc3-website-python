@@ -1,64 +1,61 @@
 jQuery(document).ready(function( $ ) {
-
   "use strict";
+  var pluginName = "Morphext",
+  defaults = {
+    animation: "bounceIn",
+    separator: ",",
+    speed: 2000,
+    complete: $.noop
+  };
 
-      var pluginName = "Morphext",
-          defaults = {
-              animation: "bounceIn",
-              separator: ",",
-              speed: 2000,
-              complete: $.noop
-          };
+  function Plugin (element, options) {
+    this.element = $(element);
+    this.settings = $.extend({}, defaults, options);
+    this._defaults = defaults;
+    this._init();
+  }
 
-      function Plugin (element, options) {
-          this.element = $(element);
+  Plugin.prototype = {
+    _init: function () {
+      var $that = this;
+      this.phrases = [];
 
-          this.settings = $.extend({}, defaults, options);
-          this._defaults = defaults;
-          this._init();
+      this.element.addClass("morphext");
+
+      $.each(this.element.text().split(this.settings.separator), function (key, value) {
+        $that.phrases.push($.trim(value));
+      });
+
+      this.index = -1;
+      this.animate();
+      this.start();
+    },
+    animate: function () {
+      this.index = ++this.index % this.phrases.length;
+      this.element[0].innerHTML = "<span class=\"animated " + this.settings.animation + "\">" + this.phrases[this.index] + "</span>";
+
+      if ($.isFunction(this.settings.complete)) {
+        this.settings.complete.call(this);
       }
+    },
+    start: function () {
+      var $that = this;
+      this._interval = setInterval(function () {
+        $that.animate();
+      }, this.settings.speed);
+    },
+    stop: function () {
+      this._interval = clearInterval(this._interval);
+    }
+  };
 
-      Plugin.prototype = {
-          _init: function () {
-              var $that = this;
-              this.phrases = [];
-
-              this.element.addClass("morphext");
-
-              $.each(this.element.text().split(this.settings.separator), function (key, value) {
-                  $that.phrases.push($.trim(value));
-              });
-
-              this.index = -1;
-              this.animate();
-              this.start();
-          },
-          animate: function () {
-              this.index = ++this.index % this.phrases.length;
-              this.element[0].innerHTML = "<span class=\"animated " + this.settings.animation + "\">" + this.phrases[this.index] + "</span>";
-
-              if ($.isFunction(this.settings.complete)) {
-                  this.settings.complete.call(this);
-              }
-          },
-          start: function () {
-              var $that = this;
-              this._interval = setInterval(function () {
-                  $that.animate();
-              }, this.settings.speed);
-          },
-          stop: function () {
-              this._interval = clearInterval(this._interval);
-          }
-      };
-
-      $.fn[pluginName] = function (options) {
-          return this.each(function() {
-              if (!$.data(this, "plugin_" + pluginName)) {
-                  $.data(this, "plugin_" + pluginName, new Plugin(this, options));
-              }
-          });
-      };
+    $.fn[pluginName] = function (options) {
+      return this.each(function() {
+        if (!$.data(this, "plugin_" + pluginName)) {
+          $.data(this, "plugin_" + pluginName, new Plugin(this, options));
+        }
+      });
+    };
 
   // Preloader
   $(window).load(function(){
@@ -174,112 +171,112 @@ jQuery(document).ready(function( $ ) {
 });
 
 
-// Sign Up and Login tab functionalities
-
-function sign_up(){
-  var inputs = document.querySelectorAll('.input_form_sign');
-  document.querySelectorAll('.ul_tabs > li')[0].className="";
-  document.querySelectorAll('.ul_tabs > li')[1].className="active";
-
-  for(var i = 0; i < inputs.length ; i++  ) {
-    if(i == 2  ){
-
-    }else{
-      document.querySelectorAll('.input_form_sign')[i].className = "input_form_sign d_block";
-    }
-}
-
-setTimeout( function(){
-  for(var d = 0; d < inputs.length ; d++  ) {
-    document.querySelectorAll('.input_form_sign')[d].className = "input_form_sign d_block active_inp";
-  }
-
-
- },100 );
- document.querySelector('.link_forgot_pass').style.opacity = "0";
-   document.querySelector('.link_forgot_pass').style.top = "-5px";
-   document.querySelector('.btn_sign').innerHTML = "SIGN UP";
-  setTimeout(function(){
-
- document.querySelector('.terms_and_cons').style.opacity = "1";
-  document.querySelector('.terms_and_cons').style.top = "5px";
-
-  },500);
-  setTimeout(function(){
-    document.querySelector('.link_forgot_pass').className = "link_forgot_pass d_none";
- document.querySelector('.terms_and_cons').className = "terms_and_cons d_block";
-  },450);
-
-}
-
-
-
-function sign_in(){
-  var inputs = document.querySelectorAll('.input_form_sign');
-document.querySelectorAll('.ul_tabs > li')[0].className = "active";
-document.querySelectorAll('.ul_tabs > li')[1].className = "";
-
-  for(var i = 0; i < inputs.length ; i++  ) {
-switch(i) {
-    case 1:
- console.log(inputs[i].name);
-        break;
-    case 2:
- console.log(inputs[i].name);
-    default:
-document.querySelectorAll('.input_form_sign')[i].className = "input_form_sign d_block";
-}
-}
-
-setTimeout( function(){
-for(var d = 0; d < inputs.length ; d++  ) {
-switch(d) {
-    case 1:
- console.log(inputs[d].name);
-        break;
-    case 2:
- console.log(inputs[d].name);
-
-    default:
- document.querySelectorAll('.input_form_sign')[d].className = "input_form_sign d_block";
- document.querySelectorAll('.input_form_sign')[2].className = "input_form_sign d_block active_inp";
-
-   }
-  }
- },100 );
-
- document.querySelector('.terms_and_cons').style.opacity = "0";
-  document.querySelector('.terms_and_cons').style.top = "-5px";
-
-  setTimeout(function(){
- document.querySelector('.terms_and_cons').className = "terms_and_cons d_none";
-document.querySelector('.link_forgot_pass').className = "link_forgot_pass d_block";
-
- },500);
-
-  setTimeout(function(){
-
- document.querySelector('.link_forgot_pass').style.opacity = "1";
-   document.querySelector('.link_forgot_pass').style.top = "5px";
-
-
-for(var d = 0; d < inputs.length ; d++  ) {
-
-switch(d) {
-    case 1:
- console.log(inputs[d].name);
-        break;
-    case 2:
- console.log(inputs[d].name);
-
-         break;
-    default:
- document.querySelectorAll('.input_form_sign')[d].className = "input_form_sign";
-}
-  }
-   },1500);
-   document.querySelector('.btn_sign').innerHTML = "SIGN IN";
-}
+// // Sign Up and Login tab functionalities
+//
+// function sign_up(){
+//   var inputs = document.querySelectorAll('.input_form_sign');
+//   document.querySelectorAll('.ul_tabs > li')[0].className="";
+//   document.querySelectorAll('.ul_tabs > li')[1].className="active";
+//
+//   for(var i = 0; i < inputs.length ; i++  ) {
+//     if(i == 2  ){
+//
+//     }else{
+//       document.querySelectorAll('.input_form_sign')[i].className = "input_form_sign d_block";
+//     }
+// }
+//
+// setTimeout( function(){
+//   for(var d = 0; d < inputs.length ; d++  ) {
+//     document.querySelectorAll('.input_form_sign')[d].className = "input_form_sign d_block active_inp";
+//   }
+//
+//
+//  },100 );
+//  document.querySelector('.link_forgot_pass').style.opacity = "0";
+//    document.querySelector('.link_forgot_pass').style.top = "-5px";
+//    document.querySelector('.btn_sign').innerHTML = "SIGN UP";
+//   setTimeout(function(){
+//
+//  document.querySelector('.terms_and_cons').style.opacity = "1";
+//   document.querySelector('.terms_and_cons').style.top = "5px";
+//
+//   },500);
+//   setTimeout(function(){
+//     document.querySelector('.link_forgot_pass').className = "link_forgot_pass d_none";
+//  document.querySelector('.terms_and_cons').className = "terms_and_cons d_block";
+//   },450);
+//
+// }
+//
+//
+//
+// function sign_in(){
+//   var inputs = document.querySelectorAll('.input_form_sign');
+// document.querySelectorAll('.ul_tabs > li')[0].className = "active";
+// document.querySelectorAll('.ul_tabs > li')[1].className = "";
+//
+//   for(var i = 0; i < inputs.length ; i++  ) {
+// switch(i) {
+//     case 1:
+//  console.log(inputs[i].name);
+//         break;
+//     case 2:
+//  console.log(inputs[i].name);
+//     default:
+// document.querySelectorAll('.input_form_sign')[i].className = "input_form_sign d_block";
+// }
+// }
+//
+// setTimeout( function(){
+// for(var d = 0; d < inputs.length ; d++  ) {
+// switch(d) {
+//     case 1:
+//  console.log(inputs[d].name);
+//         break;
+//     case 2:
+//  console.log(inputs[d].name);
+//
+//     default:
+//  document.querySelectorAll('.input_form_sign')[d].className = "input_form_sign d_block";
+//  document.querySelectorAll('.input_form_sign')[2].className = "input_form_sign d_block active_inp";
+//
+//    }
+//   }
+//  },100 );
+//
+//  document.querySelector('.terms_and_cons').style.opacity = "0";
+//   document.querySelector('.terms_and_cons').style.top = "-5px";
+//
+//   setTimeout(function(){
+//  document.querySelector('.terms_and_cons').className = "terms_and_cons d_none";
+// document.querySelector('.link_forgot_pass').className = "link_forgot_pass d_block";
+//
+//  },500);
+//
+//   setTimeout(function(){
+//
+//  document.querySelector('.link_forgot_pass').style.opacity = "1";
+//    document.querySelector('.link_forgot_pass').style.top = "5px";
+//
+//
+// for(var d = 0; d < inputs.length ; d++  ) {
+//
+// switch(d) {
+//     case 1:
+//  console.log(inputs[d].name);
+//         break;
+//     case 2:
+//  console.log(inputs[d].name);
+//
+//          break;
+//     default:
+//  document.querySelectorAll('.input_form_sign')[d].className = "input_form_sign";
+// }
+//   }
+//    },1500);
+//    document.querySelector('.btn_sign').innerHTML = "SIGN IN";
+// }
 
 
 // window.onload =function(){
