@@ -41,13 +41,13 @@ def toydemo():
 @app.route('/news/ngns-meeting', methods=['GET'])
 def ngnsMeeting():
     """Send the user to the ngns-meeting page"""
-    return render_template('ngns-meeting.jinja2')
+    return render_template('ngnsmeeting.jinja2')
 
 
 @app.route('/news/kickoff-meeting', methods=['GET'])
 def kickoffMeeting():
     """Send the user to the kickoff-meeting page"""
-    return render_template('kickoff-meeting.jinja2')
+    return render_template('kickoffmeeting.jinja2')
 
 
 @app.route('/documentations', methods=['GET'])
