@@ -52,10 +52,11 @@ def kickoffMeeting():
 # Currently disabled documentations route page below, to be revisited later
 # when ready
 
-# @app.route('/documentations', methods=['GET'])
-# def documentations():
-#     """Send the user to documentations page"""
-#     return render_template('documentations.jinja2')
+
+@app.route('/documentations', methods=['GET'])
+def documentations():
+    """Send the user to documentations page"""
+    return render_template('documentations.jinja2')
 
 
 @app.route('/team', methods=['GET'])
