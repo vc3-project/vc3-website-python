@@ -53,7 +53,7 @@ h1, h2, h3, h4, h5, h6 {
   border-radius: 2px;
   right: 15px;
   bottom: 15px;
-  transition: background 0.5s;
+  transition: background 0.3s;
 }
 
 @media (max-width: 768px) {
@@ -473,32 +473,51 @@ body.mobile-nav-active #mobile-nav-toggle {
 /* Get Started Section
 --------------------------------*/
 #about {
-  background: #fff;
   padding: 80px 0;
 }
 
-#about .about-container {
-  /*background-repeat: no-repeat;*/
-  /*background: url(https://image.ibb.co/e1upGF/illustration_vc3.png) left top no-repeat;*/
-  /*background-size: contain;*/
+/*--------------------------------------------------------------
+# Carousel Sliders
+--------------------------------------------------------------*/
+
+.carousel-inner > .item > img,
+  .carousel-inner > .item > a > img {
+      width: 100%;
+      margin: auto;
+  }
+.carousel-inner .carousel-caption {
+  background-color: rgba(0,0,0,0.4);
+  background-position: center;
 }
 
-#about .about-content {
-  background: #fff;
+#carousel-control {
+  background-image: none;
+}
+.fa:hover {
+  color: #03C4EB;
+}
+.carousel-indicators li {
+    display: inline-block;
+    text-indent: 0;
+    cursor: pointer;
+    border: none;
+    border-radius: 50%;
+    background-color: white;
+    box-shadow: inset 1px 1px 1px 1px rgba(0,0,0,0.2);
+}
+.carousel-indicators li:hover {
+  background-color: #ffd400;
+}
+#myCarousel .carousel-indicators .active {
+  background-color: #ffd400;
 }
 
-#about .about-title {
-  color: #333;
-  font-weight: 700;
-  font-size: 28px;
-}
-
-#about .about-text {
-  line-height: 26px;
-}
-
-#about .about-text:last-child {
-  margin-bottom: 0;
+.carousel-control .fa-chevron-left,
+.carousel-control .fa-chevron-right {
+    display: inline-block;
+    position: absolute;
+    top: 50%;
+    z-index: 5;
 }
 
 /* Services Section
@@ -1023,20 +1042,6 @@ position: relative;
 .cont_text_inputs > input:nth-child(4){
   transition-delay: 0.8s;
 }*/
-
-
-/*--------------------------------------------------------------
-# Carousel Sliders
---------------------------------------------------------------*/
-
-.carousel-inner > .item > img,
-  .carousel-inner > .item > a > img {
-      width: 70%;
-      margin: auto;
-  }
-.carousel {
-  width: 100%;
-}
 
 /*News - Toy Demo*/
 #news {
