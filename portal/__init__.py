@@ -5,7 +5,7 @@ from flask_frozen import Freezer
 
 from portal.database import Database
 
-__author__ = 'Globus Team <info@globus.org>'
+__author__ = 'Jeremy Van <jeremyvan@uchicago.edu>'
 
 
 app = Flask(__name__)
