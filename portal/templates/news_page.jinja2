@@ -1,0 +1,17 @@
+{%extends "base.jinja2"%}
+
+{%block title%}News | {{ page.title }}{%endblock%}
+
+{%block body%}
+
+<section id="news_article">
+  <div class="container content wow fadeInUp">
+
+    <h2>{{ page.title }}</h2>
+    <p>{{ page.date}}</p>
+    {{ page.html|safe }}
+
+  </div>
+</section>
+
+{% endblock %}

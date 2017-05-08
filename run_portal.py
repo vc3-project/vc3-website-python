@@ -2,21 +2,22 @@
 
 import sys
 
-from portal import app
+from portal import app, freezer
 
 # Import CherryPy
 import cherrypy
 from cherrypy import wsgiserver
 
-if __name__ == '__main__':
-    # workaround for now
-    d = wsgiserver.WSGIPathInfoDispatcher({'/': app})
-    server = wsgiserver.CherryPyWSGIServer(('www-dev.virtualclusters.org', 8080), d)
-    try:
-        server.start()
-    except KeyboardInterrupt:
-        server.stop()
-    sys.exit(0)
+if __name__ == "__main__":
+        # workaround for now
+        d = wsgiserver.WSGIPathInfoDispatcher({'/': app})
+        server = wsgiserver.CherryPyWSGIServer(('www-dev.virtualclusters.org', 8080), d)
+
+        try:
+            server.start()
+        except KeyboardInterrupt:
+            server.stop()
+        sys.exit(0)
 
     # Mount the application
     cherrypy.tree.graft(app, "/")
@@ -38,8 +39,10 @@ if __name__ == '__main__':
 
     # Enable debugging
     cherrypy.config.update({
-        'engine.autoreload_on': True,
+        'engine.autoreload.on': True,
         'log.screen': True,
+        # 'log.error_file': 'Web.log',
+        # 'log.access_file': 'Access.log',
         'server.socket_port': 8080,
         'server.socket_host': "www-dev.virtualclusters.org"
     })
@@ -48,4 +51,7 @@ if __name__ == '__main__':
     cherrypy.engine.start()
     cherrypy.engine.block()
 
-    # app.run(host='localhost', ssl_context=('./ssl/server.crt', './ssl/server.key'))
+    # if len(sys.argv) > 1 and sys.argv[1] == "build":
+    #     freezer.freeze()
+    # else:
+    #     app.run(host='localhost', ssl_context=('./ssl/server.crt', './ssl/server.key'))

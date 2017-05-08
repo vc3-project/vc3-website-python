@@ -10,7 +10,7 @@ except:
 from globus_sdk import (TransferClient, TransferAPIError,
                         TransferData, RefreshTokenAuthorizer)
 
-from portal import app, database, datasets
+from portal import app, database, datasets, pages
 from portal.decorators import authenticated
 from portal.utils import (load_portal_client, get_portal_tokens,
                           get_safe_redirect)
@@ -29,25 +29,39 @@ def home():
 @app.route('/news', methods=['GET'])
 def news():
     """Send the user to the news page"""
-    return render_template('news.jinja2')
+    return render_template('news.jinja2', pages=pages)
 
 
-@app.route('/news/toy-demo', methods=['GET'])
-def toydemo():
-    """Send the user to the toy demo page"""
-    return render_template('toydemo.jinja2')
+@app.route('/news/tag/<string:tag>/')
+def tag(tag):
+    """Automatic routing and compiling for article tags"""
+    tagged = [p for p in pages if tag in p.meta.get('tags', [])]
+    return render_template('news_tag.jinja2', pages=tagged, tag=tag)
 
 
-@app.route('/news/ngns-meeting', methods=['GET'])
-def ngnsMeeting():
-    """Send the user to the ngns-meeting page"""
-    return render_template('ngnsmeeting.jinja2')
+@app.route('/news/<path:path>/')
+def page(path):
+    """Automatic routing and generates markdown flatpages in /pages directory"""
+    page = pages.get_or_404(path)
+    return render_template('news_page.jinja2', page=page)
 
 
-@app.route('/news/kickoff-meeting', methods=['GET'])
-def kickoffMeeting():
-    """Send the user to the kickoff-meeting page"""
-    return render_template('kickoffmeeting.jinja2')
+# @app.route('/news/toy-demo', methods=['GET'])
+# def toydemo():
+#     """Send the user to the toy demo page"""
+#     return render_template('toydemo.jinja2')
+#
+#
+# @app.route('/news/ngns-meeting', methods=['GET'])
+# def ngnsMeeting():
+#     """Send the user to the ngns-meeting page"""
+#     return render_template('ngnsmeeting.jinja2')
+#
+#
+# @app.route('/news/kickoff-meeting', methods=['GET'])
+# def kickoffMeeting():
+#     """Send the user to the kickoff-meeting page"""
+#     return render_template('kickoffmeeting.jinja2')
 
 # Currently disabled documentations route page below, to be revisited later
 # when ready

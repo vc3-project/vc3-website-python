@@ -854,6 +854,30 @@ body.mobile-nav-active #mobile-nav-toggle {
   font-size: 13px;
   color: #ccc;
 }
+#footer .btn-services {
+  background: #03C4EB;
+  border: 2px solid #03C4EB;
+  color: #fff;
+}
+#footer .btn-services:hover {
+  background: none;
+  border: 2px solid #fff;
+  color: #fff;
+}
+#footer .social {
+  /*text-align: center;*/
+  margin-top: 15px;
+}
+#footer .social a {
+  color: #b3b3b3;
+}
+#footer .social a:hover {
+  color: #03C4EB;
+}
+/*#footer .social i {
+  font-size: 25px;
+  margin: 0 2px;
+}*/
 
 /*--------------------------------------------------------------
 # Signup-Login
@@ -1043,16 +1067,19 @@ position: relative;
   transition-delay: 0.8s;
 }*/
 
-/*News - Toy Demo*/
+/*------------------------
+# NEWS SECTION
+------------------------*/
+
 #news {
   padding-top: 20px;
 }
 
-#toydemo {
+#news_article {
   padding-top: 20px;
 }
 
-#toydemo h2{
+#news_article h2{
   /*color: rgb(3, 196, 235);*/
   color: rgb(0, 178, 234);
 }

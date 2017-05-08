@@ -1,0 +1,17 @@
+  <article class="news">
+    {% for page in pages %}
+        <h2>
+            <a href="{{ url_for('page', path=page.path) }}">{{ page.title }}</a>
+        </h2>
+        <p>{{ page.date }}</p>
+        <p>{{page.cut|safe}}</p>
+        <p>
+          <em><a href="{{ url_for('page', path=page.path) }}">Read more &raquo;</a></em>
+        </p>
+
+    {% else %}
+
+        <li>Currently no articles.</li>
+
+    {% endfor %}
+  </article>

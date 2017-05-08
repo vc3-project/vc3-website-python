@@ -1,99 +1,44 @@
 {%extends "base.jinja2"%}
 
-{%block title%}News{%endblock%}
+<!-- {%block title%}News{%endblock%} -->
 
 {%block body%}
 
 <section id="news">
-
+{% with pages=pages %}
   <div class="container content wow fadeInUp">
     <div class="row">
       <div class="col-sm-8">
           <h1><strong>Project News</strong></h1>
 
-            <article class="news">
-              <h2>
-                <a href="/news/toy-demo">Play toy demos of primordial VC3 components</a>
-              </h2>
-              <p class="time">
-                September  8, 2016
-              </p>
-              <p>Our goal for the fall is to create a "capability demonstrator".  As we're just getting started we'll build from existing software and applications and mold them to higher level abstractions.  The examples below demonstrate prototyping features of a...</p>
-              <p>
-                <em><a href="/news/toy-demo">Read more &raquo;</a></em>
-              </p>
-            </article>
+          {% include "_list.jinja2" %}
 
-            <article class="news">
-              <h2>
-                <a href="/news/ngns-meeting">Next Generation Networks for Science (NGNS) Principal Investigators' (PI) Meeting</a>
-              </h2>
-              <p class="time">
-                September  8, 2016
-              </p>
-              <p>Today and tomorrow we have the Next Generation Networks for Science (NGNS) Principal Investigators' (PI) Meeting at Argonne National Laboratory...</p>
-              <p>
-                <em><a href="/news/ngns-meeting">Read more &raquo;</a></em>
-              </p>
-            </article>
-
-            <article class="news">
-              <h2>
-                <a href="/news/kickoff-meeting">VC3 Kickoff Meeting</a>
-              </h2>
-              <p class="time">
-                August  7, 2016
-              </p>
-              <p>Our official "kickoff" meeting to get the project formally started.  The main theme will be to revisit our vision and proposal, to identify and carve out the “VC3 space” given changes...</p>
-              <p>
-                <em><a href="/news/kickoff-meeting">Read more &raquo;</a></em>
-              </p>
-            </article>
-
-          <div class="article pagination">
-            <p class="pagination__summary">Articles 1 to 3 of 3.
-            </p>
-          </div>
       </div>
-
-
-
 
       <div class="col-sm-4 news-sidebar">
-          <div class="news-sidebar-section">
-            <h2>Posts By Year</h2>
-              <h3>2016</h3>
-              <ul>
-                  <li>
-                    <a href="/news/toy-demo">
-                      Play toy demos of primordial VC3 components</a> <em class="text-nowrap"><small>[Sep 8]</small></em>
-                  </li>
+        <div class="news-sidebar-section">
+          <h2>Tags</h2>
 
-                  <li>
-                    <a href="/news/ngns-meeting">
-                      Next Generation Networks for Science (NGNS) Principal Investigators' (PI) Meeting</a> <em class="text-nowrap"><small>[Sep 8]</small></em>
-                  </li>
+            {% for page in pages %}
+              {% if page.meta.tags|length %}
+                  {% for page_tag in page.meta.tags %}
+                      <h3>{{ page_tag }}</h3>
+                  {% endfor %}
+                  <ul>
+                    <li>
+                      <a href="{{ url_for('page', path=page.path) }}">{{ page.title}}</a>
+                    </li>
+                  </ul>
+              {% endif %}
+            {% endfor %}
 
-                  <li>
-                    <a href="/news/kickoff-meeting">
-                      VC3 Kickoff Meeting</a> <em class="text-nowrap"><small>[Aug 7]</small></em>
-                  </li>
-              </ul>
           </div>
+        </div>
 
-          <div class="news-sidebar-section">
-            <h2>Tags</h2>
-              <h3>demos</h3>
-              <ul>
-                  <li>
-                    <a href="/news/toy-demo">
-                      Play toy demos of primordial VC3 components</a> <em class="text-nowrap"><small>[Sep 8]</small></em>
-                    </a>
-                  </li>
-              </ul>
-          </div>
       </div>
     </div>
-  </div>
+  {% endwith %}
 </section>
+
+
 {%endblock%}
