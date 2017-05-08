@@ -5,19 +5,20 @@ import sys
 from portal import app, freezer
 
 # Import CherryPy
+
 import cherrypy
 from cherrypy import wsgiserver
 
 if __name__ == "__main__":
-        # workaround for now
-        d = wsgiserver.WSGIPathInfoDispatcher({'/': app})
-        server = wsgiserver.CherryPyWSGIServer(('www-dev.virtualclusters.org', 8080), d)
+    # workaround for now
+    d = wsgiserver.WSGIPathInfoDispatcher({'/': app})
+    server = wsgiserver.CherryPyWSGIServer(('www-dev.virtualclusters.org', 8080), d)
 
-        try:
-            server.start()
-        except KeyboardInterrupt:
-            server.stop()
-        sys.exit(0)
+    try:
+        server.start()
+    except KeyboardInterrupt:
+        server.stop()
+    sys.exit(0)
 
     # Mount the application
     cherrypy.tree.graft(app, "/")
@@ -50,7 +51,7 @@ if __name__ == "__main__":
     # Start the server engine (Option 1 *and* 2)
     cherrypy.engine.start()
     cherrypy.engine.block()
-
+    #
     # if len(sys.argv) > 1 and sys.argv[1] == "build":
     #     freezer.freeze()
     # else:
