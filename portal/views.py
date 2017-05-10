@@ -72,7 +72,6 @@ def contact():
 def signup():
     """Send the user to Globus Auth with signup=1."""
     return redirect(url_for('authcallback', signup=1))
-    # return render_template('signup.jinja2')
 
 
 @app.route('/login', methods=['GET'])
