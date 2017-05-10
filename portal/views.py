@@ -28,43 +28,26 @@ def home():
 
 @app.route('/news', methods=['GET'])
 def news():
+    """Articles are pages with a publication date"""
+    articles = (p for p in pages if 'date' in p.meta)
+    """Show the 10 most recent articles, most recent first"""
+    latest = sorted(articles, reverse=True, key=lambda p: p.meta['date'])
     """Send the user to the news page"""
-    return render_template('news.jinja2', pages=pages)
+    return render_template('news.jinja2', pages=latest[:10])
 
 
-@app.route('/news/tag/<string:tag>/')
+@app.route('/news/tag/<string:tag>/', methods=['GET'])
 def tag(tag):
     """Automatic routing and compiling for article tags"""
     tagged = [p for p in pages if tag in p.meta.get('tags', [])]
     return render_template('news_tag.jinja2', pages=tagged, tag=tag)
 
 
-@app.route('/news/<path:path>/')
+@app.route('/news/<path:path>/', methods=['GET'])
 def page(path):
     """Automatic routing and generates markdown flatpages in /pages directory"""
     page = pages.get_or_404(path)
     return render_template('news_page.jinja2', page=page)
-
-
-# @app.route('/news/toy-demo', methods=['GET'])
-# def toydemo():
-#     """Send the user to the toy demo page"""
-#     return render_template('toydemo.jinja2')
-#
-#
-# @app.route('/news/ngns-meeting', methods=['GET'])
-# def ngnsMeeting():
-#     """Send the user to the ngns-meeting page"""
-#     return render_template('ngnsmeeting.jinja2')
-#
-#
-# @app.route('/news/kickoff-meeting', methods=['GET'])
-# def kickoffMeeting():
-#     """Send the user to the kickoff-meeting page"""
-#     return render_template('kickoffmeeting.jinja2')
-
-# Currently disabled documentations route page below, to be revisited later
-# when ready
 
 
 @app.route('/documentations', methods=['GET'])

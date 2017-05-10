@@ -87,3 +87,6 @@ service/service.conf
 ssl/
 .editorconfig
 .idea/
+
+#pages will be pulled from separate repo
+portal/pages/
