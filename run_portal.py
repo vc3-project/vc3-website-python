@@ -10,7 +10,7 @@ import cherrypy
 from cherrypy import wsgiserver
 
 if __name__ == "__main__":
-    workaround for now
+    # workaround for now
     d = wsgiserver.WSGIPathInfoDispatcher({'/': app})
     server = wsgiserver.CherryPyWSGIServer(('www-dev.virtualclusters.org', 8080), d)
 
