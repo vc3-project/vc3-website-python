@@ -1,9 +1,13 @@
 # VC3 Website in Python/Flask Framework
-Virtual Clusters project website using
+Virtual Clusters for Community Computing project website using
 the Globus [platform](https://www.globus.org/platform).
 
 ## Overview
-This repository contains two separate server applications from the Globus platform for the VC3 project.
+This repository contains the server application for the VC3 project. To launch the application, run:
+
+    python run_python.py
+
+This should initiate the CherryPy server, which sits on top of a Flask micro-framework application. From here, Flask will properly render any requests for templates and Flatpages.
 
 ## Adding/Updating News Articles
 For ease of navigation and organization, new .md files should follow the naming convention:

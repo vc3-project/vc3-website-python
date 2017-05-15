@@ -87,6 +87,10 @@ service/service.conf
 ssl/
 .editorconfig
 .idea/
+nohup.out
 
 # pages directory will be in separate repo
 /portal/pages
+
+# Service application not necessary for now
+/service
