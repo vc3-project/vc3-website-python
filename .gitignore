@@ -84,6 +84,8 @@ rebates/uploads
 portal.conf
 service.conf
 service/service.conf
+/service
+run_service.py
 ssl/
 .editorconfig
 .idea/

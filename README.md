@@ -3,34 +3,16 @@ Virtual Clusters for Community Computing project website using
 the Globus [platform](https://www.globus.org/platform).
 
 ## Overview
+<<<<<<< HEAD
 This repository contains the server application for the VC3 project. To launch the application, run:
 
     python run_python.py
 
 This should initiate the CherryPy server, which sits on top of a Flask micro-framework application. From here, Flask will properly render any requests for templates and Flatpages.
+=======
+This repository contains the portal applications for the VC3 project.
+>>>>>>> b334dbd2ef122f151987e360af69320ddfd637c3
 
-## Adding/Updating News Articles
-For ease of navigation and organization, new .md files should follow the naming convention:
+The VC3 Website runs on a CherryPy WSGI server, which handles incoming http connections and relay connections to python code. The python code uses a Flask framework in order to handle incoming requests and generate appropriate pages, which are rendered as .jinja2 templates.
 
-    YYYY-MM-DD-title-of-article.md
-
-In order to add a new article, create a new markdown (.md) file within the /portal/pages directory.
-You may manually create a new .md file within this directory or enter the command:
-
-    touch /portal/pages/YYYY-MM-DD-title-of-article.md
-
-Once the new article.md file is create, each markdown file is made up of a YAML mapping
-of metadata, a blank line, and the page body:
-
-    title: VC3 Kickoff Meeting
-    date: June 7, 2016
-    tags: [meetings]
-
-    Hello, *World*!
-
-    Lorem ipsum dolor sit amen, ...
-
-Where the "title" and "date" refers to a title and date of your choosing to be displayed.
-All tags must be nested within a bracketed-list and separated by commas:
-
-    tags: [tag1, tag2, tag3, and, so, on]
+The News pages are pulled from a separate repository [here](https://github.com/vc3-project/vc3-flatpages). Markdown pages made be created following a YAML mapping of metadata, and generated to be automatically displayed on the VC3 website.
