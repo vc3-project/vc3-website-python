@@ -84,9 +84,12 @@ rebates/uploads
 portal.conf
 service.conf
 service/service.conf
+/service
+run_service.py
 ssl/
 .editorconfig
 .idea/
+nohup.out
 
 # pages directory will be in separate repo
 /portal/pages
