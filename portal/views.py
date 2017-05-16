@@ -8,13 +8,16 @@ except:
     from urllib import urlencode
 
 from globus_sdk import (TransferClient, TransferAPIError,
-                        TransferData, RefreshTokenAuthorizer)
+                        TransferData, RefreshTokenAuthorizer,
+                        AuthClient, AccessTokenAuthorizer)
+
 
 from portal import app, database, datasets, pages
 from portal.decorators import authenticated
 from portal.utils import (load_portal_client, get_portal_tokens,
                           get_safe_redirect)
 
+PORTAL_CLIENT_ID = '7aaac646-e84e-4617-b39c-770b415dfb54'
 
 @app.route('/', methods=['GET'])
 def home():
@@ -174,8 +177,8 @@ def authcallback():
     redirect_uri = url_for('authcallback', _external=True)
 
     client = load_portal_client()
-    client.oauth2_start_flow_authorization_code(redirect_uri,
-                                                refresh_tokens=True)
+    client.oauth2_start_flow(redirect_uri,
+                             refresh_tokens=True)
 
     # If there's no "code" query string parameter, we're in this route
     # starting a Globus Auth login flow.
@@ -192,16 +195,21 @@ def authcallback():
         # and can start the process of exchanging an auth code for a token.
         code = request.args.get('code')
         tokens = client.oauth2_exchange_code_for_tokens(code)
+                
+        auth_access_token = tokens.by_resource_server['auth.globus.org']['access_token']
+        ac = AuthClient(authorizer=AccessTokenAuthorizer(auth_access_token), client_id=PORTAL_CLIENT_ID)
 
-        id_token = tokens.decode_id_token(client)
+        res = ac.oauth2_userinfo()
+        
+        # id_token = tokens.decode_id_token(client)
         session.update(
             tokens=tokens.by_resource_server,
             is_authenticated=True,
-            name=id_token.get('name', ''),
-            email=id_token.get('email', ''),
-            institution=id_token.get('institution', ''),
-            primary_username=id_token.get('preferred_username'),
-            primary_identity=id_token.get('sub'),
+            name=res['name'],
+            email=res['email'],
+            # institution=res['institution'],
+            primary_username=res['preferred_username'],
+            primary_identity=res['sub'],
         )
 
         profile = database.load_profile(session['primary_identity'])
