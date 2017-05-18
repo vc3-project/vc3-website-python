@@ -58,6 +58,3 @@ if __name__ == "__main__":
     #    freezer.freeze()
     # else:
     #    app.run(host='localhost', ssl_context=('./ssl/server.crt', './ssl/server.key'))
-    #     freezer.freeze()
-    # else:
-    #     app.run(host='localhost', ssl_context=('./ssl/server.crt', './ssl/server.key'))
