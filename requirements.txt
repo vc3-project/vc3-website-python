@@ -6,16 +6,11 @@ Flask-FlatPages
 Markdown
 MarkupSafe
 packaging
-globus-sdk==1.1.0
-# optional dependency of globus-sdk that enables ID Token parsing
 PyYAML
 pygal==2.1.1
-<<<<<<< HEAD
 globus-sdk==1.1.0
-globus_sdk[jwt]
+# globus_sdk[jwt]
 # optional dependency of globus-sdk that enables ID Token parsing
-=======
 pyOpenSSL
->>>>>>> 51d3401efac0b16d476693e398f94c89e22aa45e
 python-jose==1.3.2
 WSGIserver
