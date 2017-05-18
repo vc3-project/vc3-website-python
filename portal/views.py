@@ -17,7 +17,7 @@ from portal.decorators import authenticated
 from portal.utils import (load_portal_client, get_portal_tokens,
                           get_safe_redirect)
 
-PORTAL_CLIENT_ID = '7aaac646-e84e-4617-b39c-770b415dfb54'
+# PORTAL_CLIENT_ID = '7aaac646-e84e-4617-b39c-770b415dfb54'
 
 @app.route('/', methods=['GET'])
 def home():
@@ -196,20 +196,20 @@ def authcallback():
         code = request.args.get('code')
         tokens = client.oauth2_exchange_code_for_tokens(code)
                 
-        auth_access_token = tokens.by_resource_server['auth.globus.org']['access_token']
-        ac = AuthClient(authorizer=AccessTokenAuthorizer(auth_access_token), client_id=PORTAL_CLIENT_ID)
+        # auth_access_token = tokens.by_resource_server['auth.globus.org']['access_token']
+        # ac = AuthClient(authorizer=AccessTokenAuthorizer(auth_access_token), client_id=PORTAL_CLIENT_ID)
 
-        res = ac.oauth2_userinfo()
+        # res = ac.oauth2_userinfo()
         
         # id_token = tokens.decode_id_token(client)
         session.update(
             tokens=tokens.by_resource_server,
             is_authenticated=True,
-            name=res['name'],
-            email=res['email'],
-            # institution=res['institution'],
-            primary_username=res['preferred_username'],
-            primary_identity=res['sub'],
+            name=id_token.get('name', ''),
+            email=id_token.get('email', ''),
+            institution=id_token.get('institution', ''),
+            primary_username=id_token.get('preferred_username'),
+            primary_identity=id_token.get('sub')['name'],
         )
 
         profile = database.load_profile(session['primary_identity'])
