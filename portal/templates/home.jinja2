@@ -10,6 +10,54 @@
   {%include 'messages.jinja2'%}
 </div>
 
+{%if session.get('is_authenticated')%}
+  <section id="user">
+    <div class="user-container wow fadeIn">
+
+      <div class="panel panel-default">
+        <!-- Default panel contents -->
+        <div class="panel-heading">Your Current Clusters <span class="badge">5</span> <a href="#" class="btn btn-primary btn-sm">Define New Cluster</a></div>
+        <div class="panel-body">
+        </div>
+
+        <!-- List group -->
+        <ul class="list-group">
+          <li class="list-group-item">List of Clusters</li>
+          <li class="list-group-item">Clusters 2</li>
+          <li class="list-group-item">Clusters 3</li>
+          <li class="list-group-item">Clusters 4</li>
+          <li class="list-group-item">Make this dynamic list</li>
+        </ul>
+      </div>
+
+      <div class="panel panel-default">
+        <!-- Default panel contents -->
+        <div class="panel-heading">Your Current Projects <span class="badge">5</span> <a href="{{url_for('new')}}" class="btn btn-primary btn-sm">+ New Project</a></div>
+        <div class="panel-body">
+          <div class="col-lg-12">
+            <div class="input-group">
+              <input type="text" class="form-control" placeholder="Search Projects...">
+              <span class="input-group-btn">
+                <button class="btn btn-default" type="button">Go!</button>
+              </span>
+            </div><!-- /input-group -->
+          </div>
+        </div>
+
+        <!-- List group -->
+        <ul class="list-group">
+          <li class="list-group-item">List of Current Projects</li>
+          <li class="list-group-item">or none</li>
+          <li class="list-group-item">Project 3</li>
+          <li class="list-group-item">Project 4</li>
+          <li class="list-group-item">Make this dynamic list</li>
+        </ul>
+      </div>
+
+    </div>
+  </section>
+
+{%else%}
   <section id="hero">
     <div class="hero-container wow fadeIn">
         <div class="hero-logo">
@@ -160,4 +208,5 @@
     </section>
 
 <hr />
+{%endif%}
 {%endblock%}

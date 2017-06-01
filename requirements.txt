@@ -7,6 +7,7 @@ Markdown
 MarkupSafe
 packaging
 globus-sdk==1.1.0
+globus_sdk[jwt]
 # optional dependency of globus-sdk that enables ID Token parsing
 PyYAML
 pygal==2.1.1

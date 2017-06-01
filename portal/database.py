@@ -65,3 +65,27 @@ class Database:
                              where identity_id = ?""",
                              [identity_id],
                              one=True)
+
+    # def save_project(self,
+    #                  project_id=None,
+    #                  name=None,
+    #                  description=None,
+    #                  science=None):
+    #     """Persist user project."""
+    #     db = self.get_db()
+    #
+    #     db.execute("""update project set name = ?, description = ?, science = ?
+    #                where project_id = ?""",
+    #                (name, description, science, project_id))
+    #
+    #     db.execute("""insert into project (project_id, name, description, science)
+    #                select ?, ?, ?, ? where changes() = 0""",
+    #                (project_id, name, description, science))
+    #     db.commit()
+    #
+    # def load_project(self, project_id):
+    #     """Load user project."""
+    #     return self.query_db("""select name, description, science from profile
+    #                          where project_id = ?""",
+    #                          [project_id],
+    #                          one=True)

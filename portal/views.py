@@ -19,6 +19,7 @@ from portal.utils import (load_portal_client, get_portal_tokens,
 
 PORTAL_CLIENT_ID = '7aaac646-e84e-4617-b39c-770b415dfb54'
 
+
 @app.route('/', methods=['GET'])
 def home():
     """Home page - play with it if you must!"""
@@ -195,12 +196,13 @@ def authcallback():
         # and can start the process of exchanging an auth code for a token.
         code = request.args.get('code')
         tokens = client.oauth2_exchange_code_for_tokens(code)
-                
+
         auth_access_token = tokens.by_resource_server['auth.globus.org']['access_token']
-        ac = AuthClient(authorizer=AccessTokenAuthorizer(auth_access_token), client_id=PORTAL_CLIENT_ID)
+        ac = AuthClient(authorizer=AccessTokenAuthorizer(
+            auth_access_token), client_id=PORTAL_CLIENT_ID)
 
         res = ac.oauth2_userinfo()
-        
+
         # id_token = tokens.decode_id_token(client)
         session.update(
             tokens=tokens.by_resource_server,
@@ -222,9 +224,9 @@ def authcallback():
             session['institution'] = institution
         else:
             return redirect(url_for('profile',
-                                    next=url_for('transfer')))
+                                    next=url_for('home')))
 
-        return redirect(url_for('transfer'))
+        return redirect(url_for('home'))
 
 
 @app.route('/browse/dataset/<dataset_id>', methods=['GET'])
@@ -482,3 +484,25 @@ def graph_cleanup():
                             task_id)
     flash(msg)
     return redirect(url_for('graph'))
+
+
+# -----------------------------------------
+# CURRENT PROJECT PAGE AND ALL PROJECT ROUTES
+# -----------------------------------------
+
+@app.route('/new', methods=['GET', 'POST'])
+@authenticated
+def new():
+    return render_template('new.jinja2')
+
+
+@app.route('/newallocation', methods=['GET', 'POST'])
+@authenticated
+def new_allocation():
+    return render_template('new_allocation.jinja2')
+
+
+@app.route('/project', methods=['GET', 'POST'])
+@authenticated
+def project():
+    return render_template('project.jinja2')
