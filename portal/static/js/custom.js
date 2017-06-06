@@ -118,7 +118,7 @@ jQuery(document).ready(function() {
   jQuery("#header").sticky({topSpacing:0, zIndex: '50'});
 
   // Smoth scroll on page hash links
-  jQuery('a[href*="#"]:not([href="#"])').on('click', function() {
+  jQuery('a[href*="#"]:not([data-toggle="tab"])').on('click', function() {
       if (location.pathname.replace(/^\//,'') == this.pathname.replace(/^\//,'') && location.hostname == this.hostname) {
           var target = jQuery(this.hash);
           if (target.length) {
@@ -169,29 +169,52 @@ jQuery(document).ready(function() {
   jQuery('#myModal').on('shown.bs.modal', function () {
     jQuery('#myInput').focus()
   });
-});
 
-// Tab Panels
-jQuery(document).on('show.bs.tab', '.nav-tabs-responsive [data-toggle="tab"]', function(e) {
-  var jQuerytarget = jQuery(e.target);
-  var jQuerytabs = jQuerytarget.closest('.nav-tabs-responsive');
-  var jQuerycurrent = jQuerytarget.closest('li');
-  var jQueryparent = jQuerycurrent.closest('li.dropdown');
-  jQuerycurrent = jQueryparent.length > 0 ? jQueryparent : jQuerycurrent;
-  var jQuerynext = jQuerycurrent.next();
-  var jQueryprev = jQuerycurrent.prev();
-  var updateDropdownMenu = function(jQueryel, position){
-    jQueryel
-      .find('.dropdown-menu')
-      .removeClass('pull-xs-left pull-xs-center pull-xs-right')
-      .addClass( 'pull-xs-' + position );
-  };
+  // Tab Panels
+  // jQuery(document).on('show.bs.tab', '.nav-tabs-responsive [data-toggle="tab"]', function(e) {
+  //   var jQuerytarget = jQuery(e.target);
+  //   var jQuerytabs = jQuerytarget.closest('.nav-tabs-responsive');
+  //   var jQuerycurrent = jQuerytarget.closest('li');
+  //   var jQueryparent = jQuerycurrent.closest('li.dropdown');
+  //   jQuerycurrent = jQueryparent.length > 0 ? jQueryparent : jQuerycurrent;
+  //   var jQuerynext = jQuerycurrent.next();
+  //   var jQueryprev = jQuerycurrent.prev();
+  //   var updateDropdownMenu = function(jQueryel, position){
+  //     jQueryel
+  //       .find('.dropdown-menu')
+  //       .removeClass('pull-xs-left pull-xs-center pull-xs-right')
+  //       .addClass( 'pull-xs-' + position );
+  //   };
+  //
+  //   jQuerytabs.find('>li').removeClass('next prev');
+  //   jQueryprev.addClass('prev');
+  //   jQuerynext.addClass('next');
+  //
+  //   updateDropdownMenu( jQueryprev, 'left' );
+  //   updateDropdownMenu( jQuerycurrent, 'center' );
+  //   updateDropdownMenu( jQuerynext, 'right' );
+  // });
+  $(document).on('show.bs.tab', '.nav-tabs-responsive [data-toggle="tab"]', function(e) {
+    var $target = $(e.target);
+    var $tabs = $target.closest('.nav-tabs-responsive');
+    var $current = $target.closest('li');
+    var $parent = $current.closest('li.dropdown');
+		$current = $parent.length > 0 ? $parent : $current;
+    var $next = $current.next();
+    var $prev = $current.prev();
+    var updateDropdownMenu = function($el, position){
+      $el
+      	.find('.dropdown-menu')
+        .removeClass('pull-xs-left pull-xs-center pull-xs-right')
+      	.addClass( 'pull-xs-' + position );
+    };
 
-  jQuerytabs.find('>li').removeClass('next prev');
-  jQueryprev.addClass('prev');
-  jQuerynext.addClass('next');
+    $tabs.find('>li').removeClass('next prev');
+    $prev.addClass('prev');
+    $next.addClass('next');
 
-  updateDropdownMenu( jQueryprev, 'left' );
-  updateDropdownMenu( jQuerycurrent, 'center' );
-  updateDropdownMenu( jQuerynext, 'right' );
+    updateDropdownMenu( $prev, 'left' );
+    updateDropdownMenu( $current, 'center' );
+    updateDropdownMenu( $next, 'right' );
+  });
 });

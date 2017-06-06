@@ -76,36 +76,20 @@
               <li>
                 <a href="{{url_for('transfer')}}">Transfer</a>
               </li>
-              <!-- <li class="divider">|</li> -->
               <li>
                 <a href="{{url_for('graph')}}">Graph</a>
               </li>
-              <!-- <li class="divider">|</li> -->
               <li class="dropdown">
                 <a class="dropdown-toggle" data-toggle="dropdown" href="{{url_for('profile')}}">Profile <i class="fa fa-angle-double-down"></i></a>
                 <ul class="dropdown-menu">
                   <li>Signed in as {{session['name']}}</li>
                   <li><a href="{{url_for('profile')}}">Your Profile</a></li>
-                  <li><a href="#">Define New Allocation</a></li>
+                  <li><a href="{{url_for('new_allocation')}}">Define New Allocation</a></li>
                   <li><a href="{{url_for('new')}}">Create a Project</a></li>
                   <li><a href="#">Settings</a></li>
                   <li><a href="{{url_for('logout')}}">Logout</a></li>
                 </ul>
               </li>
-              <!-- <li class="divider">|</li> -->
-              <!-- <li>
-                <a href="{{url_for('team')}}">Team</a>
-              </li> -->
-              <!-- <li>
-                <a href="{{url_for('contact')}}">Contact Us</a>
-              </li> -->
-              <!-- <li class="divider">|</li> -->
-              <!-- <li>
-                <a href="{{url_for('profile')}}">{{session["primary_username"]}}</a>
-              </li> -->
-              <!-- <li>
-                <a href="{{url_for('logout')}}">Logout</a>
-              </li> -->
             <!-- Display these links if user is not authenticated -->
             {%else%}
               <li>

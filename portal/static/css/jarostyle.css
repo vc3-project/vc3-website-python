@@ -29,7 +29,11 @@ h1, h2, h3, h4, h5, h6 {
   margin: 0 0 20px 0;
   padding: 0;
 }
-/* Prelaoder */
+
+/*--------------------------------------------------------------
+# Preloader
+--------------------------------------------------------------*/
+
 #preloader {
   position: fixed;
   left: 0;
@@ -41,7 +45,10 @@ h1, h2, h3, h4, h5, h6 {
   background: #fff url("../img/preloader.svg") no-repeat center center;
 }
 
-/* Back to top button */
+/*--------------------------------------------------------------
+# Back to Top Button
+--------------------------------------------------------------*/
+
 .back-to-top {
   position: fixed;
   display: none;
@@ -75,6 +82,7 @@ h1, h2, h3, h4, h5, h6 {
 /*--------------------------------------------------------------
 # Welcome
 --------------------------------------------------------------*/
+
 #hero {
   display: table;
   width: 100%;
@@ -174,6 +182,7 @@ h1, h2, h3, h4, h5, h6 {
 /*--------------------------------------------------------------
 # Header
 --------------------------------------------------------------*/
+
 #header {
   background: #111;
   padding: 20px 0;
@@ -225,6 +234,7 @@ h1, h2, h3, h4, h5, h6 {
 # Navigation Menu
 --------------------------------------------------------------*/
 /* Nav Menu Essentials */
+
 .nav-menu, .nav-menu * {
   margin: 0;
   padding: 0;
@@ -292,7 +302,10 @@ h1, h2, h3, h4, h5, h6 {
   }
 }
 
-/* Nav Meu Styling */
+/*--------------------------------------------------------------
+# Nav Menu Style
+--------------------------------------------------------------*/
+
 .nav-menu a {
   padding: 10px 15px;
   text-decoration: none;
@@ -334,7 +347,10 @@ h1, h2, h3, h4, h5, h6 {
   margin: 0;
 }
 
-/* Mobile Nav Toggle */
+/*--------------------------------------------------------------
+# Mobile Nav Toggle
+--------------------------------------------------------------*/
+
 #mobile-nav-toggle {
   position: fixed;
   right: 0;
@@ -359,7 +375,10 @@ h1, h2, h3, h4, h5, h6 {
   }
 }
 
-/* Mobile Nav Styling */
+/*--------------------------------------------------------------
+# Mobile Nav Styling
+--------------------------------------------------------------*/
+
 #mobile-nav {
   position: fixed;
   top: 0;
@@ -469,8 +488,10 @@ body.mobile-nav-active #mobile-nav-toggle {
   margin-bottom: 20px;
 }
 
-/* Get Started Section
---------------------------------*/
+/*--------------------------------------------------------------
+# Get Started / About Sections
+--------------------------------------------------------------*/
+
 #about {
   padding: 80px 0;
 }
@@ -519,8 +540,10 @@ body.mobile-nav-active #mobile-nav-toggle {
     z-index: 5;
 }
 
-/* Services Section
---------------------------------*/
+/*--------------------------------------------------------------
+# Services Sections
+--------------------------------------------------------------*/
+
 #services {
   /*background: linear-gradient(rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.9)), url("http://image.vsco.co/1/54d92a5a8e1c22223220/58d85bb108ef6b6441ac97d9/1136x1515/vsco_032617.jpg") fixed center center;*/
   background: linear-gradient(rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.9)), url("http://media2.govtech.com/images/shutterstock-cloud-computing.jpg") fixed center center;
@@ -570,8 +593,10 @@ body.mobile-nav-active #mobile-nav-toggle {
   line-height: 24px;
 }
 
-/* Partners Section
---------------------------------*/
+/*--------------------------------------------------------------
+# Partners Sections
+--------------------------------------------------------------*/
+
 #partners {
   background: linear-gradient(rgba(250, 250, 250, 0.6), rgba(255, 255, 255, 0.8)), url('https://www.avineon.com/sites/default/files/Cloud-computing_1285x588.jpg') fixed center center;
   /*background: linear-gradient(rgba(250, 250, 250, 0.6), rgba(255, 255, 255, 0.8)), url('https://scontent-iad3-1.cdninstagram.com/t51.2885-15/e35/17595897_685587908295482_4170062324113080320_n.jpg') fixed center center;*/
@@ -593,8 +618,10 @@ body.mobile-nav-active #mobile-nav-toggle {
   color: #fff;
 }
 
-/* documentations Section
---------------------------------*/
+/*--------------------------------------------------------------
+# Documentations Section
+--------------------------------------------------------------*/
+
 #documentations {
   background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('https://scontent-iad3-1.cdninstagram.com/t51.2885-15/e35/17595897_685587908295482_4170062324113080320_n.jpg') fixed center center;
   background-size: cover;
@@ -636,8 +663,11 @@ body.mobile-nav-active #mobile-nav-toggle {
   border: 2px solid #03C4EB;
 }
 
-/* Team Section
---------------------------------*/
+
+/*--------------------------------------------------------------
+# Team Section
+--------------------------------------------------------------*/
+
 #team {
   background: #fff;
   padding: 80px 0 60px 0;
@@ -688,7 +718,9 @@ body.mobile-nav-active #mobile-nav-toggle {
   margin: 0 2px;
 }
 
-/*Team Captions*/
+/*--------------------------------------------------------------
+# Team Captions
+--------------------------------------------------------------*/
 
 .caption-style-3{
 	list-style-type: none;
@@ -751,10 +783,7 @@ body.mobile-nav-active #mobile-nav-toggle {
 	z-index: 5;
 	position: absolute;
 }
-/*.caption-style-3 .caption-text h1{
-	text-transform: uppercase;
-	font-size: 18px;
-}*/
+
 .caption-style-3 .caption-text{
 	z-index: 10;
 	color: #fff;
@@ -765,8 +794,10 @@ body.mobile-nav-active #mobile-nav-toggle {
 	top:10px;
 }
 
-/* Contact Section
---------------------------------*/
+/*--------------------------------------------------------------
+# Contact Section
+--------------------------------------------------------------*/
+
 #contact {
   background: #f7f7f7;
   padding: 80px 0;
@@ -875,10 +906,6 @@ body.mobile-nav-active #mobile-nav-toggle {
 #footer .social a:hover {
   color: #03C4EB;
 }
-/*#footer .social i {
-  font-size: 25px;
-  margin: 0 2px;
-}*/
 
 /*--------------------------------------------------------------
 # Signup-Login
@@ -1145,7 +1172,7 @@ section #news_article {
 }
 
 /*--------------------------------------------------------------
-# Profile - Logged in
+# Profile - Logged in -- Tab Panels
 --------------------------------------------------------------*/
 
 @mixin ellipsis(){
@@ -1283,7 +1310,6 @@ section #news_article {
 }
 
 .page-header {
-  padding-top: 100px;
   width: 90%;
 }
 

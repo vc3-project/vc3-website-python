@@ -1,6 +1,5 @@
 # VC3 Website in Python/Flask Framework
-Virtual Clusters for Community Computing project website using
-the Globus [platform](https://www.globus.org/platform).
+Virtual Clusters for Community Computing project web application.
 
 ## Overview
 This repository contains the portal application for the VC3 project.

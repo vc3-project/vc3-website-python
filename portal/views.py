@@ -178,8 +178,7 @@ def authcallback():
     redirect_uri = url_for('authcallback', _external=True)
 
     client = load_portal_client()
-    client.oauth2_start_flow(redirect_uri,
-                             refresh_tokens=True)
+    client.oauth2_start_flow(redirect_uri, refresh_tokens=True)
 
     # If there's no "code" query string parameter, we're in this route
     # starting a Globus Auth login flow.
@@ -196,23 +195,8 @@ def authcallback():
         # and can start the process of exchanging an auth code for a token.
         code = request.args.get('code')
         tokens = client.oauth2_exchange_code_for_tokens(code)
-<<<<<<< HEAD
 
-        auth_access_token = tokens.by_resource_server['auth.globus.org']['access_token']
-        ac = AuthClient(authorizer=AccessTokenAuthorizer(
-            auth_access_token), client_id=PORTAL_CLIENT_ID)
-
-        res = ac.oauth2_userinfo()
-
-=======
-                
-        # auth_access_token = tokens.by_resource_server['auth.globus.org']['access_token']
-        # ac = AuthClient(authorizer=AccessTokenAuthorizer(auth_access_token), client_id=PORTAL_CLIENT_ID)
-
-        # res = ac.oauth2_userinfo()
-        
->>>>>>> 4607f82a017ffab32353f25a0bdb82ea3bcaa0ed
-        # id_token = tokens.decode_id_token(client)
+        id_token = tokens.decode_id_token(client)
         session.update(
             tokens=tokens.by_resource_server,
             is_authenticated=True,
@@ -220,7 +204,7 @@ def authcallback():
             email=id_token.get('email', ''),
             institution=id_token.get('institution', ''),
             primary_username=id_token.get('preferred_username'),
-            primary_identity=id_token.get('sub')['name'],
+            primary_identity=id_token.get('sub'),
         )
 
         profile = database.load_profile(session['primary_identity'])
@@ -505,7 +489,7 @@ def new():
     return render_template('new.jinja2')
 
 
-@app.route('/newallocation', methods=['GET', 'POST'])
+@app.route('/allocation/new', methods=['GET', 'POST'])
 @authenticated
 def new_allocation():
     return render_template('new_allocation.jinja2')
@@ -515,3 +499,9 @@ def new_allocation():
 @authenticated
 def project():
     return render_template('project.jinja2')
+
+
+@app.route('/projectpages', methods=['GET', 'POST'])
+@authenticated
+def projectpages():
+    return render_template('projects_pages.jinja2')
