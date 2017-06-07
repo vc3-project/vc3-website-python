@@ -468,16 +468,23 @@ body.mobile-nav-active #mobile-nav-toggle {
 --------------------------------------------------------------*/
 
 .section-title {
-  font-size: 32px;
+  font-size: 28px;
   color: #111;
+  /*text-transform: uppercase;*/
+  text-align: center;
+  font-weight: 600;
+}
+
+.section-title #brand{
+  font-size: 28px;
+  color: #03C4EB;
   text-transform: uppercase;
   text-align: center;
   font-weight: 700;
 }
-
 .section-description {
   text-align: center;
-  margin-bottom: 40px;
+  /*margin-bottom: 40px;*/
 }
 
 .section-title-divider {
@@ -495,7 +502,15 @@ body.mobile-nav-active #mobile-nav-toggle {
 #about {
   padding: 80px 0;
 }
-
+#about img {
+  max-width: 100%;
+  max-height: 100%;
+  display: block;
+  margin: 0 auto;
+}
+#about .content {
+  vertical-align: middle;
+}
 /*--------------------------------------------------------------
 # Carousel Sliders
 --------------------------------------------------------------*/

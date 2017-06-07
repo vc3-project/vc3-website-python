@@ -97,3 +97,6 @@ nohup.out
 
 # Service application not necessary for now
 /service
+
+# run portal local not necessary
+run_portal.py
