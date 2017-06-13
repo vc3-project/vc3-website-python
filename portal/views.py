@@ -221,7 +221,7 @@ def authcallback():
             return redirect(url_for('profile',
                                     next=url_for('home')))
 
-        return redirect(url_for('home'))
+        return redirect(url_for('profile'))
 
 
 @app.route('/browse/dataset/<dataset_id>', methods=['GET'])
@@ -491,6 +491,12 @@ def new():
     return render_template('new.jinja2')
 
 
+@app.route('/allocation', methods=['GET', 'POST'])
+@authenticated
+def allocation():
+    return render_template('allocation.jinja2')
+
+
 @app.route('/allocation/new', methods=['GET', 'POST'])
 @authenticated
 def new_allocation():
@@ -513,19 +519,3 @@ def projectpages():
 @authenticated
 def dashboard():
     return render_template('dashboard.jinja2')
-
-
-# -----------------------------------------
-# Autoversioning Filter
-# -----------------------------------------
-
-# @app.template_filter('autoversion')
-# def autoversion_filter(filename):
-#     # determining fullpath might be project specific
-#     fullpath = os.path.join('portal/', filename[1:])
-#     try:
-#         timestamp = str(os.path.getmtime(fullpath))
-#     except OSError:
-#         return filename
-#     newfilename = "{0}?v={1}".format(filename, timestamp)
-#     return newfilename

@@ -10,6 +10,67 @@
   {%include 'messages.jinja2'%}
 </div>
 
+{%if session.get('is_authenticated')%}
+
+  <section id="user">
+    <div class="user-container wow fadeIn">
+
+      <div class="container col-md-12 col-lg-8">
+        <iframe src="http://grafana.mwt2.org:3000/dashboard-solo/db/osg-connect-running-by-provider?orgId=1&from=1496781714276&to=1496868114276&panelId=5" width="450" height="200" frameborder="0"></iframe>
+      </div>
+
+      <div class="panel panel-default">
+        <!-- Default panel contents -->
+        <div class="panel-heading">Your Current Clusters <span class="badge">5</span> <a href="#" class="btn btn-primary btn-sm">Define New Cluster</a></div>
+        <div class="panel-body">
+          <div class="col-lg-12">
+            <div class="input-group">
+              <input type="text" class="form-control" placeholder="Search Projects...">
+              <span class="input-group-btn">
+                <button class="btn btn-default" type="button"><i class="glyphicon glyphicon-search"></i></button>
+              </span>
+            </div><!-- /input-group -->
+          </div>
+        </div><!-- /panel-body -->
+
+        <!-- List group -->
+        <ul class="list-group">
+          <li class="list-group-item">List of Clusters</li>
+          <li class="list-group-item">Clusters 2</li>
+          <li class="list-group-item">Clusters 3</li>
+          <li class="list-group-item">Clusters 4</li>
+          <li class="list-group-item">Make this dynamic list</li>
+        </ul>
+      </div><!-- /panel -->
+
+      <div class="panel panel-default">
+        <!-- Default panel contents -->
+        <div class="panel-heading">Your Current Projects <span class="badge">5</span> <a href="{{url_for('new')}}" class="btn btn-primary btn-sm">+ New Project</a></div>
+        <div class="panel-body">
+          <div class="col-lg-12">
+            <div class="input-group">
+              <input type="text" class="form-control" placeholder="Search Projects...">
+              <span class="input-group-btn">
+                <button class="btn btn-default" type="button"><i class="glyphicon glyphicon-search"></i></button>
+              </span>
+            </div><!-- /input-group -->
+          </div>
+        </div><!-- /panel-body -->
+
+        <!-- List group -->
+        <ul class="list-group">
+          <li class="list-group-item">List of Current Projects</li>
+          <li class="list-group-item">or none</li>
+          <li class="list-group-item">Project 3</li>
+          <li class="list-group-item">Project 4</li>
+          <li class="list-group-item">Make this dynamic list</li>
+        </ul>
+      </div>
+
+    </div>
+  </section>
+
+{%else%}
   <section id="hero">
     <div class="hero-container wow fadeIn">
         <div class="hero-logo">
@@ -155,4 +216,5 @@
     </section>
 
 <hr />
+{%endif%}
 {%endblock%}

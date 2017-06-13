@@ -1,286 +1,141 @@
-<!doctype html>
-<html lang="en">
-<head>
-	<meta charset="utf-8" />
-	<link rel="icon" type="image/png" href="assets/img/favicon.ico">
-	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+{%extends "loginbase.jinja2"%}
 
-	<title>VC3 {%block title%}{%endblock%}</title>
+{%block title%}Profile{%endblock%}
 
-	<meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' />
-    <meta name="viewport" content="width=device-width" />
+{%block body%}
 
+<div class="content container">
+  <div class="container-fluid">
+      <div class="row">
+				{%if session.get('is_authenticated')%}
 
-    <!-- Bootstrap core CSS     -->
-		<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+						<section id="user_profile">
+						<!-- Profile Info Display -->
+						<div class="container">
+								<div class="row">
+									 <div class="col-sm-6 col-md-6 col-lg-3">
+									   <div class="thumbnail">
+									     <img src="https://ca.slack-edge.com/T03MU5LDV-U4THGCSAX-ac1f81007040-1024" alt="">
+									     <div class="caption">
+									       <h3>{{session['name']}}</h3>
+									       <h4>{{session['institution']}}</h4>
+									       <h5>{{session['email']}}</h5>
+									       <p><a href="#" class="btn btn-primary" role="button">Edit</a></p>
+									     </div>
+									   </div>
+									 </div>
 
-    <!-- Animation library for notifications   -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css" rel="stylesheet">
+							<div class="col-md-6 col-md-3">
+									   <form role="form" action="{{url_for('profile')}}" method="POST">
+									     <div class="form-group">
+									       <label for="name">Name</label>
+									       <input
+									         type="text"
+									         class="form-control"
+									         id="name"
+									         name="name"
+									         placeholder="full name"
+									         required="required"
+									         tabindex="1"
+									         value="{{session['name']}}"
+									       >
+									     </div>
 
-    <!--  Light Bootstrap Table core CSS    -->
-		<link rel="stylesheet" type="text/css" href="{{url_for('static', filename='css/light-bootstrap-dashboard.css')}}" />
+									     <div class="form-group">
+									       <label for="email">Email</label>
+									       <input
+									         type="email"
+									         id="email"
+									         name="email"
+									         class="form-control"
+									         placeholder="me@example.com"
+									         required="required"
+									         tabindex="2"
+									         value="{{session['email']}}"
+									       >
+									     </div>
 
-    <!--     Fonts and icons     -->
-    <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
-    <link href='http://fonts.googleapis.com/css?family=Roboto:400,700,300' rel='stylesheet' type='text/css'>
-    <!-- <link href="assets/css/pe-icon-7-stroke.css" rel="stylesheet" /> -->
+									     <div class="form-group">
+									       <label for="institution">Institution/Department</label>
+									       <input
+									         type="text"
+									         id="institution"
+									         name="institution"
+									         class="form-control"
+									         required="required"
+									         tabindex="3"
+									         value="{{session['institution']}}"
+									       >
+									     </div>
 
-</head>
-<body>
+									     <div class="form-group">
+									       <button type="submit" class="btn btn-primary">Save</button>
+									     </div>
+									   </form>
+									 </div>
 
-<div class="wrapper">
-    <div class="sidebar" data-color="azure" data-image="http://s.hswstatic.com/gif/disruptive-technologies-10-orig.jpg">
+								</div> <!-- row -->
+						</div> <!-- container -->
+						</section>
 
-    	<div class="sidebar-wrapper">
-            <div class="logo">
-                <a href="{{url_for('home')}}" class="simple-text">
-                    <img src="https://image.ibb.co/e59s3v/logosmall.png" alt="" title="" width="100px" height="100px" /></img>
-                </a>
-            </div>
-
-            <ul class="nav">
-								<li class="active">
-										<a href="{{url_for('profile')}}">
-												<i class="pe-7s-user"></i>
-												<p>Profile</p>
-										</a>
-								</li>
-                <li class="active">
-                    <a href="{{url_for('dashboard')}}">
-                        <i class="pe-7s-graph"></i>
-                        <p>Dashboard</p>
-                    </a>
-                </li>
-                <li class="active">
-                    <a href="#">
-                        <i class="pe-7s-science"></i>
-                        <p>Allocation</p>
-                    </a>
-                </li>
-                <li class="active">
-                    <a href="#">
-                        <i class="pe-7s-note2"></i>
-                        <p>Project</p>
-                    </a>
-                </li>
-
-            </ul>
-    	</div>
-    </div>
-
-    <div class="main-panel">
-
-        <nav class="navbar navbar-default navbar-fixed">
-            <div class="container-fluid">
-                <div class="navbar-header">
-                    <button type="button" class="navbar-toggle" data-toggle="collapse">
-                        <span class="sr-only">Toggle navigation</span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button>
-                    <a class="navbar-brand" href="{{url_for('profile')}}">Profile</a>
-                </div>
-                <div class="collapse navbar-collapse">
-                    <ul class="nav navbar-nav navbar-left">
-                        <li>
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                                <i class="fa fa-dashboard"></i>
-                            </a>
-                        </li>
-                    </ul>
-
-                    <ul class="nav navbar-nav navbar-right">
-                        <li>
-                           <a href="{{url_for('logout')}}">Logout</a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </nav>
-
-
-        <div class="content container">
-            <div class="container-fluid">
-                <div class="row">
-									{%if session.get('is_authenticated')%}
-
-									  <section id="user_profile">
-									  <!-- Profile Info Display -->
-									  <div class="container">
-									    <div class="row">
-									      <div class="col-sm-6 col-md-6 col-lg-3">
-									        <div class="thumbnail">
-									          <img src="https://ca.slack-edge.com/T03MU5LDV-U4THGCSAX-ac1f81007040-1024" alt="">
-									          <div class="caption">
-									            <h3>{{session['name']}}</h3>
-									            <h4>{{session['institution']}}</h4>
-									            <h5>{{session['email']}}</h5>
-									            <p><a href="#" class="btn btn-primary" role="button">Edit</a></p>
-									          </div>
-									        </div>
+					{% else %}
+					<section id="user_profile">
+									<div class="row">
+									  <div class="col-md-6 col-md-offset-3">
+									    <form role="form" action="{{url_for('profile')}}" method="POST">
+									      <div class="form-group">
+									        <label for="name">Name</label>
+									        <input
+									          type="text"
+									          class="form-control"
+									          id="name"
+									          name="name"
+									          placeholder="full name"
+									          required="required"
+									          tabindex="1"
+									          value="{{session['name']}}"
+									        >
 									      </div>
 
-												<div class="col-md-6 col-md-3">
-									        <form role="form" action="{{url_for('profile')}}" method="POST">
-									          <div class="form-group">
-									            <label for="name">Name</label>
-									            <input
-									              type="text"
-									              class="form-control"
-									              id="name"
-									              name="name"
-									              placeholder="full name"
-									              required="required"
-									              tabindex="1"
-									              value="{{session['name']}}"
-									            >
-									          </div>
-
-									          <div class="form-group">
-									            <label for="email">Email</label>
-									            <input
-									              type="email"
-									              id="email"
-									              name="email"
-									              class="form-control"
-									              placeholder="me@example.com"
-									              required="required"
-									              tabindex="2"
-									              value="{{session['email']}}"
-									            >
-									          </div>
-
-									          <div class="form-group">
-									            <label for="institution">Institution/Department</label>
-									            <input
-									              type="text"
-									              id="institution"
-									              name="institution"
-									              class="form-control"
-									              required="required"
-									              tabindex="3"
-									              value="{{session['institution']}}"
-									            >
-									          </div>
-
-									          <div class="form-group">
-									            <button type="submit" class="btn btn-primary">Save</button>
-									          </div>
-									        </form>
+									      <div class="form-group">
+									        <label for="email">Email</label>
+									        <input
+									          type="email"
+									          id="email"
+									          name="email"
+									          class="form-control"
+									          placeholder="me@example.com"
+									          required="required"
+									          tabindex="2"
+									          value="{{session['email']}}"
+									        >
 									      </div>
 
-									    </div> <!-- row -->
-									  </div> <!-- container -->
-									  </section>
-
-									{% else %}
-									<section id="user_profile">
-									    <div class="row">
-									      <div class="col-md-6 col-md-offset-3">
-									        <form role="form" action="{{url_for('profile')}}" method="POST">
-									          <div class="form-group">
-									            <label for="name">Name</label>
-									            <input
-									              type="text"
-									              class="form-control"
-									              id="name"
-									              name="name"
-									              placeholder="full name"
-									              required="required"
-									              tabindex="1"
-									              value="{{session['name']}}"
-									            >
-									          </div>
-
-									          <div class="form-group">
-									            <label for="email">Email</label>
-									            <input
-									              type="email"
-									              id="email"
-									              name="email"
-									              class="form-control"
-									              placeholder="me@example.com"
-									              required="required"
-									              tabindex="2"
-									              value="{{session['email']}}"
-									            >
-									          </div>
-
-									          <div class="form-group">
-									            <label for="institution">Institution/Department</label>
-									            <input
-									              type="text"
-									              id="institution"
-									              name="institution"
-									              class="form-control"
-									              required="required"
-									              tabindex="3"
-									              value="{{session['institution']}}"
-									            >
-									          </div>
-
-									          <div class="form-group">
-									            <button type="submit" class="btn btn-primary">Save</button>
-									          </div>
-									        </form>
+									      <div class="form-group">
+									        <label for="institution">Institution/Department</label>
+									        <input
+									          type="text"
+									          id="institution"
+									          name="institution"
+									          class="form-control"
+									          required="required"
+									          tabindex="3"
+									          value="{{session['institution']}}"
+									        >
 									      </div>
-									    </div>
+
+									      <div class="form-group">
+									        <button type="submit" class="btn btn-primary">Save</button>
+									      </div>
+									    </form>
 									  </div>
-									</section>
-									{%endif%}
+									</div>
+					</section>
+					{%endif%}
 
-                </div>
-            </div>
         </div>
-
-
-        <footer class="footer">
-            <div class="container-fluid">
-                <nav class="pull-left">
-                    <ul>
-                        <li>
-                            <a href="{{url_for('home')}}">
-                                Home
-                            </a>
-                        </li>
-
-                    </ul>
-                </nav>
-                <p class="copyright pull-right">
-                    &copy; <script>document.write(new Date().getFullYear())</script> <a href="https://www-dev.virtualclusters.org">VC3</a>, Virtual Clusters for Community Computation
-                </p>
-            </div>
-        </footer>
-
     </div>
 </div>
 
 
-</body>
-
-  <!--   Core JS Files   -->
-	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0/jquery.min.js"></script>
-	<script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-
-	<!--  Checkbox, Radio & Switch Plugins -->
-	<!-- <script src="assets/js/bootstrap-checkbox-radio-switch.js"></script> -->
-
-	<!--  Charts Plugin -->
-	<!-- <script src="assets/js/chartist.min.js"></script> -->
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/chartist/0.11.0/chartist.min.js"></script>
-
-    <!--  Notifications Plugin    -->
-    <!-- <script src="assets/js/bootstrap-notify.js"></script> -->
-
-    <!--  Google Maps Plugin    -->
-    <!-- <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?sensor=false"></script> -->
-
-    <!-- Light Bootstrap Table Core javascript and methods for Demo purpose -->
-	<script type="text/javascript" src="{{url_for('static', filename='js/custom.js')}}"></script>
-
-	<!-- Light Bootstrap Table DEMO methods, don't include it in your project! -->
-	<!-- <script src="assets/js/demo.js"></script> -->
-
-
-</html>
+{%endblock%}
