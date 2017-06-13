@@ -8,7 +8,7 @@
 
 <section id="new_project">
   <div class="container new-project">
-    <form id="new-project-form" action="" method="post">
+    <form id="new-project-form" action="{{url_for('new')}}" method="POST">
       <!-- Logo -->
       <div class="col-lg-12 logo-vc3">
           <img width="100" class="logo" src="https://image.ibb.co/e59s3v/logosmall.png" alt="Logo" />
@@ -16,13 +16,13 @@
       <h3>Create a New Project</h3>
       <h4>A project contains all the allocations and resource requests from your research</h4>
       <fieldset>
-        <input placeholder="Your Project name" type="text" tabindex="1" required autofocus>
+        <input placeholder="Your Project name" name="projectName" type="text" tabindex="1" required autofocus value="{{session['projectName']}}">
       </fieldset>
       <fieldset>
-        <input placeholder="Your Field of Science (e.g. High Energy Physics)" type="text" tabindex="2" required>
+        <input placeholder="Your Field of Science (e.g. High Energy Physics)" name="projectScience" type="text" tabindex="2" required value="{{session['projectScience']}}">
       </fieldset>
       <fieldset>
-        <textarea placeholder="Enter description here...(optional)" tabindex="3"></textarea>
+        <textarea placeholder="Enter description here...(optional)" name="projectDescription" tabindex="3" value="{{session['projectDescription']}}"></textarea>
       </fieldset>
       <fieldset>
         <button name="submit" type="submit" id="create-project" data-submit="...Sending">Create Project</button>

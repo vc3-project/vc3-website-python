@@ -509,6 +509,12 @@ def projectpages():
     return render_template('projects_pages.jinja2')
 
 
+@app.route('/dashboard', methods=['GET', 'POST'])
+@authenticated
+def dashboard():
+    return render_template('dashboard.jinja2')
+
+
 # -----------------------------------------
 # Autoversioning Filter
 # -----------------------------------------

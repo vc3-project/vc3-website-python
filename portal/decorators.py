@@ -19,13 +19,3 @@ def authenticated(fn):
 
         return fn(*args, **kwargs)
     return decorated_function
-
-
-# def author_required(fn):
-#     """Mark news article route as requiring author admin access"""
-#     @wraps(fn)
-#     def decorated_function(*args, **kwargs):
-#         if not session.get('is_author'):
-#             return redirect(url_for('news', next=request.url))
-#         return fn(*args, **kwargs)
-#     return decorated_function

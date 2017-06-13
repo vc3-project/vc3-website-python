@@ -4,147 +4,157 @@
 
 {%block body%}
 
-<section id="project_pages">
-  <div class="col-sm-6 col-md-6 col-lg-9 wrapper">
-    <div class="container">
+<section id="project_page">
+<!-- Project Info Display -->
+  <div class="container">
+    <div class="row">
 
-      <div class="bs-example bs-example-tabs" role="tabpanel" data-example-id="togglable-tabs">
-        <ul id="myTab" class="nav nav-tabs nav-tabs-responsive" role="tablist">
-          <li role="presentation" class="active">
-            <a href="#overview" id="overview-tab" role="tab" data-toggle="tab" aria-controls="overview" aria-expanded="true">
-              <span class="text">Overview</span>
-            </a>
-          </li>
-          <li role="presentation" class="next">
-            <a href="#teamMembers" role="tab" id="allocations-tab" data-toggle="tab" aria-controls="teamMembers">
-              <span class="text">Team Member(s)</span>
-            </a>
-          </li>
-          <li role="presentation">
-            <a href="#clusters" role="tab" id="clusters-tab" data-toggle="tab" aria-controls="clusters">
-              <span class="text">Cluster(s)</span>
-            </a>
-          </li>
-          <li role="presentation">
-            <a href="#environment" role="tab" id="environment-tab" data-toggle="tab" aria-controls="environment">
-              <span class="text">Environment(s)</span>
-            </a>
-          </li>
-          <li role="presentation">
-            <a href="#publication" role="tab" id="publication-tab" data-toggle="tab" aria-controls="publication">
-              <span class="text">Publication(s)</span>
-            </a>
-          </li>
-        </ul>
+      <div class="col-sm-6 col-md-6 col-lg-9 wrapper">
+        <div class="container">
 
-        <div id="myTabContent" class="tab-content">
+          <div class="bs-example bs-example-tabs" role="tabpanel" data-example-id="togglable-tabs">
+            <ul id="myTab" class="nav nav-tabs nav-tabs-responsive" role="tablist">
+              <li role="presentation" class="active">
+                <a href="#overview" id="overview-tab" role="tab" data-toggle="tab" aria-controls="overview" aria-expanded="true">
+                  <span class="text">Overview</span>
+                </a>
+              </li>
+              <li role="presentation" class="next">
+                <a href="#teamMembers" role="tab" id="allocations-tab" data-toggle="tab" aria-controls="teamMembers">
+                  <span class="text">Team Member(s)</span>
+                </a>
+              </li>
+              <li role="presentation">
+                <a href="#clusters" role="tab" id="clusters-tab" data-toggle="tab" aria-controls="clusters">
+                  <span class="text">Cluster(s)</span>
+                </a>
+              </li>
+              <li role="presentation">
+                <a href="#environment" role="tab" id="environment-tab" data-toggle="tab" aria-controls="environment">
+                  <span class="text">Environment(s)</span>
+                </a>
+              </li>
+              <li role="presentation">
+                <a href="#publication" role="tab" id="publication-tab" data-toggle="tab" aria-controls="publication">
+                  <span class="text">Publication(s)</span>
+                </a>
+              </li>
+            </ul>
 
-          <div role="tabpanel" class="tab-pane fade in active" id="overview" aria-labelledby="overview-tab">
-            <p>
-              Raw denim you probably haven't heard of them jean shorts Austin. Nesciunt tofu stumptown aliqua, retro synth master cleanse. Mustache cliche tempor, williamsburg carles vegan helvetica. Reprehenderit butcher retro keffiyeh dreamcatcher synth. Cosby sweater
-              eu banh mi, qui irure terry richardson ex squid. Aliquip placeat salvia cillum iphone. Seitan aliquip quis cardigan american apparel, butcher voluptate nisi qui.
-            </p>
-          </div>
+            <div id="myTabContent" class="tab-content">
 
-          <div role="tabpanel" class="tab-pane fade" id="teamMembers" aria-labelledby="teamMembers-tab">
-
-            <div class="row">
-              <div class="col-lg-8">
-                <div class="input-group">
-                  <input type="text" class="form-control" placeholder="Search for...">
-                  <span class="input-group-btn">
-                    <button class="btn btn-default" type="button"><i class="glyphicon glyphicon-search"></i></button>
-                  </span>
-                </div><!-- /input-group -->
-              </div><!-- /.col-lg-6 -->
-
-              <div class="col-lg-4">
-                <a href="#" class="btn btn-default btn-sm">+ New Member</a>
+              <div role="tabpanel" class="tab-pane fade in active" id="overview" aria-labelledby="overview-tab">
+                <p>
+                  Raw denim you probably haven't heard of them jean shorts Austin. Nesciunt tofu stumptown aliqua, retro synth master cleanse. Mustache cliche tempor, williamsburg carles vegan helvetica. Reprehenderit butcher retro keffiyeh dreamcatcher synth. Cosby sweater
+                  eu banh mi, qui irure terry richardson ex squid. Aliquip placeat salvia cillum iphone. Seitan aliquip quis cardigan american apparel, butcher voluptate nisi qui.
+                </p>
               </div>
-            </div><!-- /.row -->
 
-            <hr>
+              <div role="tabpanel" class="tab-pane fade" id="teamMembers" aria-labelledby="teamMembers-tab">
 
-            <p>
-              List of Team Members here
-            </p>
-          </div>
+                <div class="row">
+                  <div class="col-lg-8">
+                    <div class="input-group">
+                      <input type="text" class="form-control" placeholder="Search for...">
+                      <span class="input-group-btn">
+                        <button class="btn btn-default" type="button"><i class="glyphicon glyphicon-search"></i></button>
+                      </span>
+                    </div><!-- /input-group -->
+                  </div><!-- /.col-lg-6 -->
 
-          <div role="tabpanel" class="tab-pane fade" id="clusters" aria-labelledby="clusters-tab">
+                  <div class="col-lg-4">
+                    <a href="#" class="btn btn-default btn-sm">+ New Member</a>
+                  </div>
+                </div><!-- /.row -->
 
-            <div class="row">
-              <div class="col-lg-8">
-                <div class="input-group">
-                  <input type="text" class="form-control" placeholder="Search for...">
-                  <span class="input-group-btn">
-                    <button class="btn btn-default" type="button"><i class="glyphicon glyphicon-search"></i></button>
-                  </span>
-                </div><!-- /input-group -->
-              </div><!-- /.col-lg-6 -->
+                <hr>
 
-              <div class="col-lg-4">
-                <a href="#" class="btn btn-default btn-sm">Define New Cluster</a>
+                <p>
+                  List of Team Members here
+                </p>
               </div>
-            </div><!-- /.row -->
 
-            <hr>
+              <div role="tabpanel" class="tab-pane fade" id="clusters" aria-labelledby="clusters-tab">
 
-          </div>
+                <div class="row">
+                  <div class="col-lg-8">
+                    <div class="input-group">
+                      <input type="text" class="form-control" placeholder="Search for...">
+                      <span class="input-group-btn">
+                        <button class="btn btn-default" type="button"><i class="glyphicon glyphicon-search"></i></button>
+                      </span>
+                    </div><!-- /input-group -->
+                  </div><!-- /.col-lg-6 -->
 
-          <div role="tabpanel" class="tab-pane fade" id="environment" aria-labelledby="environment-tab">
+                  <div class="col-lg-4">
+                    <a href="#" class="btn btn-default btn-sm">Define New Cluster</a>
+                  </div>
+                </div><!-- /.row -->
 
-            <div class="row">
-              <div class="col-lg-8">
-                <div class="input-group">
-                  <input type="text" class="form-control" placeholder="Search for...">
-                  <span class="input-group-btn">
-                    <button class="btn btn-default" type="button"><i class="glyphicon glyphicon-search"></i></button>
-                  </span>
-                </div><!-- /input-group -->
-              </div><!-- /.col-lg-6 -->
+                <hr>
 
-              <div class="col-lg-4">
-                <a href="#" class="btn btn-default btn-sm">Define New Environment</a>
+                <p>
+                  List of Clusters here
+                </p>
               </div>
-            </div><!-- /.row -->
 
-            <hr>
+              <div role="tabpanel" class="tab-pane fade" id="environment" aria-labelledby="environment-tab">
 
-            <p>
-              Food truck fixie locavore, accusamus mcsweeney's marfa nulla single-origin coffee squid. Exercitation +1 labore velit, blog sartorial PBR leggings next level wes anderson artisan four loko farm-to-table craft beer twee. Qui photo booth letterpress, commodo
-              enim craft beer mlkshk aliquip jean shorts ullamco ad vinyl cillum PBR. Homo nostrud organic, assumenda labore aesthetic magna delectus mollit. Keytar helvetica VHS salvia yr, vero magna velit sapiente labore stumptown. Vegan fanny pack odio
-              cillum wes anderson 8-bit, sustainable jean shorts beard ut DIY ethical culpa terry richardson biodiesel. Art party scenester stumptown, tumblr butcher vero sint qui sapiente accusamus tattooed echo park.
-            </p>
-          </div>
+                <div class="row">
+                  <div class="col-lg-8">
+                    <div class="input-group">
+                      <input type="text" class="form-control" placeholder="Search for...">
+                      <span class="input-group-btn">
+                        <button class="btn btn-default" type="button"><i class="glyphicon glyphicon-search"></i></button>
+                      </span>
+                    </div><!-- /input-group -->
+                  </div><!-- /.col-lg-6 -->
 
-          <div role="tabpanel" class="tab-pane fade" id="publication" aria-labelledby="publication-tab">
+                  <div class="col-lg-4">
+                    <a href="#" class="btn btn-default btn-sm">Define New Environment</a>
+                  </div>
+                </div><!-- /.row -->
 
-            <div class="row">
-              <div class="col-lg-8">
-                <div class="input-group">
-                  <input type="text" class="form-control" placeholder="Search for...">
-                  <span class="input-group-btn">
-                    <button class="btn btn-default" type="button"><i class="glyphicon glyphicon-search"></i></button>
-                  </span>
-                </div><!-- /input-group -->
-              </div><!-- /.col-lg-6 -->
+                <hr>
 
-              <div class="col-lg-4">
-                <a href="#" class="btn btn-default btn-sm">Add New Publication</a>
+                <p>
+                  Food truck fixie locavore, accusamus mcsweeney's marfa nulla single-origin coffee squid. Exercitation +1 labore velit, blog sartorial PBR leggings next level wes anderson artisan four loko farm-to-table craft beer twee. Qui photo booth letterpress, commodo
+                  enim craft beer mlkshk aliquip jean shorts ullamco ad vinyl cillum PBR. Homo nostrud organic, assumenda labore aesthetic magna delectus mollit. Keytar helvetica VHS salvia yr, vero magna velit sapiente labore stumptown. Vegan fanny pack odio
+                  cillum wes anderson 8-bit, sustainable jean shorts beard ut DIY ethical culpa terry richardson biodiesel. Art party scenester stumptown, tumblr butcher vero sint qui sapiente accusamus tattooed echo park.
+                </p>
               </div>
-            </div><!-- /.row -->
 
-            <hr>
+              <div role="tabpanel" class="tab-pane fade" id="publication" aria-labelledby="publication-tab">
 
-            <p>
-              List of publications
-            </p>
-          </div><!-- /#tabpanel -->
+                <div class="row">
+                  <div class="col-lg-8">
+                    <div class="input-group">
+                      <input type="text" class="form-control" placeholder="Search for...">
+                      <span class="input-group-btn">
+                        <button class="btn btn-default" type="button"><i class="glyphicon glyphicon-search"></i></button>
+                      </span>
+                    </div><!-- /input-group -->
+                  </div><!-- /.col-lg-6 -->
 
-        </div>
-      </div>
-    </div>
-  </div>
+                  <div class="col-lg-4">
+                    <a href="#" class="btn btn-default btn-sm">Add New Publication</a>
+                  </div>
+                </div><!-- /.row -->
+
+                <hr>
+
+                <p>
+                  List of publications
+                </p>
+              </div><!-- /#tabpanel -->
+
+            </div><!-- /.tabcontent -->
+          </div><!-- /togglabletab -->
+        </div><!-- /.container -->
+      </div><!-- /.wrapper -->
+
+    </div><!-- /.row -->
+  </div><!-- /.container -->
 </section>
 
 {% endblock %}
