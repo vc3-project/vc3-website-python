@@ -118,7 +118,8 @@ def logout():
     ga_logout_url.append('&redirect_name=Globus Sample Data Portal')
 
     # Redirect the user to the Globus Auth logout page
-    return redirect(''.join(ga_logout_url))
+    # return redirect(''.join(ga_logout_url))
+    return redirect(url_for('home'))
 
 
 @app.route('/profile', methods=['GET', 'POST'])
