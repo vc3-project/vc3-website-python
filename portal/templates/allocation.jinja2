@@ -30,7 +30,13 @@
 
                             </div>
                             <div class="content">
-															list of Allocations
+															<ul class="allocation-entries">
+															{% for entry in entries %}
+																<li><h2>{{ entry.allocationName }}</h2>{{ entry.allocationText|safe }}
+															{% else %}
+																<li><em>No Allocations here so far</em>
+															{% endfor %}
+															</ul>
                             </div>
                         </div>
                     </div>

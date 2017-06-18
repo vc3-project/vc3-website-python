@@ -23,6 +23,15 @@ class Database:
         """Open database and return a connection handle."""
         return sqlite3.connect(self.app.config['DATABASE'])
 
+    # Added the below init_db function to original
+
+    def init_db(self):
+        """Initializes the database."""
+        db = self.get_db()
+        with self.app.open_resource('schema.sql', mode='r') as f:
+            db.cursor().executescript(f.read())
+        db.commit()
+
     def get_db(self):
         """Return the app global db connection or create one."""
         db = getattr(g, '_database', None)
@@ -65,27 +74,3 @@ class Database:
                              where identity_id = ?""",
                              [identity_id],
                              one=True)
-
-    # def save_project(self,
-    #                  project_id=None,
-    #                  name=None,
-    #                  description=None,
-    #                  science=None):
-    #     """Persist user project."""
-    #     db = self.get_db()
-    #
-    #     db.execute("""update project set name = ?, description = ?, science = ?
-    #                where project_id = ?""",
-    #                (name, description, science, project_id))
-    #
-    #     db.execute("""insert into project (project_id, name, description, science)
-    #                select ?, ?, ?, ? where changes() = 0""",
-    #                (project_id, name, description, science))
-    #     db.commit()
-    #
-    # def load_project(self, project_id):
-    #     """Load user project."""
-    #     return self.query_db("""select name, description, science from profile
-    #                          where project_id = ?""",
-    #                          [project_id],
-    #                          one=True)

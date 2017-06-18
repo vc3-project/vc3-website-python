@@ -1,5 +1,5 @@
 from flask import (abort, flash, redirect, render_template, request,
-                   session, url_for)
+                   session, url_for, g)
 import requests
 
 import os
@@ -18,8 +18,6 @@ from portal import app, database, datasets, pages
 from portal.decorators import authenticated
 from portal.utils import (load_portal_client, get_portal_tokens,
                           get_safe_redirect)
-
-# PORTAL_CLIENT_ID = '7aaac646-e84e-4617-b39c-770b415dfb54'
 
 
 @app.route('/', methods=['GET'])
@@ -489,6 +487,24 @@ def graph_cleanup():
 @authenticated
 def new():
     return render_template('new.jinja2')
+# def add_entry():
+#     db = database.get_db()
+#     db.execute('insert into entries (title, text) values (?, ?)',
+#                [request.form['projectName'], request.form['text']])
+#     db.commit()
+#     flash('New project was successfully posted')
+#     return redirect(url_for('show_entries'))
+
+
+@app.route('/project', methods=['GET', 'POST'])
+@authenticated
+def project():
+    return render_template('project.jinja2')
+# def show_entries():
+#     db = database.get_db()
+#     cur = db.execute('select title, text from entries order by id desc')
+#     entries = cur.fetchall()
+#     return render_template('project.jinja2', entries=entries)
 
 
 @app.route('/allocation', methods=['GET', 'POST'])
@@ -501,12 +517,6 @@ def allocation():
 @authenticated
 def new_allocation():
     return render_template('new_allocation.jinja2')
-
-
-@app.route('/project', methods=['GET', 'POST'])
-@authenticated
-def project():
-    return render_template('project.jinja2')
 
 
 @app.route('/projectpages', methods=['GET', 'POST'])
