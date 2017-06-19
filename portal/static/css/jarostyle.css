@@ -84,11 +84,14 @@ h1, h2, h3, h4, h5, h6 {
 --------------------------------------------------------------*/
 
 #hero {
-  display: table;
-  width: 100%;
-  height: 100vh;
-  /*background: url('https://scontent-iad3-1.cdninstagram.com/t51.2885-15/e35/17661778_1134011796726528_4291439109215354880_n.jpg') top center fixed;*/
-  background: url('http://s.hswstatic.com/gif/disruptive-technologies-10-orig.jpg') top center fixed;
+  /*display: table;*/
+  /*width: 100%;*/
+  /*height: 100vh;*/
+  /*background: url('http://s.hswstatic.com/gif/disruptive-technologies-10-orig.jpg') top center fixed;*/
+  background-image: url('http://s.hswstatic.com/gif/disruptive-technologies-10-orig.jpg');
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
   background-size: cover;
 }
 
@@ -102,9 +105,9 @@ h1, h2, h3, h4, h5, h6 {
 
 #hero .hero-container {
   background: rgba(0, 0, 0, 0.6);
-  display: table-cell;
+  /*display: table-cell;*/
   margin: 0;
-  padding: 0;
+  padding: 50px;
   text-align: center;
   vertical-align: middle;
 }
