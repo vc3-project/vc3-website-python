@@ -531,11 +531,26 @@ body.mobile-nav-active #mobile-nav-toggle {
 # Services Sections
 --------------------------------------------------------------*/
 
-#services {
-  /*background: linear-gradient(rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.9)), url("http://image.vsco.co/1/54d92a5a8e1c22223220/58d85bb108ef6b6441ac97d9/1136x1515/vsco_032617.jpg") fixed center center;*/
+/*#services {
   background: linear-gradient(rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.9)), url("http://media2.govtech.com/images/shutterstock-cloud-computing.jpg") fixed center center;
   background-size: cover;
   padding: 80px 0 60px 0;
+}*/
+
+#services {
+  background-image: url('http://media2.govtech.com/images/shutterstock-cloud-computing.jpg');
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-size: cover;
+}
+
+/*Below makes background image mobile responsive, a test*/
+
+@media (max-width: 768px) {
+  #services {
+    background-attachment: scroll;
+  }
 }
 
 #services .service-item {
@@ -584,12 +599,27 @@ body.mobile-nav-active #mobile-nav-toggle {
 # Partners Sections
 --------------------------------------------------------------*/
 
-#partners {
+/*#partners {
   background: linear-gradient(rgba(250, 250, 250, 0.6), rgba(255, 255, 255, 0.8)), url('https://www.avineon.com/sites/default/files/Cloud-computing_1285x588.jpg') fixed center center;
-  /*background: linear-gradient(rgba(250, 250, 250, 0.6), rgba(255, 255, 255, 0.8)), url('https://scontent-iad3-1.cdninstagram.com/t51.2885-15/e35/17595897_685587908295482_4170062324113080320_n.jpg') fixed center center;*/
   background-size: cover;
   padding: 80px 0;
   text-align: center;
+}*/
+
+#partners {
+  background-image: url('https://www.avineon.com/sites/default/files/Cloud-computing_1285x588.jpg');
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-size: cover;
+}
+
+/*Below makes background image mobile responsive, a test*/
+
+@media (max-width: 768px) {
+  #partners {
+    background-attachment: scroll;
+  }
 }
 
 #partners .partners-logo {
