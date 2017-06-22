@@ -100,3 +100,6 @@ nohup.out
 
 # run portal local not necessary
 run_portal.py
+
+# data
+/portal/data/app.db

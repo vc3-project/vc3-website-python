@@ -164,16 +164,16 @@ h1, h2, h3, h4, h5, h6 {
   margin: 10px;
 }
 
-#hero .btn-get-started {
-  background: #03C4EB;
-  border: 2px solid #03C4EB;
+#hero .btn-about-vc3 {
+  /*background: #03C4EB;*/
+  border: 2px solid #fff;
   color: #fff;
 }
 
-#hero .btn-get-started:hover {
-  background: none;
-  border: 2px solid #fff;
-  color: #fff;
+#hero .btn-about-vc3:hover {
+  background: #03C4EB;
+  border: 2px solid #03C4EB;
+  /*color: #fff;*/
 }
 
 #hero .btn-services {
@@ -241,7 +241,7 @@ h1, h2, h3, h4, h5, h6 {
   background: #111;
 }
 .navbar-collapse .dropdown-toggle {
-  /*background: #03C4EB;*/
+  /*background: #111;*/
 }
 
 /*--------------------------------------------------------------
@@ -847,7 +847,7 @@ body.mobile-nav-active #mobile-nav-toggle {
   box-shadow: none;
 }
 
-#contact .form button[type="submit"] {
+#contact button[type="submit"] {
   background: #03C4EB;
   border: 0;
   padding: 10px 24px;
@@ -855,7 +855,7 @@ body.mobile-nav-active #mobile-nav-toggle {
   transition: 0.4s;
 }
 
-#contact .form button[type="submit"]:hover {
+#contact button[type="submit"]:hover {
   background: #25d8fc;
 }
 
