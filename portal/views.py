@@ -520,7 +520,7 @@ def new_allocation():
     return render_template('new_allocation.jinja2')
 
 
-@app.route('/projectpages', methods=['GET', 'POST'])
+@app.route('/project/projectid', methods=['GET', 'POST'])
 @authenticated
 def projectpages():
     return render_template('projects_pages.jinja2')

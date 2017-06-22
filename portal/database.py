@@ -2,6 +2,7 @@
 
 import sqlite3
 from flask import g
+# from vc3client import VC3ClientAPI
 
 
 class Database:

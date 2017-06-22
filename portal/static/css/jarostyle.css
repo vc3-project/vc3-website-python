@@ -84,15 +84,19 @@ h1, h2, h3, h4, h5, h6 {
 --------------------------------------------------------------*/
 
 #hero {
-  /*display: table;*/
-  /*width: 100%;*/
-  /*height: 100vh;*/
-  /*background: url('http://s.hswstatic.com/gif/disruptive-technologies-10-orig.jpg') top center fixed;*/
   background-image: url('http://s.hswstatic.com/gif/disruptive-technologies-10-orig.jpg');
   background-position: center center;
   background-repeat: no-repeat;
   background-attachment: fixed;
   background-size: cover;
+}
+
+/*Below makes background image mobile responsive, a test*/
+
+@media (max-width: 768px) {
+  #hero {
+    background-attachment: scroll;
+  }
 }
 
 #hero .hero-logo {
@@ -230,7 +234,14 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .is-sticky #header {
-  background: rgba(0, 0, 0, 0.85);
+  /*background: rgba(0, 0, 0, 0.85);*/
+}
+
+.navbar-collapse {
+  background: #111;
+}
+.navbar-collapse .dropdown-toggle {
+  /*background: #03C4EB;*/
 }
 
 /*--------------------------------------------------------------
@@ -238,7 +249,7 @@ h1, h2, h3, h4, h5, h6 {
 --------------------------------------------------------------*/
 /* Nav Menu Essentials */
 
-.nav-menu, .nav-menu * {
+/*.nav-menu, .nav-menu * {
   margin: 0;
   padding: 0;
   list-style: none;
@@ -273,10 +284,10 @@ h1, h2, h3, h4, h5, h6 {
 
 .nav-menu ul li {
   min-width: 180px;
-}
+}*/
 
-/* Nav Menu Arrows */
-.sf-arrows .sf-with-ul {
+/* Nav Menu Arrows non-existent*/
+/*.sf-arrows .sf-with-ul {
   padding-right: 30px;
 }
 
@@ -291,10 +302,10 @@ h1, h2, h3, h4, h5, h6 {
 
 .sf-arrows ul .sf-with-ul:after {
   content: "\f105";
-}
+}*/
 
 /* Nav Meu Container */
-#nav-menu-container {
+/*#nav-menu-container {
   float: right;
   margin: 5px 0;
 }
@@ -303,13 +314,13 @@ h1, h2, h3, h4, h5, h6 {
   #nav-menu-container {
     display: none;
   }
-}
+}*/
 
 /*--------------------------------------------------------------
 # Nav Menu Style
 --------------------------------------------------------------*/
 
-.nav-menu a {
+/*.nav-menu a {
   padding: 10px 15px;
   text-decoration: none;
   display: inline-block;
@@ -348,7 +359,7 @@ h1, h2, h3, h4, h5, h6 {
 
 .nav-menu ul ul {
   margin: 0;
-}
+}*/
 
 /*--------------------------------------------------------------
 # Mobile Nav Toggle
@@ -425,7 +436,7 @@ h1, h2, h3, h4, h5, h6 {
   padding-left: 30px;
 }
 
-#mobile-nav ul .menu-has-children i {
+/*#mobile-nav ul .menu-has-children i {
   position: absolute;
   right: 0;
   z-index: 99;
@@ -436,11 +447,11 @@ h1, h2, h3, h4, h5, h6 {
 
 #mobile-nav ul .menu-has-children i.fa-chevron-up {
   color: #03C4EB;
-}
+}*/
 
-#mobile-nav ul .menu-item-active {
+/*#mobile-nav ul .menu-item-active {
   color: #03C4EB;
-}
+}*/
 
 #mobile-body-overly {
   width: 100%;
@@ -968,7 +979,7 @@ section #news_article {
 # Profile - Logged in -- Tab Panels
 --------------------------------------------------------------*/
 
-@mixin ellipsis(){
+/*@mixin ellipsis(){
     max-width: 100%;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -1096,7 +1107,7 @@ section #news_article {
   #narrow-browser-alert {
     display: none;
   }
-}
+}*/
 
 #user_profile .container {
   width: 50%;
