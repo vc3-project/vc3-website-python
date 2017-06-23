@@ -10,66 +10,6 @@
   {%include 'messages.jinja2'%}
 </div>
 
-{%if session.get('is_authenticated')%}
-  <section id="user">
-    <div class="user-container wow fadeIn">
-
-      <div class="container col-md-12 col-lg-8">
-        <iframe src="http://grafana.mwt2.org:3000/dashboard-solo/db/osg-connect-running-by-provider?orgId=1&from=1496781714276&to=1496868114276&panelId=5" width="450" height="200" frameborder="0"></iframe>
-      </div>
-
-      <div class="panel panel-default">
-        <!-- Default panel contents -->
-        <div class="panel-heading">Your Current Clusters <span class="badge">5</span> <a href="#" class="btn btn-primary btn-sm">Define New Cluster</a></div>
-        <div class="panel-body">
-          <div class="col-lg-12">
-            <div class="input-group">
-              <input type="text" class="form-control" placeholder="Search Projects...">
-              <span class="input-group-btn">
-                <button class="btn btn-default" type="button"><i class="glyphicon glyphicon-search"></i></button>
-              </span>
-            </div><!-- /input-group -->
-          </div>
-        </div><!-- /panel-body -->
-
-        <!-- List group -->
-        <ul class="list-group">
-          <li class="list-group-item">List of Clusters</li>
-          <li class="list-group-item">Clusters 2</li>
-          <li class="list-group-item">Clusters 3</li>
-          <li class="list-group-item">Clusters 4</li>
-          <li class="list-group-item">Make this dynamic list</li>
-        </ul>
-      </div>
-
-      <div class="panel panel-default">
-        <!-- Default panel contents -->
-        <div class="panel-heading">Your Current Projects <span class="badge">5</span> <a href="{{url_for('new')}}" class="btn btn-primary btn-sm">+ New Project</a></div>
-        <div class="panel-body">
-          <div class="col-lg-12">
-            <div class="input-group">
-              <input type="text" class="form-control" placeholder="Search Projects...">
-              <span class="input-group-btn">
-                <button class="btn btn-default" type="button"><i class="glyphicon glyphicon-search"></i></button>
-              </span>
-            </div><!-- /input-group -->
-          </div>
-        </div><!-- /panel-body -->
-
-        <!-- List group -->
-        <ul class="list-group">
-          <li class="list-group-item">List of Current Projects</li>
-          <li class="list-group-item">or none</li>
-          <li class="list-group-item">Project 3</li>
-          <li class="list-group-item">Project 4</li>
-          <li class="list-group-item">Make this dynamic list</li>
-        </ul>
-      </div>
-
-    </div>
-  </section>
-
-{%else%}
   <section id="hero">
     <div class="hero-container wow fadeIn">
         <div class="hero-logo">
@@ -79,7 +19,7 @@
         <h1>VC3 Platform</h1>
         <h2><span class="rotating">User Communities, HPC Cloud and Grid Service Providers, Workload Developers, Discover, Orchestrate</span></h2>
         <div class="actions">
-          <a href="#about" class="btn-get-started">About VC3</a>
+          <a href="#about" class="btn-about-vc3">About VC3</a>
           <a href="#services" class="btn-services">Our Services</a>
         </div>
     </div>
@@ -91,10 +31,10 @@
   <section id="about">
     <div class="container wow fadeInUp">
       <div class="row">
-        <div class="col-md-12 col-lg-4">
+        <div class="col-sm-12 col-md-4 col-lg-4">
           <img src="https://image.ibb.co/dojhXa/vc3vizv2.png">
         </div>
-        <div class="content col-md-12 col-lg-8">
+        <div class="content col-sm-12 col-md-8 col-lg-8">
           <h3 class="section-title">About Us</h3>
           <div class="section-title-divider"></div>
           <h3 class="section-title"><span id="brand">VC3</span> is a platform for organizing and automating delivery of scientific computing resources into a single logical environment.</h3>
@@ -105,60 +45,48 @@
         </div>
       </div>
 
-      <div id="myCarousel" class="carousel slide" data-ride="carousel">
-        <!-- Indicators -->
-        <ol class="carousel-indicators">
-          <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
-          <li data-target="#myCarousel" data-slide-to="1"></li>
-          <li data-target="#myCarousel" data-slide-to="2"></li>
-          <li data-target="#myCarousel" data-slide-to="3"></li>
-        </ol>
-
-        <!-- Wrapper for slides -->
-        <div class="carousel-inner" role="listbox">
-
-          <div class="item active">
-            <img src="http://virtualclusters.org/images/illustration-vc3.png" alt="vc3_img1">
-            <div class="carousel-caption">
-              <h3>Virtual Clusters for Community Computation</h3>
-              <p>A platform for organizing and automating delivery of scientfic computing resources into a single logical environment.</p>
-            </div>
-          </div>
-
-          <div class="item">
-            <img src="http://virtualclusters.org/images/illustration-resource-providers.png" alt="vc3_img2">
-            <div class="carousel-caption">
-              <h3>HPC, Cloud and Grid Service Providers</h3>
-              <p>VC3 will offer new approaches to present your HPC resources to scientific collaborations, large or small, or individual investigators.</p>
-            </div>
-          </div>
-
-          <div class="item">
-            <img src="http://virtualclusters.org/images/illustration-developers.png" alt="Developers">
-            <div class="carousel-caption">
-              <h3>Workload developers</h3>
-              <p>Deal with resources in the abstract when you want to, or get more details when you need them. VC3 platforms will host modular services that orchestrate delivery of infrastructure to workload management systems.</p>
-            </div>
-          </div>
-
-          <div class="item">
-            <img src="http://virtualclusters.org/images/illustration-clients.png" alt="clients">
-            <div class="carousel-caption">
-              <h3>User Communities</h3>
-              <p>Bring your institutional HPC cluster, INCITE/XSEDE allocation, or cloud resource into a single environment, controlled by policies you define.</p>
-            </div>
-          </div>
-
+      <div class="row">
+        <div class="col-sm-12 col-md-4 col-lg-4">
+          <img src="http://virtualclusters.org/images/illustration-vc3.png">
         </div>
+        <div class="content col-sm-12 col-md-8 col-lg-8">
+          <h3 class="section-title">Virtual Clusters for Community Computation</h3>
+          <div class="section-title-divider"></div>
+          <h4 class="section-description">A platform for organizing and automating delivery of scientific computing resources into a single logical environment.</h4>
+        </div>
+      </div>
 
-        <!-- Left and right controls -->
+      <div class="row">
+        <div class="col-sm-12 col-md-4 col-lg-4">
+          <img src="http://virtualclusters.org/images/illustration-resource-providers.png">
+        </div>
+        <div class="content col-sm-12 col-md-8 col-lg-8">
+          <h3 class="section-title">HPC, Cloud and Grid Service Providers</h3>
+          <div class="section-title-divider"></div>
+          <h4 class="section-description">VC3 will offer new approaches to present your HPC resources to scientific collaborations, large or small, or individual investigators.</h4>
+        </div>
+      </div>
 
-        <a class="left carousel-control" id="carousel-control" data-target="#myCarousel" data-slide="prev">
-          <span class="fa fa-chevron-left"></span>
-        </a>
-        <a class="right carousel-control" id="carousel-control" data-target="#myCarousel" data-slide="next">
-          <span class="fa fa-chevron-right"></span>
-        </a>
+      <div class="row">
+        <div class="col-sm-12 col-md-4 col-lg-4">
+          <img src="http://virtualclusters.org/images/illustration-developers.png">
+        </div>
+        <div class="content col-sm-12 col-md-8 col-lg-8">
+          <h3 class="section-title">Workload Developers</h3>
+          <div class="section-title-divider"></div>
+          <h4 class="section-description">Deal with resources in the abstract when you want to, or get more details when you need them. VC3 platforms will host modular services that orchestrate delivery of infrastructure to workload management systems.</h4>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-sm-12 col-md-4 col-lg-4">
+          <img src="http://virtualclusters.org/images/illustration-resource-providers.png">
+        </div>
+        <div class="content col-sm-12 col-md-8 col-lg-8">
+          <h3 class="section-title">User Communities</h3>
+          <div class="section-title-divider"></div>
+          <h4 class="section-description">Bring your institutional HPC cluster, INCITE/XSEDE allocation, or cloud resource into a single environment, controlled by policies you define.</h4>
+        </div>
       </div>
      </div>
     </section>
@@ -170,7 +98,7 @@
     <div class="container wow fadeInUp">
       <div class="row">
         <div class="col-md-12">
-          <h3 class="section-title">Our Services</h3>
+          <h3 class="section-title">Service Workflow</h3>
           <div class="section-title-divider"></div>
           <p class="section-description">Automate processes that discover, provision, and orchestrate the resources to build virtual clusters</p>
         </div>
@@ -227,5 +155,4 @@
     </section>
 
 <hr />
-{%endif%}
 {%endblock%}

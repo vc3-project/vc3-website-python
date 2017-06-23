@@ -84,12 +84,19 @@ h1, h2, h3, h4, h5, h6 {
 --------------------------------------------------------------*/
 
 #hero {
-  display: table;
-  width: 100%;
-  height: 100vh;
-  /*background: url('https://scontent-iad3-1.cdninstagram.com/t51.2885-15/e35/17661778_1134011796726528_4291439109215354880_n.jpg') top center fixed;*/
-  background: url('http://s.hswstatic.com/gif/disruptive-technologies-10-orig.jpg') top center fixed;
+  background-image: url('http://s.hswstatic.com/gif/disruptive-technologies-10-orig.jpg');
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
   background-size: cover;
+}
+
+/*Below makes background image mobile responsive, a test*/
+
+@media (max-width: 768px) {
+  #hero {
+    background-attachment: scroll;
+  }
 }
 
 #hero .hero-logo {
@@ -102,9 +109,9 @@ h1, h2, h3, h4, h5, h6 {
 
 #hero .hero-container {
   background: rgba(0, 0, 0, 0.6);
-  display: table-cell;
+  /*display: table-cell;*/
   margin: 0;
-  padding: 0;
+  padding: 50px;
   text-align: center;
   vertical-align: middle;
 }
@@ -157,16 +164,16 @@ h1, h2, h3, h4, h5, h6 {
   margin: 10px;
 }
 
-#hero .btn-get-started {
-  background: #03C4EB;
-  border: 2px solid #03C4EB;
+#hero .btn-about-vc3 {
+  /*background: #03C4EB;*/
+  border: 2px solid #fff;
   color: #fff;
 }
 
-#hero .btn-get-started:hover {
-  background: none;
-  border: 2px solid #fff;
-  color: #fff;
+#hero .btn-about-vc3:hover {
+  background: #03C4EB;
+  border: 2px solid #03C4EB;
+  /*color: #fff;*/
 }
 
 #hero .btn-services {
@@ -227,7 +234,14 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .is-sticky #header {
-  background: rgba(0, 0, 0, 0.85);
+  /*background: rgba(0, 0, 0, 0.85);*/
+}
+
+.navbar-collapse {
+  background: #111;
+}
+.navbar-collapse .dropdown-toggle {
+  /*background: #111;*/
 }
 
 /*--------------------------------------------------------------
@@ -235,7 +249,7 @@ h1, h2, h3, h4, h5, h6 {
 --------------------------------------------------------------*/
 /* Nav Menu Essentials */
 
-.nav-menu, .nav-menu * {
+/*.nav-menu, .nav-menu * {
   margin: 0;
   padding: 0;
   list-style: none;
@@ -270,10 +284,10 @@ h1, h2, h3, h4, h5, h6 {
 
 .nav-menu ul li {
   min-width: 180px;
-}
+}*/
 
-/* Nav Menu Arrows */
-.sf-arrows .sf-with-ul {
+/* Nav Menu Arrows non-existent*/
+/*.sf-arrows .sf-with-ul {
   padding-right: 30px;
 }
 
@@ -288,10 +302,10 @@ h1, h2, h3, h4, h5, h6 {
 
 .sf-arrows ul .sf-with-ul:after {
   content: "\f105";
-}
+}*/
 
 /* Nav Meu Container */
-#nav-menu-container {
+/*#nav-menu-container {
   float: right;
   margin: 5px 0;
 }
@@ -300,13 +314,13 @@ h1, h2, h3, h4, h5, h6 {
   #nav-menu-container {
     display: none;
   }
-}
+}*/
 
 /*--------------------------------------------------------------
 # Nav Menu Style
 --------------------------------------------------------------*/
 
-.nav-menu a {
+/*.nav-menu a {
   padding: 10px 15px;
   text-decoration: none;
   display: inline-block;
@@ -345,7 +359,7 @@ h1, h2, h3, h4, h5, h6 {
 
 .nav-menu ul ul {
   margin: 0;
-}
+}*/
 
 /*--------------------------------------------------------------
 # Mobile Nav Toggle
@@ -422,7 +436,7 @@ h1, h2, h3, h4, h5, h6 {
   padding-left: 30px;
 }
 
-#mobile-nav ul .menu-has-children i {
+/*#mobile-nav ul .menu-has-children i {
   position: absolute;
   right: 0;
   z-index: 99;
@@ -433,11 +447,11 @@ h1, h2, h3, h4, h5, h6 {
 
 #mobile-nav ul .menu-has-children i.fa-chevron-up {
   color: #03C4EB;
-}
+}*/
 
-#mobile-nav ul .menu-item-active {
+/*#mobile-nav ul .menu-item-active {
   color: #03C4EB;
-}
+}*/
 
 #mobile-body-overly {
   width: 100%;
@@ -511,60 +525,33 @@ body.mobile-nav-active #mobile-nav-toggle {
 #about .content {
   vertical-align: middle;
 }
-/*--------------------------------------------------------------
-# Carousel Sliders
---------------------------------------------------------------*/
 
-.carousel-inner > .item > img,
-  .carousel-inner > .item > a > img {
-      width: 100%;
-      margin: auto;
-  }
-.carousel-inner .carousel-caption {
-  background-color: rgba(0,0,0,0.4);
-  background-position: center;
-}
-
-#carousel-control {
-  background-image: none;
-}
-.fa:hover {
-  color: #03C4EB;
-}
-.carousel-indicators li {
-    display: inline-block;
-    text-indent: 0;
-    cursor: pointer;
-    border: none;
-    border-radius: 50%;
-    background-color: white;
-    box-shadow: inset 1px 1px 1px 1px rgba(0,0,0,0.2);
-}
-.carousel-indicators li:hover {
-  background-color: #ffd400;
-}
-#myCarousel .carousel-indicators .active {
-  background-color: #ffd400;
-}
-
-.carousel-control .fa-chevron-left,
-.carousel-control .fa-chevron-right {
-    display: inline-block;
-    position: absolute;
-    top: 50%;
-    z-index: 5;
-}
 
 /*--------------------------------------------------------------
 # Services Sections
 --------------------------------------------------------------*/
 
 #services {
-  /*background: linear-gradient(rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.9)), url("http://image.vsco.co/1/54d92a5a8e1c22223220/58d85bb108ef6b6441ac97d9/1136x1515/vsco_032617.jpg") fixed center center;*/
   background: linear-gradient(rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.9)), url("http://media2.govtech.com/images/shutterstock-cloud-computing.jpg") fixed center center;
   background-size: cover;
   padding: 80px 0 60px 0;
 }
+
+/*#services {
+  background-image: url('http://media2.govtech.com/images/shutterstock-cloud-computing.jpg');
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-size: cover;
+}*/
+
+/*Below makes background image mobile responsive, a test*/
+
+/*@media (max-width: 768px) {
+  #services {
+    background-attachment: scroll;
+  }
+}*/
 
 #services .service-item {
   margin-bottom: 20px;
@@ -614,11 +601,26 @@ body.mobile-nav-active #mobile-nav-toggle {
 
 #partners {
   background: linear-gradient(rgba(250, 250, 250, 0.6), rgba(255, 255, 255, 0.8)), url('https://www.avineon.com/sites/default/files/Cloud-computing_1285x588.jpg') fixed center center;
-  /*background: linear-gradient(rgba(250, 250, 250, 0.6), rgba(255, 255, 255, 0.8)), url('https://scontent-iad3-1.cdninstagram.com/t51.2885-15/e35/17595897_685587908295482_4170062324113080320_n.jpg') fixed center center;*/
   background-size: cover;
   padding: 80px 0;
   text-align: center;
 }
+
+/*#partners {
+  background-image: url('https://www.avineon.com/sites/default/files/Cloud-computing_1285x588.jpg');
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-size: cover;
+}*/
+
+/*Below makes background image mobile responsive, a test*/
+
+/*@media (max-width: 768px) {
+  #partners {
+    background-attachment: scroll;
+  }
+}*/
 
 #partners .partners-logo {
   padding: 10px;
@@ -833,6 +835,11 @@ body.mobile-nav-active #mobile-nav-toggle {
   line-height: 24px;
 }
 
+#contact .form {
+  /*display: inline-block;*/
+  /*text-align: center;*/
+  width: 50%;
+}
 #contact .form #sendmessage {
   color: #03C4EB;
   border: 1px solid #03C4EB;
@@ -870,7 +877,7 @@ body.mobile-nav-active #mobile-nav-toggle {
   box-shadow: none;
 }
 
-#contact .form button[type="submit"] {
+#contact button[type="submit"] {
   background: #03C4EB;
   border: 0;
   padding: 10px 24px;
@@ -878,7 +885,7 @@ body.mobile-nav-active #mobile-nav-toggle {
   transition: 0.4s;
 }
 
-#contact .form button[type="submit"]:hover {
+#contact button[type="submit"]:hover {
   background: #25d8fc;
 }
 
@@ -922,194 +929,6 @@ body.mobile-nav-active #mobile-nav-toggle {
   color: #03C4EB;
 }
 
-/*--------------------------------------------------------------
-# Signup-Login
---------------------------------------------------------------*/
-
-/** {
-  margin: 0px auto;
-  padding: 0px;
-  font-family: 'Open Sans', sans-serif;
-}*/
-/*.cont_principal {
-  /*position: absolute;*/
-  /*width: 100%;*/
-  /*height: 100%;*/
- /*Rectangle 3: */
-/*background-image: linear-gradient(-87deg, #F2F5F6 0%, #DDE5E8 100%);*/
-/*}*/
-
-/*.cont_centrar {
-  position: absolute;
-  width: 320px;
-  left:50%;
-  top:50%;
-  margin-left: -160px;
-  margin-top: -160px;
-}*/
-
-/*#signup {
-  padding: 50px;
-}
-.cont_centrar {
-  position: relative;
-  width: 320px;
-  float: right;
-  background-image: linear-gradient(-226deg, #FFFFFF 8%, #EEF3F5 100%);
-
-  border-radius: 8px;
-transition: all 0.5s;
-}
-
-.cent_active {
-    box-shadow: 5px 5px 10px 0px rgba(0,0,0,0.21);
-}
-
-
-.cont_tabs_login {
-position: relative;
-  float: left;
-  width: 100%;
-}
-
-.ul_tabs > li {
-position: relative;
-  float: left;
-  width: 50%;
-  list-style: none;
-  text-align: center;
-
-}
-
-.ul_tabs > li > a  {
-text-decoration: none;
-font-family: Helvetica;
-font-size: 16px;
-    color: #999;
-line-height: 14px;
-padding: 20px ;
-display: block;
-transition: all 0.5s;
-}
-
-  .ul_tabs > .active > a  {
-color: #11b7ff;
-
-}
-
-.linea_bajo_nom {
-  position: relative;
-  width: 100%;
-  float: left;
-  background-color: #999;
-  height: 2px;
-}
-
-.active .linea_bajo_nom {
-  position: relative;
-  width: 100%;
-  float: left;
-background-color: #11b7ff;
-height: 2px;
-}
-
-.cont_text_inputs {
-position: relative;
-  float: left;
-  width: 100%;
-  margin-top: 20px;
-}
-
-.input_form_sign {
-  position: relative;
-  float: left;
-  width: 90%;
-  border: none;
-  border-bottom: 1px solid #B0BEC5 ;
-  background-color: transparent;
-  font-size: 14px;
-  outline: none;
-  transition: all 0.5s;
-    height: 0px;
-    margin: 0px;
-    padding: 0px;
-opacity: 0;
-display: none;
-}
-
-.active_inp {
-  margin: 5% 5% ;
-  padding: 10px 0px;
-  opacity: 1;
-height: 5px;
-}
-
-
-
-.input_form_sign:focus {
-  border-bottom: 1px solid #11b7ff ;}
-
-.link_forgot_pass {
-position: relative;
-  margin-top: 0px;
-  margin-left: 30%;
-  text-decoration: none;
-  color: #999;
-  font-size: 13px;
-  display: none;
-  float: left;
-  transition: all 0.5s;
-}
-.cont_btn {
-  position: relative;
-  float: left;
-}
-
-.btn_sign {
-  background: rgba(17, 183, 255,0.74);
-  box-shadow: 0px 2px 20px 2px rgba(15, 203, 255,0.50);
-  border-radius: 8px;
-  padding: 15px 30px;
-  border: none;
-  color: #fff;
-  font-size: 14px;
-  position: relative;
-  float: left;
-  margin-left: 100px;
-  margin-top: 20px;
-  margin-bottom: 20px;
-  cursor: pointer;
-}
-
-.terms_and_cons {
-  width: 70%;
-  color: #999;
-  font-size: 13px;
-  transition: all 0.5s;
-}
-
-.d_none {
-  display: none;
-}
-
-.d_block {
-  display: block;
-}
-
-.cont_text_inputs > input:nth-child(1){
-  transition-delay: 0.2s;
-}
-
-.cont_text_inputs > input:nth-child(2){
-  transition-delay: 0.4s;
-}
-.cont_text_inputs > input:nth-child(3){
-  transition-delay: 0.6s;
-}
-.cont_text_inputs > input:nth-child(4){
-  transition-delay: 0.8s;
-}*/
-
 /*------------------------
 # NEWS SECTION
 ------------------------*/
@@ -1143,7 +962,7 @@ section #news_article {
 --------------------------------------------------------------*/
 #user {
   display: table;
-  padding: 150px;
+  padding: 50px;
   width: 100%;
   height: 100vh;
   /*background: url('https://scontent-iad3-1.cdninstagram.com/t51.2885-15/e35/17661778_1134011796726528_4291439109215354880_n.jpg') top center fixed;*/
@@ -1190,7 +1009,7 @@ section #news_article {
 # Profile - Logged in -- Tab Panels
 --------------------------------------------------------------*/
 
-@mixin ellipsis(){
+/*@mixin ellipsis(){
     max-width: 100%;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -1318,10 +1137,10 @@ section #news_article {
   #narrow-browser-alert {
     display: none;
   }
-}
+}*/
 
 #user_profile .container {
-  width: 90%;
+  width: 50%;
 }
 
 .page-header {

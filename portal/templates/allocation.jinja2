@@ -1,6 +1,6 @@
 {%extends "loginbase.jinja2"%}
 
-{%block title%}Project{%endblock%}
+{%block title%}Allocations{%endblock%}
 
 {%block body%}
 
@@ -11,7 +11,7 @@
                     <div class="col-md-8 col-lg-12">
                         <div class="card">
                             <div class="header">
-                                <h4 class="title">Project(s)</h4>
+                                <h4 class="title">Allocation(s)</h4>
 																<hr />
 																<div class="row">
 																	<div class="col-lg-8">
@@ -24,23 +24,20 @@
 																	</div><!-- /.col-lg-6 -->
 
 																	<div class="col-lg-4">
-																		<a href="{{url_for('new')}}" class="btn btn-default btn-sm">+ New Project</a>
+																		<a href="{{url_for('new_allocation')}}" class="btn btn-default btn-sm">Define New Allocation</a>
 																	</div>
 																</div><!-- /.row -->
 
                             </div>
                             <div class="content">
-
-															<ul class=entries>
+															<ul class="allocation-entries">
 															{% for entry in entries %}
-																<li><h2>{{ entry.projectName }}</h2>{{ entry.projectDescription|safe }}
+																<li><h2>{{ entry.allocationName }}</h2>{{ entry.allocationText|safe }}
 															{% else %}
-																<li><em>No projects here so far</em>
+																<li><em>No Allocations here so far</em>
 															{% endfor %}
 															</ul>
-
-                            </div><!-- /.content -->
-
+                            </div>
                         </div>
                     </div>
 								</div>
