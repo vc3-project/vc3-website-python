@@ -1299,6 +1299,7 @@ body > .navbar-collapse {
 
 .navbar-default {
   background-color: rgba(255, 255, 255, 0.96);
+  /*background-color: rgba(0, 0, 0, 0.8);*/
   border-bottom: 1px solid rgba(0, 0, 0, 0.1); }
   .navbar-default .navbar-nav > li > a:not(.btn) {
     color: #9A9A9A; }
@@ -1394,6 +1395,7 @@ body > .navbar-collapse {
 
 .footer {
   background-color: #FFFFFF;
+  /*background-color: rgba(0, 0, 0, 0.8);*/
   line-height: 20px; }
   .footer nav > ul {
     list-style: none;

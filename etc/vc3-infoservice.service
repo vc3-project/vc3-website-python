@@ -1,0 +1,13 @@
+[Unit]
+Description=VC3 Information Service
+After=network-online.target 
+Wants=network-online.target
+
+[Service]
+EnvironmentFile=-/etc/sysconfig/vc3-info-service
+ExecStart=/usr/libexec/vc3-infoservice.init start
+ExecStop=/usr/libexec/vc3-infoservice.init stop
+ExecReload=/usr/libexec/vc3-infoservice.init restart
+
+[Install]
+WantedBy=multi-user.target
