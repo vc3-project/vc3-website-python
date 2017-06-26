@@ -19,8 +19,6 @@ from portal.decorators import authenticated
 from portal.utils import (load_portal_client, get_portal_tokens,
                           get_safe_redirect)
 
-import vc3client
-
 
 @app.route('/', methods=['GET'])
 def home():
