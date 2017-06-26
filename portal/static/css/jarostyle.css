@@ -770,10 +770,8 @@ body.mobile-nav-active #mobile-nav-toggle {
 .caption-style-3 img{
 	margin: 0px;
 	padding: 0px;
-	/*float: left;*/
 	z-index: 4;
 	width: 100%;
-	/*height: 100%;*/
 }
 .caption-style-3 .caption{
 	cursor: pointer;

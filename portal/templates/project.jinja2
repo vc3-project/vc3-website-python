@@ -31,9 +31,9 @@
                             </div>
                             <div class="content">
 
-															<ul class=entries>
-															{% for entry in entries %}
-																<li><h2>{{ entry.projectName }}</h2>{{ entry.projectDescription|safe }}
+															<ul class=projects>
+															{% for project in projects %}
+																<li><h2>{{ project.projectName }}</h2>{{ project.projectDescription|safe }}
 															{% else %}
 																<li><em>No projects here so far</em>
 															{% endfor %}

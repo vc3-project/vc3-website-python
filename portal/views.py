@@ -14,7 +14,7 @@ from globus_sdk import (TransferClient, TransferAPIError,
                         AuthClient, AccessTokenAuthorizer)
 
 
-from portal import app, database, datasets, pages
+from portal import app, database, pages
 from portal.decorators import authenticated
 from portal.utils import (load_portal_client, get_portal_tokens,
                           get_safe_redirect)
@@ -232,6 +232,21 @@ def authcallback():
 @authenticated
 def new():
     return render_template('new.jinja2')
+
+# def newProject():
+#     VC3ClientAPI.defineProject()
+#     flash('New project was successfully posted')
+#     return redirect(url_for('show_projects'))
+
+# def newProject():
+#     if request.method == 'POST':
+#         session['projectName'] == request.form['projectName']
+#         session['projectScience'] == request.form['projectScience']
+#         session['projectDescription'] == request.form['projectDescription']
+#         flash('New Project was successfully posted')
+#         return redirect(url_for('show_projects'))
+#     return render_template('new.jinja2')
+
 # def add_entry():
 #     db = database.get_db()
 #     db.execute('insert into entries (title, text) values (?, ?)',
@@ -241,15 +256,41 @@ def new():
 #     return redirect(url_for('show_entries'))
 
 
+@app.route('/project/projectpages', methods=['GET', 'POST'])
+@authenticated
+def projectpages():
+    return render_template('projects_pages.jinja2')
+
+
 @app.route('/project', methods=['GET', 'POST'])
 @authenticated
 def project():
     return render_template('project.jinja2')
+
+# def project():
+#     if request.method == 'POST':
+#         session['projectName'] == request.form['projectName']
+#         session['projectScience'] == request.form['projectScience']
+#         session['projectDescription'] == request.form['projectDescription']
+#         return redirect(url_for('project'))
+#     return render_template('new.jinja2')
+
+# def show_projects():
+#     projects = vc3client.listProjects()
+#     return render_template('project.jinja2', projects=projects)
+
 # def show_entries():
 #     db = database.get_db()
 #     cur = db.execute('select title, text from entries order by id desc')
 #     entries = cur.fetchall()
 #     return render_template('project.jinja2', entries=entries)
+
+
+# @app.route('/project/<projectid>', methods=['GET', 'POST'])
+# @authenticated
+# def projectpages(projectid):
+#     projectid = VC3ClientAPI.getProject()
+#     return render_template('projects_pages.jinja2', projectid=projectid)
 
 
 @app.route('/allocation', methods=['GET', 'POST'])
@@ -262,12 +303,6 @@ def allocation():
 @authenticated
 def new_allocation():
     return render_template('new_allocation.jinja2')
-
-
-@app.route('/project/projectid', methods=['GET', 'POST'])
-@authenticated
-def projectpages():
-    return render_template('projects_pages.jinja2')
 
 
 @app.route('/dashboard', methods=['GET', 'POST'])
