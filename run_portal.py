@@ -26,6 +26,7 @@ if __name__ == "__main__":
         server.stop()
     sys.exit(0)
 
+
     # Mount the application
     cherrypy.tree.graft(app, "/")
 
@@ -35,6 +36,16 @@ if __name__ == "__main__":
     # Instantiate a new server object
     server = cherrypy._cpserver.Server()
 
+
+    # Mount the application
+    cherrypy.tree.graft(app, "/")
+   
+    # Unsubscribe the default server
+    cherrypy.server.unsubscribe()
+   
+    # Instantiate a new server object
+    server = cherrypy._cpserver.Server()
+   
     # Configure the server object
     server.socket_host = "www-dev.virtualclusters.org"
     server.socket_port = 8080
