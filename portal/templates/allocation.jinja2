@@ -31,8 +31,8 @@
                             </div>
                             <div class="content">
 															<ul class="allocation-entries">
-															{% for entry in entries %}
-																<li><h2>{{ entry.allocationName }}</h2>{{ entry.allocationText|safe }}
+															{% for allocation in allocations %}
+																<li><h2>{{ allocation.allocationName }}</h2>{{ allocation.resourceAllocation|safe }}
 															{% else %}
 																<li><em>No Allocations here so far</em>
 															{% endfor %}
