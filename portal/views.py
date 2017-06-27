@@ -26,32 +26,38 @@ def home():
     return render_template('home.jinja2')
 
 # -----------------------------------------
-# CURRENT NEWS PAGE AND ALL ARTICLE ROUTES
+# CURRENT blog PAGE AND ALL ARTICLE ROUTES
 # -----------------------------------------
 
 
-@app.route('/news', methods=['GET'])
-def news():
+@app.route('/blog', methods=['GET'])
+def blog():
     """Articles are pages with a publication date"""
     articles = (p for p in pages if 'date' in p.meta)
     """Show the 10 most recent articles, most recent first"""
     latest = sorted(articles, reverse=True, key=lambda p: p.meta['date'])
-    """Send the user to the news page"""
-    return render_template('news.jinja2', pages=latest[:10])
+    """Send the user to the blog page"""
+    return render_template('blog.jinja2', pages=latest[:10])
 
 
-@app.route('/news/tag/<string:tag>/', methods=['GET'])
+@app.route('/blog/tag/<string:tag>/', methods=['GET'])
 def tag(tag):
     """Automatic routing and compiling for article tags"""
     tagged = [p for p in pages if tag in p.meta.get('tags', [])]
-    return render_template('news_tag.jinja2', pages=tagged, tag=tag)
+    return render_template('blog_tag.jinja2', pages=tagged, tag=tag)
 
 
-@app.route('/news/<path:path>/', methods=['GET'])
+@app.route('/blog/<path:path>/', methods=['GET'])
 def page(path):
     """Automatic routing and generates markdown flatpages in /pages directory"""
     page = pages.get_or_404(path)
-    return render_template('news_page.jinja2', page=page)
+    return render_template('blog_page.jinja2', page=page)
+
+
+@app.route('/community', methods=['GET'])
+def community():
+    """Send the user to community page"""
+    return render_template('community.jinja2')
 
 
 @app.route('/documentations', methods=['GET'])
