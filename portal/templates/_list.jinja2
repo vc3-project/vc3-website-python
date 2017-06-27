@@ -1,9 +1,9 @@
-  <article class="news">
+  <article class="blog">
     {% for page in pages %}
+        <p>{{ page.date }}</p>
         <h2>
             <a href="{{ url_for('page', path=page.path) }}">{{ page.title }}</a>
         </h2>
-        <p>{{ page.date }}</p>
         <p>{{page.cut|safe}}</p>
         <p>
           <em><a href="{{ url_for('page', path=page.path) }}">Read more &raquo;</a></em>

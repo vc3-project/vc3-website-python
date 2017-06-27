@@ -221,6 +221,14 @@ h1, h2, h3, h4, h5, h6 {
   max-height: 50px;
 }
 
+/*#header #title {
+  color: #ffd759;
+}*/
+
+#header #divider {
+  color: #ffd759;
+}
+
 @media (max-width: 768px) {
   #header {
     height: 80px;
@@ -680,7 +688,81 @@ body.mobile-nav-active #mobile-nav-toggle {
   border: 2px solid #03C4EB;
 }
 
+/*--------------------------------------------------------------
+# Community Section
+--------------------------------------------------------------*/
 
+#community {
+  /*background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('https://scontent-iad3-1.cdninstagram.com/t51.2885-15/e35/17595897_685587908295482_4170062324113080320_n.jpg') fixed center center;*/
+  /*background: #111;*/
+  background-size: cover;
+  padding: 80px 0;
+}
+
+#community .community-title {
+  color: #111;
+  text-align: center;
+  font-size: 28px;
+  font-weight: 700;
+}
+
+#community #communitytitle{
+  color: #111;
+  text-align: left;
+  font-size: 28px;
+  font-weight: 700;
+}
+
+#community .community-text {
+  color: #111;
+  text-align: center;
+}
+
+#community .community-btn-container {
+  text-align: center;
+  padding-top: 20px;
+}
+
+#community .community-btn {
+  font-family: "Raleway", sans-serif;
+  text-transform: uppercase;
+  font-weight: 500;
+  font-size: 16px;
+  letter-spacing: 1px;
+  display: inline-block;
+  padding: 8px 20px;
+  border-radius: 2px;
+  transition: 0.5s;
+  margin: 10px;
+  border: 2px solid #111;
+  color: #111;
+}
+
+#community .community-btn:hover {
+  background: #fff;
+  border: 2px solid #03C4EB;
+  color: #03C4EB;
+}
+
+#community #bigSocial{
+  text-align: center;
+}
+
+#community #bigSocial .fa-twitter:hover{
+  color: #0084b4;
+}
+#community #bigSocial .fa-github-alt:hover {
+  color: #111;
+}
+#community #bigSocial .fa-slack:hover {
+  color: #30E8BF;  /* fallback for old browsers */
+  color: -webkit-linear-gradient(to right, #FF8235, #30E8BF);  /* Chrome 10-25, Safari 5.1-6 */
+  color: linear-gradient(to right, #FF8235, #30E8BF); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+}
+
+#community #bigSocial p{
+  text-align: center;
+}
 /*--------------------------------------------------------------
 # Team Section
 --------------------------------------------------------------*/
@@ -928,20 +1010,20 @@ body.mobile-nav-active #mobile-nav-toggle {
 }
 
 /*------------------------
-# NEWS SECTION
+# BLOG SECTION
 ------------------------*/
 
-#news {
+#blog {
   padding-top: 20px;
 }
-section #news_article {
+section #blog_article {
   min-height: 500px;
 }
-#news_article {
+#blog_article {
   padding-top: 20px;
 }
 
-#news_article h2{
+#blog_article h2{
   /*color: rgb(3, 196, 235);*/
   color: rgb(0, 178, 234);
 }
