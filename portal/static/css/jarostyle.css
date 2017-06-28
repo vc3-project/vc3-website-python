@@ -170,10 +170,15 @@ h1, h2, h3, h4, h5, h6 {
   color: #fff;
 }
 
-#hero .btn-about-vc3:hover {
+/*#hero .btn-about-vc3:hover {
   background: #03C4EB;
   border: 2px solid #03C4EB;
-  /*color: #fff;*/
+}*/
+
+#hero .btn-about-vc3:hover {
+  background: #fccc26;
+  border: 2px solid #fccc26;
+  color: #111;
 }
 
 #hero .btn-services {
@@ -212,7 +217,8 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 #header #divider {
-  color: #ffd759;
+  /*color: #ffd759;*/
+  color: #fccc26;
 }
 
 /*@media (max-width: 768px) {
@@ -239,11 +245,8 @@ h1, h2, h3, h4, h5, h6 {
   display: flex;
 }*/
 #header #title {
-  /*font-size: 18px;*/
-  /*display: flex;*/
-  /*padding-top: 10px;*/
-  /*display: inline-block;*/
-  /*float: none;*/
+  font-size: 24px;
+  color: #fccc26;
   vertical-align: middle;
 }
 
@@ -377,7 +380,8 @@ body.mobile-nav-active #mobile-nav-toggle {
 
 .section-title #brand{
   font-size: 28px;
-  color: #03C4EB;
+  /*color: #03C4EB;*/
+  color: #fccc26;
   text-transform: uppercase;
   text-align: center;
   font-weight: 700;
@@ -390,7 +394,8 @@ body.mobile-nav-active #mobile-nav-toggle {
 .section-title-divider {
   width: 50px;
   height: 3px;
-  background: #03C4EB;
+  /*background: #03C4EB;*/
+  background: #fccc26;
   margin: 0 auto;
   margin-bottom: 20px;
 }
@@ -586,13 +591,18 @@ body.mobile-nav-active #mobile-nav-toggle {
 }
 
 #community #communitytitle{
-  color: #111;
+  color: #fccc26;
   text-align: left;
   font-size: 28px;
   font-weight: 700;
 }
 
 #community .community-text {
+  color: #111;
+  text-align: left;
+}
+
+#community .community-text-contact {
   color: #111;
   text-align: center;
 }
@@ -618,8 +628,8 @@ body.mobile-nav-active #mobile-nav-toggle {
 }
 
 #community .community-btn:hover {
-  background: #efefef;
-  border: 2px solid #111;
+  background: #fccc26;
+  border: 2px solid #fccc26;
   color: #111;
 }
 
