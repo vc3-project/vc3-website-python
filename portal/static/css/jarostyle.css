@@ -196,10 +196,6 @@ h1, h2, h3, h4, h5, h6 {
   height: 90px;
 }
 
-#header #logo {
-  float: left;
-}
-
 #header #logo h1 {
   font-size: 36px;
   margin: 0;
@@ -215,21 +211,11 @@ h1, h2, h3, h4, h5, h6 {
   color: #fff;
 }
 
-#header #logo img {
-  padding: 0;
-  margin: 0;
-  max-height: 50px;
-}
-
-/*#header #title {
-  color: #ffd759;
-}*/
-
 #header #divider {
   color: #ffd759;
 }
 
-@media (max-width: 768px) {
+/*@media (max-width: 768px) {
   #header {
     height: 80px;
   }
@@ -239,135 +225,27 @@ h1, h2, h3, h4, h5, h6 {
   #header #logo img {
     max-height: 40px;
   }
-}
-
-.is-sticky #header {
-  /*background: rgba(0, 0, 0, 0.85);*/
-}
+}*/
 
 .navbar-collapse {
   background: #111;
 }
-.navbar-collapse .dropdown-toggle {
-  /*background: #111;*/
+
+.navbar-brand{
+  background: url(https://image.ibb.co/e59s3v/logosmall.png) center / contain no-repeat;
+  width: 200px;
 }
-
-/*--------------------------------------------------------------
-# Navigation Menu
---------------------------------------------------------------*/
-/* Nav Menu Essentials */
-
-/*.nav-menu, .nav-menu * {
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-
-.nav-menu ul {
-  position: absolute;
-  display: none;
-  top: 100%;
-  left: 0;
-  z-index: 99;
-}
-
-.nav-menu li {
-  position: relative;
-  white-space: nowrap;
-}
-
-.nav-menu > li {
-  float: left;
-}
-
-.nav-menu li:hover > ul,
-.nav-menu li.sfHover > ul {
-  display: block;
-}
-
-.nav-menu ul ul {
-  top: 0;
-  left: 100%;
-}
-
-.nav-menu ul li {
-  min-width: 180px;
+/*.nav a{
+  display: flex;
 }*/
-
-/* Nav Menu Arrows non-existent*/
-/*.sf-arrows .sf-with-ul {
-  padding-right: 30px;
+#header #title {
+  /*font-size: 18px;*/
+  /*display: flex;*/
+  /*padding-top: 10px;*/
+  /*display: inline-block;*/
+  /*float: none;*/
+  vertical-align: middle;
 }
-
-.sf-arrows .sf-with-ul:after {
-  content: "\f107";
-  position: absolute;
-  right: 15px;
-  font-family: FontAwesome;
-  font-style: normal;
-  font-weight: normal;
-}
-
-.sf-arrows ul .sf-with-ul:after {
-  content: "\f105";
-}*/
-
-/* Nav Meu Container */
-/*#nav-menu-container {
-  float: right;
-  margin: 5px 0;
-}
-
-@media (max-width: 768px) {
-  #nav-menu-container {
-    display: none;
-  }
-}*/
-
-/*--------------------------------------------------------------
-# Nav Menu Style
---------------------------------------------------------------*/
-
-/*.nav-menu a {
-  padding: 10px 15px;
-  text-decoration: none;
-  display: inline-block;
-  color: #fff;
-  font-family: 'Raleway', sans-serif;
-  font-weight: 300;
-  font-size: 14px;
-  outline: none;
-}
-
-.nav-menu a:hover, .nav-menu li:hover > a, .nav-menu .menu-active > a {
-  color: #03C4EB;
-}
-
-.nav-menu ul {
-  margin: 4px 0 0 15px;
-  box-shadow: 0px 0px 1px 1px rgba(0, 0, 0, 0.08);
-}
-
-.nav-menu ul li {
-  background: #fff;
-  border-top: 1px solid #f4f4f4;
-}
-
-.nav-menu ul li:first-child {
-  border-top: 0;
-}
-
-.nav-menu ul li:hover {
-  background: #f6f6f6;
-}
-
-.nav-menu ul li a {
-  color: #333;
-}
-
-.nav-menu ul ul {
-  margin: 0;
-}*/
 
 /*--------------------------------------------------------------
 # Mobile Nav Toggle
@@ -608,7 +486,8 @@ body.mobile-nav-active #mobile-nav-toggle {
 --------------------------------------------------------------*/
 
 #partners {
-  background: linear-gradient(rgba(250, 250, 250, 0.6), rgba(255, 255, 255, 0.8)), url('https://www.avineon.com/sites/default/files/Cloud-computing_1285x588.jpg') fixed center center;
+  /*background: linear-gradient(rgba(250, 250, 250, 0.6), rgba(255, 255, 255, 0.8)), url('https://www.avineon.com/sites/default/files/Cloud-computing_1285x588.jpg') fixed center center;*/
+  background-color: #f2f2f2;
   background-size: cover;
   padding: 80px 0;
   text-align: center;
