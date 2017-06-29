@@ -24,7 +24,7 @@ def new-route():
 
 In order for the route to render the .jinja2 template, you must create a new .jinja2 page within the `portal/templates` directory.
 
-Below is a suggested starting template for new .jinja2 pages:
+Below is a suggested starting template for new .jinja2 pages for development of the website landing view (what users see when they are not logged in):
 
 ```{%extends "base.jinja2"%}
 
@@ -49,6 +49,35 @@ Below is a suggested starting template for new .jinja2 pages:
   </div>
 
 </section>
+
+{endblock}
+```
+
+Below is a suggested starting template for new .jinja2 pages for development of the website's logged in view (what users see when they ARE logged in):
+
+```{%extends "loginbase.jinja2"%}
+
+{%block title%}New Route/Page Name{%endblock%}
+
+{%block body%}
+
+<!--==========================
+  New Route Section
+============================-->
+
+<div class="content container">
+
+  <div class="container-fluid">
+
+      <div class="row">
+
+      Enter code and content here
+
+    </div>
+
+  </div>
+
+</div>
 
 {endblock}
 ```
