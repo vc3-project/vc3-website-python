@@ -69,7 +69,7 @@ Below is a suggested starting template for new .jinja2 pages for development of 
 
   <div class="container-fluid">
 
-      <div class="row">
+    <div class="row">
 
       Enter code and content here
 
