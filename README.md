@@ -15,10 +15,12 @@ The third script `update_pages_directory.sh` from the [vc3-deployment-infrastruc
 ## Creating New Routes
 All website routes are located in `portal/views.py` and typically render .jinja2 templates pages. In order to create a new route, follow the basic notation:
 
+
 ```@app.route('/new-route', methods=['GET', 'POST'])
 def new-route():
     """Send the user to new-route page"""
-    return render_template('new-route.jinja2')```
+    return render_template('new-route.jinja2')
+```
 
 In order for the route to render the .jinja2 template, you must create a new .jinja2 page within the `portal/templates` directory.
 
@@ -48,4 +50,5 @@ Below is a suggested starting template for new .jinja2 pages:
 
 </section>
 
-{endblock}```
+{endblock}
+```
