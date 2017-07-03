@@ -19,6 +19,9 @@ from portal.decorators import authenticated
 from portal.utils import (load_portal_client, get_portal_tokens,
                           get_safe_redirect)
 
+# from vc3-client import vc3client
+# from vc3-info-service import vc3infoservice
+
 
 @app.route('/', methods=['GET'])
 def home():
@@ -72,10 +75,10 @@ def team():
     return render_template('team.jinja2')
 
 
-@app.route('/contact', methods=['GET'])
-def contact():
-    """Send the user to contact page"""
-    return render_template('contact.jinja2')
+# @app.route('/contact', methods=['GET'])
+# def contact():
+#     """Send the user to contact page"""
+#     return render_template('contact.jinja2')
 
 
 @app.route('/signup', methods=['GET'])

@@ -13,6 +13,7 @@
                             <div class="header">
                                 <h4 class="title">Project(s)</h4>
 																<hr />
+																
 																<div class="row">
 																	<div class="col-lg-8">
 																		<div class="input-group">
@@ -21,15 +22,16 @@
 																				<button class="btn btn-default" type="button"><i class="glyphicon glyphicon-search"></i></button>
 																			</span>
 																		</div><!-- /input-group -->
-																	</div><!-- /.col-lg-6 -->
+																	</div><!-- /.col-lg-8 -->
 
 																	<div class="col-lg-4">
-																		<a href="{{url_for('new')}}" class="btn btn-default btn-sm">+ New Project</a>
+																		<a href="{{url_for('new')}}" class="btn btn-primary btn-sm">+ New Project</a>
 																	</div>
 																</div><!-- /.row -->
 
                             </div>
-                            <div class="content">
+
+                            <div class="content description">
 
 															<ul class=projects>
 															{% for project in projects %}
