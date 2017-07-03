@@ -11,12 +11,15 @@
 
 						<section id="user_profile">
 						<!-- Profile Info Display -->
-						<div class="container">
+
+						<div class="container card">
+            <h2 class="title">Profile</h2>
+            <hr />
 								<div class="row">
 									 <div class="col-sm-6 col-md-6 col-lg-3">
 									   <div class="thumbnail">
 									     <img src="https://image.ibb.co/hEdfV5/blank_profile_picture_973461_960_720.png" alt="">
-									     <div class="caption">
+									     <div class="caption description">
 									       <h3>{{session['name']}}</h3>
 									       <h4>{{session['institution']}}</h4>
 									       <h5>{{session['email']}}</h5>
@@ -80,6 +83,8 @@
 
 					{% else %}
 					<section id="user_profile">
+              <h2 class="title">Project(s)</h2>
+              <hr />
 									<div class="row">
 									  <div class="col-md-6 col-md-offset-3">
 									    <form role="form" action="{{url_for('profile')}}" method="POST">

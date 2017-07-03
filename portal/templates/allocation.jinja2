@@ -24,12 +24,12 @@
 																	</div><!-- /.col-lg-6 -->
 
 																	<div class="col-lg-4">
-																		<a href="{{url_for('new_allocation')}}" class="btn btn-default btn-sm">Define New Allocation</a>
+																		<a href="{{url_for('new_allocation')}}" class="btn btn-primary btn-sm">Define New Allocation</a>
 																	</div>
 																</div><!-- /.row -->
 
                             </div>
-                            <div class="content">
+                            <div class="content description">
 															<ul class="allocation-entries">
 															{% for allocation in allocations %}
 																<li><h2>{{ allocation.allocationName }}</h2>{{ allocation.resourceAllocation|safe }}

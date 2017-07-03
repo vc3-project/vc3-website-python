@@ -23,15 +23,6 @@ class Database:
         """Open database and return a connection handle."""
         return sqlite3.connect(self.app.config['DATABASE'])
 
-    # Added the below init_db function to original
-
-    def init_db(self):
-        """Initializes the database."""
-        db = self.get_db()
-        with self.app.open_resource('schema.sql', mode='r') as f:
-            db.cursor().executescript(f.read())
-        db.commit()
-
     def get_db(self):
         """Return the app global db connection or create one."""
         db = getattr(g, '_database', None)
