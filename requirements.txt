@@ -13,4 +13,5 @@ PyYAML
 pygal==2.1.1
 pyOpenSSL
 python-jose==1.3.2
+requests
 WSGIserver
