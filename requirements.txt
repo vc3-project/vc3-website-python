@@ -5,7 +5,6 @@ Flask==0.12
 Frozen-Flask
 Flask-FlatPages
 globus_sdk[jwt]
-globus-sdk==1.1.1
 Markdown
 MarkupSafe
 packaging
