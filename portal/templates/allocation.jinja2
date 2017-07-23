@@ -21,7 +21,7 @@
 																				<button class="btn btn-default" type="button"><i class="glyphicon glyphicon-search"></i></button>
 																			</span>
 																		</div><!-- /input-group -->
-																	</div><!-- /.col-lg-6 -->
+																	</div><!-- /.col-lg-8 -->
 
 																	<div class="col-lg-4">
 																		<a href="{{url_for('new_allocation')}}" class="btn btn-primary btn-sm">Define New Allocation</a>
@@ -31,14 +31,39 @@
                             </div>
 
                             <div class="content description">
-															<ul class="allocation-entries">
-															{% for allocation in allocations %}
-																<li><h2>{{ allocation.allocationName }}</h2>{{ allocation.resourceAllocation|safe }}
-															{% else %}
-																<li><em>No Allocations here so far</em>
-															{% endfor %}
-															</ul>
-                            </div>
+															<h2>List/Grid of Known Resources to browse here</h2>
+
+															<div class="card text-center">
+															  <div class="card-header">
+															    <ul class="nav nav-tabs card-header-tabs" role="tablist">
+															      <li class="nav-item">
+															        <a class="nav-link active" data-toggle="tab" href="#campus" role="tab">Campus Resources</a>
+															      </li>
+															      <li class="nav-item">
+															        <a class="nav-link" data-toggle="tab" href="#national" role="tab">National Resources</a>
+															      </li>
+															      <li class="nav-item">
+															        <a class="nav-link" data-toggle="tab" href="#international" role="tab">International Resources</a>
+															      </li>
+															    </ul>
+															  </div>
+															  <div class="card-block">
+																	<div class="tab-content">
+																		<div class="tab-pane fade show active" id="campus" role="tabpanel">
+																			<h4 class="card-title">UChicago - Midway (SLURM)</h4>
+																	    <p class="card-text">Resource Type: remote-batch</p>
+																			<p class="card-text">Access Mode: </p>
+																			<p class="card-text">Submit Host: </p>
+																			<p class="card-text">Submit Port: </p>
+																	    <a href="#" class="btn btn-primary">More Info</a>
+																		</div>
+																		<div class="tab-pane fade" id="national" role="tabpanel">..national.</div>
+																		<div class="tab-pane fade" id="international" role="tabpanel">.international..</div>
+																	</div><!-- /.tab-content -->
+															  </div><!-- /.card-block -->
+															</div><!-- /.card text-center -->
+
+                            </div><!-- /.content description -->
 
                         </div>
                     </div>

@@ -4,6 +4,12 @@ import requests
 
 import os
 
+# from configparser import ConfigParser
+# from vc3client.client import VC3ClientAPI
+
+from vc3client import client
+from ConfigParser import SafeConfigParser
+
 try:
     from urllib.parse import urlencode
 except:
@@ -18,9 +24,6 @@ from portal import app, database, pages
 from portal.decorators import authenticated
 from portal.utils import (load_portal_client, get_portal_tokens,
                           get_safe_redirect)
-
-# from vc3-client import vc3client
-# from vc3-info-service import vc3infoservice
 
 
 @app.route('/', methods=['GET'])
@@ -73,12 +76,6 @@ def documentations():
 def team():
     """Send the user to team page"""
     return render_template('team.jinja2')
-
-
-# @app.route('/contact', methods=['GET'])
-# def contact():
-#     """Send the user to contact page"""
-#     return render_template('contact.jinja2')
 
 
 @app.route('/signup', methods=['GET'])
@@ -242,64 +239,37 @@ def authcallback():
 def new():
     return render_template('new.jinja2')
 
-# def newProject():
-#     VC3ClientAPI.defineProject()
-#     flash('New project was successfully posted')
-#     return redirect(url_for('show_projects'))
 
-# def newProject():
-#     if request.method == 'POST':
-#         session['projectName'] == request.form['projectName']
-#         session['projectScience'] == request.form['projectScience']
-#         session['projectDescription'] == request.form['projectDescription']
-#         flash('New Project was successfully posted')
-#         return redirect(url_for('show_projects'))
-#     return render_template('new.jinja2')
+@app.route('/project', methods=['GET', 'POST'])
+@authenticated
+def project():
+    if request.method == 'POST':
+        name = request.form['name']
+        owner = request.form['owner']
+        members = request.form['members']
 
-# def add_entry():
-#     db = database.get_db()
-#     db.execute('insert into entries (title, text) values (?, ?)',
-#                [request.form['projectName'], request.form['text']])
-#     db.commit()
-#     flash('New project was successfully posted')
-#     return redirect(url_for('show_entries'))
+        c = SafeConfigParser()
+        c.readfp(open(
+            '/Users/JeremyVan/Documents/Programming/UChicago/VC3_Project/vc3-website-python/vc3-client/etc/vc3-client.conf'))
+        clientapi = client.VC3ClientAPI(c)
+
+        newproject = clientapi.defineProject(name=name, owner=owner, members=members)
+        clientapi.storeProject(newproject)
+
+        projects = clientapi.listProjects()
+        for project in projects:
+            print(project)
+        # print(project[0])
+
+        return render_template('project.jinja2')
+    elif request.method == 'GET':
+        return render_template('project.jinja2')
 
 
 @app.route('/project/projectpages', methods=['GET', 'POST'])
 @authenticated
 def projectpages():
     return render_template('projects_pages.jinja2')
-
-
-@app.route('/project', methods=['GET', 'POST'])
-@authenticated
-def project():
-    return render_template('project.jinja2')
-
-# def project():
-#     if request.method == 'POST':
-#         session['projectName'] == request.form['projectName']
-#         session['projectScience'] == request.form['projectScience']
-#         session['projectDescription'] == request.form['projectDescription']
-#         return redirect(url_for('project'))
-#     return render_template('new.jinja2')
-
-# def show_projects():
-#     projects = vc3client.listProjects()
-#     return render_template('project.jinja2', projects=projects)
-
-# def show_entries():
-#     db = database.get_db()
-#     cur = db.execute('select title, text from entries order by id desc')
-#     entries = cur.fetchall()
-#     return render_template('project.jinja2', entries=entries)
-
-
-# @app.route('/project/<projectid>', methods=['GET', 'POST'])
-# @authenticated
-# def projectpages(projectid):
-#     projectid = VC3ClientAPI.getProject()
-#     return render_template('projects_pages.jinja2', projectid=projectid)
 
 
 @app.route('/allocation', methods=['GET', 'POST'])
