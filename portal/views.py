@@ -133,8 +133,14 @@ def logout():
 def profile():
     """User profile information. Assocated with a Globus Auth identity."""
     if request.method == 'GET':
+        c = SafeConfigParser()
+        c.readfp(open(
+            '/Users/JeremyVan/Documents/Programming/UChicago/VC3_Project/vc3-website-python/vc3-client/etc/vc3-client.conf'))
+        clientapi = client.VC3ClientAPI(c)
+
         identity_id = session.get('primary_identity')
         profile = database.load_profile(identity_id)
+        # profile = clientapi.getUser(identity_id)
 
         if profile:
             name, email, institution = profile
@@ -159,6 +165,13 @@ def profile():
                               name=name,
                               email=email,
                               institution=institution)
+
+        # newuser = clientapi.defineUser(identity_id=session['primary_identity'],
+        #                                name=name,
+        #                                email=email,
+        #                                institution=institution)
+        #
+        # clientapi.storeUser(newuser)
 
         flash('Thank you! Your profile has been successfully updated.')
 
@@ -190,6 +203,11 @@ def authcallback():
     # If there's no "code" query string parameter, we're in this route
     # starting a Globus Auth login flow.
     if 'code' not in request.args:
+        # c = SafeConfigParser()
+        # c.readfp(open(
+        #     '/Users/JeremyVan/Documents/Programming/UChicago/VC3_Project/vc3-website-python/vc3-client/etc/vc3-client.conf'))
+        # clientapi = client.VC3ClientAPI(c)
+
         additional_authorize_params = (
             {'signup': 1} if request.args.get('signup') else {})
 
@@ -215,6 +233,7 @@ def authcallback():
         )
 
         profile = database.load_profile(session['primary_identity'])
+        # profile = clientapi.getUser(profile)
 
         if profile:
             name, email, institution = profile
@@ -243,27 +262,24 @@ def new():
 @app.route('/project', methods=['GET', 'POST'])
 @authenticated
 def project():
+    c = SafeConfigParser()
+    c.readfp(open('/Users/JeremyVan/Documents/Programming/UChicago/VC3_Project/vc3-website-python/vc3-client/etc/vc3-client.conf'))
+    clientapi = client.VC3ClientAPI(c)
+
     if request.method == 'POST':
         name = request.form['name']
         owner = request.form['owner']
-        members = request.form['members']
-
-        c = SafeConfigParser()
-        c.readfp(open(
-            '/Users/JeremyVan/Documents/Programming/UChicago/VC3_Project/vc3-website-python/vc3-client/etc/vc3-client.conf'))
-        clientapi = client.VC3ClientAPI(c)
+        members = request.form['members'].split(",")
 
         newproject = clientapi.defineProject(name=name, owner=owner, members=members)
         clientapi.storeProject(newproject)
 
-        projects = clientapi.listProjects()
-        for project in projects:
-            print(project)
-        # print(project[0])
-
         return render_template('project.jinja2')
     elif request.method == 'GET':
-        return render_template('project.jinja2')
+        projects = clientapi.listProjects()
+        # for project in projects:
+        #     print(project)
+        return render_template('project.jinja2', projects=projects)
 
 
 @app.route('/project/projectpages', methods=['GET', 'POST'])
@@ -275,6 +291,26 @@ def projectpages():
 @app.route('/allocation', methods=['GET', 'POST'])
 @authenticated
 def allocation():
+    c = SafeConfigParser()
+    c.readfp(open('/Users/JeremyVan/Documents/Programming/UChicago/VC3_Project/vc3-website-python/vc3-client/etc/vc3-client.conf'))
+    clientapi = client.VC3ClientAPI(c)
+
+    if request.method == 'POST':
+        name = request.form['name']
+        owner = request.form['owner']
+        resource = request.form['resource']
+        accountname = request.form['accountname']
+
+        newallocation = clientapi.defineAllocation(
+            name=name, owner=owner, resource=resource, accountname=accountname)
+        clientapi.storeAllocation(newallocation)
+
+        return render_template('allocation.jinja2')
+    elif request.method == 'GET':
+        allocations = clientapi.listAllocations()
+        # for project in projects:
+        #     print(project)
+        return render_template('allocation.jinja2', allocations=allocations)
     return render_template('allocation.jinja2')
 
 

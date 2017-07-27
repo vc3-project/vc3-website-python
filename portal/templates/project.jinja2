@@ -3,7 +3,7 @@
 {%block title%}Project{%endblock%}
 
 {%block body%}
-
+<section id="projects">
 				<div class="content">
             <div class="container-fluid">
 
@@ -33,61 +33,24 @@
 
                             <div class="content description">
 
-														<form role="form" id="new-project-form" action="{{url_for('project')}}" method="POST">
+															List Projects Here.
 
-												      <!-- Logo -->
-
-												      <div class="col-lg-12 logo-vc3">
-												          <img width="100" class="logo" src="https://image.ibb.co/e59s3v/logosmall.png" alt="Logo" />
-												      </div>
-
-												      <h3>Create a New Project</h3>
-												      <h4>A project contains all the allocations and resource requests from your research</h4>
-
-												      <fieldset>
-												        <label for="name">Project Name</label>
-												        <input
-												          placeholder="Your Project name"
-												          name="name"
-												          type="text"
-												          tabindex="1"
-												          required
-												          autofocus
-																	value="{{request.name}}">
-												      </fieldset>
-												      <fieldset>
-												        <label for="owner">Owner</label>
-												        <input
-												          placeholder="Name of Owner"
-												          name="owner"
-												          type="text"
-												          tabindex="2"
-												          required
-												          autofocus
-																	value="{{request.owner}}">
-												      </fieldset>
-												      <fieldset>
-												        <label for="members">Project Members</label>
-												        <input
-												          placeholder="Member Names"
-												          name="members"
-												          type="text"
-												          tabindex="3"
-												          autofocus
-																	value="{{request.members}}">
-												      </fieldset>
-												      <fieldset>
-												        <button type="submit" id="create-project" data-submit="...Sending">Create Project</button>
-												      </fieldset>
-												    </form>
-
-															<!-- <ul class=projects>
-															{% for project in p %}
-																<li><h2>{{ project.name }}</h2>{{ project.owner }}
+															<ul class=projects>
+															{% for project in projects %}
+																<div class="card text-center" style="width: 30rem;">
+																  <div class="card-block">
+																    <h4 class="card-title"><span id="label">Project Name:</span> {{ project.name }}</h4>
+																    <p class="card-text"><span id="label">Project Owner:</span> {{ project.owner}}</p>
+																		{% for member in project.members %}
+																			<p class="card-text"><span id="label">Members:</span> {{ member }}</p>
+																		{% endfor %}
+																    <a href="#" class="btn btn-primary btn-sm">View Project</a>
+																  </div>
+																</div>
 															{% else %}
-																<li><em>No projects here so far</em>
+																<li><em>No projects here so far</em></li>
 															{% endfor %}
-															</ul> -->
+															</ul>
 
                             </div><!-- /.content -->
 
@@ -97,5 +60,5 @@
 
             </div>
         </div>
-
+</section>
 {%endblock%}
