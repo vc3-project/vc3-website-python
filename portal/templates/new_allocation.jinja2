@@ -8,24 +8,61 @@
 
 <section id="new_allocation">
   <div class="container new-allocation">
-    <form id="new-allocation-form" action="" method="post">
+    <form role="form" id="new-allocation-form" action="{{url_for('allocation')}}" method="POST">
+
       <!-- Logo -->
+
       <div class="col-lg-12 logo-vc3">
           <img width="100" class="logo" src="https://image.ibb.co/e59s3v/logosmall.png" alt="Logo" />
       </div>
-      <h3>Define a New Allocation</h3>
-      <h4>Enter Allocation information</h4>
+
+      <h3>Define New Allocation</h3>
+      <h4>An allocation is an allotted amount of core hours, or service units (SU) of computing time on a specific Cluster</h4>
+
       <fieldset>
-        <input name="allocationName" placeholder="Your Resource Username" type="text" tabindex="1" required autofocus>
+        <label for="name">Allocation Name</label>
+        <input
+          placeholder="Your Allocation name"
+          name="name"
+          type="text"
+          tabindex="1"
+          required
+          autofocus
+          value="{{request.name}}">
       </fieldset>
       <fieldset>
-        <input name="resourceAllocation" placeholder="Allocation Label on Resource" type="text" tabindex="2" required>
+        <label for="owner">Owner</label>
+        <input
+          placeholder="Name of Owner"
+          name="owner"
+          type="text"
+          tabindex="2"
+          required
+          autofocus
+          value="{{request.owner}}">
       </fieldset>
       <fieldset>
-        <input name="accountName" placeholder="Account Group" type="text" tabindex="3" required></input>
+        <label for="resource">Resource</label>
+        <input
+          placeholder="Resource Name"
+          name="resource"
+          type="text"
+          tabindex="3"
+          autofocus
+          value="{{request.resource}}">
       </fieldset>
       <fieldset>
-        <button name="submit" type="submit" id="define-allocation" data-submit="...Sending">Initialize Resource</button>
+        <label for="accountname">Account Name</label>
+        <input
+          placeholder="Account Name"
+          name="accountname"
+          type="text"
+          tabindex="4"
+          autofocus
+          value="{{request.accountname}}">
+      </fieldset>
+      <fieldset>
+        <button type="submit" id="create-project" data-submit="...Sending">Create Project</button>
       </fieldset>
     </form>
   </div> <!-- allocation container -->

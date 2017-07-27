@@ -27,7 +27,8 @@
           type="text"
           tabindex="1"
           required
-          autofocus>
+          autofocus
+          value="{{request.name}}">
       </fieldset>
       <fieldset>
         <label for="owner">Owner</label>
@@ -37,7 +38,8 @@
           type="text"
           tabindex="2"
           required
-          autofocus>
+          autofocus
+          value="{{request.owner}}">
       </fieldset>
       <fieldset>
         <label for="members">Project Members</label>
@@ -46,7 +48,8 @@
           name="members"
           type="text"
           tabindex="3"
-          autofocus>
+          autofocus
+          value="{{request.members}}">
       </fieldset>
       <fieldset>
         <button type="submit" id="create-project" data-submit="...Sending">Create Project</button>
