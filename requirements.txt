@@ -8,6 +8,7 @@ globus-sdk==1.1.1
 Markdown
 MarkupSafe
 packaging
+pluginmanager
 PyYAML
 pygal==2.1.1
 pyOpenSSL
