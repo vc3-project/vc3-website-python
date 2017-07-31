@@ -98,7 +98,7 @@ def logout():
     - Destroy the session state.
     - Redirect the user to the Globus Auth logout page.
     """
-    client = load_portal_client()
+    globusclient = load_portal_client()
 
     # Revoke the tokens with Globus Auth
     for token, token_type in (
@@ -109,7 +109,7 @@ def logout():
             for ty in ('access_token', 'refresh_token')
             # only where the relevant token is actually present
             if token_info[ty] is not None):
-        client.oauth2_revoke_token(
+        globusclient.oauth2_revoke_token(
             token, additional_params={'token_type_hint': token_type})
 
     # Destroy the session state
@@ -132,22 +132,29 @@ def logout():
 @authenticated
 def profile():
     """User profile information. Assocated with a Globus Auth identity."""
-    if request.method == 'GET':
-        c = SafeConfigParser()
-        c.readfp(open(
-            '/Users/JeremyVan/Documents/Programming/UChicago/VC3_Project/vc3-website-python/vc3-client/etc/vc3-client.conf'))
-        clientapi = client.VC3ClientAPI(c)
+    c = SafeConfigParser()
+    c.readfp(open(
+        '/Users/JeremyVan/Documents/Programming/UChicago/VC3_Project/vc3-website-python/vc3-client/etc/vc3-client.conf'))
+    clientapi = client.VC3ClientAPI(c)
 
-        identity_id = session.get('primary_identity')
-        profile = database.load_profile(identity_id)
-        # profile = clientapi.getUser(identity_id)
+    if request.method == 'GET':
+        # identity_id = session.get('primary_identity')
+        # profile = database.load_profile(identity_id)
+        userlist = clientapi.listUsers()
+        profile = None
+
+        for user in userlist:
+            if session['primary_identity'] == user.identity_id:
+                profile = user
 
         if profile:
-            name, email, institution = profile
 
-            session['name'] = name
-            session['email'] = email
-            session['institution'] = institution
+            session['name'] = profile.name
+            session['first'] = profile.first
+            session['last'] = profile.last
+            session['email'] = profile.email
+            session['institution'] = profile.institution
+            session['primary_identity'] = profile.identity_id
         else:
             flash(
                 'Please complete any missing profile fields and press Save.')
@@ -158,20 +165,23 @@ def profile():
         return render_template('profile.jinja2')
     elif request.method == 'POST':
         name = session['name'] = request.form['name']
+        first = session['first'] = request.form['first']
+        last = session['last'] = request.form['last']
         email = session['email'] = request.form['email']
         institution = session['institution'] = request.form['institution']
+        identity_id = session['primary_identity']
 
-        database.save_profile(identity_id=session['primary_identity'],
-                              name=name,
-                              email=email,
-                              institution=institution)
+        # print identity_id
 
-        # newuser = clientapi.defineUser(identity_id=session['primary_identity'],
-        #                                name=name,
-        #                                email=email,
-        #                                institution=institution)
-        #
-        # clientapi.storeUser(newuser)
+        newuser = clientapi.defineUser(identity_id=identity_id,
+                                       name=name,
+                                       first=first,
+                                       last=last,
+                                       email=email,
+                                       institution=institution)
+
+        # print(newuser)
+        clientapi.storeUser(newuser)
 
         flash('Thank you! Your profile has been successfully updated.')
 
@@ -189,6 +199,11 @@ def authcallback():
     """Handles the interaction with Globus Auth."""
     # If we're coming back from Globus Auth in an error state, the error
     # will be in the "error" query string parameter.
+    c = SafeConfigParser()
+    c.readfp(open(
+        '/Users/JeremyVan/Documents/Programming/UChicago/VC3_Project/vc3-website-python/vc3-client/etc/vc3-client.conf'))
+    clientapi = client.VC3ClientAPI(c)
+
     if 'error' in request.args:
         flash("You could not be logged into the portal: " +
               request.args.get('error_description', request.args['error']))
@@ -197,21 +212,17 @@ def authcallback():
     # Set up our Globus Auth/OAuth2 state
     redirect_uri = url_for('authcallback', _external=True)
 
-    client = load_portal_client()
-    client.oauth2_start_flow(redirect_uri, refresh_tokens=True)
+    globusclient = load_portal_client()
+    globusclient.oauth2_start_flow(redirect_uri, refresh_tokens=True)
 
     # If there's no "code" query string parameter, we're in this route
     # starting a Globus Auth login flow.
     if 'code' not in request.args:
-        # c = SafeConfigParser()
-        # c.readfp(open(
-        #     '/Users/JeremyVan/Documents/Programming/UChicago/VC3_Project/vc3-website-python/vc3-client/etc/vc3-client.conf'))
-        # clientapi = client.VC3ClientAPI(c)
 
         additional_authorize_params = (
             {'signup': 1} if request.args.get('signup') else {})
 
-        auth_uri = client.oauth2_get_authorize_url(
+        auth_uri = globusclient.oauth2_get_authorize_url(
             additional_params=additional_authorize_params)
 
         return redirect(auth_uri)
@@ -219,9 +230,9 @@ def authcallback():
         # If we do have a "code" param, we're coming back from Globus Auth
         # and can start the process of exchanging an auth code for a token.
         code = request.args.get('code')
-        tokens = client.oauth2_exchange_code_for_tokens(code)
+        tokens = globusclient.oauth2_exchange_code_for_tokens(code)
 
-        id_token = tokens.decode_id_token(client)
+        id_token = tokens.decode_id_token(globusclient)
         session.update(
             tokens=tokens.by_resource_server,
             is_authenticated=True,
@@ -232,15 +243,22 @@ def authcallback():
             primary_identity=id_token.get('sub'),
         )
 
-        profile = database.load_profile(session['primary_identity'])
-        # profile = clientapi.getUser(profile)
+        # print(session)
+        userlist = clientapi.listUsers()
+        profile = None
+
+        for user in userlist:
+            if session['primary_identity'] == user.identity_id:
+                profile = user
 
         if profile:
-            name, email, institution = profile
 
-            session['name'] = name
-            session['email'] = email
-            session['institution'] = institution
+            session['name'] = profile.name
+            session['first'] = profile.first
+            session['last'] = profile.last
+            session['email'] = profile.email
+            session['institution'] = profile.institution
+            session['primary_identity'] = profile.identity_id
         else:
             return redirect(url_for('profile',
                                     next=url_for('home')))
