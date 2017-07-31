@@ -1,6 +1,0 @@
-[submodule "vc3-client"]
-	path = vc3-client
-	url = https://github.com/vc3-project/vc3-client.git
-[submodule "vc3-info-service"]
-	path = vc3-info-service
-	url = https://github.com/vc3-project/vc3-info-service.git
