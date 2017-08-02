@@ -1,7 +1,7 @@
 from flask import (abort, flash, redirect, render_template, request,
                    session, url_for, g)
 import requests
-
+import logging
 import os
 
 # from configparser import ConfigParser
@@ -24,6 +24,10 @@ from portal import app, database, pages
 from portal.decorators import authenticated
 from portal.utils import (load_portal_client, get_portal_tokens,
                           get_safe_redirect)
+
+c = SafeConfigParser()
+c.readfp(open('/etc/vc3/vc3-client.conf'))
+clientapi = client.VC3ClientAPI(c)
 
 
 @app.route('/', methods=['GET'])
@@ -132,10 +136,10 @@ def logout():
 @authenticated
 def profile():
     """User profile information. Assocated with a Globus Auth identity."""
-    c = SafeConfigParser()
-    c.readfp(open(
-        '/Users/JeremyVan/Documents/Programming/UChicago/VC3_Project/vc3-website-python/vc3-client/etc/vc3-client.conf'))
-    clientapi = client.VC3ClientAPI(c)
+    #c = SafeConfigParser()
+    #c.readfp(open(
+    #    '/etc/vc3/vc3-client.conf'))
+    #clientapi = client.VC3ClientAPI(c)
 
     if request.method == 'GET':
         # identity_id = session.get('primary_identity')
@@ -199,10 +203,10 @@ def authcallback():
     """Handles the interaction with Globus Auth."""
     # If we're coming back from Globus Auth in an error state, the error
     # will be in the "error" query string parameter.
-    c = SafeConfigParser()
-    c.readfp(open(
-        '/Users/JeremyVan/Documents/Programming/UChicago/VC3_Project/vc3-website-python/vc3-client/etc/vc3-client.conf'))
-    clientapi = client.VC3ClientAPI(c)
+    #c = SafeConfigParser()
+    #c.readfp(open(
+    #    '/etc/vc3/vc3-client.conf'))
+    #clientapi = client.VC3ClientAPI(c)
 
     if 'error' in request.args:
         flash("You could not be logged into the portal: " +
@@ -280,9 +284,9 @@ def new():
 @app.route('/project', methods=['GET', 'POST'])
 @authenticated
 def project():
-    c = SafeConfigParser()
-    c.readfp(open('/Users/JeremyVan/Documents/Programming/UChicago/VC3_Project/vc3-website-python/vc3-client/etc/vc3-client.conf'))
-    clientapi = client.VC3ClientAPI(c)
+    #c = SafeConfigParser()
+    #c.readfp(open('/etc/vc3/vc3-client.conf'))
+    #clientapi = client.VC3ClientAPI(c)
 
     if request.method == 'POST':
         name = request.form['name']
@@ -309,9 +313,9 @@ def projectpages():
 @app.route('/allocation', methods=['GET', 'POST'])
 @authenticated
 def allocation():
-    c = SafeConfigParser()
-    c.readfp(open('/Users/JeremyVan/Documents/Programming/UChicago/VC3_Project/vc3-website-python/vc3-client/etc/vc3-client.conf'))
-    clientapi = client.VC3ClientAPI(c)
+    #c = SafeConfigParser()
+    #c.readfp(open('/etc/vc3/vc3-client.conf'))
+    #clientapi = client.VC3ClientAPI(c)
 
     if request.method == 'POST':
         name = request.form['name']
