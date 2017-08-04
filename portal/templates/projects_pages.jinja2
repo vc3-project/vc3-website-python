@@ -3,22 +3,43 @@
 {%block title%}Dashboard{%endblock%}
 
 {%block body%}
-
+<section id="project_pages">
 				<div class="content">
             <div class="container-fluid">
 							<div class="row">
 									<div class="col-md-8 col-lg-12">
 											<div class="card">
 													<div class="header">
-														<h4 class="title">Project Name</h4>
+														<h3 class="title"><span id="label">Project:</span> {{ name }}</h3>
 															<h5 class="category">Field of Science category</h5>
                               <h5 class="category">Some mildly interesting description here, explaining the goals and purpose of the project</h5>
 													</div>
 													<div class="content container">
-                            <h4>Team Members</h4>
-                            <h4>Cluster</h4>
-                            <h4>Environment</h4>
-                            <h4>Publication</h4>
+                            <span id="label">
+															<h3>Team Members:
+																<div class="container">
+																	<form role="form" action="{{url_for('project_name', name=project.name)}}" method="POST">
+																			<input
+																				placeholder="Member Names"
+																				name="members"
+																				type="text"
+																				autofocus
+																				value="{{request.members}}">
+																				<a href="#" class="btn btn-default btn-sm">+ Add Members to Project</a>
+																	</form>
+																</div>
+															</h3>
+														</span>
+															<div class="list-group">
+																<a href="#" class="list-group-item active">Owner: {{ owner }}</a>
+															{% for member in members%}
+																<a href="#" class="list-group-item list-group-item-action">{{ member }}</a>
+															{% endfor %}
+															</div>
+														<span id="label"><h3>Allocations: <a href="#" class="btn btn-default btn-sm">Add Allocation</a></h3></span>
+                            <span id="label"><h3>Cluster: <a href="#" class="btn btn-default btn-sm">Define Cluster</a></h3></span>
+                            <span id="label"><h3>Environment: <a href="#" class="btn btn-default btn-sm">Define Environment</a></h3></span>
+                            <span id="label"><h3>Publication</h3></span>
                             <a href="#" class="btn btn-default">Launch Request</a>
 													</div>
 											</div>
@@ -27,5 +48,5 @@
 
             </div>
         </div>
-
+</section>
 {%endblock%}

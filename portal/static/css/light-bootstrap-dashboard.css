@@ -2206,3 +2206,33 @@ body > .navbar-collapse {
       padding-left: 10px;
       padding-right: 10px;
     }
+
+    #project_pages .card span {
+      color: #fcc500;
+    }
+    #project_pages .card a:hover {
+      color: #111;
+      background: #ffc907;
+      border-color: #ffc907;
+    }
+    #project_pages .card .list-group {
+      max-width: 450px;
+    }
+    #project_pages .card .list-group a {
+      text-align: center;
+    }
+    #project_pages .card .list-group .active {
+      background-color: #c1c0ba;
+      border-color: #c1c0ba;
+      font-weight: 600;
+      color: #FFF;
+    }
+    /*This is for labels in resources*/
+
+    .content .card span {
+      color: #fcc500;
+    }
+    .content .card .card-title {
+      font-weight: 600;
+      padding-top: 10px;
+    }

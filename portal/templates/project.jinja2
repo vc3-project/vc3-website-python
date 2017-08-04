@@ -33,8 +33,6 @@
 
                             <div class="content description">
 
-															List Projects Here.
-
 															<ul class=projects>
 															{% for project in projects %}
 																<div class="card text-center" style="width: 30rem;">
@@ -44,7 +42,7 @@
 																		{% for member in project.members %}
 																			<p class="card-text"><span id="label">Members:</span> {{ member }}</p>
 																		{% endfor %}
-																    <a href="#" class="btn btn-primary btn-sm">View Project</a>
+																    <a href="{{ url_for('project_name', name=project.name) }}" class="btn btn-primary btn-sm">View Project</a>
 																  </div>
 																</div>
 															{% else %}

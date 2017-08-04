@@ -91,6 +91,7 @@ ssl/
 .editorconfig
 .idea/
 nohup.out
+vc3-client/etc/vc3-client.conf
 
 # pages directory will be in separate repo
 /portal/pages

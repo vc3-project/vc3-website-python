@@ -26,7 +26,8 @@ from portal.utils import (load_portal_client, get_portal_tokens,
                           get_safe_redirect)
 
 c = SafeConfigParser()
-c.readfp(open('/etc/vc3/vc3-client.conf'))
+# c.readfp(open('/etc/vc3/vc3-client.conf'))
+c.readfp(open('/Users/JeremyVan/Documents/Programming/UChicago/VC3_Project/vc3-website-python/vc3-client/etc/vc3-client.conf'))
 clientapi = client.VC3ClientAPI(c)
 
 
@@ -137,7 +138,7 @@ def logout():
 def profile():
     """User profile information. Assocated with a Globus Auth identity."""
     #c = SafeConfigParser()
-    #c.readfp(open(
+    # c.readfp(open(
     #    '/etc/vc3/vc3-client.conf'))
     #clientapi = client.VC3ClientAPI(c)
 
@@ -203,10 +204,6 @@ def authcallback():
     """Handles the interaction with Globus Auth."""
     # If we're coming back from Globus Auth in an error state, the error
     # will be in the "error" query string parameter.
-    #c = SafeConfigParser()
-    #c.readfp(open(
-    #    '/etc/vc3/vc3-client.conf'))
-    #clientapi = client.VC3ClientAPI(c)
 
     if 'error' in request.args:
         flash("You could not be logged into the portal: " +
@@ -284,9 +281,6 @@ def new():
 @app.route('/project', methods=['GET', 'POST'])
 @authenticated
 def project():
-    #c = SafeConfigParser()
-    #c.readfp(open('/etc/vc3/vc3-client.conf'))
-    #clientapi = client.VC3ClientAPI(c)
 
     if request.method == 'POST':
         name = request.form['name']
@@ -304,18 +298,32 @@ def project():
         return render_template('project.jinja2', projects=projects)
 
 
-@app.route('/project/projectpages', methods=['GET', 'POST'])
+@app.route('/project/<name>', methods=['GET', 'POST'])
 @authenticated
-def projectpages():
-    return render_template('projects_pages.jinja2')
+def project_name(name):
+    projects = clientapi.listProjects()
+    # userproject = clientapi.getProjectsOfUser(projects)
+
+    if request.method == 'GET':
+        for project in projects:
+            if project.name == name:
+                projectname = project.name
+                owner = project.owner
+                members = project.members
+
+    # elif request.method == 'POST':
+    #     for project in projects:
+    #         newmember = request.form['members']
+    #         project = project
+    #
+    #     clientapi.addUserToProject(project=project, user=newmember)
+
+    return render_template('projects_pages.jinja2', name=projectname, owner=owner, members=members, project=project)
 
 
 @app.route('/allocation', methods=['GET', 'POST'])
 @authenticated
 def allocation():
-    #c = SafeConfigParser()
-    #c.readfp(open('/etc/vc3/vc3-client.conf'))
-    #clientapi = client.VC3ClientAPI(c)
 
     if request.method == 'POST':
         name = request.form['name']
@@ -330,8 +338,8 @@ def allocation():
         return render_template('allocation.jinja2')
     elif request.method == 'GET':
         allocations = clientapi.listAllocations()
-        # for project in projects:
-        #     print(project)
+        for allocation in allocations:
+            print(allocation)
         return render_template('allocation.jinja2', allocations=allocations)
     return render_template('allocation.jinja2')
 
