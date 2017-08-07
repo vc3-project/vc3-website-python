@@ -26,8 +26,8 @@ from portal.utils import (load_portal_client, get_portal_tokens,
                           get_safe_redirect)
 
 c = SafeConfigParser()
-# c.readfp(open('/etc/vc3/vc3-client.conf'))
-c.readfp(open('/Users/JeremyVan/Documents/Programming/UChicago/VC3_Project/vc3-website-python/vc3-client/etc/vc3-client.conf'))
+c.readfp(open('/etc/vc3/vc3-client.conf'))
+# c.readfp(open('/Users/JeremyVan/Documents/Programming/UChicago/VC3_Project/vc3-website-python/vc3-client/etc/vc3-client.conf'))
 clientapi = client.VC3ClientAPI(c)
 
 

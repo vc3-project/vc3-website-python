@@ -12,104 +12,123 @@
 
       <div class="row">
         <div class="col-md-8">
-          <h3 class="community-title" id="communitytitle">Community</h3>
-          <p class="community-text">Engage intellect and ideas with the VC3
-          community on our <strong><a href="https://vc3-project.slack.com" target="_blank">Slack channel</a></strong>
-          or join the VC3-dev Google group. A weekly developers meeting takes
-          place via Zoom video conference, in order to discuss the state of affairs.</p>
+
+        <div class="card text-center">
+          <div class="card-header">
+            <ul class="nav nav-tabs card-header-tabs" role="tablist">
+              <li class="nav-item">
+                <a class="nav-link" data-toggle="tab" href="#comhome" role="tab">Community</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" data-toggle="tab" href="#cluster" role="tab">The Cluster</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" data-toggle="tab" href="#workloads" role="tab">Smarter Workloads</a>
+              </li>
+            </ul>
+          </div>
+          <div class="card-block">
+            <div class="tab-content">
+
+              <div class="tab-pane fade" id="comhome" role="tabpanel">
+                <div class="card">
+
+                  <h3 class="card-title" id="comhome">About VC3</h3>
+
+                  <p class="card-text">Engage intellect and ideas with the VC3
+                  community on our <strong><a href="https://twitter.com/virtualclusters"
+                  target="_blank">Twitter account</a></strong>. A weekly developers
+                  meeting takes place via Zoom video conference, in order to discuss
+                  the state of affairs. Traditional high performance and high throughput
+                  computing facilities largely assume local, centralized configuration and
+                  arbitration of resources. While this model has been adequate for serving
+                  individuals for some time, it has never been satisfactory for collaborating
+                  groups that cross organizational boundaries: a computing facility designed
+                  to meet the needs of one user community rarely meets the needs of others.
+                  The result is that users retreat to private resources, resulting in
+                  excess hardware acquisition, underutilized machines, or both. This is
+                  especially unfortunate when the distinction between facilities lies more
+                  in operating system and software configuration than fundamental
+                  hardware differences.</p>
+                </div>
+              </div>
+
+              <div class="tab-pane fade" id="cluster" role="tabpanel">
+                <div class="card">
+                  <h3 class="card-title" id="cluster">The cluster, re-imagined</h3>
+
+                  <p class="card-text">In this project, we will aim to make research
+                  computing facilities more amenable to self-service use by broad user
+                  communities. The organizing principle is the idea of virtual clusters
+                  for community computation (VC3) in which end users can effectively
+                  "allocate" clusters from existing facilities by requesting, for example,
+                  200 nodes of 24 cores and 64GB RAM each, with 100TB local scratch and
+                  10Gb connectivity to external data sources. Once allocated, the owner
+                  of the virtual cluster is to install software, load data, execute jobs,
+                  and share the allocation with collaborators. Of course, we do not expect
+                  to unilaterally change the underlying resource management systems of
+                  existing facilities. Rather, virtual clusters will be provisioned on
+                  top of existing facilities by deploying user-level tools (e.g.
+                  HTCondor-based tools for resource management, data caching, and Parrot
+                  for virtual file system access) within the existing batch systems.
+                  In short, a virtual cluster will appear to facility administrators as
+                  a large parallel job managed by the end user.</p>
+                </div>
+              </div>
+
+              <div class="tab-pane fade" id="workloads" role="tabpanel">
+
+                <div class="card">
+                  <h3 class="card-title" id="workloads">Smarter workloads</h3>
+
+                  <p class="card-text">But virtual clusters by themselves are not
+                  enough: workloads must be self-configuring so that they can bring necessary
+                  dependencies, discover the dynamic configuration, and adapt to the
+                  (possibly) changing conditions of the virtual cluster. To accomplish
+                  this integration with reasonable effort, we will leverage a variety of
+                  existing open source tools and production quality services. The end
+                  product will be a flexible, optimizable software ecosystem with a generic
+                  set of capabilities, presented to users as a virtual cluster service
+                  accessible via a web portal. We presume the cluster as an optimal
+                  computing abstraction as it naturally covers a large swath of modern
+                  scientific computation and training base of expertise (e.g. campus
+                  HPC centers). We use as principal drivers computation in high-energy
+                  physics, and in particular data-intensive analysis workflows required
+                  for analysis of multi-petabyte scale datasets flowing from the ATLAS
+                  and CMS experiments at the Large Hadron Collider (LHC) at CERN in
+                  Geneva, Switzerland.</p>
+
+                  <strong class="community-text">The deliverables for this project will include:</strong>
+
+                  <ul class="community-text">A reference virtual cluster platform service
+                  which describes the layered architectural components and the relationships
+                  and connections between them;</ul>
+
+                  <ul class="community-text">A number of production service instances,
+                  providing a core computational feature set, to be used to coordinate grid,
+                  commercial cloud, HPC center, and importantly, university campus cluster
+                  access;</ul>
+
+                  <ul class="community-text">A selection of workflow tools and services
+                  that are capable of functioning effectively in the dynamically-configured
+                  environment of a virtual cluster.</ul>
+
+                  <p class="community-text">The effectiveness of these deliverables will
+                  be demonstrated at scale with CMS and ATLAS user applications and the
+                  adoption of the VC3-implemented virtual clusters by new communities.</p>
+                </div>
+              </div>
+            </div><!-- /.tab-content -->
+          </div><!-- /.card-block -->
+        </div><!-- /.card text-center -->
+
         </div>
         <div class="col-md-4 community-btn-container">
-          <a class="community-btn" data-toggle="modal" href="#community">Learn More</a>
+          <!-- <a class="community-btn" data-toggle="modal" href="#community">Learn More</a> -->
+          <p align="center"><a class="twitter-timeline" data-width="500" data-height="500" href="https://twitter.com/virtualclusters">Tweets by virtualclusters</a></p>
+          <script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
         </div>
       </div><!-- row -->
-
-      <div class="row" id="community-content">
-        <div class="col-md-12">
-          <h3 class="community-title" id="communitytitle">About VC3</h3>
-
-          <p class="community-text">Traditional high performance and high throughput
-          computing facilities largely assume local, centralized configuration and
-          arbitration of resources. While this model has been adequate for serving
-          individuals for some time, it has never been satisfactory for collaborating
-          groups that cross organizational boundaries: a computing facility designed
-          to meet the needs of one user community rarely meets the needs of others.
-          The result is that users retreat to private resources, resulting in
-          excess hardware acquisition, underutilized machines, or both. This is
-          especially unfortunate when the distinction between facilities lies more
-          in operating system and software configuration than fundamental
-          hardware differences.</p>
-
-          <h3 class="community-title" id="communitytitle">The cluster, re-imagined</h3>
-
-          <p class="community-text">In this project, we will aim to make research
-          computing facilities more amenable to self-service use by broad user
-          communities. The organizing principle is the idea of virtual clusters
-          for community computation (VC3) in which end users can effectively
-          "allocate" clusters from existing facilities by requesting, for example,
-          200 nodes of 24 cores and 64GB RAM each, with 100TB local scratch and
-          10Gb connectivity to external data sources. Once allocated, the owner
-          of the virtual cluster is to install software, load data, execute jobs,
-          and share the allocation with collaborators. Of course, we do not expect
-          to unilaterally change the underlying resource management systems of
-          existing facilities. Rather, virtual clusters will be provisioned on
-          top of existing facilities by deploying user-level tools (e.g.
-          HTCondor-based tools for resource management, data caching, and Parrot
-          for virtual file system access) within the existing batch systems.
-          In short, a virtual cluster will appear to facility administrators as
-          a large parallel job managed by the end user.</p>
-
-          <h3 class="community-title" id="communitytitle">Smarter workloads</h3>
-
-          <p class="community-text">But virtual clusters by themselves are not
-          enough: workloads must be self-configuring so that they can bring necessary
-          dependencies, discover the dynamic configuration, and adapt to the
-          (possibly) changing conditions of the virtual cluster. To accomplish
-          this integration with reasonable effort, we will leverage a variety of
-          existing open source tools and production quality services. The end
-          product will be a flexible, optimizable software ecosystem with a generic
-          set of capabilities, presented to users as a virtual cluster service
-          accessible via a web portal. We presume the cluster as an optimal
-          computing abstraction as it naturally covers a large swath of modern
-          scientific computation and training base of expertise (e.g. campus
-          HPC centers). We use as principal drivers computation in high-energy
-          physics, and in particular data-intensive analysis workflows required
-          for analysis of multi-petabyte scale datasets flowing from the ATLAS
-          and CMS experiments at the Large Hadron Collider (LHC) at CERN in
-          Geneva, Switzerland.</p>
-
-          <strong class="community-text">The deliverables for this project will include:</strong>
-
-          <ul class="community-text">A reference virtual cluster platform service
-          which describes the layered architectural components and the relationships
-          and connections between them;</ul>
-
-          <ul class="community-text">A number of production service instances,
-          providing a core computational feature set, to be used to coordinate grid,
-          commercial cloud, HPC center, and importantly, university campus cluster
-          access;</ul>
-
-          <ul class="community-text">A selection of workflow tools and services
-          that are capable of functioning effectively in the dynamically-configured
-          environment of a virtual cluster.</ul>
-
-          <p class="community-text">The effectiveness of these deliverables will
-          be demonstrated at scale with CMS and ATLAS user applications and the
-          adoption of the VC3-implemented virtual clusters by new communities.</p>
-        </div>
-      </div>
-
-      <!-- <div class="row" id="calendar">
-        <div class="col-md-12">
-          <h3 class="community-title">Embed Google Calendar Here</h3>
-        </div>
-      </div> --> <!-- row -->
-
-      <div class="section-title-divider"></div>
-
-      <div class="row">
-        <p align="center"><a class="twitter-timeline" data-width="500" data-height="500" href="https://twitter.com/virtualclusters">Tweets by virtualclusters</a></p>
-        <script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
-      </div>
 
       <div class="section-title-divider"></div>
 

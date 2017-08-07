@@ -413,7 +413,10 @@ body.mobile-nav-active #mobile-nav-toggle {
 --------------------------------------------------------------*/
 
 #about {
-  padding: 80px 0;
+  padding: 10px 0;
+  /*max-width: 100%;
+  max-height: 100%;*/
+  /*position: relative;*/
 }
 #about img {
   max-width: 100%;
@@ -421,119 +424,32 @@ body.mobile-nav-active #mobile-nav-toggle {
   display: block;
   margin: 0 auto;
 }
-#about .content {
-  vertical-align: middle;
+
+#about #vc3homediagram img {
+  max-height: 280px;
+}
+#about .content .section-title {
+  padding-top: 15px;
 }
 
-
-/*--------------------------------------------------------------
-# Services Sections
---------------------------------------------------------------*/
-
-#services {
-  background: linear-gradient(rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.9)), url("http://media2.govtech.com/images/shutterstock-cloud-computing.jpg") fixed center center;
-  background-size: cover;
-  padding: 80px 0 60px 0;
+#about #myCarousel .carousel-indicators {
+  bottom: -50px;
+}
+#about .carousel-inner {
+  margin-bottom: 50px;
+}
+#about #myCarousel .carousel-indicators li {
+  background: rgba(252, 197, 0, 0.7);
+}
+#about .item {
+  max-width: 100%;
+}
+#about .carousel-control.left, .carousel-control.right {
+   background-image:none !important;
+   filter:none !important;
+   display: none;
 }
 
-/*#services {
-  background-image: url('http://media2.govtech.com/images/shutterstock-cloud-computing.jpg');
-  background-position: center center;
-  background-repeat: no-repeat;
-  background-attachment: fixed;
-  background-size: cover;
-}*/
-
-/*Below makes background image mobile responsive, a test*/
-
-/*@media (max-width: 768px) {
-  #services {
-    background-attachment: scroll;
-  }
-}*/
-
-#services .service-item {
-  margin-bottom: 20px;
-}
-
-#services .service-icon {
-  float: left;
-  background: #03C4EB;
-  padding: 16px;
-  border-radius: 50%;
-  transition: 0.5s;
-  border: 1px solid #03C4EB;
-}
-
-#services .service-icon i {
-  color: #fff;
-  font-size: 24px;
-}
-
-#services .service-item:hover .service-icon {
-  background: #fff;
-}
-
-#services .service-item:hover .service-icon i {
-  color: #03C4EB;
-}
-
-#services .service-title {
-  margin-left: 80px;
-  font-weight: 700;
-  margin-bottom: 15px;
-  text-transform: uppercase;
-}
-
-#services .service-title a {
-  color: #111;
-}
-
-#services .service-description {
-  margin-left: 80px;
-  line-height: 24px;
-}
-
-/*--------------------------------------------------------------
-# Partners Sections
---------------------------------------------------------------*/
-
-#partners {
-  /*background: linear-gradient(rgba(250, 250, 250, 0.6), rgba(255, 255, 255, 0.8)), url('https://www.avineon.com/sites/default/files/Cloud-computing_1285x588.jpg') fixed center center;*/
-  background-color: #f2f2f2;
-  background-size: cover;
-  padding: 80px 0;
-  text-align: center;
-}
-
-/*#partners {
-  background-image: url('https://www.avineon.com/sites/default/files/Cloud-computing_1285x588.jpg');
-  background-position: center center;
-  background-repeat: no-repeat;
-  background-attachment: fixed;
-  background-size: cover;
-}*/
-
-/*Below makes background image mobile responsive, a test*/
-
-/*@media (max-width: 768px) {
-  #partners {
-    background-attachment: scroll;
-  }
-}*/
-
-#partners .partners-logo {
-  padding: 10px;
-}
-#partners .partners-title {
-  color: #000000;
-  font-size: 28px;
-  font-weight: 700;
-}
-
-#partners .partners-text {
-  color: #fff;
-}
 
 /*--------------------------------------------------------------
 # Documentations Section
@@ -825,6 +741,18 @@ body.mobile-nav-active #mobile-nav-toggle {
   color: #30E8BF;  /* fallback for old browsers */
   color: -webkit-linear-gradient(to right, #FF8235, #30E8BF);  /* Chrome 10-25, Safari 5.1-6 */
   color: linear-gradient(to right, #FF8235, #30E8BF); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+}
+
+#footer #partners {
+  margin: 0 auto;
+  width: 50%;
+}
+/*#footer #partners .row{
+  margin: 0 auto;
+  width: 100%;
+}*/
+#footer #partners .partners-logo{
+  padding: 8px;
 }
 
 /*------------------------

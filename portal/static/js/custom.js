@@ -171,29 +171,7 @@ jQuery(document).ready(function() {
   });
 
   // Tab Panels
-  // jQuery(document).on('show.bs.tab', '.nav-tabs-responsive [data-toggle="tab"]', function(e) {
-  //   var jQuerytarget = jQuery(e.target);
-  //   var jQuerytabs = jQuerytarget.closest('.nav-tabs-responsive');
-  //   var jQuerycurrent = jQuerytarget.closest('li');
-  //   var jQueryparent = jQuerycurrent.closest('li.dropdown');
-  //   jQuerycurrent = jQueryparent.length > 0 ? jQueryparent : jQuerycurrent;
-  //   var jQuerynext = jQuerycurrent.next();
-  //   var jQueryprev = jQuerycurrent.prev();
-  //   var updateDropdownMenu = function(jQueryel, position){
-  //     jQueryel
-  //       .find('.dropdown-menu')
-  //       .removeClass('pull-xs-left pull-xs-center pull-xs-right')
-  //       .addClass( 'pull-xs-' + position );
-  //   };
-  //
-  //   jQuerytabs.find('>li').removeClass('next prev');
-  //   jQueryprev.addClass('prev');
-  //   jQuerynext.addClass('next');
-  //
-  //   updateDropdownMenu( jQueryprev, 'left' );
-  //   updateDropdownMenu( jQuerycurrent, 'center' );
-  //   updateDropdownMenu( jQuerynext, 'right' );
-  // });
+
   $(document).on('show.bs.tab', '.nav-tabs-responsive [data-toggle="tab"]', function(e) {
     var $target = $(e.target);
     var $tabs = $target.closest('.nav-tabs-responsive');
