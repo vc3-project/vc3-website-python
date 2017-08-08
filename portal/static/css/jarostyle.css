@@ -108,7 +108,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 #hero .hero-logo img {
-  max-width: 70%;
+  max-width: 200px;
 }
 
 #hero .hero-container {
@@ -419,8 +419,13 @@ body.mobile-nav-active #mobile-nav-toggle {
   display: block;
   margin: 0 auto;
 }
-#about div .container {
-  padding: 10px;
+#about .container {
+  /*padding: 10px;*/
+  /*display: flex;*/
+  /*align-items: center;*/
+}
+#about .container .content {
+  padding-top: 70px;
 }
 #about #vc3homediagram img {
   max-height: 280px;
@@ -448,11 +453,11 @@ body.mobile-nav-active #mobile-nav-toggle {
 }
 .vc3-divider-img {
   width: 100%;
-  max-height: 225px;
+  max-height: 115px;
 }
 .vc3-divider-img img{
   width: 100%;
-  max-height: 225px;
+  max-height: 115px;
 }
 
 /*--------------------------------------------------------------
@@ -672,6 +677,9 @@ body.mobile-nav-active #mobile-nav-toggle {
 #team .caption-style .overlay a:hover {
   color: black;
 }
+/*#team .caption-style .row .member span #team-italic {
+  text
+}*/
 
 @media only screen and (min-width : 320px) and (max-width: 640px) {
 
@@ -689,10 +697,6 @@ body.mobile-nav-active #mobile-nav-toggle {
            height: auto;
            display: inline-block;
         }
-        /*#team .caption-style .member:hover .overlay {
-          max-width: 320px;
-          left: 124px;
-        }*/
 }
 /*--------------------------------------------------------------
 # Team Captions
@@ -788,7 +792,7 @@ body.mobile-nav-active #mobile-nav-toggle {
 
 #footer #partners {
   margin: 0 auto;
-  width: 50%;
+  /*width: 50%;*/
 }
 /*#footer #partners .row{
   margin: 0 auto;
@@ -839,6 +843,43 @@ section #blog_article {
 	width: 100%;
 }
 
+/*--------------------------------------------------------------
+# STATUS Page
+--------------------------------------------------------------*/
+
+.status-perfect {
+  background-color: #33CC33;
+  height: 100%;
+  width: 100%;
+  padding-top: 0.5em;
+  padding-bottom: 0.5em;
+  color: white;
+  border-radius: 4px;
+  font-size: 18px;
+}
+
+
+.status-reduced {
+  background-color: #33CCFF;
+  height: 100%;
+  width: 100%;
+  padding-top: 0.5em;
+  padding-bottom: 0.5em;
+  color: white;
+  border-radius: 4px;
+  font-size: 18px;
+}
+
+.status-critical {
+  background-color: #FF0000;
+  height: 100%;
+  width: 100%;
+  padding-top: 0.5em;
+  padding-bottom: 0.5em;
+  color: white;
+  border-radius: 4px;
+  font-size: 18px;
+}
 
 /*--------------------------------------------------------------
 # Welcome - Logged in
