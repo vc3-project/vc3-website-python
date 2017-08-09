@@ -3,7 +3,7 @@
         <h2>
             <span id="blogtitle"><a href="{{ url_for('page', path=page.path) }}">{{ page.title }}</a></span>
         </h2>
-        <p>{{ page.date }}</p>
+        <em>{{ page.date }}</em>
         <div class="pagepreview">{{ page.html|safe }}</div>
         {% if page.meta.tags|length %}
             {% for page_tag in page.meta.tags %}
