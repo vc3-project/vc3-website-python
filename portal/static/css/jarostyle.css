@@ -402,6 +402,14 @@ body.mobile-nav-active #mobile-nav-toggle {
   margin: 0 auto;
   margin-bottom: 20px;
 }
+.section-title-divider #fullwidth {
+  /*width: 50px;*/
+  height: 3px;
+  /*background: #03C4EB;*/
+  background: #ffc500;
+  margin: 0 auto;
+  margin-bottom: 20px;
+}
 
 /*--------------------------------------------------------------
 # Get Started / About Sections
@@ -617,12 +625,13 @@ body.mobile-nav-active #mobile-nav-toggle {
   text-align: center;
   margin-bottom: 20px;
   position: relative;
+  width: 80%;
 }
 
 #team .member .pic {
   margin-bottom: 15px;
   overflow: hidden;
-  height: 260px;
+  /*height: 260px;*/
 }
 
 #team .member .pic img {
@@ -648,9 +657,9 @@ body.mobile-nav-active #mobile-nav-toggle {
   left: 0;
   right: 0;
   border-radius: 50%;
-  margin-bottom: 15px;
+  margin-bottom: 50px;
   overflow: hidden;
-  height: 260px;
+  /*height: 260px;*/
   opacity: 0;
   transition: .5s ease;
   background-color: rgba(255, 197, 0, 0.8);
@@ -791,18 +800,10 @@ body.mobile-nav-active #mobile-nav-toggle {
 }
 
 #footer #partners {
+  padding: 10px;
   margin: 0 auto;
   width: 50%;
-}
-#footer #partners #doe-logo {
-    width: 640px; /*can be in percentage also.*/
-    height: auto;
-    margin: 0 auto;
-    padding: 10px;
-    position: relative;
-}
-#footer #partners .partners-logo{
-  padding: 8px;
+  /*position: relative;*/
 }
 
 /*------------------------
