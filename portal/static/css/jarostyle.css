@@ -742,9 +742,9 @@ body.mobile-nav-active #mobile-nav-toggle {
 # Footer
 --------------------------------------------------------------*/
 #footer {
-  background: #111;
+  background: rgba(0,0,0,0.8);
   padding: 30px 0;
-  /*color: #fff;*/
+  color: rgba(255,255,255,0.8);
 }
 
 #footer h3 {
