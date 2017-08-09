@@ -41,8 +41,18 @@ def home():
 # -----------------------------------------
 
 
-@app.route('/blog', methods=['GET'])
-def blog():
+@app.route('/status', methods=['GET', 'POST'])
+def status():
+    """Status page to display System Operational Status"""
+    return render_template('status.jinja2')
+
+# -----------------------------------------
+# CURRENT blog PAGE AND ALL ARTICLE ROUTES
+# -----------------------------------------
+
+
+@app.route('/news', methods=['GET'])
+def news():
     """Articles are pages with a publication date"""
     articles = (p for p in pages if 'date' in p.meta)
     """Show the 10 most recent articles, most recent first"""
@@ -51,14 +61,14 @@ def blog():
     return render_template('blog.jinja2', pages=latest[:10])
 
 
-@app.route('/blog/tag/<string:tag>/', methods=['GET'])
+@app.route('/news/tag/<string:tag>/', methods=['GET'])
 def tag(tag):
     """Automatic routing and compiling for article tags"""
     tagged = [p for p in pages if tag in p.meta.get('tags', [])]
     return render_template('blog_tag.jinja2', pages=tagged, tag=tag)
 
 
-@app.route('/blog/<path:path>/', methods=['GET'])
+@app.route('/news/<path:path>/', methods=['GET'])
 def page(path):
     """Automatic routing and generates markdown flatpages in /pages directory"""
     page = pages.get_or_404(path)
