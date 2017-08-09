@@ -5,6 +5,11 @@
         </h2>
         <p>{{ page.date }}</p>
         <div class="pagepreview">{{ page.html|safe }}</div>
+        {% if page.meta.tags|length %}
+            {% for page_tag in page.meta.tags %}
+                <em>Tags: {{ page_tag }}</em>
+            {% endfor %}
+        {% endif %}
         <p>
           <em><a href="{{ url_for('page', path=page.path) }}">Read more &raquo;</a></em>
         </p>
