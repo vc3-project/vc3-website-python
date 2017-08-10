@@ -951,7 +951,7 @@ body.mobile-nav-active #mobile-nav-toggle {
 }
 #blog .container .row article .pagepreview {
   display: block;
-  height: 50px;
+  height: 20px;
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
