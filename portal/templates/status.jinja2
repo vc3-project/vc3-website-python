@@ -1,0 +1,90 @@
+{%extends "base.jinja2"%}
+
+<!-- {%block title%}Blog{%endblock%} -->
+
+{%block body%}
+
+<section id="status">
+{% with pages=pages %}
+  <div class="container content wow fadeInUp">
+    <div class="row">
+
+    <div class="jumbotron">
+      <div class="container">
+          <h1 class="text-center"><img src="https://image.ibb.co/cWc9Pv/logoanimated.gif"> Systems Status</h1>
+      </div>
+    </div><!-- ./jumbotron -->
+
+    <div class="container">
+      <div class="row clearfix">
+        <div class="col-md-12 column">
+
+          <div class="row">
+            <div class="status-perfect">
+              <div class="panel-heading">
+                <div class="panel-title">
+                  <p>
+                    <h4>All Systems Operational<span class="pull-right">Refreshed 5 minutes ago</span></h4>
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- <div class="row">
+            <div class="status-reduced">
+              <div class="panel-heading">
+                <div class="panel-title">
+                  <p>
+                    <h4>System is operating, but with reduced capacity.<span class="pull-right">Refreshed 5 minutes ago</span></h4>
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="status-critical">
+              <div class="panel-heading">
+                <div class="panel-title">
+                  <h4>The system is currently offline</h4>
+                </div>
+              </div>
+            </div>
+          </div> -->
+
+          <hr>
+
+            <div class="row clearfix">
+              <div class="col-md-12 column">
+                <div class="list-group">
+                  <div class="list-group-item">
+                    <h4 class="list-group-item-heading op">Development Master <span class="pull-right text-success" id="operational-status">Operational</span></h4>
+                  </div>
+
+                  <div class="list-group-item">
+                    <h4 class="list-group-item-heading op">Development Infoservice <span class="pull-right text-success" id="operational-status">Operational</span></h4>
+                  </div>
+
+                  <div class="list-group-item">
+                    <h4 class="list-group-item-heading op">Development Factory <span class="pull-right text-success" id="operational-status">Operational</span></h4>
+                  </div>
+
+                  <div class="list-group-item">
+                    <h4 class="list-group-item-heading op">Development HTCondor Middleware <span class="pull-right text-success" id="operational-status">Operational</span></h4>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div><! status ./container -->
+
+    </div><!-- main ./row -->
+  </div><!-- main ./container content -->
+{% endwith %}
+</section>
+
+
+{%endblock%}

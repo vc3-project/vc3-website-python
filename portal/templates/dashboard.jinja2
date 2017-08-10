@@ -4,25 +4,26 @@
 
 {%block body%}
 
-				<div class="content">
+				<div class="content" id="dashboard">
             <div class="container-fluid">
+
 							<div class="row">
-									<div class="col-md-8 col-lg-12">
-											<div class="card">
-													<div class="header">
-														<h4 class="title">OSG Connect Queue</h4>
-															<p class="category">Dashboard category</p>
-													</div>
-													<div class="content container">
-														<iframe src="https://grafana.mwt2.org/dashboard-solo/db/osg-connect-queue?orgId=1&from=-24h&to=now&var-Brand=osgconnect&panelId=10&theme=dark" width="100%" height="200" frameborder="0" class="col-sm-12 col-md-6 col-lg-4"></iframe>
-														<iframe src="https://grafana.mwt2.org/dashboard-solo/db/osg-connect-queue?orgId=1&from=-24h&to=now&var-Brand=osgconnect&panelId=11&theme=dark" width="100%" height="200" frameborder="0" class="col-sm-12 col-md-6 col-lg-4"></iframe>
-													</div>
-											</div>
+								<div class="col-sm-12">
+									<div class="card container" id="card-container">
+										<div class="header">
+											<h4 class="title">Cluster Queue</h4>
+											<p class="category">Dashboard category</p>
+										</div>
+										<div class="content">
+											<iframe src="https://grafana.mwt2.org/dashboard-solo/db/osg-connect-queue?orgId=1&from=-24h&to=now&var-Brand=osgconnect&panelId=10&theme=dark" width="100%" height="200" frameborder="0"></iframe>
+										</div>
 									</div>
+								</div>
 							</div>
 
+
                 <div class="row">
-                    <div class="col-md-8 col-lg-12">
+                    <div class="col-sm-12">
                         <div class="card">
                             <div class="header">
                                 <h4 class="title">Memory Utilization</h4>
@@ -36,7 +37,7 @@
 								</div>
 
 								<div class="row">
-                    <div class="col-md-8 col-lg-12">
+                    <div class="col-sm-12">
                         <div class="card">
                             <div class="header">
                                 <h4 class="title">OSG Connect</h4>

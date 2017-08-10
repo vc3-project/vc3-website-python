@@ -2236,3 +2236,12 @@ body > .navbar-collapse {
       font-weight: 600;
       padding-top: 10px;
     }
+
+
+#dashboard .content iframe {
+  display: block;
+  width: 100%;
+}
+#dashboard .container-fluid #card-container {
+  width: 100%;
+}
