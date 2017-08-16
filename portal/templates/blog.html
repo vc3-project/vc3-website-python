@@ -1,6 +1,6 @@
-{%extends "base.jinja2"%}
+{%extends "base.html"%}
 
-<!-- {%block title%}Blog{%endblock%} -->
+{%block title%}News{%endblock%}
 
 {%block body%}
 
@@ -11,7 +11,7 @@
       <div class="col-sm-8">
         <h1><strong>Project News</strong></h1>
 
-          {% include "_list.jinja2" %}
+          {% include "_list.html" %}
 
       </div>
 
@@ -32,8 +32,8 @@
               {% endif %}
             {% endfor %}
 
-          </div> <!-- ./blog-sidebar-section -->
-        </div> <!-- ./blog-sidebar -->
+          </div>
+        </div> -->
 
       </div>
     </div>

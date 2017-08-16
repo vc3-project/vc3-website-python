@@ -1,4 +1,4 @@
-{%extends "loginbase.jinja2"%}
+{%extends "loginbase.html"%}
 
 {%block title%}Dashboard{%endblock%}
 
@@ -36,11 +36,30 @@
 																<a href="#" class="list-group-item list-group-item-action">{{ member }}</a>
 															{% endfor %}
 															</div>
-														<span id="label"><h3>Allocations: <a href="#" class="btn btn-default btn-sm">Add Allocation</a></h3></span>
+														<span id="label"><h3>Allocations:</h3></span>
+														<div class="list-group">
+														{% for project in projects %}
+															<div class="list-group-item list-group-item-action">{{ project.allocations }}</div>
+														{% endfor %}
+													</div>
+														<form role="form" action="{{url_for('project_name', name=project.name)}}" method="POST">
+															<div class="form-group">
+															  <label for="allocation">Select Allocation:</label>
+															  <select class="form-control" id="allocation" name="allocation" required>
+															    <option selected disabled>Please Select Allocation</option>
+																	{% for allocation in allocations %}
+												          <option value="{{allocation.name}}">{{ allocation.name }}</option>
+												          {% endfor %}
+															  </select>
+															</div>
+															<div class="form-group">
+																<button type="submit" class="btn btn-primary">Add Allocation</button>
+															</div>
+														</form>
                             <span id="label"><h3>Cluster: <a href="#" class="btn btn-default btn-sm">Define Cluster</a></h3></span>
                             <span id="label"><h3>Environment: <a href="#" class="btn btn-default btn-sm">Define Environment</a></h3></span>
-                            <span id="label"><h3>Publication</h3></span>
-                            <a href="#" class="btn btn-default">Launch Request</a>
+                            <!-- <span id="label"><h3>Publication</h3></span> -->
+                            <button type="submit" class="btn btn-primary">Launch Request</button>
 													</div>
 											</div>
 									</div>

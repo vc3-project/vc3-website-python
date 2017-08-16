@@ -26,15 +26,21 @@ from portal.utils import (load_portal_client, get_portal_tokens,
                           get_safe_redirect)
 
 c = SafeConfigParser()
-c.readfp(open('/etc/vc3/vc3-client.conf'))
-# c.readfp(open('/Users/JeremyVan/Documents/Programming/UChicago/VC3_Project/vc3-website-python/vc3-client/etc/vc3-client.conf'))
+# c.readfp(open('/etc/vc3/vc3-client.conf'))
+c.readfp(open('/Users/JeremyVan/Documents/Programming/UChicago/VC3_Project/vc3-website-python/vc3-client/etc/vc3-client.conf'))
 clientapi = client.VC3ClientAPI(c)
 
 
 @app.route('/', methods=['GET'])
 def home():
     """Home page - play with it if you must!"""
-    return render_template('home.jinja2')
+    return render_template('home.html')
+
+
+@app.route('/status', methods=['GET', 'POST'])
+def status():
+    """Status page - to display System Operational Status"""
+    return render_template('status.html')
 
 # -----------------------------------------
 # CURRENT blog PAGE AND ALL ARTICLE ROUTES
@@ -48,39 +54,39 @@ def blog():
     """Show the 10 most recent articles, most recent first"""
     latest = sorted(articles, reverse=True, key=lambda p: p.meta['date'])
     """Send the user to the blog page"""
-    return render_template('blog.jinja2', pages=latest[:10])
+    return render_template('blog.html', pages=latest[:10])
 
 
 @app.route('/blog/tag/<string:tag>/', methods=['GET'])
 def tag(tag):
     """Automatic routing and compiling for article tags"""
     tagged = [p for p in pages if tag in p.meta.get('tags', [])]
-    return render_template('blog_tag.jinja2', pages=tagged, tag=tag)
+    return render_template('blog_tag.html', pages=tagged, tag=tag)
 
 
 @app.route('/blog/<path:path>/', methods=['GET'])
 def page(path):
     """Automatic routing and generates markdown flatpages in /pages directory"""
     page = pages.get_or_404(path)
-    return render_template('blog_page.jinja2', page=page)
+    return render_template('blog_page.html', page=page)
 
 
 @app.route('/community', methods=['GET'])
 def community():
     """Send the user to community page"""
-    return render_template('community.jinja2')
+    return render_template('community.html')
 
 
 @app.route('/documentations', methods=['GET'])
 def documentations():
     """Send the user to documentations page"""
-    return render_template('documentations.jinja2')
+    return render_template('documentations.html')
 
 
 @app.route('/team', methods=['GET'])
 def team():
     """Send the user to team page"""
-    return render_template('team.jinja2')
+    return render_template('team.html')
 
 
 @app.route('/signup', methods=['GET'])
@@ -167,7 +173,7 @@ def profile():
         if request.args.get('next'):
             session['next'] = get_safe_redirect()
 
-        return render_template('profile.jinja2')
+        return render_template('profile.html')
     elif request.method == 'POST':
         name = session['name'] = request.form['name']
         first = session['first'] = request.form['first']
@@ -275,7 +281,7 @@ def authcallback():
 @app.route('/new', methods=['GET', 'POST'])
 @authenticated
 def new():
-    return render_template('new.jinja2')
+    return render_template('new.html')
 
 
 @app.route('/project', methods=['GET', 'POST'])
@@ -290,35 +296,36 @@ def project():
         newproject = clientapi.defineProject(name=name, owner=owner, members=members)
         clientapi.storeProject(newproject)
 
-        return render_template('project.jinja2')
+        return render_template('project.html')
     elif request.method == 'GET':
+        identity_id = session['primary_identity']
+        # projects = clientapi.getProjectsOfUser(username=identity_id)
         projects = clientapi.listProjects()
         # for project in projects:
         #     print(project)
-        return render_template('project.jinja2', projects=projects)
+        return render_template('project.html', projects=projects)
 
 
 @app.route('/project/<name>', methods=['GET', 'POST'])
 @authenticated
 def project_name(name):
     projects = clientapi.listProjects()
-    # userproject = clientapi.getProjectsOfUser(projects)
+    allocations = clientapi.listAllocations()
+    projectname = name
 
     if request.method == 'GET':
         for project in projects:
             if project.name == name:
-                projectname = project.name
+                name = project.name
                 owner = project.owner
                 members = project.members
+        return render_template('projects_pages.html', name=name, owner=owner, members=members, project=project, allocations=allocations, projects=projects)
 
-    # elif request.method == 'POST':
-    #     for project in projects:
-    #         newmember = request.form['members']
-    #         project = project
-    #
-    #     clientapi.addUserToProject(project=project, user=newmember)
+    elif request.method == 'POST':
+        allocation = request.form['allocation']
+        clientapi.addAllocationToProject(allocation, projectname)
 
-    return render_template('projects_pages.jinja2', name=projectname, owner=owner, members=members, project=project)
+        return render_template('projects_pages.html')
 
 
 @app.route('/allocation', methods=['GET', 'POST'])
@@ -335,22 +342,69 @@ def allocation():
             name=name, owner=owner, resource=resource, accountname=accountname)
         clientapi.storeAllocation(newallocation)
 
-        return render_template('allocation.jinja2')
+        return render_template('allocation.html')
     elif request.method == 'GET':
         allocations = clientapi.listAllocations()
-        for allocation in allocations:
-            print(allocation)
-        return render_template('allocation.jinja2', allocations=allocations)
-    return render_template('allocation.jinja2')
+        resources = clientapi.listResources()
+        return render_template('allocation.html', allocations=allocations, resources=resources)
+    return render_template('allocation.html', allocations=allocations, resources=resources)
 
 
 @app.route('/allocation/new', methods=['GET', 'POST'])
 @authenticated
 def new_allocation():
-    return render_template('new_allocation.jinja2')
+    if request.method == 'POST':
+        name = request.form['name']
+        owner = request.form['owner']
+        resource = request.form['resource']
+        accountname = request.form['accountname']
+
+        newallocation = clientapi.defineAllocation(
+            name=name, owner=owner, resource=resource, accountname=accountname)
+        clientapi.storeAllocation(newallocation)
+
+        return render_template('allocation.html')
+    elif request.method == 'GET':
+        resources = clientapi.listResources()
+        for resource in resources:
+            resourcename = resource.name
+        print resourcename
+        return render_template('new_allocation.html', resources=resources, name=resourcename)
+    return render_template('new_allocation.html')
+
+
+@app.route('/resource', methods=['GET', 'POST'])
+@authenticated
+def resource():
+
+    if request.method == 'GET':
+        resources = clientapi.listResources()
+    return render_template('resource.html', resources=resources)
+
+
+@app.route('/resource/<name>', methods=['GET', 'POST'])
+@authenticated
+def resource_name(name):
+    resources = clientapi.listResources()
+
+    if request.method == 'GET':
+        for resource in resources:
+            if resource.name == name:
+                resourcename = resource.name
+                owner = resource.owner
+                accesstype = resource.accesstype
+                accessmethod = resource.accessmethod
+                accessflavor = resource.accessflavor
+                accesshost = resource.accesshost
+                accessport = resource.accessport
+                gridresource = resource.gridresource
+
+    return render_template('resource_profile.html', name=resourcename, owner=owner,
+    accesstype=accesstype, accessmethod=accessmethod, accessflavor=accessflavor,
+    accesshost=accesshost, accessport=accessport, gridresource=gridresource, resource=resource)
 
 
 @app.route('/dashboard', methods=['GET', 'POST'])
 @authenticated
 def dashboard():
-    return render_template('dashboard.jinja2')
+    return render_template('dashboard.html')

@@ -1,0 +1,49 @@
+{%extends "loginbase.html"%}
+
+{%block title%}Allocations{%endblock%}
+
+{%block body%}
+
+				<div class="content">
+            <div class="container-fluid">
+
+                <div class="row">
+                    <div class="col-md-8 col-lg-12">
+                        <div class="card">
+                            <div class="header">
+                                <h4 class="title">Allocations</h4>
+																<hr />
+																<div class="row">
+																	<div class="col-lg-8">
+																		<div class="input-group">
+																			<input type="text" class="form-control" placeholder="Search for...">
+																			<span class="input-group-btn">
+																				<button class="btn btn-default" type="button"><i class="glyphicon glyphicon-search"></i></button>
+																			</span>
+																		</div><!-- /input-group -->
+																	</div><!-- /.col-lg-8 -->
+
+																	<div class="col-lg-4">
+																		<a href="{{url_for('new_allocation')}}" class="btn btn-primary btn-sm">Define New Allocation</a>
+																	</div>
+																</div><!-- /.row -->
+
+                            </div>
+
+                            <div class="content description">
+															<h2>Define New Allocation</h2>
+
+															<div class="card text-center">
+																
+															</div><!-- /.card text-center -->
+
+                            </div><!-- /.content description -->
+
+                        </div>
+                    </div>
+								</div>
+
+            </div>
+        </div>
+
+{%endblock%}

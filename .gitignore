@@ -106,5 +106,5 @@ run_portal.py
 /portal/data/app.db
 
 # template backups
-/portal/templates/teamoriginal.jinja2
-/portal/templates/homeoriginal.jinja2
+/portal/templates/teamoriginal.html
+/portal/templates/homeoriginal.html

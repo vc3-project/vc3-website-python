@@ -1,6 +1,6 @@
-{%extends "loginbase.jinja2"%}
+{%extends "loginbase.html"%}
 
-{%block title%}Allocations{%endblock%}
+{%block title%}Resources{%endblock%}
 
 {%block body%}
 
@@ -11,23 +11,8 @@
                     <div class="col-md-8 col-lg-12">
                         <div class="card">
                             <div class="header">
-                                <h4 class="title">Allocations</h4>
+                                <h4 class="title">Resources</h4>
 																<hr />
-																<div class="row">
-																	<div class="col-lg-8">
-																		<div class="input-group">
-																			<input type="text" class="form-control" placeholder="Search for...">
-																			<span class="input-group-btn">
-																				<button class="btn btn-default" type="button"><i class="glyphicon glyphicon-search"></i></button>
-																			</span>
-																		</div><!-- /input-group -->
-																	</div><!-- /.col-lg-8 -->
-
-																	<div class="col-lg-4">
-																		<a href="{{url_for('new_allocation')}}" class="btn btn-primary btn-sm">Define New Allocation</a>
-																	</div>
-																</div><!-- /.row -->
-
                             </div>
 
                             <div class="content description">
@@ -36,6 +21,9 @@
 															<div class="card text-center">
 															  <div class="card-header">
 															    <ul class="nav nav-tabs card-header-tabs" role="tablist">
+																		<li class="nav-item">
+															        <a class="nav-link" data-toggle="tab" href="#all-resource" role="tab">All Resources</a>
+															      </li>
 															      <li class="nav-item">
 															        <a class="nav-link" data-toggle="tab" href="#campus" role="tab">Campus Resources</a>
 															      </li>
@@ -49,16 +37,31 @@
 															  </div>
 															  <div class="card-block">
 																	<div class="tab-content">
-																		<div class="tab-pane active" id="campus" role="tabpanel">
+
+																		<div class="tab-pane active" id="all-resource" role="tabpanel">
+																			<div class="card">
+																				<ul class=projects>
+																				{% for resource in resources %}
+																					<div class="card text-center" style="width: 30rem;">
+																					  <div class="card-block">
+																					    <h4 class="card-title" id="project-pull-left"><span id="label">Resource:</span> {{ resource.name }}</h4>
+																					    <p class="card-text" id="project-pull-left"><span id="label">Resource Owner:</span> {{ resource.owner}}</p>
+																							<p class="card-text" id="project-pull-left"><span id="label">Contact Helpdesk:</span> info here</p>
+																					    <a href="{{ url_for('resource_name', name=resource.name) }}" id="project-btn" class="btn btn-primary btn-sm">View Project</a>
+																					  </div>
+																					</div>
+																				{% else %}
+																					<li><em>No Resources here so far</em></li>
+																				{% endfor %}
+																				</ul>
+																			</div>
+																		</div>
+
+																		<div class="tab-pane fade" id="campus" role="tabpanel">
 																			<div class="card">
 																				<h4 class="card-title">Midway (SLURM)</h4>
 																		    <p class="card-text"><span id="label">Owner:</span> UChicago RCC</p>
 																				<p class="card-text"><span id="label">Contact:</span> </p>
-																				<p class="card-text"><span id="label">Access Type:</span> </p>
-																				<p class="card-text"><span id="label">Access Method:</span> SSH Key</p>
-																				<p class="card-text"><span id="label">Access Flavor:</span> SLURM</p>
-																				<p class="card-text"><span id="label">Access Host:</span> DNS Hostname</p>
-																				<p class="card-text"><span id="label">Grid Resource: </p>
 																		    <a href="#" class="btn btn-primary">More Info</a>
 																			</div>
 																			<div class="card">

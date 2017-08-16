@@ -2205,6 +2205,10 @@ body > .navbar-collapse {
       padding-bottom: 10px;
       padding-left: 10px;
       padding-right: 10px;
+      text-align: center;
+    }
+    #projects .projects .card .card-block #project-pull-left {
+      text-align: left;
     }
 
     #project_pages .card span {
@@ -2226,6 +2230,9 @@ body > .navbar-collapse {
       border-color: #c1c0ba;
       font-weight: 600;
       color: #FFF;
+    }
+    #project_pages .card select {
+      max-width: 400px;
     }
     /*This is for labels in resources*/
 
