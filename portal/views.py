@@ -26,8 +26,8 @@ from portal.utils import (load_portal_client, get_portal_tokens,
                           get_safe_redirect)
 
 c = SafeConfigParser()
-# c.readfp(open('/etc/vc3/vc3-client.conf'))
-c.readfp(open('/Users/JeremyVan/Documents/Programming/UChicago/VC3_Project/vc3-website-python/vc3-client/etc/vc3-client.conf'))
+c.readfp(open('/etc/vc3/vc3-client.conf'))
+# c.readfp(open('/Users/JeremyVan/Documents/Programming/UChicago/VC3_Project/vc3-website-python/vc3-client/etc/vc3-client.conf'))
 clientapi = client.VC3ClientAPI(c)
 
 
@@ -326,6 +326,27 @@ def project_name(name):
         clientapi.addAllocationToProject(allocation, projectname)
 
         return render_template('projects_pages.html')
+
+
+@app.route('/cluster', methods=['GET', 'POST'])
+@authenticated
+def cluster():
+
+    # if request.method == 'POST':
+    #     name = request.form['name']
+    #     owner = request.form['owner']
+    #     nodesets = request.form['nodesets']
+    #
+    #     newcluster = clientapi.defineCluster(
+    #         name=name, owner=owner, nodesets=nodesets)
+    #     clientapi.storeCluster(newcluster)
+    #
+    #     return render_template('cluster.html')
+    # elif request.method == 'GET':
+    #     clusters = clientapi.listClusters()
+    #
+    #     return render_template('cluster.html', clusters=clusters)
+    return render_template('cluster.html')
 
 
 @app.route('/allocation', methods=['GET', 'POST'])

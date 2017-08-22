@@ -3,125 +3,60 @@
 {%block title%}Resources{%endblock%}
 
 {%block body%}
-
-				<div class="content">
-            <div class="container-fluid">
-
-                <div class="row">
-                    <div class="col-md-8 col-lg-12">
-                        <div class="card">
-                            <div class="header">
-                                <h4 class="title">Resources</h4>
-																<hr />
-                            </div>
-
-                            <div class="content description">
-															<h2>Browse Known Resource Profiles</h2>
-
-															<div class="card text-center">
-															  <div class="card-header">
-															    <ul class="nav nav-tabs card-header-tabs" role="tablist">
-																		<li class="nav-item">
-															        <a class="nav-link" data-toggle="tab" href="#all-resource" role="tab">All Resources</a>
-															      </li>
-															      <li class="nav-item">
-															        <a class="nav-link" data-toggle="tab" href="#campus" role="tab">Campus Resources</a>
-															      </li>
-															      <li class="nav-item">
-															        <a class="nav-link" data-toggle="tab" href="#national" role="tab">National Resources</a>
-															      </li>
-															      <li class="nav-item">
-															        <a class="nav-link" data-toggle="tab" href="#international" role="tab">International Resources</a>
-															      </li>
-															    </ul>
-															  </div>
-															  <div class="card-block">
-																	<div class="tab-content">
-
-																		<div class="tab-pane active" id="all-resource" role="tabpanel">
-																			<div class="card">
-																				<ul class=projects>
-																				{% for resource in resources %}
-																					<div class="card text-center" style="width: 30rem;">
-																					  <div class="card-block">
-																					    <h4 class="card-title" id="project-pull-left"><span id="label">Resource:</span> {{ resource.name }}</h4>
-																					    <p class="card-text" id="project-pull-left"><span id="label">Resource Owner:</span> {{ resource.owner}}</p>
-																							<p class="card-text" id="project-pull-left"><span id="label">Contact Helpdesk:</span> info here</p>
-																					    <a href="{{ url_for('resource_name', name=resource.name) }}" id="project-btn" class="btn btn-primary btn-sm">View Project</a>
-																					  </div>
-																					</div>
-																				{% else %}
-																					<li><em>No Resources here so far</em></li>
-																				{% endfor %}
-																				</ul>
-																			</div>
-																		</div>
-
-																		<div class="tab-pane fade" id="campus" role="tabpanel">
-																			<div class="card">
-																				<h4 class="card-title">Midway (SLURM)</h4>
-																		    <p class="card-text"><span id="label">Owner:</span> UChicago RCC</p>
-																				<p class="card-text"><span id="label">Contact:</span> </p>
-																		    <a href="#" class="btn btn-primary">More Info</a>
-																			</div>
-																			<div class="card">
-																				<h4 class="card-title">University of Illinois - NCSA</h4>
-																		    <p class="card-text"><span id="label">Resource Type:</span> </p>
-																				<p class="card-text"><span id="label">Access Mode:</span> </p>
-																				<p class="card-text"><span id="label">Submit Host:</span> </p>
-																				<p class="card-text"><span id="label">Submit Port:</span> </p>
-																		    <a href="#" class="btn btn-primary">More Info</a>
-																			</div>
-																		</div>
-
-																		<div class="tab-pane fade" id="national" role="tabpanel">
-																			<div class="card">
-																				<h4 class="card-title">Comet GPU (SDSC)</h4>
-																				<p class="card-text"><span id="label">Resource Type:</span> </p>
-																				<p class="card-text"><span id="label">Access Mode:</span> </p>
-																				<p class="card-text"><span id="label">Submit Host:</span> </p>
-																				<p class="card-text"><span id="label">Submit Port:</span> </p>
-																				<a href="#" class="btn btn-primary">More Info</a>
-																			</div>
-																			<div class="card">
-																				<h4 class="card-title">Jetstream (IU/TACC)</h4>
-																				<p class="card-text"><span id="label">Resource Type:</span> </p>
-																				<p class="card-text"><span id="label">Access Mode:</span> </p>
-																				<p class="card-text"><span id="label">Submit Host:</span> </p>
-																				<p class="card-text"><span id="label">Submit Port:</span> </p>
-																				<a href="#" class="btn btn-primary">More Info</a>
-																			</div>
-																		</div>
-
-																		<div class="tab-pane fade" id="international" role="tabpanel">
-																			<div class="card">
-																				<h4 class="card-title">Liebniz Supercomputing Centre - SuperMUC</h4>
-																				<p class="card-text"><span id="label">Resource Type:</span> </p>
-																				<p class="card-text"><span id="label">Access Mode:</span> </p>
-																				<p class="card-text"><span id="label">Submit Host:</span> </p>
-																				<p class="card-text"><span id="label">Submit Port:</span> </p>
-																				<a href="#" class="btn btn-primary">More Info</a>
-																			</div>
-																			<div class="card">
-																				<h4 class="card-title">Compute Canada - Graham (GP3)</h4>
-																				<p class="card-text"><span id="label">Resource Type:</span> </p>
-																				<p class="card-text"><span id="label">Access Mode:</span> </p>
-																				<p class="card-text"><span id="label">Submit Host:</span> </p>
-																				<p class="card-text"><span id="label">Submit Port:</span> </p>
-																				<a href="#" class="btn btn-primary">More Info</a>
-																			</div>
-																		</div>
-																	</div><!-- /.tab-content -->
-															  </div><!-- /.card-block -->
-															</div><!-- /.card text-center -->
-
-                            </div><!-- /.content description -->
-
-                        </div>
-                    </div>
-								</div>
-
-            </div>
+<section id="resource">
+	<div class="content">
+		<div class="container-fluid">
+      <div class="card">
+        <div class="header">
+            <h4 class="title">Resources</h4>
+						<hr />
         </div>
+
+        <div class="content description">
+					<h2>Browse Known Resources</h2>
+
+					<div class="card">
+						<div class="card-block">
+							<div class="panel panel-primary filterable">
+								<div class="panel-heading">
+									<h3 class="panel-title">Resource Profiles</h3>
+									<div class="pull-right">
+										<button class="btn btn-primary btn-sm btn-filter"><span class="glyphicon glyphicon-filter"></span> Filter</button>
+									</div>
+								</div>
+								<table class="table table-hover">
+									<thead>
+										<tr class="filters">
+											<th><input type="text" class="form-control" placeholder="Name" disabled></th>
+											<th><input type="text" class="form-control" placeholder="Access Host" disabled></th>
+											<th><input type="text" class="form-control" placeholder="Access Type" disabled></th>
+										</tr>
+									</thead>
+									<tbody data-link="row" class="rowlink">
+										{% for resource in resources %}
+										<tr>
+											<td><a href="{{ url_for('resource_name', name=resource.name) }}">{{ resource.name }}</a></td>
+											<td>{{ resource.accesshost }}</td>
+											<td>{{ resource.accesstype }}</td>
+										</tr>
+										{% else %}
+										<tr>
+											<td>No Resources here so far</td>
+											<td></td>
+											<td></td>
+											<td>Define New Resource</td>
+										</tr>
+										{% endfor %}
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</div>
+
+        </div><!-- /.content description -->
+    	</div>
+    </div>
+	</div>
+</section>
 
 {%endblock%}

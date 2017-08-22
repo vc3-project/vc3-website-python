@@ -2244,6 +2244,74 @@ body > .navbar-collapse {
       padding-top: 10px;
     }
 
+/*----------------------------------
+RESOURCE PROFILE INDEX PAGE
+----------------------------------*/
+
+.filterable {
+    margin-top: 15px;
+    border-color: #fcc500;
+    font-size: 18px;
+}
+.filterable .panel-heading .pull-right {
+    margin-top: -25px;
+}
+.filterable .panel-heading .panel-title {
+  font-weight: 400;
+  font-size: 22px;
+  text-align: center;
+}
+.filterable .filters input[disabled] {
+    background-color: transparent;
+    border: none;
+    cursor: auto;
+    box-shadow: none;
+    padding: 0;
+    height: auto;
+}
+.filterable .filters input[disabled]::-webkit-input-placeholder {
+    color: #333;
+}
+.filterable .filters input[disabled]::-moz-placeholder {
+    color: #333;
+}
+.filterable .filters input[disabled]:-ms-input-placeholder {
+    color: #333;
+}
+.filterable tbody tr {
+  color: #595753;
+}
+.filterable .panel-heading {
+  background-color: #fcc500;
+  color: #111;
+  border-color: #fcc500;
+}
+.filterable button {
+  color: #111;
+  background-color: #fff;
+  border-color: #fff;
+}
+.filterable glyphicon {
+  color: #111;
+}
+.filterable button:hover {
+  color: #111;
+  background-color: #fff;
+  border-color: #fff;
+}
+.filterable button:active {
+  color: #111;
+  background-color: #fff;
+  border-color: #fff;
+}
+.filterable a {
+  color: rgba(30, 26, 18,0.9);
+  font-weight: 600;
+}
+.filterable a:hover {
+  color: #fcc500;
+}
+
 
 #dashboard .content iframe {
   display: block;

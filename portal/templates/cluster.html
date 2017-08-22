@@ -1,0 +1,77 @@
+{%extends "loginbase.html"%}
+
+{%block title%}Clusters{%endblock%}
+
+{%block body%}
+
+<div class="content">
+  <div class="container-fluid">
+
+    <div class="row">
+      <div class="col-md-8 col-lg-12">
+        <div class="card">
+          <div class="header">
+          	<h4 class="title">Define New Cluster</h4>
+						<hr />
+          </div>
+
+          <div class="content description">
+						<h4>A cluster is a complete collection of nodes with networking and file storage facilities</h4>
+
+						<section id="new_allocation">
+							<div class="container new-allocation">
+								<form role="form" id="new-allocation-form" action="{{url_for('cluster')}}" method="POST">
+
+									<!-- Logo -->
+									<div class="col-lg-12 logo-vc3">
+										<img width="100" class="logo" src="https://image.ibb.co/e59s3v/logosmall.png" alt="Logo" />
+									</div>
+
+									<fieldset>
+										<label for="name">Cluster Name</label>
+										<input
+											placeholder="Your Cluster name"
+											name="name"
+											type="text"
+											tabindex="1"
+											required
+											autofocus
+											value="{{request.name}}">
+									</fieldset>
+									<fieldset>
+										<label for="owner">Owner</label>
+										<input
+											placeholder="Name of Owner"
+											name="owner"
+											type="text"
+											tabindex="2"
+											required
+											autofocus
+											value="{{request.owner}}">
+									</fieldset>
+									<fieldset>
+										<label for="resource">Nodesets</label>
+										<select class="form-control" name="nodesets" tabindex="3" id="form-resource-list" required>
+											<option value="" selected disabled>Please Select Nodeset</option>
+											{% for cluster in clusters %}
+											<option value="{{cluster.nodesets}}">{{ cluster.nodesets }}</option>
+											{% endfor %}
+										</select>
+									</fieldset>
+									<fieldset>
+										<button type="submit" id="create-project" data-submit="...Sending">Define Cluster</button>
+									</fieldset>
+								</form>
+							</div> <!-- cluster container -->
+						</section>
+
+          </div><!-- /.content description -->
+
+        </div>
+      </div>
+		</div>
+
+  </div>
+</div>
+
+{%endblock%}

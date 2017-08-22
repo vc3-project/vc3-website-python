@@ -4,59 +4,41 @@
 
 {%block body%}
 <section id="projects">
-				<div class="content">
-            <div class="container-fluid">
+	<div class="content">
+    <div class="container-fluid">
 
-                <div class="row">
-                    <div class="col-md-8 col-lg-12">
-                        <div class="card">
-                            <div class="header">
-                                <h4 class="title">Projects</h4>
-																<hr />
+      <div class="row">
+        <div class="card">
 
-																<div class="row">
-																	<div class="col-lg-8">
-																		<div class="input-group">
-																			<input type="text" class="form-control" placeholder="Search for...">
-																			<span class="input-group-btn">
-																				<button class="btn btn-default" type="button"><i class="glyphicon glyphicon-search"></i></button>
-																			</span>
-																		</div><!-- /input-group -->
-																	</div><!-- /.col-lg-8 -->
+          <div class="header">
+            <h4 class="title">Projects</h4>
+						<div class="">
+							<a href="{{url_for('new')}}" class="btn btn-primary btn-sm">+ New Project</a>
+						</div>
+						<hr />
+          </div>
 
-																	<div class="col-lg-4">
-																		<a href="{{url_for('new')}}" class="btn btn-primary btn-sm">+ New Project</a>
-																	</div>
-																</div><!-- /.row -->
-
-                            </div>
-
-                            <div class="content description">
-
-															<ul class=projects>
-															{% for project in projects %}
-																<div class="card text-center" style="width: 30rem;">
-																  <div class="card-block">
-																    <h4 class="card-title" id="project-pull-left"><span id="label">Project Name:</span> {{ project.name }}</h4>
-																    <p class="card-text" id="project-pull-left"><span id="label">Project Owner:</span> {{ project.owner}}</p>
-																		{% for member in project.members %}
-																			<p class="card-text" id="project-pull-left"><span id="label">Members:</span> {{ member }}</p>
-																		{% endfor %}
-																    <a href="{{ url_for('project_name', name=project.name) }}" id="project-btn" class="btn btn-primary btn-sm">View Project</a>
-																  </div>
-																</div>
-															{% else %}
-																<li><em>No projects here so far</em></li>
-															{% endfor %}
-															</ul>
-
-                            </div><!-- /.content -->
-
-                        </div>
-                    </div>
-								</div>
-
-            </div>
+          <div class="content description">
+						<ul class=projects>
+						{% for project in projects %}
+							<div class="card text-center" style="width: 30rem;">
+									<div class="card-block">
+											<h4 class="card-title" id="project-pull-left"><span id="label">Project Name:</span> {{ project.name }}</h4>
+											<p class="card-text" id="project-pull-left"><span id="label">Project Owner:</span> {{ project.owner}}</p>
+									{% for member in project.members %}
+										<p class="card-text" id="project-pull-left"><span id="label">Members:</span> {{ member }}</p>
+									{% endfor %}
+											<a href="{{ url_for('project_name', name=project.name) }}" id="project-btn" class="btn btn-primary btn-sm">View Project</a>
+									</div>
+							</div>
+						{% else %}
+							<li><em>No projects here so far</em></li>
+						{% endfor %}
+						</ul>
+          </div><!-- /.content description -->
         </div>
+			</div>
+    </div>
+  </div>
 </section>
 {%endblock%}
