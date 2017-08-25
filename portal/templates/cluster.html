@@ -8,7 +8,7 @@
   <div class="container-fluid">
 
     <div class="row">
-      <div class="col-md-8 col-lg-12">
+      <div class="col-md-8">
         <div class="card">
           <div class="header">
           	<h4 class="title">Define New Cluster</h4>
@@ -16,7 +16,7 @@
           </div>
 
           <div class="content description">
-						<h4>A cluster is a complete collection of nodes with networking and file storage facilities</h4>
+						<h5>A cluster is a complete collection of nodes with networking and file storage facilities</h5>
 
 						<section id="new_allocation">
 							<div class="container new-allocation">
@@ -50,14 +50,47 @@
 											value="{{request.owner}}">
 									</fieldset>
 									<fieldset>
-										<label for="resource">Nodesets</label>
-										<select class="form-control" name="nodesets" tabindex="3" id="form-resource-list" required>
-											<option value="" selected disabled>Please Select Nodeset</option>
-											{% for cluster in clusters %}
-											<option value="{{cluster.nodesets}}">{{ cluster.nodesets }}</option>
-											{% endfor %}
+										<label for="app_type">Middleware</label>
+										<select class="form-control" name="app_type" tabindex="3" id="form-resource-list" required>
+											<option value="" selected disabled>Please Select Middleware</option>
+											<option value="htcondor">HTCondor</option>
+											<option value="workqueue">WorkQueue</option>
 										</select>
 									</fieldset>
+                  <!-- <fieldset>
+										<label for="app_role">App Role</label>
+										<select class="form-control" name="app_role" tabindex="4" id="form-resource-list" required>
+											<option value="" selected disabled>Please Select App Role</option>
+											<option value="head-node">head-nodes</option>
+                      <option value="worker-nodes">worker-nodes</option>
+										</select>
+									</fieldset> -->
+									<fieldset>
+										<label for="node_number">Number of Nodes (between 1 and 1000):</label>
+										<input
+											placeholder="1"
+											name="node_number"
+											type="number"
+											min="1"
+											max="1000"
+											tabindex="4"
+											required
+											autofocus
+											value="{{request.node_number}}">
+									</fieldset>
+									<!-- <fieldset>
+										<label for="cores">Number of Cores (between 1 and 20)</label>
+										<input
+											placeholder="0"
+											name="cores"
+											type="number"
+											min="1"
+											max="20"
+											tabindex="5"
+											required
+											autofocus
+											value="{{request.cores}}">
+									</fieldset> -->
 									<fieldset>
 										<button type="submit" id="create-project" data-submit="...Sending">Define Cluster</button>
 									</fieldset>

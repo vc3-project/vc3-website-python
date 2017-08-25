@@ -53,20 +53,20 @@
 										</a>
 								</li>
                 <li class="active">
-                    <a href="{{url_for('dashboard')}}">
-                        <i class="fa fa-dashboard" aria-hidden="true"></i>
-                        <p>Dashboard</p>
-                    </a>
-                </li>
-                <li class="active">
                     <a href="{{url_for('allocation')}}">
                         <i class="fa fa-cubes" aria-hidden="true"></i>
                         <p>Allocation</p>
                     </a>
                 </li>
+								<li class="active">
+                    <a href="{{url_for('cluster')}}">
+                        <i class="fa fa-spinner" aria-hidden="true"></i>
+                        <p>Cluster</p>
+                    </a>
+                </li>
                 <li class="active">
                     <a href="{{url_for('project')}}" methods="GET">
-                        <i class="fa fa-spinner" aria-hidden="true"></i>
+                        <i class="fa fa-object-group" aria-hidden="true"></i>
                         <p>Project</p>
                     </a>
                 </li>
@@ -74,6 +74,12 @@
                     <a href="{{url_for('resource')}}">
                         <i class="fa fa-database" aria-hidden="true"></i>
                         <p>Resources</p>
+                    </a>
+                </li>
+								<li class="active">
+                    <a href="{{url_for('dashboard')}}">
+                        <i class="fa fa-dashboard" aria-hidden="true"></i>
+                        <p>Dashboard</p>
                     </a>
                 </li>
 

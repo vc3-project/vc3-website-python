@@ -15,23 +15,18 @@ try:
 except:
     from urllib import urlencode
 
-from globus_sdk import (TransferClient, TransferAPIError,
-                        TransferData, RefreshTokenAuthorizer,
+from globus_sdk import (TransferData, RefreshTokenAuthorizer,
                         AuthClient, AccessTokenAuthorizer)
 
 
-from portal import app, database, pages
+from portal import app, pages
 from portal.decorators import authenticated
 from portal.utils import (load_portal_client, get_portal_tokens,
                           get_safe_redirect)
 
 c = SafeConfigParser()
 c.readfp(open('/etc/vc3/vc3-client.conf'))
-<<<<<<< HEAD
 # c.readfp(open('/Users/JeremyVan/Documents/Programming/UChicago/VC3_Project/vc3-website-python/vc3-client/etc/vc3-client.conf'))
-=======
-#c.readfp(open('/Users/JeremyVan/Documents/Programming/UChicago/VC3_Project/vc3-website-python/vc3-client/etc/vc3-client.conf'))
->>>>>>> dfe5a531c88907392633ce90aa0f6da3577e5aa7
 clientapi = client.VC3ClientAPI(c)
 
 
@@ -147,14 +142,8 @@ def logout():
 @authenticated
 def profile():
     """User profile information. Assocated with a Globus Auth identity."""
-    #c = SafeConfigParser()
-    # c.readfp(open(
-    #    '/etc/vc3/vc3-client.conf'))
-    #clientapi = client.VC3ClientAPI(c)
 
     if request.method == 'GET':
-        # identity_id = session.get('primary_identity')
-        # profile = database.load_profile(identity_id)
         userlist = clientapi.listUsers()
         profile = None
 
@@ -315,7 +304,6 @@ def project():
 def project_name(name):
     projects = clientapi.listProjects()
     allocations = clientapi.listAllocations()
-    projectname = name
 
     if request.method == 'GET':
         for project in projects:
@@ -323,11 +311,14 @@ def project_name(name):
                 name = project.name
                 owner = project.owner
                 members = project.members
-        return render_template('projects_pages.html', name=name, owner=owner, members=members, project=project, allocations=allocations, projects=projects)
+        return render_template('projects_pages.html', name=name, owner=owner, members=members, allocations=allocations, projects=projects)
 
     elif request.method == 'POST':
         allocation = request.form['allocation']
-        clientapi.addAllocationToProject(allocation, projectname)
+        for project in projects:
+            if project.name == name:
+                projectname = name
+        clientapi.addAllocationToProject(allocation=allocation, projectname=projectname)
 
         return render_template('projects_pages.html')
 
@@ -336,20 +327,29 @@ def project_name(name):
 @authenticated
 def cluster():
 
-    # if request.method == 'POST':
-    #     name = request.form['name']
-    #     owner = request.form['owner']
-    #     nodesets = request.form['nodesets']
-    #
-    #     newcluster = clientapi.defineCluster(
-    #         name=name, owner=owner, nodesets=nodesets)
-    #     clientapi.storeCluster(newcluster)
-    #
-    #     return render_template('cluster.html')
-    # elif request.method == 'GET':
-    #     clusters = clientapi.listClusters()
-    #
-    #     return render_template('cluster.html', clusters=clusters)
+    if request.method == 'POST':
+        name = request.form['name']
+        owner = request.form['owner']
+        node_number = request.form['node_number']
+        app_type = request.form['app_type']
+        app_role = request.form['app_role']
+
+        nodeset = clientapi.defineNodeset(
+            name=name, owner=owner, node_number=node_number, app_type=app_type, app_role=app_role)
+        clientapi.storeNodeset(nodeset)
+        nodesets = clientapi.listNodesets()
+        newcluster = clientapi.defineCluster(name=name, owner=owner)
+        clientapi.storeCluster(newcluster)
+        clientapi.addNodesetToCluster(nodesetname=nodeset.name, clustername=newcluster.name)
+        # for nodeset in nodesets:
+        #     if name == nodeset.name:
+        #         clientapi.addNodesetToCluster(nodesetname=nodeset, clustername=newcluster)
+
+        return render_template('cluster.html')
+    elif request.method == 'GET':
+        clusters = clientapi.listClusters()
+
+        return render_template('cluster.html', clusters=clusters)
     return render_template('cluster.html')
 
 
@@ -393,7 +393,7 @@ def new_allocation():
         resources = clientapi.listResources()
         for resource in resources:
             resourcename = resource.name
-        print resourcename
+        # print resourcename
         return render_template('new_allocation.html', resources=resources, name=resourcename)
     return render_template('new_allocation.html')
 
@@ -425,8 +425,8 @@ def resource_name(name):
                 gridresource = resource.gridresource
 
     return render_template('resource_profile.html', name=resourcename, owner=owner,
-    accesstype=accesstype, accessmethod=accessmethod, accessflavor=accessflavor,
-    accesshost=accesshost, accessport=accessport, gridresource=gridresource, resource=resource)
+                           accesstype=accesstype, accessmethod=accessmethod, accessflavor=accessflavor,
+                           accesshost=accesshost, accessport=accessport, gridresource=gridresource, resource=resource)
 
 
 @app.route('/dashboard', methods=['GET', 'POST'])
