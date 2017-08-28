@@ -1,0 +1,33 @@
+{%extends "loginbase.html"%}
+
+{%block title%}Allocations{%endblock%}
+
+{%block body%}
+<section id="resource-profile">
+	<div class="content">
+    <div class="container-fluid">
+			<div class="row">
+				<div class="col-md-8 col-lg-12">
+					<div class="card">
+						<div class="header">
+							<h3 class="title"><span id="label">Allocation Profile:</span> {{ name }}</h3>
+              <h5 class="category">Allocation Description</h5>
+						</div>
+						<div class="content container">
+							<!-- <div class="list-group">
+								<div href="#" class="list-group-item active">Owner: {{ owner }}</div>
+							</div> -->
+							<span id="label"><h3>Owner: {{ owner }}</h3></span>
+							<span id="label"><h3>Resource: {{ resource }}</h3></span>
+							<span id="label"><h3>Account Name: {{ accountname }}</h3></span>
+							<!-- <span id="label"><h3>Public Token: {{ pubtoken }}</h3></span> -->
+              <a href="#" class="btn btn-default">Update Allocation</a>
+						</div>
+					</div>
+				</div>
+			</div>
+
+    </div>
+  </div>
+</section>
+{%endblock%}

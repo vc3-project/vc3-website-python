@@ -289,9 +289,9 @@ def project():
         newproject = clientapi.defineProject(name=name, owner=owner, members=members)
         clientapi.storeProject(newproject)
 
-        return render_template('project.html')
+        return render_template('project.html', name=name, owner=owner, members=members)
     elif request.method == 'GET':
-        identity_id = session['primary_identity']
+        # identity_id = session['primary_identity']
         # projects = clientapi.getProjectsOfUser(username=identity_id)
         projects = clientapi.listProjects()
         # for project in projects:
@@ -312,15 +312,37 @@ def project_name(name):
                 owner = project.owner
                 members = project.members
         return render_template('projects_pages.html', name=name, owner=owner, members=members, allocations=allocations, projects=projects)
-
     elif request.method == 'POST':
-        allocation = request.form['allocation']
         for project in projects:
             if project.name == name:
-                projectname = name
-        clientapi.addAllocationToProject(allocation=allocation, projectname=projectname)
+                name = project.name
+                owner = project.owner
+                members = project.members
+        return render_template('projects_pages.html', name=name, owner=owner, members=members, allocations=allocations, projects=projects)
 
-        return render_template('projects_pages.html')
+
+def add_member(name):
+    projects = clientapi.listProjects()
+    allocations = clientapi.listAllocations()
+    if request.method == 'POST':
+        for project in projects:
+            if project.name == name:
+                name = project.name
+                owner = project.owner
+                newmember = request.form['members']
+                clientapi.addUserToProject(project=project, user=newmember)
+                members = project.members
+
+        # ownerproject = clientapi.GetProjectsofOwner(ownername=owner)
+        # clientapi.addUserToProject(project=project, user=newmember)
+
+        return render_template('project_pages.html', name=name, owner=owner, members=members, allocations=allocations, projects=projects)
+
+
+@app.route('/cluster/new', methods=['GET', 'POST'])
+@authenticated
+def cluster_new():
+    return render_template('cluster_new.html')
 
 
 @app.route('/cluster', methods=['GET', 'POST'])
@@ -341,21 +363,45 @@ def cluster():
         newcluster = clientapi.defineCluster(name=name, owner=owner)
         clientapi.storeCluster(newcluster)
         clientapi.addNodesetToCluster(nodesetname=nodeset.name, clustername=newcluster.name)
-        # for nodeset in nodesets:
-        #     if name == nodeset.name:
-        #         clientapi.addNodesetToCluster(nodesetname=nodeset, clustername=newcluster)
 
         return render_template('cluster.html')
     elif request.method == 'GET':
         clusters = clientapi.listClusters()
+        projects = clientapi.listProjects()
+        # for project in projects:
+        #     owner = project.owner
+        #
+        # for cluster in clusters:
+        #     if cluster.owner == owner:
+        #         listclusters = listclusters.append(cluster.name)
 
-        return render_template('cluster.html', clusters=clusters)
+        return render_template('cluster.html', clusters=clusters, projects=projects)
     return render_template('cluster.html')
+
+
+@app.route('/cluster/<name>', methods=['GET', 'POST'])
+@authenticated
+def cluster_name(name):
+    clusters = clientapi.listClusters()
+
+    if request.method == 'GET':
+        for cluster in clusters:
+            if cluster.name == name:
+                clustername = cluster.name
+                owner = cluster.owner
+                nodesets = cluster.nodesets
+                state = cluster.state
+                acl = cluster.acl
+
+    return render_template('cluster_profile.html', name=clustername, owner=owner, nodesets=nodesets, state=state, acl=acl)
 
 
 @app.route('/allocation', methods=['GET', 'POST'])
 @authenticated
 def allocation():
+    allocations = clientapi.listAllocations()
+    resources = clientapi.listResources()
+    users = clientapi.listUsers()
 
     if request.method == 'POST':
         name = request.form['name']
@@ -367,35 +413,49 @@ def allocation():
             name=name, owner=owner, resource=resource, accountname=accountname)
         clientapi.storeAllocation(newallocation)
 
-        return render_template('allocation.html')
-    elif request.method == 'GET':
-        allocations = clientapi.listAllocations()
-        resources = clientapi.listResources()
         return render_template('allocation.html', allocations=allocations, resources=resources)
-    return render_template('allocation.html', allocations=allocations, resources=resources)
+    elif request.method == 'GET':
+        return render_template('allocation.html', allocations=allocations, resources=resources, users=users)
+    return render_template('allocation.html', allocations=allocations, resources=resources, users=users)
 
 
 @app.route('/allocation/new', methods=['GET', 'POST'])
 @authenticated
 def new_allocation():
-    if request.method == 'POST':
-        name = request.form['name']
-        owner = request.form['owner']
-        resource = request.form['resource']
-        accountname = request.form['accountname']
-
-        newallocation = clientapi.defineAllocation(
-            name=name, owner=owner, resource=resource, accountname=accountname)
-        clientapi.storeAllocation(newallocation)
-
-        return render_template('allocation.html')
-    elif request.method == 'GET':
+    # if request.method == 'POST':
+    #     name = request.form['name']
+    #     owner = request.form['owner']
+    #     resource = request.form['resource']
+    #     accountname = request.form['accountname']
+    #
+    #     newallocation = clientapi.defineAllocation(
+    #         name=name, owner=owner, resource=resource, accountname=accountname)
+    #     clientapi.storeAllocation(newallocation)
+    #
+    #     return render_template('allocation.html')
+    if request.method == 'GET':
         resources = clientapi.listResources()
         for resource in resources:
             resourcename = resource.name
-        # print resourcename
-        return render_template('new_allocation.html', resources=resources, name=resourcename)
-    return render_template('new_allocation.html')
+        return render_template('allocation_new.html', resources=resources, name=resourcename)
+    return render_template('allocation_new.html', resources=resources, name=resourcename)
+
+
+@app.route('/allocation/<name>', methods=['GET', 'POST'])
+@authenticated
+def allocation_name(name):
+    allocations = clientapi.listAllocations()
+
+    if request.method == 'GET':
+        for allocation in allocations:
+            if allocation.name == name:
+                allocationname = allocation.name
+                owner = allocation.owner
+                resource = allocation.resource
+                accountname = allocation.accountname
+                pubtoken = allocation.pubtoken
+
+    return render_template('allocation_profile.html', name=allocationname, owner=owner, resource=resource, accountname=accountname, pubtoken=pubtoken)
 
 
 @app.route('/resource', methods=['GET', 'POST'])

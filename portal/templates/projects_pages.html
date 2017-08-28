@@ -18,14 +18,15 @@
               <span id="label">
 								<h3>Team Members:
 									<div class="container">
-										<form role="form" action="{{url_for('project_name', name=project.name)}}" method="POST">
+										<form role="form" action="" method="POST">
 											<input
 												placeholder="Member Names"
 												name="members"
 												type="text"
 												autofocus
 												value="{{request.members}}">
-											<a href="#" class="btn btn-default btn-sm">Add Members to Project</a>
+											<button type="submit" class="btn btn-default btn-sm" id="create-project" data-submit="...Sending">Add Members to Project</button>
+											<!-- <a href="#" class="btn btn-default btn-sm">Add Members to Project</a> -->
 										</form>
 									</div>
 								</h3>
@@ -39,10 +40,12 @@
 							<span id="label"><h3>Allocations:</h3></span>
 							<div class="list-group">
 							{% for project in projects %}
-								<div class="list-group-item list-group-item-action">{{ allocation.name }}</div>
+								{% if project.name == name %}
+								<a class="list-group-item list-group-item-action">{{ project.allocations }}</a>
+								{% endif %}
 							{% endfor %}
 							</div>
-							<form role="form" action="{{url_for('project_name', name=project.name)}}" method="POST">
+							<form role="form" action="" method="POST">
 								<div class="form-group">
 									<label for="allocation">Select Allocation:</label>
 									<select class="form-control" id="allocation" name="allocation" required>
@@ -56,12 +59,10 @@
 									</select>
 								</div>
 								<div class="form-group">
-									<button type="submit" class="btn btn-primary">Add Allocation to Project</button>
+									<a href="#" class="btn btn-default btn-sm">Add Allocation to Project</a>
+									<!-- <button type="submit" class="btn btn-primary">Add Allocation to Project</button> -->
 								</div>
 							</form>
-              <!-- <span id="label"><h3>Cluster: <a href="#" class="btn btn-default btn-sm">Define Cluster</a></h3></span> -->
-              <!-- <span id="label"><h3>Environment: <a href="#" class="btn btn-default btn-sm">Define Environment</a></h3></span> -->
-              <!-- <span id="label"><h3>Publication</h3></span> -->
               <button type="submit" class="btn btn-primary">Launch Request</button>
 						</div>
 					</div>
