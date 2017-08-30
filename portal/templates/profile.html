@@ -24,12 +24,12 @@
     							<h5>Name:</h5><p>{{session['first']}} {{session['last']}}</p>
     							<h5>Institution:</h5> <p>{{session['institution']}}</p>
     							<h5>Email: <a href="mailto:{{session['email']}}">{{session['email']}}</a></h5>
-    							<!-- <p><a href="#" class="btn btn-primary" role="button">Edit</a></p> -->
+    							<p><a href="{{url_for('edit')}}" class="btn btn-primary" role="button">Edit</a></p>
     						</div>
     					</div>
     				</div>
 
-    				<div class="col-md-6 col-md-3">
+    				<div class="col-md-6">
     					<form role="form" action="{{url_for('profile')}}" method="POST">
     						<div class="form-group">
     							<label for="name">User Name</label>
@@ -42,6 +42,7 @@
     								required="required"
     								tabindex="1"
     								value="{{session['name']}}"
+                    disabled
     							>
     						</div>
 
@@ -56,6 +57,7 @@
     								required="required"
     								tabindex="2"
     								value="{{session['first']}}"
+                    disabled
     							>
     					  </div>
 
@@ -70,6 +72,7 @@
     								required="required"
     								tabindex="3"
     								value="{{session['last']}}"
+                    disabled
     							>
     						</div>
 
@@ -84,6 +87,7 @@
     								required="required"
     								tabindex="4"
     								value="{{session['email']}}"
+                    disabled
     							>
     						</div>
 
@@ -98,12 +102,13 @@
                     required="required"
                     tabindex="5"
                     value="{{session['institution']}}"
+                    disabled
                   >
                 </div>
 
-    					  <div class="form-group">
+    					  <!-- <div class="form-group">
                   <button type="submit" class="btn btn-primary">Update</button>
-    					  </div>
+    					  </div> -->
     				  </form>
     				</div>
 
@@ -120,7 +125,7 @@
         <hr />
           <div class="row">
 
-            <div class="col-md-6 col-md-3">
+            <div class="col-md-6">
               <form role="form" action="{{url_for('profile')}}" method="POST">
                 <div class="form-group">
                   <label for="name">User Name</label>
@@ -133,6 +138,7 @@
                     required="required"
                     tabindex="1"
                     value="{{session['name']}}"
+                    disabled
                   >
                 </div>
 
@@ -147,6 +153,7 @@
                     required="required"
                     tabindex="2"
                     value="{{session['first']}}"
+                    disabled
                   >
                 </div>
 
@@ -161,6 +168,7 @@
                     required="required"
                     tabindex="3"
                     value="{{session['last']}}"
+                    disabled
                   >
                 </div>
 
@@ -175,6 +183,7 @@
                     required="required"
                     tabindex="4"
                     value="{{session['email']}}"
+                    disabled
                   >
                 </div>
 
@@ -189,6 +198,7 @@
                     required="required"
                     tabindex="5"
                     value="{{session['institution']}}"
+                    disabled
                   >
                 </div>
 

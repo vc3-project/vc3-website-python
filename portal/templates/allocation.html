@@ -13,7 +13,7 @@
           <div class="header">
           	<h4 class="title">Allocations</h4>
             <div class="">
-							<h5>An allocation is a quantity of computing time and stoage resources that are granted to a PI</h5>
+							<h5>A resource allocation is used to assign the available quantity of computing time and storage resources to a specific project</h5>
 							<a href="{{url_for('new_allocation')}}" class="btn btn-primary btn-sm">+ New Allocation</a>
 						</div>
 						<hr />
@@ -40,18 +40,13 @@
   									</thead>
   									<tbody data-link="row" class="rowlink">
   										{% for allocation in allocations %}
+                        {% if allocation.owner == session['name'] %}
   										<tr>
   											<td><a href="{{ url_for('allocation_name', name=allocation.name) }}">{{ allocation.name }}</a></td>
   											<td>{{ allocation.owner }}</td>
   											<td>{{ allocation.resource }}</td>
   										</tr>
-  											{% else %}
-  										<tr>
-  											<td>No Allocations here so far</td>
-  											<td></td>
-  											<td></td>
-  											<td>Define New Allocations</td>
-  										</tr>
+                        {% endif %}
   										{% endfor %}
   									</tbody>
   								</table>

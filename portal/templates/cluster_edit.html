@@ -1,6 +1,6 @@
 {%extends "loginbase.html"%}
 
-{%block title%}Clusters{%endblock%}
+{%block title%}Edit Cluster: {{name}}{%endblock%}
 
 {%block body%}
 
@@ -11,7 +11,7 @@
       <div class="col-md-8 col-sm-12">
         <div class="card">
           <div class="header">
-          	<h4 class="title">Define New Cluster</h4>
+          	<h4 class="title">Edit Cluster: {{ name }}</h4>
 						<hr />
           </div>
 
@@ -20,14 +20,14 @@
 
 						<section id="new_allocation">
 							<div class="container new-allocation">
-								<form role="form" id="new-allocation-form" action="{{url_for('cluster')}}" method="POST">
+								<form role="form" id="new-allocation-form" action="{{url_for('cluster_name', name=name)}}" method="POST">
 
 									<!-- Logo -->
 									<div class="col-lg-12 logo-vc3">
 										<img width="100" class="logo" src="https://image.ibb.co/e59s3v/logosmall.png" alt="Logo" />
 									</div>
 
-									<fieldset>
+									<!-- <fieldset>
 										<label for="name">Cluster Name</label>
 										<input
 											placeholder="Your Cluster name"
@@ -36,23 +36,12 @@
 											tabindex="1"
 											required
 											autofocus
-											value="{{request.name}}">
-									</fieldset>
-									<!-- <fieldset>
-										<label for="owner">Owner</label>
-										<input
-											placeholder="Name of Owner"
-											name="owner"
-											type="text"
-											tabindex="2"
-											required
-											autofocus
-											value="{{request.owner}}">
+											value="{{name}}">
 									</fieldset> -->
 									<fieldset>
 										<label for="app_type">Middleware</label>
-										<select class="form-control" name="app_type" tabindex="2" id="form-resource-list" required>
-											<option value="" selected disabled>Please Select Middleware</option>
+										<select class="form-control" name="app_type" tabindex="1" id="form-resource-list" required>
+											<option selected disabled>{{app_type}}</option>
 											<option value="htcondor">HTCondor</option>
 											<option value="workqueue">WorkQueue</option>
 										</select>
@@ -73,10 +62,10 @@
 											type="number"
 											min="1"
 											max="1000"
-											tabindex="3"
+											tabindex="2"
 											required
 											autofocus
-											value="{{request.node_number}}">
+											value="">
 									</fieldset>
 									<!-- <fieldset>
 										<label for="cores">Number of Cores (between 1 and 20)</label>

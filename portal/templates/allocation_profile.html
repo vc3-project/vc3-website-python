@@ -1,6 +1,6 @@
 {%extends "loginbase.html"%}
 
-{%block title%}Allocations{%endblock%}
+{%block title%}Allocation Profile: {{name}}{%endblock%}
 
 {%block body%}
 <section id="resource-profile">
@@ -21,7 +21,7 @@
 							<span id="label"><h3>Resource: {{ resource }}</h3></span>
 							<span id="label"><h3>Account Name: {{ accountname }}</h3></span>
 							<!-- <span id="label"><h3>Public Token: {{ pubtoken }}</h3></span> -->
-              <a href="#" class="btn btn-default">Update Allocation</a>
+              <a href="{{url_for('allocation_edit', name=name)}}" class="btn btn-default">Update Allocation</a>
 						</div>
 					</div>
 				</div>

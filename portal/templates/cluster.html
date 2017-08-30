@@ -40,18 +40,13 @@
   									</thead>
   									<tbody data-link="row" class="rowlink">
   										{% for cluster in clusters %}
+                        {% if cluster.owner == session['name'] %}
   										<tr>
   											<td><a href="{{ url_for('cluster_name', name=cluster.name) }}">{{ cluster.name }}</a></td>
   											<td>{{ cluster.owner }}</td>
   											<td>{{ cluster.nodesets }}</td>
   										</tr>
-  										{% else %}
-  										<tr>
-  											<td>No Clusters here so far</td>
-  											<td></td>
-  											<td></td>
-  											<td>Define New Cluster</td>
-  										</tr>
+  										  {% endif %}
   										{% endfor %}
   									</tbody>
   								</table>

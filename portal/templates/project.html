@@ -3,6 +3,8 @@
 {%block title%}Project{%endblock%}
 
 {%block body%}
+
+
 <section id="projects">
 	<div class="content">
     <div class="container-fluid">
@@ -22,6 +24,7 @@
           <div class="content description">
 						<ul class=projects>
 						{% for project in projects %}
+							{% if project.owner == session['name'] %}
 							<div class="card text-center" style="width: 30rem;">
 								<div class="card-block">
 									<h4 class="card-title" id="project-pull-left"><span id="label">Project Name:</span> {{ project.name }}</h4>
@@ -32,8 +35,7 @@
 									<a href="{{ url_for('project_name', name=project.name) }}" id="project-btn" class="btn btn-primary btn-sm">View Project</a>
 								</div>
 							</div>
-						{% else %}
-							<li><em>No projects here so far</em></li>
+							{% endif %}
 						{% endfor %}
 						</ul>
           </div><!-- /.content description -->

@@ -1,6 +1,6 @@
 {%extends "loginbase.html"%}
 
-{%block title%}Dashboard{%endblock%}
+{%block title%}Project: {{ name }}{%endblock%}
 
 {%block body%}
 <section id="project_pages">
@@ -45,7 +45,7 @@
 								{% endif %}
 							{% endfor %}
 							</div>
-							<form role="form" action="" method="POST">
+							<form role="form" action="{{url_for('project_name', name=name)}}" method="POST">
 								<div class="form-group">
 									<label for="allocation">Select Allocation:</label>
 									<select class="form-control" id="allocation" name="allocation" required>
@@ -53,14 +53,14 @@
 									<!-- Populate List of Allocations that has been defined by User -->
 									{% for allocation in allocations %}
 										{% if allocation.owner == owner %}
-									  	<option value="{{allocation.name}}">{{ allocation.name }}</option>
+									  	<option value="{{allocation}}">{{ allocation }}</option>
 										{% endif %}
 								  {% endfor %}
 									</select>
 								</div>
 								<div class="form-group">
-									<a href="#" class="btn btn-default btn-sm">Add Allocation to Project</a>
-									<!-- <button type="submit" class="btn btn-primary">Add Allocation to Project</button> -->
+									<!-- <a href="#" class="btn btn-default btn-sm">Add Allocation to Project</a> -->
+									<button type="submit" class="btn btn-primary">Add Allocation to Project</button>
 								</div>
 							</form>
               <button type="submit" class="btn btn-primary">Launch Request</button>

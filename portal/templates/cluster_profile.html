@@ -1,6 +1,6 @@
 {%extends "loginbase.html"%}
 
-{%block title%}Clusters{%endblock%}
+{%block title%}Cluster Profile: {{name}}{%endblock%}
 
 {%block body%}
 <section id="resource-profile">
@@ -15,14 +15,9 @@
               <h5 class="category">Cluster Description</h5>
 						</div>
 						<div class="content container">
-							<!-- <div class="list-group">
-								<div href="#" class="list-group-item active">Owner: {{ owner }}</div>
-							</div> -->
-							<span id="label"><h3>Owner: {{ owner }}</h3></span>
-							<span id="label"><h3>Nodesets: {{ nodesets }}</h3></span>
-							<span id="label"><h3>State: {{ state }}</h3></span>
-							<span id="label"><h3>ACL: {{ acl }}</h3></span>
-              <!-- <a href="#" class="btn btn-default">Launch Request</a> -->
+							<span id="label"><h3>Owner: {{ owner }} {{ nodeset }}</h3></span>
+							<span id="label"><h3>Nodesets:</h3></span>
+							<a href="{{url_for('cluster_edit', name=name)}}" class="btn btn-default">Update Cluster</a>
 						</div>
 					</div>
 				</div>
