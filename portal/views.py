@@ -385,7 +385,7 @@ def cluster_name(name):
                 clustername = cluster.name
                 owner = cluster.owner
 
-            return render_template('cluster_profile.html', name=clustername, owner=owner)
+        return render_template('cluster_profile.html', name=clustername, owner=owner)
 
     elif request.method == 'POST':
         node_number = request.form['node_number']
@@ -551,7 +551,9 @@ def resource_name(name):
 @app.route('/request', methods=['GET', 'POST'])
 @authenticated
 def vc3request():
-    return render_template('request.html')
+    requests = clientapi.listRequests()
+
+    return render_template('request.html', requests=requests)
 
 
 @app.route('/dashboard', methods=['GET', 'POST'])
