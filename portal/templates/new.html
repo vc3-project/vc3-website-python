@@ -33,9 +33,9 @@
       <fieldset>
         <label for="members">Project Members</label>
         <select class="form-control" name="members" tabindex="2" id="form-resource-list" required>
-          <option value="" selected disabled>Please Select User</option>
+          <option selected disabled>Please Select User</option>
           {% for user in users %}
-          <option value="{{request.members}}">{{ user.name }}</option>
+          <option value="{{user.name}}">{{ user.name }}</option>
           {% endfor %}
         </select>
       </fieldset>

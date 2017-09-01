@@ -323,8 +323,8 @@ def project_name(name):
             if project.name == name:
                 name = project.name
                 owner = project.owner
+                clientapi.addUserToProject(project=name, user=user)
                 members = project.members
-            clientapi.addUserToProject(project=name, user=user)
         return render_template('projects_pages.html', name=name, owner=owner, members=members, allocations=allocations, projects=projects)
 
 

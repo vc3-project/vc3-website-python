@@ -30,7 +30,7 @@
 								<fieldset>
 					        <label for="newuser">Add New Users</label>
 					        <select class="form-control" name="newuser" tabindex="2" id="form-resource-list" required>
-					          <option value="" selected disabled>Please Select User</option>
+					          <option selected disabled>Please Select User</option>
 					          {% for user in users %}
 					          <option value="{{user.name}}">{{ user.name }}</option>
 					          {% endfor %}
