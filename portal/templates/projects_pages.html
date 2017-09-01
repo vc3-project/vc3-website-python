@@ -49,22 +49,19 @@
 								</div>
 
 								<form role="form" action="{{url_for('project_name', name=name)}}" method="POST">
-									<div class="form-group">
+									<fieldset>
 										<label for="allocation">Select Allocation:</label>
-										<select class="form-control" id="allocation" name="allocation" required>
+										<select class="form-control" id="form-resource-list" name="allocation" tabindex="3" required>
 											<option selected disabled>Please Select Allocation</option>
 										<!-- Populate List of Allocations that has been defined by User -->
 										{% for allocation in allocations %}
 											{% if allocation.owner == owner %}
-										  	<option value="{{allocation}}">{{ allocation.name }}</option>
+										  	<option value="{{allocation.name}}">{{ allocation.name }}</option>
 											{% endif %}
 									  {% endfor %}
 										</select>
-									</div>
-									<div class="form-group">
-										<!-- <a href="#" class="btn btn-default btn-sm">Add Allocation to Project</a> -->
+									</fieldset>
 										<button type="submit" class="btn btn-primary">Add Allocation to Project</button>
-									</div>
 								</form>
 
           </div><!-- /.content description -->

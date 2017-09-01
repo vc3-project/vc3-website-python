@@ -318,6 +318,7 @@ def project_name(name):
         return render_template('projects_pages.html', name=name, owner=owner, members=members, allocations=allocations, projects=projects, users=users)
     elif request.method == 'POST':
         user = request.form['newuser']
+        # newallocation = request.form['allocation']
 
         for project in projects:
             if project.name == name:
@@ -325,7 +326,9 @@ def project_name(name):
                 owner = project.owner
                 clientapi.addUserToProject(project=name, user=user)
                 members = project.members
-        return render_template('projects_pages.html', name=name, owner=owner, members=members, allocations=allocations, projects=projects)
+                # clientapi.addAllocationToProject(allocation=newallocation, projectname=name)
+
+        return render_template('projects_pages.html', name=name, owner=owner, members=members, allocations=allocations, projects=projects, users=users)
 
 
 @app.route('/cluster/new', methods=['GET', 'POST'])
