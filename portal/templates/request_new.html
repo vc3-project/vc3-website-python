@@ -43,7 +43,9 @@
 										<select class="form-control" name="cluster" tabindex="2" id="form-resource-list" required>
 											<option value="" selected disabled>Please Select Cluster</option>
 											{% for cluster in clusters %}
+                        {% if cluster.owner == session['name'] %}
 											<option value="{{cluster.name}}">{{ cluster.name }}</option>
+                        {% endif %}
 											{% endfor %}
 										</select>
                   </fieldset>
@@ -52,7 +54,9 @@
 										<select class="form-control" name="allocation" tabindex="3" id="form-resource-list" required>
 											<option value="" selected disabled>Please Select Allocation</option>
 											{% for allocation in allocations %}
+                        {% if allocation.owner == session['name'] and allocation.state == "validated" %}
 											<option value="{{allocation.name}}">{{ allocation.name }}</option>
+                        {% endif %}
 											{% endfor %}
 										</select>
                   </fieldset>

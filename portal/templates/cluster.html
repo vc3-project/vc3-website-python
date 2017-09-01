@@ -34,7 +34,7 @@
   									<thead>
   										<tr class="filters">
   											<th><input type="text" class="form-control" placeholder="Name" disabled></th>
-  											<th><input type="text" class="form-control" placeholder="Owner" disabled></th>
+  											<th><input type="text" class="form-control" placeholder="State" disabled></th>
   											<th><input type="text" class="form-control" placeholder="Nodesets" disabled></th>
   										</tr>
   									</thead>
@@ -43,7 +43,13 @@
                         {% if cluster.owner == session['name'] %}
   										<tr>
   											<td><a href="{{ url_for('cluster_name', name=cluster.name) }}">{{ cluster.name }}</a></td>
-  											<td>{{ cluster.owner }}</td>
+                          {% if cluster.state == "validated" %}
+                          <td><font color="green">{{ cluster.state }}</font></td>
+                          {% elif cluster.state == "terminated" %}
+                          <td><font color="red">{{ cluster.state }}</font></td>
+                          {% else %}
+                          <td><font color="orange">{{ cluster.state }}</font></td>
+                          {% endif %}
   											<td>{{ cluster.nodesets }}</td>
   										</tr>
   										  {% endif %}

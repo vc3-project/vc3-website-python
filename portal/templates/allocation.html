@@ -34,7 +34,7 @@
   									<thead>
   										<tr class="filters">
   											<th><input type="text" class="form-control" placeholder="Name" disabled></th>
-  											<th><input type="text" class="form-control" placeholder="Owner" disabled></th>
+  											<th><input type="text" class="form-control" placeholder="State" disabled></th>
   											<th><input type="text" class="form-control" placeholder="Resource" disabled></th>
   										</tr>
   									</thead>
@@ -43,7 +43,13 @@
                         {% if allocation.owner == session['name'] %}
   										<tr>
   											<td><a href="{{ url_for('allocation_name', name=allocation.name) }}">{{ allocation.name }}</a></td>
-  											<td>{{ allocation.owner }}</td>
+                          {% if allocation.state == "validated" %}
+    											<td><font color="green">{{ allocation.state }}</font></td>
+                          {% elif allocation.state == "terminated" %}
+                          <td><font color="red">{{ allocation.state }}</font></td>
+                          {% else %}
+                          <td><font color="orange">{{ allocation.state }}</font></td>
+                          {% endif %}
   											<td>{{ allocation.resource }}</td>
   										</tr>
                         {% endif %}

@@ -52,7 +52,7 @@
 									<fieldset>
 										<label for="app_type">Middleware</label>
 										<select class="form-control" name="app_type" tabindex="2" id="form-resource-list" required>
-											<option value="" selected disabled>Please Select Middleware</option>
+											<option selected disabled>Please Select Middleware</option>
 											<option value="htcondor">HTCondor</option>
 											<option value="workqueue">WorkQueue</option>
 										</select>
@@ -66,13 +66,13 @@
 										</select>
 									</fieldset> -->
 									<fieldset>
-										<label for="node_number">Number of Nodes (between 1 and 1000):</label>
+										<label for="node_number">Number of Nodes:</label>
 										<input
 											placeholder="1"
 											name="node_number"
 											type="number"
 											min="1"
-											max="1000"
+											max="1000000"
 											tabindex="3"
 											required
 											autofocus
