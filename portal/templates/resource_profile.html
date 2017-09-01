@@ -3,35 +3,41 @@
 {%block title%}Dashboard{%endblock%}
 
 {%block body%}
-<section id="resource-profile">
-				<div class="content">
-            <div class="container-fluid">
-							<div class="row">
-									<div class="col-md-8 col-lg-12">
-											<div class="card">
-													<div class="header">
-														<h3 class="title"><span id="label">Resource Profile:</span> {{ name }}</h3>
-															<h5 class="category">Help desk:</h5>
-                              <h5 class="category">Some mildly interesting description here, explaining the goals and purpose of the project</h5>
-													</div>
-													<div class="content container">
-															<!-- <div class="list-group">
-																<a href="#" class="list-group-item active">Owner: {{ owner }}</a>
-															</div> -->
-														<span id="label"><h3>Owner: {{ owner }}</h3></span>
-														<span id="label"><h3>Access Type: {{ accesstype }}</h3></span>
-                            <span id="label"><h3>Access Method: {{ accessmethod }}</h3></span>
-                            <span id="label"><h3>Access Flavor: {{ accessflavor }}</h3></span>
-                            <span id="label"><h3>Access Host: {{ accesshost }}</h3></span>
-														<span id="label"><h3>Access Port: {{ accessport}}</h3></span>
-														<span id="label"><h3>Grid Resource: {{ gridresource }}</h3></span>
-                            <!-- <a href="#" class="btn btn-default">Launch Request</a> -->
-													</div>
-											</div>
-									</div>
-							</div>
 
-            </div>
+<div class="content">
+  <div class="container-fluid">
+
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="header">
+          	<h4 class="title">Resource Profile: {{name}}</h4>
+            <div class="">
+							<h5 class="category">Help desk: test</h5>
+							<h5>Resource Description</h5>
+							<!-- <a href="{{url_for('cluster_edit', name=name)}}" class="btn btn-primary btn-sm">Update Cluster</a> -->
+						</div>
+						<hr />
+          </div>
+
+          <div class="content description">
+  					<div class="card-block">
+							<div class="content container">
+								<span id="label"><h3>Owner: {{ owner }}</h3></span>
+								<span id="label"><h3>Access Type: {{ accesstype }}</h3></span>
+								<span id="label"><h3>Access Method: {{ accessmethod }}</h3></span>
+								<span id="label"><h3>Access Flavor: {{ accessflavor }}</h3></span>
+								<span id="label"><h3>Access Host: {{ accesshost }}</h3></span>
+								<span id="label"><h3>Access Port: {{ accessport}}</h3></span>
+								<span id="label"><h3>Grid Resource: {{ gridresource }}</h3></span>
+							</div>
+  					</div>
+          </div><!-- /.content description -->
+
         </div>
-</section>
+      </div>
+		</div>
+
+  </div>
+</div>
 {%endblock%}

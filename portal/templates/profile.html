@@ -4,216 +4,203 @@
 
 {%block body%}
 
-<div class="content container">
+<div class="content">
   <div class="container-fluid">
     <div class="row">
-		  {%if session.get('is_authenticated')%}
+      <div class="col-md-12">
+        <div class="card">
 
-			<section id="user_profile">
-			<!-- Profile Info Display -->
+          <div class="header">
+            <h2 class="title">Summary</h2>
+            <h5>Account Details</h5>
+						<hr />
+          </div>
 
-  			<div class="container card">
-        <h2 class="title">Summary</h2>
-        <h5>Account Details</h5>
-        <hr />
-    			<div class="row">
-    				<div class="col-sm-6 col-md-6 col-lg-3">
-    					<div class="thumbnail">
-    						<img src="https://image.ibb.co/hEdfV5/blank_profile_picture_973461_960_720.png" alt="">
-    						<div class="caption description">
-    							<h5>Name:</h5><p>{{session['first']}} {{session['last']}}</p>
-    							<h5>Institution:</h5> <p>{{session['institution']}}</p>
-    							<h5>Email: <a href="mailto:{{session['email']}}">{{session['email']}}</a></h5>
-    							<p><a href="{{url_for('edit')}}" class="btn btn-primary" role="button">Edit</a></p>
-    						</div>
-    					</div>
-    				</div>
+          <div class="content description">
+  					<div class="card-block">
+              {%if session.get('is_authenticated')%}
+              <div class="row">
+        				<div class="col-sm-6 col-md-6 col-lg-3">
+        					<div class="thumbnail">
+        						<img src="https://image.ibb.co/hEdfV5/blank_profile_picture_973461_960_720.png" alt="">
+        						<div class="caption description">
+        							<h5>Name:</h5><p>{{session['first']}} {{session['last']}}</p>
+        							<h5>Institution:</h5> <p>{{session['institution']}}</p>
+        							<h5>Email: <a href="mailto:{{session['email']}}">{{session['email']}}</a></h5>
+        							<!-- <p><a href="{{url_for('edit')}}" class="btn btn-primary" role="button">Edit</a></p> -->
+        						</div>
+        					</div>
+        				</div>
 
-    				<div class="col-md-6">
-    					<form role="form" action="{{url_for('profile')}}" method="POST">
-    						<div class="form-group">
-    							<label for="name">User Name</label>
-    							<input
-    								type="text"
-    								class="form-control"
-    								id="name"
-    								name="name"
-    								placeholder="Username"
-    								required="required"
-    								tabindex="1"
-    								value="{{session['name']}}"
-                    disabled
-    							>
-    						</div>
+        				<div class="col-md-6">
+        					<form role="form" action="{{url_for('profile')}}" method="POST">
+        						<div class="form-group">
+        							<!-- <label for="name">User Name</label>
+        							<input
+        								type="text"
+        								class="form-control"
+        								id="name"
+        								name="name"
+        								placeholder="Username"
+        								required="required"
+        								tabindex="1"
+        								value="{{session['name']}}"
+        							>
+        						</div> -->
 
-                <div class="form-group">
-    							<label for="first">First Name</label>
-    							<input
-    								type="text"
-    								id="first"
-    								name="first"
-                    placeholder="First Name"
-    								class="form-control"
-    								required="required"
-    								tabindex="2"
-    								value="{{session['first']}}"
-                    disabled
-    							>
-    					  </div>
+                    <div class="form-group">
+        							<label for="first">First Name</label>
+        							<input
+        								type="text"
+        								id="first"
+        								name="first"
+                        placeholder="First Name"
+        								class="form-control"
+        								required="required"
+        								tabindex="1"
+        								value="{{session['first']}}"
+        							>
+        					  </div>
 
-                <div class="form-group">
-    							<label for="last">Last Name</label>
-    							<input
-    								type="text"
-    								id="last"
-    								name="last"
-                    placeholder="Last Name"
-    								class="form-control"
-    								required="required"
-    								tabindex="3"
-    								value="{{session['last']}}"
-                    disabled
-    							>
-    						</div>
+                    <div class="form-group">
+        							<label for="last">Last Name</label>
+        							<input
+        								type="text"
+        								id="last"
+        								name="last"
+                        placeholder="Last Name"
+        								class="form-control"
+        								required="required"
+        								tabindex="2"
+        								value="{{session['last']}}"
+        							>
+        						</div>
 
-    						<div class="form-group">
-    							<label for="email">Email</label>
-    							<input
-    								type="email"
-    								id="email"
-    								name="email"
-    								class="form-control"
-    								placeholder="me@example.com"
-    								required="required"
-    								tabindex="4"
-    								value="{{session['email']}}"
-                    disabled
-    							>
-    						</div>
+        						<div class="form-group">
+        							<label for="email">Email</label>
+        							<input
+        								type="email"
+        								id="email"
+        								name="email"
+        								class="form-control"
+        								placeholder="me@example.com"
+        								required="required"
+        								tabindex="3"
+        								value="{{session['email']}}"
+        							>
+        						</div>
 
-                <div class="form-group">
-                  <label for="institution">Institution/Department</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="institution"
-                    name="institution"
-                    placeholder="Institution Name"
-                    required="required"
-                    tabindex="5"
-                    value="{{session['institution']}}"
-                    disabled
-                  >
+                    <div class="form-group">
+                      <label for="institution">Institution/Department</label>
+                      <input
+                        type="text"
+                        class="form-control"
+                        id="institution"
+                        name="institution"
+                        placeholder="Institution Name"
+                        required="required"
+                        tabindex="4"
+                        value="{{session['institution']}}"
+                      >
+                    </div>
+
+        					  <div class="form-group">
+                      <button type="submit" class="btn btn-primary">Update</button>
+        					  </div>
+        				  </form>
+        				</div>
+        			</div> <!-- row -->
+
+            {%else%}
+
+              <div class="row">
+
+                <div class="col-md-6">
+                  <form role="form" action="{{url_for('profile')}}" method="POST">
+                    <div class="form-group">
+                      <label for="name">User Name</label>
+                      <input
+                        type="text"
+                        class="form-control"
+                        id="name"
+                        name="name"
+                        placeholder="Username"
+                        required="required"
+                        tabindex="1"
+                        value="{{session['name']}}"
+                      >
+                    </div>
+
+                    <div class="form-group">
+                      <label for="first">First Name</label>
+                      <input
+                        type="text"
+                        id="first"
+                        name="first"
+                        placeholder="First Name"
+                        class="form-control"
+                        required="required"
+                        tabindex="2"
+                        value="{{session['first']}}"
+                      >
+                    </div>
+
+                    <div class="form-group">
+                      <label for="last">Last Name</label>
+                      <input
+                        type="text"
+                        id="last"
+                        name="last"
+                        placeholder="Last Name"
+                        class="form-control"
+                        required="required"
+                        tabindex="3"
+                        value="{{session['last']}}"
+                      >
+                    </div>
+
+                    <div class="form-group">
+                      <label for="email">Email</label>
+                      <input
+                        type="email"
+                        id="email"
+                        name="email"
+                        class="form-control"
+                        placeholder="me@example.com"
+                        required="required"
+                        tabindex="4"
+                        value="{{session['email']}}"
+                      >
+                    </div>
+
+                    <div class="form-group">
+                      <label for="institution">Institution/Department</label>
+                      <input
+                        type="text"
+                        class="form-control"
+                        id="institution"
+                        name="institution"
+                        placeholder="Institution Name"
+                        required="required"
+                        tabindex="5"
+                        value="{{session['institution']}}"
+                      >
+                    </div>
+
+                    <div class="form-group">
+                      <button type="submit" class="btn btn-primary">Update</button>
+                    </div>
+                  </form>
                 </div>
 
-    					  <!-- <div class="form-group">
-                  <button type="submit" class="btn btn-primary">Update</button>
-    					  </div> -->
-    				  </form>
-    				</div>
+              </div> <!-- row -->
+            {% endif %}
+  					</div>
+          </div><!-- /.content description -->
 
-    			</div> <!-- row -->
-        </div> <!-- container -->
-      </section>
-
-			{% else %}
-      <section id="user_profile">
-      <!-- Profile Info Display -->
-
-        <div class="container card">
-        <h2 class="title">Profile</h2>
-        <hr />
-          <div class="row">
-
-            <div class="col-md-6">
-              <form role="form" action="{{url_for('profile')}}" method="POST">
-                <div class="form-group">
-                  <label for="name">User Name</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="name"
-                    name="name"
-                    placeholder="Username"
-                    required="required"
-                    tabindex="1"
-                    value="{{session['name']}}"
-                    disabled
-                  >
-                </div>
-
-                <div class="form-group">
-                  <label for="first">First Name</label>
-                  <input
-                    type="text"
-                    id="first"
-                    name="first"
-                    placeholder="First Name"
-                    class="form-control"
-                    required="required"
-                    tabindex="2"
-                    value="{{session['first']}}"
-                    disabled
-                  >
-                </div>
-
-                <div class="form-group">
-                  <label for="last">Last Name</label>
-                  <input
-                    type="text"
-                    id="last"
-                    name="last"
-                    placeholder="Last Name"
-                    class="form-control"
-                    required="required"
-                    tabindex="3"
-                    value="{{session['last']}}"
-                    disabled
-                  >
-                </div>
-
-                <div class="form-group">
-                  <label for="email">Email</label>
-                  <input
-                    type="email"
-                    id="email"
-                    name="email"
-                    class="form-control"
-                    placeholder="me@example.com"
-                    required="required"
-                    tabindex="4"
-                    value="{{session['email']}}"
-                    disabled
-                  >
-                </div>
-
-                <div class="form-group">
-                  <label for="institution">Institution/Department</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="institution"
-                    name="institution"
-                    placeholder="Institution Name"
-                    required="required"
-                    tabindex="5"
-                    value="{{session['institution']}}"
-                    disabled
-                  >
-                </div>
-
-                <div class="form-group">
-                  <button type="submit" class="btn btn-primary">Update</button>
-                </div>
-              </form>
-            </div>
-
-          </div> <!-- row -->
-        </div> <!-- container -->
-      </section>
-			{%endif%}
-
-    </div>
+        </div>
+      </div>
+		</div>
   </div>
 </div>
 

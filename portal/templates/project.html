@@ -1,20 +1,18 @@
 {%extends "loginbase.html"%}
 
-{%block title%}Project{%endblock%}
+{%block title%}Projects{%endblock%}
 
 {%block body%}
 
+<div class="content">
+  <div class="container-fluid">
 
-<section id="projects">
-	<div class="content">
-    <div class="container-fluid">
-
-      <div class="row">
+    <div class="row">
+      <div class="col-md-12">
         <div class="card">
-
           <div class="header">
-            <h4 class="title">Projects</h4>
-						<div class="">
+          	<h4 class="title">Projects</h4>
+            <div class="">
 							<h5>A list of your current projects</h5>
 							<a href="{{url_for('new')}}" class="btn btn-primary btn-sm">+ New Project</a>
 						</div>
@@ -22,26 +20,53 @@
           </div>
 
           <div class="content description">
-						<ul class=projects>
-						{% for project in projects %}
-							{% if project.owner == session['name'] %}
-							<div class="card text-center" style="width: 30rem;">
-								<div class="card-block">
-									<h4 class="card-title" id="project-pull-left"><span id="label">Project Name:</span> {{ project.name }}</h4>
-									<p class="card-text" id="project-pull-left"><span id="label">Project Owner:</span> {{ project.owner}}</p>
-								{% for member in project.members %}
-									<p class="card-text" id="project-pull-left"><span id="label">Members:</span> {{ member }}</p>
-								{% endfor %}
-									<a href="{{ url_for('project_name', name=project.name) }}" id="project-btn" class="btn btn-primary btn-sm">View Project</a>
-								</div>
-							</div>
-							{% endif %}
-						{% endfor %}
-						</ul>
+
+            <div class="card">
+  						<div class="card-block">
+  							<div class="panel panel-primary filterable">
+  								<div class="panel-heading">
+  									<h3 class="panel-title">Project Profiles</h3>
+  									<div class="pull-right">
+  										<button class="btn btn-primary btn-sm btn-filter"><span class="glyphicon glyphicon-filter"></span> Filter</button>
+  									</div>
+  								</div>
+  								<table class="table table-hover">
+  									<thead>
+  										<tr class="filters">
+  											<th><input type="text" class="form-control" placeholder="Name" disabled></th>
+  											<th><input type="text" class="form-control" placeholder="Members" disabled></th>
+  											<th><input type="text" class="form-control" placeholder="Allocations" disabled></th>
+  										</tr>
+  									</thead>
+  									<tbody data-link="row" class="rowlink">
+											{% for project in projects %}
+												{% if project.owner == session['name'] %}
+  										<tr>
+  											<td><a href="{{ url_for('project_name', name=project.name) }}">{{ project.name }}</a></td>
+  											<td>
+                          <select name="members" id="form-resource-list">
+                            {% for member in project.members %}
+                            <option>{{ member }}</option>
+                            {% endfor %}
+                          </select>
+                        </td>
+  											<td>{{ project.allocations }}</td>
+  										</tr>
+                        {% endif %}
+  										{% endfor %}
+  									</tbody>
+  								</table>
+  							</div>
+  						</div>
+  					</div>
+
           </div><!-- /.content description -->
+
         </div>
-			</div>
-    </div>
+      </div>
+		</div>
+
   </div>
-</section>
+</div>
+
 {%endblock%}

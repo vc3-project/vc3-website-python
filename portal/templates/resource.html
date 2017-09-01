@@ -3,60 +3,62 @@
 {%block title%}Resources{%endblock%}
 
 {%block body%}
-<section id="resource">
-	<div class="content">
-		<div class="container-fluid">
-      <div class="card">
-        <div class="header">
-            <h4 class="title">Resources</h4>
-						<h5>Browse current list of known Resource Profiles</h5>
-						<hr />
-        </div>
 
-        <div class="content description">
+<div class="content">
+  <div class="container-fluid">
 
-					<div class="card">
-						<div class="card-block">
-							<div class="panel panel-primary filterable">
-								<div class="panel-heading">
-									<h3 class="panel-title">Resource Profiles</h3>
-									<div class="pull-right">
-										<button class="btn btn-primary btn-sm btn-filter"><span class="glyphicon glyphicon-filter"></span> Filter</button>
-									</div>
-								</div>
-								<table class="table table-hover">
-									<thead>
-										<tr class="filters">
-											<th><input type="text" class="form-control" placeholder="Name" disabled></th>
-											<th><input type="text" class="form-control" placeholder="Access Host" disabled></th>
-											<th><input type="text" class="form-control" placeholder="Access Type" disabled></th>
-										</tr>
-									</thead>
-									<tbody data-link="row" class="rowlink">
-										{% for resource in resources %}
-										<tr>
-											<td><a href="{{ url_for('resource_name', name=resource.name) }}">{{ resource.name }}</a></td>
-											<td>{{ resource.accesshost }}</td>
-											<td>{{ resource.accesstype }}</td>
-										</tr>
-										{% else %}
-										<tr>
-											<td>No Resources here so far</td>
-											<td></td>
-											<td></td>
-											<td>Define New Resource</td>
-										</tr>
-										{% endfor %}
-									</tbody>
-								</table>
-							</div>
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="header">
+          	<h4 class="title">Resources</h4>
+            <div class="">
+							<h5>Browse current list of known resource profiles</h5>
 						</div>
-					</div>
+						<hr />
+          </div>
 
-        </div><!-- /.content description -->
-    	</div>
-    </div>
-	</div>
-</section>
+          <div class="content description">
+
+            <div class="card">
+  						<div class="card-block">
+  							<div class="panel panel-primary filterable">
+  								<div class="panel-heading">
+  									<h3 class="panel-title">Resource Profiles</h3>
+  									<div class="pull-right">
+  										<button class="btn btn-primary btn-sm btn-filter"><span class="glyphicon glyphicon-filter"></span> Filter</button>
+  									</div>
+  								</div>
+  								<table class="table table-hover">
+  									<thead>
+  										<tr class="filters">
+  											<th><input type="text" class="form-control" placeholder="Name" disabled></th>
+  											<th><input type="text" class="form-control" placeholder="Access Host" disabled></th>
+  											<th><input type="text" class="form-control" placeholder="Access Type" disabled></th>
+  										</tr>
+  									</thead>
+  									<tbody data-link="row" class="rowlink">
+											{% for resource in resources %}
+											<tr>
+												<td><a href="{{ url_for('resource_name', name=resource.name) }}">{{ resource.name }}</a></td>
+												<td>{{ resource.accesshost }}</td>
+												<td>{{ resource.accesstype }}</td>
+											</tr>
+											{% endfor %}
+
+  									</tbody>
+  								</table>
+  							</div>
+  						</div>
+  					</div>
+
+          </div><!-- /.content description -->
+
+        </div>
+      </div>
+		</div>
+
+  </div>
+</div>
 
 {%endblock%}

@@ -12,41 +12,6 @@
         <div class="card">
           <div class="header">
           	<h4 class="title">Requests</h4>
-            <div class="">
-              <h5>Request Details</h5>
-							<!-- <a href="{{url_for('cluster_new')}}" class="btn btn-primary btn-sm">+ New Cluster</a> -->
-              {% for request in requests %}
-                <!-- <h5>{{ request }}</h5> -->
-                <h5>Name: {{ request.name }}</h5>
-                <h5>State: {{ request.state }}</h5>
-                <h5>Owner: {{ request.owner }}</h5>
-                <h5>Expiration: {{ request.expiration }}</h5>
-                <h5>Policy: {{ request.policy }}</h5>
-                <h5>Allocations: {{ request.allocations }}</h5>
-                <ul><h5><em>{{ request.allocations[0] }}</em></h5></ul>
-                <ul><h5><em>{{ request.allocations[1] }}</em></h5></ul>
-                <h5>environments: {{ request.environments }}</h5>
-                <ul><h5><em>{{ request.environments[0] }}</em></h5></ul>
-                <hr/>
-                <h5>status: {{ request.statusraw }}</h5>
-                <h5>status: {{ request.statusraw }}</h5>
-                <h5>status vc3-static: {{ request.statusraw["VC3-static"] }}</h5>
-                <h5>status clusters: {{ request.statusraw["VC3-static"]["htcondor-workers-1"] }}</h5>
-                <hr/>
-                <h5>CLUSTER: lincolnb.uchicago-coreos</h5>
-                <hr/>
-                <h5>status jobs: {{ request.statusraw["VC3-static"]["htcondor-workers-1"]["september-demo-request.htcondor-workers-1.lincolnb.uchicago-coreos"] }}</h5>
-                <h5>running jobs: {{ request.statusraw["VC3-static"]["htcondor-workers-1"]["september-demo-request.htcondor-workers-1.lincolnb.uchicago-coreos"]["running"] }}</h5>
-                <h5>idle jobs: {{ request.statusraw["VC3-static"]["htcondor-workers-1"]["september-demo-request.htcondor-workers-1.lincolnb.uchicago-coreos"]["idle"] }}</h5>
-                <hr/>
-                <h5>CLUSTER: lincolnb.uchicago-midway</h5>
-                <hr/>
-                <h5>status jobs: {{ request.statusraw["VC3-static"]["htcondor-workers-1"]["september-demo-request.htcondor-workers-1.lincolnb.uchicago-midway"] }}</h5>
-                <h5>running jobs: {{ request.statusraw["VC3-static"]["htcondor-workers-1"]["september-demo-request.htcondor-workers-1.lincolnb.uchicago-midway"]["running"] }}</h5>
-                <h5>idle jobs: {{ request.statusraw["VC3-static"]["htcondor-workers-1"]["september-demo-request.htcondor-workers-1.lincolnb.uchicago-midway"]["idle"] }}</h5>
-
-              {% endfor %}
-						</div>
 						<hr />
           </div>
 
@@ -65,17 +30,25 @@
   									<thead>
   										<tr class="filters">
   											<th><input type="text" class="form-control" placeholder="Name" disabled></th>
-  											<th><input type="text" class="form-control" placeholder="Expiration" disabled></th>
+  											<th><input type="text" class="form-control" placeholder="State" disabled></th>
   											<th><input type="text" class="form-control" placeholder="Jobs" disabled></th>
   										</tr>
   									</thead>
   									<tbody data-link="row" class="rowlink">
                     {% for request in requests %}
+                      {% if request.owner == session['name'] %}
   										<tr>
-  											<td><a href="#"></a>{{ request.name }}</td>
-  											<td>{{ request.expiration }}</td>
-  											<td>Running: {{ request.statusraw["VC3-static"]["htcondor-workers-1"]["september-demo-request.htcondor-workers-1.lincolnb.uchicago-midway"]["running"] }} Idle: {{ request.statusraw["VC3-static"]["htcondor-workers-1"]["september-demo-request.htcondor-workers-1.lincolnb.uchicago-midway"]["idle"] }}</td>
+  											<td><a href="{{ url_for('request_name', name=request.name) }}">{{ request.name }}</a></td>
+                        {% if request.state == "validated" or request.state == "new" or request.state == "configured" or request.state == "running" %}
+  											<td><font color="green">{{ request.state }}</font></td>
+                        {% elif request.state=="terminated" or request.state == "terminating"%}
+                        <td><font color="red">{{ request.state }}</font></td>
+                        {% else %}
+                        <td><font color="orange">{{ request.state }}</font></td>
+                        {% endif %}
+  											<td>Running:</td>
   										</tr>
+                      {% endif %}
                     {% endfor %}
   									</tbody>
   								</table>

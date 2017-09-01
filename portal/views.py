@@ -280,7 +280,8 @@ def authcallback():
 @app.route('/new', methods=['GET', 'POST'])
 @authenticated
 def new():
-    return render_template('new.html')
+    users = clientapi.listUsers()
+    return render_template('new.html', users=users)
 
 
 @app.route('/project', methods=['GET', 'POST'])
@@ -306,6 +307,7 @@ def project():
 def project_name(name):
     projects = clientapi.listProjects()
     allocations = clientapi.listAllocations()
+    users = clientapi.listUsers()
 
     if request.method == 'GET':
         for project in projects:
@@ -313,27 +315,12 @@ def project_name(name):
                 name = project.name
                 owner = project.owner
                 members = project.members
-        return render_template('projects_pages.html', name=name, owner=owner, members=members, allocations=allocations, projects=projects)
+        return render_template('projects_pages.html', name=name, owner=owner, members=members, allocations=allocations, projects=projects, users=users)
     elif request.method == 'POST':
-        addallocation = request.form['allocation']
+        user = request.form['newuser']
 
         for project in projects:
             if project.name == name:
-                name = project.name
-                owner = project.owner
-                members = project.members
-            clientapi.addAllocationToProject(allocation=addallocation, project=name)
-        return render_template('projects_pages.html', name=name, owner=owner, members=members, allocations=allocations, projects=projects)
-
-
-def add_member(name):
-    projects = clientapi.listProjects()
-    allocations = clientapi.listAllocations()
-
-    if request.method == 'POST':
-        user = request.form['members']
-        for project in projects:
-            if project.owner == session['name']:
                 name = project.name
                 owner = project.owner
                 members = project.members
@@ -384,8 +371,9 @@ def cluster_name(name):
             if cluster.name == name:
                 clustername = cluster.name
                 owner = cluster.owner
+                state = cluster.state
 
-        return render_template('cluster_profile.html', name=clustername, owner=owner)
+        return render_template('cluster_profile.html', name=clustername, owner=owner, state=state)
 
     elif request.method == 'POST':
         node_number = request.form['node_number']
@@ -551,9 +539,50 @@ def resource_name(name):
 @app.route('/request', methods=['GET', 'POST'])
 @authenticated
 def vc3request():
-    requests = clientapi.listRequests()
+    vc3requests = clientapi.listRequests()
+    # environments = clientapi.listEnvironments()
+    allocations = []
 
-    return render_template('request.html', requests=requests)
+    if request.method == 'POST':
+        vc3requestname = request.form['name']
+        owner = session['name']
+        expiration = None
+        cluster = request.form['cluster']
+        policy = "static-balanced"
+        allocations.append(request.form['allocation'])
+        environments = ["lincolnb-en1"]
+
+        newrequest = clientapi.defineRequest(name=vc3requestname, owner=owner, cluster=cluster,
+                                             allocations=allocations, environments=environments, policy=policy, expiration=expiration)
+        clientapi.storeRequest(newrequest)
+        return render_template('request.html', requests=vc3requests)
+
+    elif request.method == 'GET':
+        return render_template('request.html', requests=vc3requests)
+
+
+@app.route('/request/new', methods=['GET', 'POST'])
+@authenticated
+def request_new():
+    if request.method == 'GET':
+        allocations = clientapi.listAllocations()
+        clusters = clientapi.listClusters()
+
+        return render_template('request_new.html', allocations=allocations, clusters=clusters)
+
+
+@app.route('/request/<name>', methods=['GET', 'POST'])
+@authenticated
+def request_name(name):
+    vc3requests = clientapi.listRequests()
+
+    if request.method == 'GET':
+        for vc3request in vc3requests:
+            if vc3request.name == name:
+                requestname = vc3request.name
+                owner = vc3request.owner
+
+    return render_template('request_profile.html', name=requestname, owner=owner, requests=vc3requests)
 
 
 @app.route('/dashboard', methods=['GET', 'POST'])

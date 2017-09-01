@@ -3,31 +3,39 @@
 {%block title%}Allocation Profile: {{name}}{%endblock%}
 
 {%block body%}
-<section id="resource-profile">
-	<div class="content">
-    <div class="container-fluid">
-			<div class="row">
-				<div class="col-md-8 col-lg-12">
-					<div class="card">
-						<div class="header">
-							<h3 class="title"><span id="label">Allocation Profile:</span> {{ name }}</h3>
-              <h5 class="category">Allocation Description</h5>
+
+<div class="content">
+  <div class="container-fluid">
+
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="header">
+          	<h4 class="title">Allocation: {{name}}</h4>
+            <div class="">
+							<h5>Allocation Description</h5>
+							<a href="{{url_for('allocation_edit', name=name)}}" class="btn btn-primary btn-sm">Update Allocation</a>
 						</div>
-						<div class="content container">
-							<!-- <div class="list-group">
-								<div href="#" class="list-group-item active">Owner: {{ owner }}</div>
-							</div> -->
+						<hr />
+          </div>
+
+          <div class="content description">
+  					<div class="card-block">
+
 							<span id="label"><h3>Owner: {{ owner }}</h3></span>
 							<span id="label"><h3>Resource: {{ resource }}</h3></span>
-							<span id="label"><h3>Account Name: {{ accountname }}</h3></span>
+							<!-- <span id="label"><h3>Account Name: {{ accountname }}</h3></span> -->
 							<!-- <span id="label"><h3>Public Token: {{ pubtoken }}</h3></span> -->
-              <a href="{{url_for('allocation_edit', name=name)}}" class="btn btn-default">Update Allocation</a>
-						</div>
-					</div>
-				</div>
-			</div>
+	             <!-- <a href="{{url_for('allocation_edit', name=name)}}" class="btn btn-default">Update Allocation</a> -->
 
-    </div>
+  					</div>
+          </div><!-- /.content description -->
+
+        </div>
+      </div>
+		</div>
+
   </div>
-</section>
+</div>
+
 {%endblock%}

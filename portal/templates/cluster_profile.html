@@ -3,27 +3,37 @@
 {%block title%}Cluster Profile: {{name}}{%endblock%}
 
 {%block body%}
-<section id="resource-profile">
-	<div class="content">
-    <div class="container-fluid">
-			<div class="row">
-				<div class="col-md-8 col-lg-12">
-					<div class="card">
-						<div class="header">
-							<h3 class="title"><span id="label">Cluster Profile:</span> {{ name }}</h3>
-							<h5 class="category">Help desk: test</h5>
-              <h5 class="category">Cluster Description</h5>
-						</div>
-						<div class="content container">
-							<span id="label"><h3>Owner: {{ owner }} {{ nodeset }}</h3></span>
-							<span id="label"><h3>Nodesets:</h3></span>
-							<a href="{{url_for('cluster_edit', name=name)}}" class="btn btn-default">Update Cluster</a>
-						</div>
-					</div>
-				</div>
-			</div>
 
-    </div>
+<div class="content">
+  <div class="container-fluid">
+
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="header">
+          	<h4 class="title">Cluster: {{name}}</h4>
+            <div class="">
+							<h5 class="category">Help desk: test</h5>
+							<h5>Cluster Description</h5>
+							<a href="{{url_for('cluster_edit', name=name)}}" class="btn btn-primary btn-sm">Update Cluster</a>
+						</div>
+						<hr />
+          </div>
+
+          <div class="content description">
+  					<div class="card-block">
+							<div class="content container">
+								<span id="label"><h3>Owner: {{ owner }}</h3></span>
+								<span id="label"><h3>State: {{ state }}</h3></span>
+							</div>
+  					</div>
+          </div><!-- /.content description -->
+
+        </div>
+      </div>
+		</div>
+
   </div>
-</section>
+</div>
+
 {%endblock%}

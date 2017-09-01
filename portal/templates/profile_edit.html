@@ -4,88 +4,95 @@
 
 {%block body%}
 
-<div class="content container">
+<div class="content">
   <div class="container-fluid">
     <div class="row">
 
-			<section id="user_profile">
-			<!-- Profile Info Display -->
+      <div class="col-md-12">
+        <div class="card">
 
-  			<div class="container card">
-        <h2 class="title">Summary: {{ session['name'] }}</h2>
-        <h5>Account Details</h5>
-        <hr />
-    			<div class="row">
+          <div class="header">
+            <h2 class="title">Profile Edit</h2>
+            <h5>Account Details: {{session['name']}}</h5>
+						<hr />
+          </div>
 
-    				<div class="col-md-6">
-    					<form role="form" action="{{url_for('profile')}}" method="POST">
+          <div class="content description">
+  					<div class="card-block">
 
-                <div class="form-group">
-    							<label for="first">First Name</label>
-    							<input
-    								type="text"
-    								id="first"
-    								name="first"
-                    placeholder="First Name"
-    								class="form-control"
-    								required="required"
-    								tabindex="1"
-    								value="{{session['first']}}"
-    							>
-    					  </div>
+        			<div class="row">
 
-                <div class="form-group">
-    							<label for="last">Last Name</label>
-    							<input
-    								type="text"
-    								id="last"
-    								name="last"
-                    placeholder="Last Name"
-    								class="form-control"
-    								required="required"
-    								tabindex="2"
-    								value="{{session['last']}}"
-    							>
-    						</div>
+        				<div class="col-md-6">
+        					<form role="form" action="{{url_for('profile')}}" method="POST">
 
-    						<div class="form-group">
-    							<label for="email">Email</label>
-    							<input
-    								type="email"
-    								id="email"
-    								name="email"
-    								class="form-control"
-    								placeholder="me@example.com"
-    								required="required"
-    								tabindex="3"
-    								value="{{session['email']}}"
-    							>
-    						</div>
+                    <div class="form-group">
+        							<label for="first">First Name</label>
+        							<input
+        								type="text"
+        								id="first"
+        								name="first"
+                        placeholder="First Name"
+        								class="form-control"
+        								required="required"
+        								tabindex="1"
+        								value="{{session['first']}}"
+        							>
+        					  </div>
 
-                <div class="form-group">
-                  <label for="institution">Institution/Department</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="institution"
-                    name="institution"
-                    placeholder="Institution Name"
-                    required="required"
-                    tabindex="4"
-                    value="{{session['institution']}}"
-                  >
-                </div>
+                    <div class="form-group">
+        							<label for="last">Last Name</label>
+        							<input
+        								type="text"
+        								id="last"
+        								name="last"
+                        placeholder="Last Name"
+        								class="form-control"
+        								required="required"
+        								tabindex="2"
+        								value="{{session['last']}}"
+        							>
+        						</div>
 
-    					  <div class="form-group">
-                  <button type="submit" class="btn btn-primary">Save</button>
-    					  </div>
-    				  </form>
-    				</div>
+        						<div class="form-group">
+        							<label for="email">Email</label>
+        							<input
+        								type="email"
+        								id="email"
+        								name="email"
+        								class="form-control"
+        								placeholder="me@example.com"
+        								required="required"
+        								tabindex="3"
+        								value="{{session['email']}}"
+        							>
+        						</div>
 
-    			</div> <!-- row -->
-        </div> <!-- container -->
-      </section>
+                    <div class="form-group">
+                      <label for="institution">Institution/Department</label>
+                      <input
+                        type="text"
+                        class="form-control"
+                        id="institution"
+                        name="institution"
+                        placeholder="Institution Name"
+                        required="required"
+                        tabindex="4"
+                        value="{{session['institution']}}"
+                      >
+                    </div>
 
+        					  <div class="form-group">
+                      <button type="submit" class="btn btn-primary">Save</button>
+        					  </div>
+        				  </form>
+        				</div>
+
+        			</div> <!-- row -->
+
+            </div> <!-- container -->
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </div>

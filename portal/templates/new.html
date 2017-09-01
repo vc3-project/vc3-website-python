@@ -32,13 +32,12 @@
       </fieldset>
       <fieldset>
         <label for="members">Project Members</label>
-        <input
-          placeholder="Member Names"
-          name="members"
-          type="text"
-          tabindex="2"
-          autofocus
-          value="{{request.members}}">
+        <select class="form-control" name="members" tabindex="2" id="form-resource-list" required>
+          <option value="" selected disabled>Please Select User</option>
+          {% for user in users %}
+          <option value="{{request.members}}">{{ user.name }}</option>
+          {% endfor %}
+        </select>
       </fieldset>
       <fieldset>
         <button type="submit" id="create-project" data-submit="...Sending">Create Project</button>
