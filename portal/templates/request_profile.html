@@ -17,29 +17,25 @@
 
           <div class="content description">
 
-            <div class="card">
-  						<div class="card-block">
-								<div class="">
-		              <h5>Request Details</h5>
-		              {% for request in requests %}
-										{% if request.owner == session['name'] %}
-		                <!-- <h5>{{ request }}</h5> -->
-		                <h5>Name: {{ request.name }}</h5>
-		                <h5>State: {{ request.state }}</h5>
-		                <h5>Owner: {{ request.owner }}</h5>
-		                <h5>Expiration: {{ request.expiration }}</h5>
-		                <h5>Policy: {{ request.policy }}</h5>
-		                <h5>Allocations: {{ request.allocations }}</h5>
-		                <ul><h5><em>{{ request.allocations[0] }}</em></h5></ul>
-		                <ul><h5><em>{{ request.allocations[1] }}</em></h5></ul>
-		                <h5>environments: {{ request.environments }}</h5>
-		                <ul><h5><em>{{ request.environments[0] }}</em></h5></ul>
-		                <h5>status: {{ request.statusraw }}</h5>
-		                <hr/>
-										{% endif%}
-		              {% endfor %}
-								</div>
-  						</div>
+  					<div class="card-block">
+		          <h5>Request Details</h5>
+		          {% for request in requests %}
+						    {% if request.owner == session['name'] %}
+		            <!-- <h5>{{ request }}</h5> -->
+		            <h5>Name: {{ request.name }}</h5>
+		            <h5>State: {{ request.state }}</h5>
+		            <h5>Owner: {{ request.owner }}</h5>
+		            <h5>Expiration: {{ request.expiration }}</h5>
+		            <h5>Policy: {{ request.policy }}</h5>
+		            <h5>Allocations: {{ request.allocations }}</h5>
+		            <ul><h5><em>{{ request.allocations[0] }}</em></h5></ul>
+		            <ul><h5><em>{{ request.allocations[1] }}</em></h5></ul>
+		            <h5>environments: {{ request.environments }}</h5>
+		            <ul><h5><em>{{ request.environments[0] }}</em></h5></ul>
+		            <h5>status: {{ request.statusraw }}</h5>
+		            <hr/>
+						    {% endif%}
+		          {% endfor %}
   					</div>
 
           </div><!-- /.content description -->
