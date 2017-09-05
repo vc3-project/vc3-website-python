@@ -57,12 +57,10 @@
                       No Current Allocations
                     </a>
                     {% else %}
-                      {% for allocation in allocations %}
-                        {% if allocation.owner == owner %}
-                    <a href="{{ url_for('allocation_name', name=allocation.name) }}" class="list-group-item list-group-item-action">
-                      {{ allocation.name }}
+                      {% for allocation in project.allocations %}
+                    <a href="{{ url_for('allocation_name', name=allocation) }}" class="list-group-item list-group-item-action">
+                      {{ allocation }}
                     </a>
-                        {% endif %}
                       {% endfor %}
                     {% endif %}
                   {% endif %}
