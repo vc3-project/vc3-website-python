@@ -20,16 +20,18 @@
           </div>
 
           <div class="content description">
-						<label>Project Members</label>
-								<div class="list-group">
+						<label for="members">Project Members</label>
+								<div name="members" class="list-group">
 									<div href="#" class="list-group-item active">{{ owner }} (Owner)</div>
-                  <!-- <form action="{{url_for('project_name', name=name)}}" method="POST"> -->
                     {% for member in members%}
                     <a href="#" class="list-group-item list-group-item-action" name="removeuser" value="{{member}}">{{ member }}
-                    <button type="submit" name="btn" value="removeuser" class="btn btn-danger btn-xs pull-right" data-submit="Removing User...">Remove User</button></a>
+                      {% if session['name'] == owner %}
+                      <button type="submit" name="btn" value="removeuser" class="btn btn-danger btn-xs pull-right" data-submit="Removing User...">Remove User</button>
+                      {% endif %}
+                    </a>
                     {% endfor %}
-                  <!-- </form> -->
 								</div>
+              {% if session['name'] == owner %}
 							<form role="form" action="{{url_for('project_name', name=name)}}" method="POST">
 								<fieldset>
 					        <label for="newuser">Add New Users</label>
@@ -44,6 +46,7 @@
 					      </fieldset>
 					      <button type="submit" name="btn" value="adduser" class="btn btn-primary" id="create-project" data-submit="...Sending">Add User</button>
 							</form>
+              {% endif %}
 
 								<span id="label"><h3>Allocations:</h3></span>
 								<div class="list-group">
