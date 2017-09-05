@@ -1,0 +1,77 @@
+{%extends "loginbase.html"%}
+
+{%block title%}New Request{%endblock%}
+
+{%block body%}
+
+<div class="content">
+  <div class="container-fluid">
+
+    <div class="row">
+      <div class="col-md-8 col-sm-12">
+        <div class="card">
+          <div class="header">
+            <h4 class="title">Request New Virtual Cluster</h4>
+						<hr />
+          </div>
+
+          <div class="content description">
+						<!-- <h2>Define New Allocation</h2> -->
+						<h5></h5>
+
+						<section id="new_allocation">
+							<div class="container new-allocation">
+								<form role="form" id="new-allocation-form" action="{{url_for('vc3request')}}" method="POST">
+								<!-- Logo -->
+									<div class="col-lg-12 logo-vc3">
+										<img width="100" class="logo" src="https://image.ibb.co/e59s3v/logosmall.png" alt="Logo" />
+									</div>
+
+									<fieldset>
+										<label for="name">Virtual Cluster Name</label>
+										<input
+											placeholder="Your Request name"
+											name="name"
+											type="text"
+											tabindex="1"
+											required
+											autofocus
+											value="{{request.name}}">
+									</fieldset>
+									<fieldset>
+										<label for="cluster">Cluster Template</label>
+										<select class="form-control" name="cluster" tabindex="2" id="form-resource-list" required>
+											<option value="" selected disabled>Please Select Cluster</option>
+											{% for cluster in clusters %}
+                        {% if cluster.owner == session['name'] %}
+											<option value="{{cluster.name}}">{{ cluster.name }}</option>
+                        {% endif %}
+											{% endfor %}
+										</select>
+                  </fieldset>
+                  <fieldset>
+										<label for="allocation">Allocation</label>
+										<select class="form-control" name="allocation" tabindex="3" id="form-resource-list" required>
+											<option value="" selected disabled>Please Select Allocation</option>
+											{% for allocation in allocations %}
+                        {% if allocation.owner == session['name'] and allocation.state == "validated" %}
+											<option value="{{allocation.name}}">{{ allocation.name }}</option>
+                        {% endif %}
+											{% endfor %}
+										</select>
+                  </fieldset>
+									<fieldset>
+										<button type="submit" id="create-project" data-submit="...Sending">Launch Cluster</button>
+									</fieldset>
+								</form>
+						  </div> <!-- allocation container -->
+            </section>
+
+          </div><!-- /.content description -->
+        </div>
+      </div>
+		</div>
+  </div>
+</div>
+
+{%endblock%}
