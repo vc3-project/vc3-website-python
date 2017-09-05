@@ -354,6 +354,7 @@ def cluster_new():
 def cluster():
     clusters = clientapi.listClusters()
     projects = clientapi.listProjects()
+    nodesets = clientapi.listNodesets()
 
     if request.method == 'POST':
         name = request.form['name']
@@ -372,9 +373,9 @@ def cluster():
 
         flash('Your cluster template has been successfully defined. Please refresh to view new templates.')
 
-        return render_template('cluster.html', clusters=clusters, projects=projects)
+        return render_template('cluster.html', clusters=clusters, projects=projects, nodesets=nodesets)
     elif request.method == 'GET':
-        return render_template('cluster.html', clusters=clusters, projects=projects)
+        return render_template('cluster.html', clusters=clusters, projects=projects, nodesets=nodesets)
 
 
 @app.route('/cluster/<name>', methods=['GET', 'POST'])
@@ -382,6 +383,7 @@ def cluster():
 def cluster_name(name):
     clusters = clientapi.listClusters()
     projects = clientapi.listProjects()
+    nodesets = clientapi.listNodesets()
 
     if request.method == 'GET':
         for cluster in clusters:
@@ -390,7 +392,7 @@ def cluster_name(name):
                 owner = cluster.owner
                 state = cluster.state
 
-        return render_template('cluster_profile.html', name=clustername, owner=owner, state=state)
+        return render_template('cluster_profile.html', name=clustername, owner=owner, state=state, nodesets=nodesets)
 
     elif request.method == 'POST':
         node_number = request.form['node_number']

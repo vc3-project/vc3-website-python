@@ -51,7 +51,13 @@
                           {% else %}
                           <td><font color="orange">{{ cluster.state }}</font></td>
                           {% endif %}
-  											<td>Insert Number of Workers here</td>
+  											<td>
+                          {% for nodeset in nodesets %}
+                            {% if nodeset.name == cluster.name %}
+                              {{ nodeset.node_number }}
+                            {% endif %}
+                          {% endfor %}
+                        </td>
   										</tr>
   										  {% endif %}
   										{% endfor %}

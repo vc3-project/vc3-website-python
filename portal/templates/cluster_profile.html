@@ -25,8 +25,24 @@
 							<div class="content container">
 								<span id="label"><h3>Owner: {{ owner }}</h3></span>
 								<span id="label"><h3>State: {{ state }}</h3></span>
-                <span id="label"><h3>Cluster Framework: </h3></span>
-                <span id="label"><h3>Number of Workers: pull number of workers here</h3></span>
+                <span id="label">
+                  <h3>Cluster Framework:
+                    {% for nodeset in nodesets %}
+                      {% if nodeset.name == name %}
+                        {{ nodeset.app_type }}
+                      {% endif %}
+                    {% endfor %}
+                  </h3>
+                </span>
+                <span id="label">
+                  <h3>Number of Workers:
+                  {% for nodeset in nodesets %}
+                    {% if nodeset.name == name %}
+                      {{ nodeset.node_number }}
+                    {% endif %}
+                  {% endfor %}
+                  </h3>
+                </span>
 							</div>
   					</div>
           </div><!-- /.content description -->
