@@ -336,6 +336,8 @@ def project_name(name):
                 clientapi.addUserToProject(project=name, user=user)
                 members = project.members
 
+        flash('Successfully added user to project. Please refresh to view updates.')
+
         return render_template('projects_pages.html', name=name, owner=owner,
                                members=members, allocations=allocations, projects=projects,
                                users=users)

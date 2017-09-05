@@ -41,7 +41,7 @@
   									</thead>
   									<tbody data-link="row" class="rowlink">
 											{% for project in projects %}
-												{% if project.owner == session['name'] %}
+												{% if project.owner == session['name'] or session['name'] in project.members %}
   										<tr>
   											<td><a href="{{ url_for('project_name', name=project.name) }}">{{ project.name }}</a></td>
   											<td>
