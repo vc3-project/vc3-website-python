@@ -39,7 +39,7 @@
 					          <option selected disabled>Please Select User</option>
 					          {% for user in users %}
                       {% if user.name not in members %}
-					          <option value="{{user.name}}">{{ user.name }}</option>
+					          <option value="{{user.name}}" required>{{ user.name }}</option>
                       {% endif %}
 					          {% endfor %}
 					        </select>
@@ -75,7 +75,7 @@
 										<!-- Populate List of Allocations that has been defined by User -->
 										{% for allocation in allocations %}
 											{% if allocation.owner == owner and session['name'] == owner %}
-										  	<option value="{{allocation.name}}">{{ allocation.name }}</option>
+										  	<option value="{{allocation.name}}" required>{{ allocation.name }}</option>
 											{% endif %}
 									  {% endfor %}
 										</select>
