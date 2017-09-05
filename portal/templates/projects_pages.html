@@ -72,7 +72,7 @@
 											<option selected disabled>Please Select Allocation</option>
 										<!-- Populate List of Allocations that has been defined by User -->
 										{% for allocation in allocations %}
-											{% if session['name'] == owner %}
+											{% if allocation.owner == owner and session['name'] == owner %}
 										  	<option value="{{allocation.name}}">{{ allocation.name }}</option>
 											{% endif %}
 									  {% endfor %}
