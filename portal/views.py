@@ -403,9 +403,10 @@ def cluster_name(name):
                 clustername = cluster.name
                 owner = cluster.owner
                 app_role = "worker-nodes"
+                environment = "lincolnb-en1"
 
         nodeset = clientapi.defineNodeset(
-            name=clustername, owner=owner, node_number=node_number, app_type=app_type, app_role=app_role)
+            name=clustername, owner=owner, node_number=node_number, app_type=app_type, app_role=app_role, environment=environment)
         clientapi.storeNodeset(nodeset)
         newcluster = clientapi.defineCluster(name=clustername, owner=owner)
         clientapi.storeCluster(newcluster)
@@ -568,10 +569,10 @@ def vc3request():
         cluster = request.form['cluster']
         policy = "static-balanced"
         allocations.append(request.form['allocation'])
-        environments = ["lincolnb-en1"]
+        # environments = ["lincolnb-en1"]
 
         newrequest = clientapi.defineRequest(name=vc3requestname, owner=owner, cluster=cluster,
-                                             allocations=allocations, environments=environments, policy=policy, expiration=expiration)
+                                             allocations=allocations, policy=policy, expiration=expiration)
         clientapi.storeRequest(newrequest)
 
         flash('Your Virtual Cluster has been successfully been requested. Please refresh to view new virtual cluster request.')

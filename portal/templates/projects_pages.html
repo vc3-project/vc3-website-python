@@ -52,7 +52,7 @@
 								<div class="list-group">
 								{% for project in projects %}
                   {% if project.name == name %}
-                    {% if project.allocations == [] %}
+                    {% if project.allocations == [] or project.allocations == None %}
                     <a class="list-group-item list-group-item-action">
                       No Current Allocations
                     </a>

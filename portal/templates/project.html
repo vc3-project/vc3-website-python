@@ -50,11 +50,11 @@
                           {% endfor %}
                         </td>
   											<td>
-                          {% if project.allocations == [] %}
+                          {% if project.allocations == [] or project.allocations == None %}
                             No Current Allocations
                           {% else %}
                             {% for allocation in project.allocations %}
-                                {{ allocation }}
+                                {{ allocation.name }}
                             {% endfor %}
                           {% endif %}
                         </td>
