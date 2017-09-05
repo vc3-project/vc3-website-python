@@ -824,9 +824,10 @@ body > .navbar-collapse {
 .alert {
   border: 0;
   border-radius: 0;
-  color: #FFFFFF;
-  padding: 10px 15px;
-  font-size: 14px; }
+  /*color: #FFFFFF;*/
+  padding: 15px 25px;
+  /*padding-top: 25px;*/
+  font-size: 18px; }
   .container .alert {
     border-radius: 4px; }
   .navbar .alert {
@@ -847,12 +848,12 @@ body > .navbar-collapse {
     top: 50%;
     margin-top: -15px; }
   .alert button.close {
-    position: absolute;
     right: 10px;
     top: 50%;
-    margin-top: -13px;
+    /*margin-top: -13px;*/
     z-index: 1033;
     background-color: #FFFFFF;
+    color: #111;
     display: block;
     border-radius: 50%;
     opacity: .4;

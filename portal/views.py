@@ -172,7 +172,7 @@ def profile():
         if request.args.get('next'):
             session['next'] = get_safe_redirect()
 
-        return render_template('profile.html', users=users, allocations=allocations, clusters=clusters,
+        return render_template('profile.html', users=userlist, allocations=allocations, clusters=clusters,
                                projects=projects, resources=resources, vc3requests=vc3requests)
     elif request.method == 'POST':
         name = session['name']
@@ -304,6 +304,8 @@ def project():
         newproject = clientapi.defineProject(name=name, owner=owner, members=members)
         clientapi.storeProject(newproject)
 
+        flash('Your project has been successfully defined. Please refresh to view projects.')
+
         return render_template('project.html', name=name, owner=owner, members=members, projects=projects)
     elif request.method == 'GET':
         return render_template('project.html', projects=projects)
@@ -366,6 +368,8 @@ def cluster():
         clientapi.storeCluster(newcluster)
         clientapi.addNodesetToCluster(nodesetname=nodeset.name, clustername=newcluster.name)
 
+        flash('Your cluster template has been successfully defined. Please refresh to view new templates.')
+
         return render_template('cluster.html', clusters=clusters, projects=projects)
     elif request.method == 'GET':
         return render_template('cluster.html', clusters=clusters, projects=projects)
@@ -405,7 +409,6 @@ def cluster_name(name):
         clientapi.storeCluster(newcluster)
         clientapi.addNodesetToCluster(nodesetname=nodeset.name, clustername=newcluster.name)
 
-        # something is broken here
         return render_template('cluster_profile.html', name=clustername, owner=owner, clusters=clusters, projects=projects)
 
 
@@ -445,6 +448,8 @@ def allocation():
         newallocation = clientapi.defineAllocation(
             name=name, owner=owner, resource=resource, accountname=accountname)
         clientapi.storeAllocation(newallocation)
+
+        flash('Your allocation has been successfully defined. Please refresh to view new allocations.')
 
         return render_template('allocation.html', allocations=allocations, resources=resources)
     elif request.method == 'GET':
@@ -566,6 +571,9 @@ def vc3request():
         newrequest = clientapi.defineRequest(name=vc3requestname, owner=owner, cluster=cluster,
                                              allocations=allocations, environments=environments, policy=policy, expiration=expiration)
         clientapi.storeRequest(newrequest)
+
+        flash('Your Virtual Cluster has been successfully been requested. Please refresh to view new virtual cluster request.')
+
         return render_template('request.html', requests=vc3requests)
 
     elif request.method == 'GET':

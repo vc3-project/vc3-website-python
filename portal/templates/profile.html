@@ -3,6 +3,7 @@
 {%block title%}User Profile: {{ session.name }}{%endblock%}
 
 {%block body%}
+{%include 'messages.html'%}
 
 <div class="content">
   <div class="container-fluid">
@@ -90,14 +91,18 @@
                     </div>
 
         					  <div class="form-group">
-                      <button type="submit" class="btn btn-primary">Update</button>
+                      <button type="submit" class="btn btn-primary">Update Profile</button>
         					  </div>
         				  </form>
         				</div>
-
+                {% for user in users %}
+                  {% if user.name == session['name'] %}
                 <div class="col-md-6">
-                  <a href="{{url_for('new_allocation')}}" class="btn btn-primary btn-sm">Connect Allocation</a>
+                  <label for="addallocation">Register Allocation: </label>
+                  <a href="{{url_for('new_allocation')}}" class="btn btn-primary btn-xs" name="addallocation">Connect Allocation</a>
                 </div>
+                  {% endif %}
+                {% endfor %}
         			</div> <!-- row -->
 
               {%else%}
