@@ -200,8 +200,7 @@ def profile():
             redirect_to = session['next']
             session.pop('next')
         else:
-            redirect_to = url_for('profile', users=users, allocations=allocations, clusters=clusters,
-                                  projects=projects, resources=resources, vc3requests=vc3requests)
+            redirect_to = url_for('profile')
 
         return redirect(redirect_to)
 

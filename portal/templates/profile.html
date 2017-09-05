@@ -32,7 +32,6 @@
 
         				<div class="col-md-6">
         					<form role="form" action="{{url_for('profile')}}" method="POST">
-        						<div class="form-group">
 
                     <div class="form-group">
         							<label for="first">First Name</label>
@@ -95,6 +94,10 @@
         					  </div>
         				  </form>
         				</div>
+
+                <div class="col-md-6">
+                  <a href="{{url_for('new_allocation')}}" class="btn btn-primary btn-sm">Connect Allocation</a>
+                </div>
         			</div> <!-- row -->
 
               {%else%}
