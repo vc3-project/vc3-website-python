@@ -1,56 +1,41 @@
 {%extends "loginbase.html"%}
 
-{%block title%}Dashboard{%endblock%}
+{%block title%}VC3 Dashboard{%endblock%}
 
 {%block body%}
 
-				<div class="content" id="dashboard">
-            <div class="container-fluid">
 
-							<div class="row">
-								<div class="col-sm-12">
-									<div class="card container" id="card-container">
-										<div class="header">
-											<h4 class="title">Cluster Queue</h4>
-											<p class="category">Dashboard category</p>
-										</div>
-										<div class="content">
-											<iframe src="https://grafana.mwt2.org/dashboard-solo/db/osg-connect-queue?orgId=1&from=-24h&to=now&var-Brand=osgconnect&panelId=10&theme=dark" width="100%" height="200" frameborder="0"></iframe>
-										</div>
-									</div>
-								</div>
-							</div>
+<div class="content">
+  <div class="container-fluid">
 
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="header">
+          	<h4 class="title">VC3 Dashboard</h4>
+            <div class="">
+              <!-- <h5>A cluster is a complete collection of nodes with networking and file storage facilities</h5> -->
+							<!-- <a href="{{url_for('cluster_new')}}" class="btn btn-primary btn-sm">+ New Cluster Template</a> -->
+						</div>
+						<hr />
+          </div>
 
-                <div class="row">
-                    <div class="col-sm-12">
-                        <div class="card">
-                            <div class="header">
-                                <h4 class="title">Memory Utilization</h4>
-                                <p class="category">Dashboard category</p>
-                            </div>
-                            <div class="content">
-															<iframe src="https://grafana.mwt2.org/dashboard/db/login01-osgconnect-net?refresh=5m&panelId=2&fullscreen&orgId=1&from=-24h&to=now&theme=dark" width="100%" height="400px" frameborder="0"></iframe>
-                            </div>
-                        </div>
-                    </div>
-								</div>
+          <div class="content description">
 
-								<div class="row">
-                    <div class="col-sm-12">
-                        <div class="card">
-                            <div class="header">
-                                <h4 class="title">OSG Connect</h4>
-                                <p class="category">Running Jobs</p>
-                            </div>
-                            <div class="content">
-															<iframe src="https://grafana.mwt2.org/dashboard-solo/db/osg-connect-running-by-provider?orgId=1&from=-24h&to=now&panelId=5&theme=dark" width="100%" height="400px" frameborder="0"></iframe>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+            <div class="card">
+  						<div class="card-block">
+								<iframe src="https://grafana.mwt2.org/dashboard/db/vc3?orgId=1&from=1504609252018&to=1504630852019"
+								width="100%" height="650" frameborder="0"></iframe>
+  						</div>
+  					</div>
 
-            </div>
+          </div><!-- /.content description -->
+
         </div>
+      </div>
+		</div>
+
+  </div>
+</div>
 
 {%endblock%}
