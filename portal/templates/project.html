@@ -44,14 +44,19 @@
   										<tr>
   											<td><a href="{{ url_for('project_name', name=project.name) }}">{{ project.name }}</a></td>
   											<td>
-                          <select name="members" id="form-resource-list">
-                            <option selected disabled>Team</option>
-                            {% for member in project.members %}
-                            <option>{{ member }}</option>
-                            {% endfor %}
-                          </select>
+                          {% for member in project.members %}
+                          <option>{{ member }}</option>
+                          {% endfor %}
                         </td>
-  											<td>{{ project.allocations }}</td>
+  											<td>
+                          {% if project.allocations == [] %}
+                            No Current Allocations
+                          {% else %}
+                            {% for allocation in project.allocations %}
+                                {{ allocation }}
+                            {% endfor %}
+                          {% endif %}
+                        </td>
   										</tr>
                         {% endif %}
   										{% endfor %}

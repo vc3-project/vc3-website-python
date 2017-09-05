@@ -1,6 +1,6 @@
 {%extends "loginbase.html"%}
 
-{%block title%}New Allocations{%endblock%}
+{%block title%}Register Allocations{%endblock%}
 
 {%block body%}
 
@@ -11,13 +11,13 @@
       <div class="col-md-8 col-sm-12">
         <div class="card">
           <div class="header">
-            <h4 class="title">Define New Allocation</h4>
+            <h4 class="title">Register Allocation</h4>
 						<hr />
           </div>
 
           <div class="content description">
 						<!-- <h2>Define New Allocation</h2> -->
-						<h5>An allocation is an allotted amount of core hours, or service units (SU) of computing time on a specific Cluster</h5>
+						<h5>An allocation is an allotted amount of CPU hours or service units (SU) of computing time on a specific resource</h5>
 
 						<section id="new_allocation">
 							<div class="container new-allocation">
@@ -59,7 +59,7 @@
 										</select>
                   </fieldset>
 									<fieldset>
-										<label for="accountname">Account Name</label>
+										<label for="accountname">Resource Account Name</label>
 										<input
 											placeholder="Account Name"
 											name="accountname"
@@ -69,7 +69,7 @@
 											value="{{request.accountname}}">
 									</fieldset>
 									<fieldset>
-										<button type="submit" id="create-project" data-submit="...Sending">Define Allocation</button>
+										<button type="submit" id="create-project" data-submit="...Sending">Register Allocation</button>
 									</fieldset>
 								</form>
 						  </div> <!-- allocation container -->

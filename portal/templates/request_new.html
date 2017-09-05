@@ -11,7 +11,7 @@
       <div class="col-md-8 col-sm-12">
         <div class="card">
           <div class="header">
-            <h4 class="title">Define New Request</h4>
+            <h4 class="title">Request New Virtual Cluster</h4>
 						<hr />
           </div>
 
@@ -28,7 +28,7 @@
 									</div>
 
 									<fieldset>
-										<label for="name">Request Name</label>
+										<label for="name">Virtual Cluster Name</label>
 										<input
 											placeholder="Your Request name"
 											name="name"
@@ -39,7 +39,7 @@
 											value="{{request.name}}">
 									</fieldset>
 									<fieldset>
-										<label for="cluster">Cluster</label>
+										<label for="cluster">Cluster Template</label>
 										<select class="form-control" name="cluster" tabindex="2" id="form-resource-list" required>
 											<option value="" selected disabled>Please Select Cluster</option>
 											{% for cluster in clusters %}
@@ -61,7 +61,7 @@
 										</select>
                   </fieldset>
 									<fieldset>
-										<button type="submit" id="create-project" data-submit="...Sending">Launch Request</button>
+										<button type="submit" id="create-project" data-submit="...Sending">Launch Cluster</button>
 									</fieldset>
 								</form>
 						  </div> <!-- allocation container -->

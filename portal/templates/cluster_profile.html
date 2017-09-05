@@ -13,8 +13,8 @@
           <div class="header">
           	<h4 class="title">Cluster: {{name}}</h4>
             <div class="">
-							<h5 class="category">Help desk: test</h5>
-							<h5>Cluster Description</h5>
+							<!-- <h5 class="category">Help desk: test</h5> -->
+							<!-- <h5>Cluster Description</h5> -->
 							<a href="{{url_for('cluster_edit', name=name)}}" class="btn btn-primary btn-sm">Update Cluster</a>
 						</div>
 						<hr />
@@ -25,6 +25,8 @@
 							<div class="content container">
 								<span id="label"><h3>Owner: {{ owner }}</h3></span>
 								<span id="label"><h3>State: {{ state }}</h3></span>
+                <span id="label"><h3>Cluster Framework: </h3></span>
+                <span id="label"><h3>Number of Workers: pull number of workers here</h3></span>
 							</div>
   					</div>
           </div><!-- /.content description -->

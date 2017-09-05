@@ -11,14 +11,14 @@
       <div class="col-md-12">
         <div class="card">
           <div class="header">
-          	<h4 class="title">Requests:</h4>
+          	<h4 class="title">Virtual Cluster:</h4>
 						<hr />
           </div>
 
           <div class="content description">
 
   					<div class="card-block">
-		          <h5>Request Details</h5>
+		          <h5>Virtual Cluster Details</h5>
 		          {% for request in requests %}
 						    {% if request.owner == session['name'] %}
 		            <!-- <h5>{{ request }}</h5> -->
@@ -36,6 +36,7 @@
 		            <hr/>
 						    {% endif%}
 		          {% endfor %}
+              <a href="#" class="btn btn-primary btn-sm">Terminate Cluster</a>
   					</div>
 
           </div><!-- /.content description -->

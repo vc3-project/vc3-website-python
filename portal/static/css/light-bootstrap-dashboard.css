@@ -207,7 +207,8 @@ body > .navbar-collapse {
     overflow: auto;
     width: 260px;
     z-index: 4;
-    padding-bottom: 100px; }
+    padding-bottom: 100px;
+    background-color: rgba(37, 40, 48, 0.7)}
   .sidebar .sidebar-background,
   body > .navbar-collapse .sidebar-background {
     position: absolute;
@@ -430,7 +431,7 @@ body > .navbar-collapse {
     background-size: 150% 150%; }
 
 .main-panel {
-  background: #404144;
+  background: #252830;
   position: relative;
   z-index: 2;
   float: right;
@@ -497,12 +498,12 @@ body > .navbar-collapse {
     padding: 8px; }
 
 .btn-primary {
-  border-color: #7c7e84;
-  color: #7c7e84; }
+  border-color: #edb500;
+  color: #edb500; }
   .btn-primary:hover, .btn-primary:focus, .btn-primary:active, .btn-primary.active, .open > .btn-primary.dropdown-toggle {
-    background-color: #ffc500;
-    color: #111;
-    border-color: #ffc500; }
+    background-color: #edb500;
+    color: #f4f8ff;
+    border-color: #edb500; }
   .btn-primary.disabled, .btn-primary.disabled:hover, .btn-primary.disabled:focus, .btn-primary.disabled.focus, .btn-primary.disabled:active, .btn-primary.disabled.active, .btn-primary:disabled, .btn-primary:disabled:hover, .btn-primary:disabled:focus, .btn-primary:disabled.focus, .btn-primary:disabled:active, .btn-primary:disabled.active, .btn-primary[disabled], .btn-primary[disabled]:hover, .btn-primary[disabled]:focus, .btn-primary[disabled].focus, .btn-primary[disabled]:active, .btn-primary[disabled].active, fieldset[disabled] .btn-primary, fieldset[disabled] .btn-primary:hover, fieldset[disabled] .btn-primary:focus, fieldset[disabled] .btn-primary.focus, fieldset[disabled] .btn-primary:active, fieldset[disabled] .btn-primary.active {
     background-color: transparent;
     border-color: #3472F7; }
@@ -590,11 +591,11 @@ body > .navbar-collapse {
 
 .btn-danger {
   border-color: #FF4A55;
-  color: #FF4A55; }
+  color: white; }
   .btn-danger:hover, .btn-danger:focus, .btn-danger:active, .btn-danger.active, .open > .btn-danger.dropdown-toggle {
-    background-color: transparent;
-    color: #EE2D20;
-    border-color: #EE2D20; }
+    background-color: #FF4A55;
+    color: white;
+    border-color: #FF4A55; }
   .btn-danger.disabled, .btn-danger.disabled:hover, .btn-danger.disabled:focus, .btn-danger.disabled.focus, .btn-danger.disabled:active, .btn-danger.disabled.active, .btn-danger:disabled, .btn-danger:disabled:hover, .btn-danger:disabled:focus, .btn-danger:disabled.focus, .btn-danger:disabled:active, .btn-danger:disabled.active, .btn-danger[disabled], .btn-danger[disabled]:hover, .btn-danger[disabled]:focus, .btn-danger[disabled].focus, .btn-danger[disabled]:active, .btn-danger[disabled].active, fieldset[disabled] .btn-danger, fieldset[disabled] .btn-danger:hover, fieldset[disabled] .btn-danger:focus, fieldset[disabled] .btn-danger.focus, fieldset[disabled] .btn-danger:active, fieldset[disabled] .btn-danger.active {
     background-color: transparent;
     border-color: #FF4A55; }
@@ -670,7 +671,8 @@ body > .navbar-collapse {
     padding: 16px 30px; }
 
 .btn-sm {
-  font-size: 12px;
+  font-size: 14px;
+  /*font-weight: 600;*/
   border-radius: 3px;
   padding: 5px 10px; }
   .btn-sm.btn-round {
@@ -1244,7 +1246,7 @@ body > .navbar-collapse {
 .card {
   border-radius: 4px;
   margin-bottom: 30px;
-  background-color: rgba(0,0,0,0.5);
+  /*background-color: rgba(0,0,0,0.5);*/
   }
   .card .thumbnail {
     background-color: #404144;
@@ -2094,7 +2096,7 @@ body > .navbar-collapse {
     }
 
     #new-allocation-form {
-      background: rgba(0, 0, 0, 0.3);
+      background: rgba(53, 53, 53, 0.9);
       padding: 25px;
       margin: 50px 0;
       box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
@@ -2200,41 +2202,47 @@ body > .navbar-collapse {
     # List of Project Cards
     --------------------------------------------------------------*/
 
-    .projects .card span {
+    .card span {
       color: #fcc500;
     }
 
-    .projects .card .card-block {
+    .card .card-block {
       padding-bottom: 10px;
       padding-left: 10px;
       padding-right: 10px;
-      text-align: center;
+      /*text-align: center;*/
     }
     #projects .projects .card .card-block #project-pull-left {
       text-align: left;
     }
 
-    #project_pages .card span {
+    .card span {
       color: #fcc500;
     }
-    #project_pages .card a:hover {
-      color: #111;
+    /*.card a:hover {
       background: #ffc907;
       border-color: #ffc907;
-    }
-    #project_pages .card .list-group {
+    }*/
+    .card .list-group, select {
       max-width: 450px;
     }
-    #project_pages .card .list-group a {
-      text-align: center;
+    .card .list-group a {
+      background-color: transparent;
+      border-color: transparent;
+      border: 1px solid #434857;
+      color: #cfd2da;
     }
-    #project_pages .card .list-group .active {
-      background-color: #c1c0ba;
-      border-color: #c1c0ba;
+    .card .list-group a:hover {
+      background-color: rgba(67, 72, 87, 0.6);
+
+    }
+    .card .list-group .active {
+      background-color: transparent;
+      border-color: #434857;
       font-weight: 600;
       color: #FFF;
     }
-    #project_pages .card select {
+    .card select {
       max-width: 400px;
     }
     /*This is for labels in resources*/

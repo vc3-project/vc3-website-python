@@ -10,6 +10,7 @@ __author__ = 'Jeremy Van <jeremyvan@uchicago.edu>'
 
 app = Flask(__name__)
 app.config.from_pyfile('portal.conf')
+app.config['TEMPLATES_AUTO_RELOAD'] = True
 pages = FlatPages(app)
 freezer = Freezer(app)
 

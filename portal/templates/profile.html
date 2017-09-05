@@ -11,8 +11,7 @@
         <div class="card">
 
           <div class="header">
-            <h2 class="title">Summary</h2>
-            <h5>Account Details</h5>
+            <h2 class="title">Profile: {{session['name']}}</h2>
 						<hr />
           </div>
 
@@ -20,33 +19,20 @@
   					<div class="card-block">
               {%if session.get('is_authenticated')%}
               <div class="row">
-        				<div class="col-sm-6 col-md-6 col-lg-3">
+        				<!-- <div class="col-sm-6 col-md-6 col-lg-3">
         					<div class="thumbnail">
         						<img src="https://image.ibb.co/hEdfV5/blank_profile_picture_973461_960_720.png" alt="">
         						<div class="caption description">
         							<h5>Name:</h5><p>{{session['first']}} {{session['last']}}</p>
         							<h5>Institution:</h5> <p>{{session['institution']}}</p>
         							<h5>Email: <a href="mailto:{{session['email']}}">{{session['email']}}</a></h5>
-        							<!-- <p><a href="{{url_for('edit')}}" class="btn btn-primary" role="button">Edit</a></p> -->
         						</div>
         					</div>
-        				</div>
+        				</div> -->
 
         				<div class="col-md-6">
         					<form role="form" action="{{url_for('profile')}}" method="POST">
         						<div class="form-group">
-        							<!-- <label for="name">User Name</label>
-        							<input
-        								type="text"
-        								class="form-control"
-        								id="name"
-        								name="name"
-        								placeholder="Username"
-        								required="required"
-        								tabindex="1"
-        								value="{{session['name']}}"
-        							>
-        						</div> -->
 
                     <div class="form-group">
         							<label for="first">First Name</label>
@@ -111,7 +97,7 @@
         				</div>
         			</div> <!-- row -->
 
-            {%else%}
+              {%else%}
 
               <div class="row">
 
@@ -194,13 +180,14 @@
                 </div>
 
               </div> <!-- row -->
-            {% endif %}
-  					</div>
-          </div><!-- /.content description -->
+              {% endif %}
+  					  </div>
+            </div><!-- /.card-block -->
 
+          </div>
         </div>
-      </div>
-		</div>
+  		</div>
+    </div>
   </div>
 </div>
 

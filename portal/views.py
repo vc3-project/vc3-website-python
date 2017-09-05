@@ -28,6 +28,12 @@ c = SafeConfigParser()
 c.readfp(open('/etc/vc3/vc3-client.conf'))
 # c.readfp(open('/Users/JeremyVan/Documents/Programming/UChicago/VC3_Project/vc3-website-python/vc3-client/etc/vc3-client.conf'))
 clientapi = client.VC3ClientAPI(c)
+users = clientapi.listUsers()
+allocations = clientapi.listAllocations()
+clusters = clientapi.listClusters()
+projects = clientapi.listProjects()
+resources = clientapi.listResources()
+vc3requests = clientapi.listRequests()
 
 
 @app.route('/', methods=['GET'])
@@ -166,7 +172,8 @@ def profile():
         if request.args.get('next'):
             session['next'] = get_safe_redirect()
 
-        return render_template('profile.html')
+        return render_template('profile.html', users=users, allocations=allocations, clusters=clusters,
+                               projects=projects, resources=resources, vc3requests=vc3requests)
     elif request.method == 'POST':
         name = session['name']
         first = session['first'] = request.form['first']
@@ -193,7 +200,8 @@ def profile():
             redirect_to = session['next']
             session.pop('next')
         else:
-            redirect_to = url_for('profile')
+            redirect_to = url_for('profile', users=users, allocations=allocations, clusters=clusters,
+                                  projects=projects, resources=resources, vc3requests=vc3requests)
 
         return redirect(redirect_to)
 
@@ -316,9 +324,9 @@ def project_name(name):
                 owner = project.owner
                 members = project.members
         return render_template('projects_pages.html', name=name, owner=owner, members=members, allocations=allocations, projects=projects, users=users)
+
     elif request.method == 'POST':
         user = request.form['newuser']
-        # newallocation = request.form['allocation']
 
         for project in projects:
             if project.name == name:
@@ -326,9 +334,10 @@ def project_name(name):
                 owner = project.owner
                 clientapi.addUserToProject(project=name, user=user)
                 members = project.members
-                # clientapi.addAllocationToProject(allocation=newallocation, projectname=name)
 
-        return render_template('projects_pages.html', name=name, owner=owner, members=members, allocations=allocations, projects=projects, users=users)
+        return render_template('projects_pages.html', name=name, owner=owner,
+                               members=members, allocations=allocations, projects=projects,
+                               users=users)
 
 
 @app.route('/cluster/new', methods=['GET', 'POST'])

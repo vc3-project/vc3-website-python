@@ -1,6 +1,6 @@
 {%extends "loginbase.html"%}
 
-{%block title%}Clusters{%endblock%}
+{%block title%}Cluster Templates{%endblock%}
 
 {%block body%}
 
@@ -11,7 +11,7 @@
       <div class="col-md-12">
         <div class="card">
           <div class="header">
-          	<h4 class="title">Clusters</h4>
+          	<h4 class="title">Cluster Templates</h4>
             <div class="">
               <h5>A cluster is a complete collection of nodes with networking and file storage facilities</h5>
 							<a href="{{url_for('cluster_new')}}" class="btn btn-primary btn-sm">+ New Cluster</a>
@@ -35,7 +35,7 @@
   										<tr class="filters">
   											<th><input type="text" class="form-control" placeholder="Name" disabled></th>
   											<th><input type="text" class="form-control" placeholder="State" disabled></th>
-  											<th><input type="text" class="form-control" placeholder="Nodesets" disabled></th>
+  											<th><input type="text" class="form-control" placeholder="Workers" disabled></th>
   										</tr>
   									</thead>
   									<tbody data-link="row" class="rowlink">
@@ -50,7 +50,7 @@
                           {% else %}
                           <td><font color="orange">{{ cluster.state }}</font></td>
                           {% endif %}
-  											<td>{{ cluster.nodesets }}</td>
+  											<td>Insert Number of Workers here</td>
   										</tr>
   										  {% endif %}
   										{% endfor %}

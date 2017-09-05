@@ -11,7 +11,7 @@
       <div class="col-md-12">
         <div class="card">
           <div class="header">
-          	<h4 class="title">Project: {{ name }}</h4>
+          	<h4 class="title">Project:<a href="{{url_for('project_name', name=name)}}" method="GET"> {{ name }}</a></h4>
             <div class="">
 							<h5>Current project description</h5>
 						</div>
@@ -21,10 +21,13 @@
           <div class="content description">
 						<label>Project Members</label>
 								<div class="list-group">
-									<a href="#" class="list-group-item active">Owner: {{ owner }}</a>
-								{% for member in members%}
-									<a href="#" class="list-group-item list-group-item-action">{{ member }}</a>
-								{% endfor %}
+									<div href="#" class="list-group-item active">{{ owner }} (Owner)</div>
+                  <!-- <form action="{{url_for('project_name', name=name)}}" method="POST"> -->
+                    {% for member in members%}
+                    <a href="#" class="list-group-item list-group-item-action" name="removeuser" value="{{member}}">{{ member }}
+                    <button type="submit" name="btn" value="removeuser" class="btn btn-danger btn-xs pull-right" data-submit="Removing User...">Remove User</button></a>
+                    {% endfor %}
+                  <!-- </form> -->
 								</div>
 							<form role="form" action="{{url_for('project_name', name=name)}}" method="POST">
 								<fieldset>
@@ -32,19 +35,29 @@
 					        <select class="form-control" name="newuser" tabindex="2" id="form-resource-list" required>
 					          <option selected disabled>Please Select User</option>
 					          {% for user in users %}
+                      {% if user.name not in members %}
 					          <option value="{{user.name}}">{{ user.name }}</option>
+                      {% endif %}
 					          {% endfor %}
 					        </select>
 					      </fieldset>
-					      <button type="submit" class="btn btn-primary" id="create-project" data-submit="...Sending">Add User</button>
+					      <button type="submit" name="btn" value="adduser" class="btn btn-primary" id="create-project" data-submit="...Sending">Add User</button>
 							</form>
 
 								<span id="label"><h3>Allocations:</h3></span>
 								<div class="list-group">
 								{% for project in projects %}
-									{% if project.name == name %}
-									<a class="list-group-item list-group-item-action">{{ project.allocations }}</a>
-									{% endif %}
+                  {% if project.name == name %}
+                    {% if project.allocations == [] %}
+                    <a class="list-group-item list-group-item-action">
+                      No Current Allocations
+                    </a>
+                    {% else %}
+                    <a href="{{ url_for('allocation_name', name=project.allocations[0]) }}" class="list-group-item list-group-item-action">
+                      {{ project.allocations[0] }}
+                    </a>
+                    {% endif %}
+                  {% endif %}
 								{% endfor %}
 								</div>
 
@@ -61,7 +74,7 @@
 									  {% endfor %}
 										</select>
 									</fieldset>
-										<button type="submit" class="btn btn-primary">Add Allocation to Project</button>
+										<button type="submit" name="btn" value="addallocation" class="btn btn-primary" id="create-project" data-submit="...Sending">Add Allocation to Project</button>
 								</form>
 
           </div><!-- /.content description -->
