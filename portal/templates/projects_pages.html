@@ -57,15 +57,19 @@
                       No Current Allocations
                     </a>
                     {% else %}
-                    <a href="{{ url_for('allocation_name', name=project.allocations[0]) }}" class="list-group-item list-group-item-action">
-                      {{ project.allocations[0] }}
+                      {% for allocation in allocations %}
+                        {% if allocation.owner == owner %}
+                    <a href="{{ url_for('allocation_name', name=allocation.name) }}" class="list-group-item list-group-item-action">
+                      {{ allocation.name }}
                     </a>
+                        {% endif %}
+                      {% endfor %}
                     {% endif %}
                   {% endif %}
 								{% endfor %}
 								</div>
 
-								<form role="form" action="{{url_for('project_name', name=name)}}" method="POST">
+								<form role="form" action="{{url_for('add_allocation', name=name)}}" method="POST">
 									<fieldset>
 										<label for="allocation">Select Allocation:</label>
 										<select class="form-control" id="form-resource-list" name="allocation" tabindex="3" required>

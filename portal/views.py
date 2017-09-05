@@ -343,6 +343,24 @@ def project_name(name):
                                users=users)
 
 
+@app.route('/project/<name>/addallocation', methods=['POST'])
+@authenticated
+def add_allocation(name):
+    projects = clientapi.listProjects()
+
+    if request.method == 'POST':
+        addallocation = request.form['allocation']
+
+        for project in projects:
+            if project.name == name:
+                name = project.name
+                clientapi.addAllocationToProject(allocation=addallocation, projectname=name)
+
+        flash('Successfully added allocation to project. Please refresh to view updates.')
+
+        return redirect(url_for('project_name', name=name))
+
+
 @app.route('/cluster/new', methods=['GET', 'POST'])
 @authenticated
 def cluster_new():

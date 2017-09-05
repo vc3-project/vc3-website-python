@@ -54,7 +54,7 @@
                             No Current Allocations
                           {% else %}
                             {% for allocation in project.allocations %}
-                                {{ allocation.name }}
+                              <option>{{ allocation }}</option>
                             {% endfor %}
                           {% endif %}
                         </td>
