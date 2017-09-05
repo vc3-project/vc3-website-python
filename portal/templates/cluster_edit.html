@@ -11,7 +11,7 @@
       <div class="col-md-8 col-sm-12">
         <div class="card">
           <div class="header">
-          	<h4 class="title">Edit Cluster: {{ name }}</h4>
+          	<h4 class="title">Edit Cluster Template: {{ name }}</h4>
 						<hr />
           </div>
 
@@ -39,7 +39,7 @@
 											value="{{name}}">
 									</fieldset> -->
 									<fieldset>
-										<label for="app_type">Middleware</label>
+										<label for="app_type">Cluster Framework</label>
 										<select class="form-control" name="app_type" tabindex="1" id="form-resource-list" required>
 											<option selected disabled>{{app_type}}</option>
 											<option value="htcondor">HTCondor</option>
@@ -55,7 +55,7 @@
 										</select>
 									</fieldset> -->
 									<fieldset>
-										<label for="node_number">Number of Nodes (between 1 and 1000):</label>
+										<label for="node_number">Number of Workers:</label>
 										<input
 											placeholder="1"
 											name="node_number"
@@ -81,7 +81,7 @@
 											value="{{request.cores}}">
 									</fieldset> -->
 									<fieldset>
-										<button type="submit" id="create-project" data-submit="...Sending">Define Cluster</button>
+										<button type="submit" id="create-project" data-submit="...Sending">Update Cluster Template</button>
 									</fieldset>
 								</form>
 							</div> <!-- cluster container -->
