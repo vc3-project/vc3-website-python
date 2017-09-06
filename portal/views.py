@@ -552,7 +552,7 @@ def allocation_edit(name):
                 accountname = allocation.accountname
                 pubtoken = allocation.pubtoken
 
-    return render_template('allocation_edit.html', name=allocationname, owner=owner, resources=resources, resource=resource, accountname=accountname, pubtoken=pubtoken)
+        return render_template('allocation_edit.html', name=allocationname, owner=owner, resources=resources, resource=resource, accountname=accountname, pubtoken=pubtoken)
 
 
 @app.route('/resource', methods=['GET', 'POST'])
@@ -560,7 +560,8 @@ def allocation_edit(name):
 def resource():
     if request.method == 'GET':
         resources = clientapi.listResources()
-    return render_template('resource.html', resources=resources)
+
+        return render_template('resource.html', resources=resources)
 
 
 @app.route('/resource/<name>', methods=['GET', 'POST'])
@@ -632,7 +633,7 @@ def request_name(name):
                 requestname = vc3request.name
                 owner = vc3request.owner
 
-    return render_template('request_profile.html', name=requestname, owner=owner, requests=vc3requests)
+        return render_template('request_profile.html', name=requestname, owner=owner, requests=vc3requests)
 
 
 @app.route('/dashboard', methods=['GET', 'POST'])
