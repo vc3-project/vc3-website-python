@@ -468,6 +468,11 @@ def cluster_edit(name):
 @app.route('/allocation', methods=['GET', 'POST'])
 @authenticated
 def allocation():
+    allocations = clientapi.listAllocations()
+    resources = clientapi.listResources()
+    projects = clientapi.listProjects()
+    users = clientapi.listUsers()
+
     if request.method == 'GET':
         return render_template('allocation.html', allocations=allocations, resources=resources, users=users, projects=projects)
 
@@ -499,6 +504,10 @@ def new_allocation():
 @app.route('/allocation/<name>', methods=['GET', 'POST'])
 @authenticated
 def allocation_name(name):
+    allocations = clientapi.listAllocations()
+    resources = clientapi.listResources()
+    projects = clientapi.listProjects()
+    users = clientapi.listUsers()
 
     if request.method == 'GET':
         for allocation in allocations:
@@ -531,6 +540,8 @@ def allocation_name(name):
 @app.route('/allocation/edit/<name>', methods=['GET', 'POST'])
 @authenticated
 def allocation_edit(name):
+    allocations = clientapi.listAllocations()
+    resources = clientapi.listResources()
 
     if request.method == 'GET':
         for allocation in allocations:
