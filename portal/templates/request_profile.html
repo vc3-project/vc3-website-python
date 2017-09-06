@@ -20,7 +20,7 @@
   					<div class="card-block">
 		          <h5>Virtual Cluster Details</h5>
 		          {% for request in requests %}
-						    {% if request.owner == session['name'] %}
+						    {% if request.name == name %}
 		            <!-- <h5>{{ request }}</h5> -->
 		            <h5>Name: {{ request.name }}</h5>
 		            <h5>State: {{ request.state }}</h5>

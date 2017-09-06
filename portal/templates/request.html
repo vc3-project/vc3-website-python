@@ -42,11 +42,11 @@
   										<tr>
   											<td><a href="{{ url_for('request_name', name=request.name) }}">{{ request.name }}</a></td>
                         {% if request.state == "validated" or request.state == "new" or request.state == "configured" or request.state == "running" %}
-  											<td><font color="green">{{ request.state }}</font></td>
+  											<td><font color="green">{{ request.state }} <i class="fa fa-spinner fa-spin" style="color:green"></i></font></td>
                         {% elif request.state=="terminated" or request.state == "terminating"%}
-                        <td><font color="red">{{ request.state }}</font></td>
+                        <td><font color="red">{{ request.state }} <i class="fa fa-spinner fa-spin" style="color:red"></i></font></td>
                         {% else %}
-                        <td><font color="orange">{{ request.state }}</font></td>
+                        <td><font color="orange">{{ request.state }} <i class="fa fa-spinner fa-spin" style="color:orange"></i></font></td>
                         {% endif %}
   											<td>Running:</td>
   										</tr>
