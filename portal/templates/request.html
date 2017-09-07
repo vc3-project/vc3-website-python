@@ -41,17 +41,21 @@
                       <!-- if request.owner == session['name'] -->
   										<tr>
   											<td><a href="{{ url_for('request_name', name=request.name) }}">{{ request.name }}</a></td>
-                          {% if request.action == "terminate" %}
+                        {% if request.action == "terminate" %}
                         <td><font color="red">{{ request.action }}</font></td>
-                          {% elif request.state == "validated" or request.state == "new" or request.state == "configured" or request.state == "running" %}
+                        {% elif request.state == "validated" or request.state == "new" or request.state == "configured" or request.state == "running" %}
   											<td><font color="green">{{ request.state }}</font></td>
-                          {% elif request.state=="terminated" or request.state == "terminating"%}
+                        {% elif request.state=="terminated" or request.state == "terminating"%}
                         <td><font color="red">{{ request.state }} <i class="fa fa-spinner fa-spin" style="color:red"></i></font></td>
-                          {% else %}
+                        {% else %}
                         <td><font color="orange">{{ request.state }} <i class="fa fa-spinner fa-spin" style="color:orange"></i></font><option>{{ request.state_reason }}</option></td>
-                          {% endif %}
+                        {% endif %}
 
-                        {% if request.statusraw['VC3-static'] == {} or request.statusraw == "None" %}
+                        {% if request.statusraw['VC3-static'] == {} %}
+                        <td>
+                          Status Currently Unavailable
+                        </td>
+                        {% elif request.statusraw == None %}
                         <td>
                           Status Currently Unavailable
                         </td>

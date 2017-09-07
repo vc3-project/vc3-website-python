@@ -36,6 +36,9 @@
 		            <h5>Status Raw: {{ request.statusraw }}</h5>
                 <h5>VC3 Static: {{ request.statusraw['VC3-static'] }}</h5>
                 {% if request.statusraw['VC3-static'] == {} %}
+                Status Currently Unavailable
+                {% elif request.statusraw == None %}
+                Status Currently Unavailable
                 {% else %}
                 <h5>Nodeset: {{ request.statusraw.values()[0].values()[0] }}</h5>
                 <h5>Jobs on Request: {{ request.statusraw.values()[0].values()[0].values()[0] }}</h5>
