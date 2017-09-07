@@ -49,9 +49,9 @@
                         <td><font color="orange">{{ request.state }} <i class="fa fa-spinner fa-spin" style="color:orange"></i></font><option>{{ request.state_reason }}</option></td>
                           {% endif %}
 
-                        {% if request.statusraw['VC3-static'] == {} %}
+                        {% if request.statusraw['VC3-static'] == {} or request.statusraw['VC3-static'] == None %}
                         <td>
-                          Currently No Status-Raw
+                          Status Currently Unavailable
                         </td>
                         {% else %}
                   			<td>
