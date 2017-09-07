@@ -276,7 +276,7 @@ def authcallback():
             session['primary_identity'] = profile.identity_id
         else:
             return redirect(url_for('profile',
-                                    next=url_for('home')))
+                                    next=url_for('profile')))
 
         return redirect(url_for('profile'))
 
@@ -391,7 +391,7 @@ def cluster_new():
             name=name, owner=owner, node_number=node_number, app_type=app_type, app_role=app_role, environment=environment)
         clientapi.storeNodeset(nodeset)
         # nodesets = clientapi.listNodesets()
-        newcluster = clientapi.defineCluster(name=name, owner=owner)
+        newcluster = clientapi.defineCluster(name=name, owner=owner, nodesets=[])
         clientapi.storeCluster(newcluster)
         clientapi.addNodesetToCluster(nodesetname=nodeset.name, clustername=newcluster.name)
 

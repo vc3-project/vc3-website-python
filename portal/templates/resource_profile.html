@@ -23,13 +23,21 @@
           <div class="content description">
   					<div class="card-block">
 							<div class="content container">
-								<span id="label"><h3>Owner: {{ owner }}</h3></span>
-								<span id="label"><h3>Access Type: {{ accesstype }}</h3></span>
-								<span id="label"><h3>Access Method: {{ accessmethod }}</h3></span>
-								<span id="label"><h3>Access Flavor: {{ accessflavor }}</h3></span>
-								<span id="label"><h3>Access Host: {{ accesshost }}</h3></span>
-								<span id="label"><h3>Access Port: {{ accessport}}</h3></span>
-								<span id="label"><h3>Grid Resource: {{ gridresource }}</h3></span>
+                <span id="label"><h3>List of Current Attributes <small>(not all will be displayed to users)</small></h3></span>
+								<h3>Owner: {{ owner }}</h3>
+								<h3>Access Type: {{ accesstype }}</h3>
+								<h3>Access Method: {{ accessmethod }}</h3>
+								<h3>Access Flavor: {{ accessflavor }}</h3>
+								<h3>Access Host: {{ accesshost }}</h3>
+								<h3>Access Port: {{ accessport}}</h3>
+								<h3>Grid Resource: {{ gridresource }}</h3>
+
+                <span id="label"><h3>List of Attributes to be Added <small>(currently hard coded until attributes to client)</small></h3></span>
+                <h3>Institution: Location of Resource</h3>
+                <h3>URL: Link to Resource Webpage</h3>
+                <h3>State: Status of Resource State</h3>
+                <h3>"short_description": Serves as a "pretty name"</h3>
+                <h3>Description: 144 character text description for Resources</h3>
 							</div>
   					</div>
           </div><!-- /.content description -->

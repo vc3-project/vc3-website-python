@@ -24,16 +24,26 @@
 		            <!-- <h5>{{ request }}</h5> -->
 		            <h5>Name: {{ request.name }}</h5>
 		            <h5>State: {{ request.state }}</h5>
+                <h5>State Reason: {{ request.state_reason }}</h5>
 		            <h5>Owner: {{ request.owner }}</h5>
 		            <h5>Expiration: {{ request.expiration }}</h5>
 		            <h5>Policy: {{ request.policy }}</h5>
 		            <h5>Allocations: {{ request.allocations }}</h5>
 		            <ul><h5><em>{{ request.allocations[0] }}</em></h5></ul>
 		            <ul><h5><em>{{ request.allocations[1] }}</em></h5></ul>
-		            <h5>environments: {{ request.environments }}</h5>
+		            <h5>Environments: {{ request.environments }}</h5>
 		            <ul><h5><em>{{ request.environments[0] }}</em></h5></ul>
-		            <h5>status: {{ request.statusraw }}</h5>
-		            <hr/>
+		            <h5>Status Raw: {{ request.statusraw }}</h5>
+                <h5>VC3 Static: {{ request.statusraw['VC3-static'] }}</h5>
+                {% if request.statusraw['VC3-static'] == {} %}
+                {% else %}
+                <h5>Nodeset: {{ request.statusraw.values()[0].values()[0] }}</h5>
+                <h5>Jobs on Request: {{ request.statusraw.values()[0].values()[0].values()[0] }}</h5>
+                <h5>Idle Jobs: {{ request.statusraw.values()[0].values()[0].values()[0].values()[0] }}</h5>
+                <h5>Running Jobs: {{ request.statusraw.values()[0].values()[0].values()[0].values()[1] }}</h5>
+                {% endif %}
+
+  	            <hr/>
 						    {% endif%}
 		          {% endfor %}
               <a href="#" class="btn btn-primary btn-sm">Terminate Cluster</a>
