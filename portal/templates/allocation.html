@@ -45,11 +45,11 @@
   										<tr>
   											<td><a href="{{ url_for('allocation_name', name=allocation.name) }}">{{ allocation.name }}</a></td>
                           {% if allocation.state == "validated" %}
-    											<td><font color="green">{{ allocation.state }} <i class="fa fa-spinner fa-spin" style="color:green"></i></font></td>
+    											<td><font color="green"><i class="fa fa-circle" style="color:green"></i> {{ allocation.state }} </font></td>
                           {% elif allocation.state == "terminated" %}
-                          <td><font color="red">{{ allocation.state }} <i class="fa fa-spinner fa-spin" style="color:red"></i></font></td>
+                          <td><font color="red"><i class="fa fa-circle" style="color:red"></i> {{ allocation.state }} </font></td>
                           {% else %}
-                          <td><font color="orange">{{ allocation.state }} <i class="fa fa-spinner fa-spin" style="color:orange"></i></font></td>
+                          <td><font color="orange"><i class="fa fa-spinner fa-spin" style="color:orange"></i> {{ allocation.state }} </font></td>
                           {% endif %}
   											<td>{{ allocation.resource }}</td>
   										</tr>

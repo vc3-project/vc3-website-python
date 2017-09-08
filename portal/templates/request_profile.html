@@ -49,8 +49,11 @@
   	            <hr/>
 						    {% endif%}
 		          {% endfor %}
-              <a href="#" class="btn btn-primary btn-sm">Terminate Cluster</a>
-  					</div>
+              <!-- <a href="{{url_for('request_name', name=name)}}" method="POST" class="btn btn-primary btn-sm">Terminate Cluster</a> -->
+              <form action="{{url_for('request_name', name=name)}}" method="POST">
+                <button type="submit" name="terminate" value="terminate" class="btn btn-primary" data-submit="...Terminating Cluster">Terminate Cluster</button>
+              </form>
+            </div>
 
           </div><!-- /.content description -->
 

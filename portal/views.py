@@ -617,7 +617,7 @@ def request_new():
                                              allocations=allocations, policy=policy, expiration=expiration, environments=environments)
         clientapi.storeRequest(newrequest)
 
-        flash('Your Virtual Cluster has been successfully been requested!')
+        flash('Your Virtual Cluster has been successfully requested!')
 
         return redirect(url_for('vc3request'))
 
@@ -634,6 +634,17 @@ def request_name(name):
                 owner = vc3request.owner
 
         return render_template('request_profile.html', name=requestname, owner=owner, requests=vc3requests)
+
+    elif request.method == 'POST':
+        for vc3request in vc3requests:
+            if vc3request.name == name:
+                requestname = vc3request.name
+
+        clientapi.terminateRequest(requestname=requestname)
+
+        flash('Your Virtual Cluster has successfully begun termination!')
+
+        return redirect(url_for('vc3request'))
 
 
 @app.route('/dashboard', methods=['GET', 'POST'])
