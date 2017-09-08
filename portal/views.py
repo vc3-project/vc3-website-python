@@ -3,6 +3,7 @@ from flask import (abort, flash, redirect, render_template, request,
 import requests
 import logging
 import os
+import base64
 
 # from configparser import ConfigParser
 # from vc3client.client import VC3ClientAPI
@@ -524,7 +525,8 @@ def allocation_name(name):
                 owner = allocation.owner
                 resource = allocation.resource
                 accountname = allocation.accountname
-                pubtoken = allocation.pubtoken
+                encodedpubtoken = allocation.pubtoken
+                pubtoken = base64.b64decode(encodedpubtoken)
 
         return render_template('allocation_profile.html', name=allocationname, owner=owner, resource=resource, accountname=accountname, pubtoken=pubtoken)
 
