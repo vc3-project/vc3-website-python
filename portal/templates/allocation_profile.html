@@ -25,12 +25,9 @@
 							<span id="label"><h3>Resource: {{ resource }}</h3></span>
 							<span id="label"><h3>Account Name: {{ accountname }}</h3></span>
 							<span id="label">
-                <h3>Public Token:
-                  <div class="card container">
-                    <small>{{ pubtoken }}</small>
-                  </div>
-                </h3>
+                <h3>Public Token: <small>Message to users regarding adding pubtoken</small></h3>
               </span>
+              <textarea readonly disabled>{{ pubtoken }}</textarea>
 	             <!-- <a href="{{url_for('allocation_edit', name=name)}}" class="btn btn-default">Update Allocation</a> -->
 
   					</div>

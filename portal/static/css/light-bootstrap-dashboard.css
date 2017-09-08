@@ -2332,3 +2332,10 @@ RESOURCE PROFILE INDEX PAGE
 #dashboard .container-fluid #card-container {
   width: 100%;
 }
+
+textarea {
+   resize: none;
+   width: 80%;
+   height: 200px;
+   background-color: transparent;
+}
