@@ -45,11 +45,11 @@
   										<tr>
   											<td><a href="{{ url_for('cluster_name', name=cluster.name) }}">{{ cluster.name }}</a></td>
                           {% if cluster.state == "validated" %}
-                          <td><font color="green"><i class="fa fa-circle" style="color:green"></i>{{ cluster.state }} </font></td>
+                          <td><font color="green"><i class="fa fa-check-circle-o" style="color:green"></i>{{ cluster.state }} </font></td>
                           {% elif cluster.state == "terminated" %}
-                          <td><font color="red">{{ cluster.state }} <i class="fa fa-circle" style="color:red"></i></font></td>
+                          <td><font color="red"><i class="fa fa-exclamation-circle" style="color:red"></i> {{ cluster.state }}</font></td>
                           {% else %}
-                          <td><font color="orange">{{ cluster.state }}</font></td>
+                          <td><font color="orange"><i class="fa fa-circle-o-notch" style="color:orange"></i> {{ cluster.state }}</font></td>
                           {% endif %}
   											<td>
                           {% for nodeset in nodesets %}

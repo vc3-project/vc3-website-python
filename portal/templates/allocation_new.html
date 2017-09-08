@@ -17,7 +17,7 @@
       <h3>Register a New Allocation</h3>
       <h4>An allocation is an allotted amount of CPU hours or service units (SU) of computing time on a specific resource</h4>
 
-      <fieldset>
+      <!-- <fieldset>
         <label for="name">Allocation Name</label>
         <input
           placeholder="Your Allocation name"
@@ -27,10 +27,10 @@
           required
           autofocus
           value="{{request.name}}">
-      </fieldset>
+      </fieldset> -->
       <fieldset>
         <label for="resource">Resource</label>
-        <select class="form-control" name="resource" tabindex="2" id="form-resource-list" required>
+        <select class="form-control" name="resource" tabindex="1" id="form-resource-list" required>
           <option value="" selected disabled>Please Select Resource</option>
           {% for resource in resources %}
           <option value="{{resource.name}}">{{ resource.name }}</option>
@@ -43,7 +43,7 @@
           placeholder="Account Name"
           name="accountname"
           type="text"
-          tabindex="3"
+          tabindex="2"
           autofocus
           value="{{request.accountname}}">
       </fieldset>

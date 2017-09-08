@@ -159,7 +159,9 @@ def profile():
 
         if profile:
 
-            session['name'] = profile.name
+            # session['name'] = profile.name
+            username = profile.name[0] + profile.last
+            session['name'] = username.lower()
             session['first'] = profile.first
             session['last'] = profile.last
             session['email'] = profile.email
@@ -175,7 +177,7 @@ def profile():
         return render_template('profile.html', users=userlist, allocations=allocations, clusters=clusters,
                                projects=projects, resources=resources, vc3requests=vc3requests)
     elif request.method == 'POST':
-        name = session['name']
+        # name = session['name']
         # have name = session['primary_username'] =
         # request.form['primary_username'] no spaces or capitals?
         first = session['first'] = request.form['first']
@@ -183,6 +185,8 @@ def profile():
         email = session['email'] = request.form['email']
         institution = session['institution'] = request.form['institution']
         identity_id = session['primary_identity']
+        username = first[0] + last
+        name = username.lower()
 
         # print identity_id
 
@@ -268,12 +272,14 @@ def authcallback():
 
         if profile:
 
-            session['name'] = profile.name
+            # session['name'] = profile.name
             session['first'] = profile.first
             session['last'] = profile.last
             session['email'] = profile.email
             session['institution'] = profile.institution
             session['primary_identity'] = profile.identity_id
+            username = profile.name[0] + profile.last
+            session['name'] = username.lower()
         else:
             return redirect(url_for('profile',
                                     next=url_for('profile')))
@@ -385,7 +391,7 @@ def cluster_new():
         node_number = request.form['node_number']
         app_type = request.form['app_type']
         app_role = "worker-nodes"
-        environment = "lincolnb-en1"
+        environment = "lincolnb-env1"
 
         nodeset = clientapi.defineNodeset(
             name=name, owner=owner, node_number=node_number, app_type=app_type, app_role=app_role, environment=environment)
@@ -435,7 +441,7 @@ def cluster_name(name):
                 clustername = cluster.name
                 owner = cluster.owner
                 app_role = "worker-nodes"
-                environment = "lincolnb-en1"
+                environment = "lincolnb-env1"
 
         nodeset = clientapi.defineNodeset(
             name=clustername, owner=owner, node_number=node_number, app_type=app_type, app_role=app_role, environment=environment)
@@ -487,10 +493,12 @@ def new_allocation():
         return render_template('allocation_new.html', resources=resources, name=resourcename)
 
     elif request.method == 'POST':
-        name = request.form['name']
+        # name = request.form['name']
         owner = session['name']
         resource = request.form['resource']
         accountname = request.form['accountname']
+        allocationname = owner + "." + resource
+        name = allocationname.lower()
 
         newallocation = clientapi.defineAllocation(
             name=name, owner=owner, resource=resource, accountname=accountname)
@@ -611,7 +619,7 @@ def request_new():
         cluster = request.form['cluster']
         policy = "static-balanced"
         allocations.append(request.form['allocation'])
-        environments = ["lincolnb-en1"]
+        environments = ["lincolnb-env1"]
 
         newrequest = clientapi.defineRequest(name=vc3requestname, owner=owner, cluster=cluster,
                                              allocations=allocations, policy=policy, expiration=expiration, environments=environments)
