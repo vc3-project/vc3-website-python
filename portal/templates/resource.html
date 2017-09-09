@@ -33,7 +33,7 @@
   									<thead>
   										<tr class="filters">
   											<th><input type="text" class="form-control" placeholder="Name" disabled></th>
-  											<th><input type="text" class="form-control" placeholder="State" disabled></th>
+  											<th><input type="text" class="form-control" placeholder="Status" disabled></th>
   											<th><input type="text" class="form-control" placeholder="Institution" disabled></th>
   										</tr>
   									</thead>
@@ -41,8 +41,8 @@
 											{% for resource in resources %}
 											<tr>
 												<td><a href="{{ url_for('resource_name', name=resource.name) }}">{{ resource.name }}</a></td>
-												<td>Current State of Resource</td>
-												<td>Campus/Facilities</td>
+												<td><i class="fa fa-check" aria-hidden="true" style="color:green"></i> Healthy</td>
+												<td>UChicago</td>
 											</tr>
 											{% endfor %}
 

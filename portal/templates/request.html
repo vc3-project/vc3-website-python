@@ -41,33 +41,33 @@
                       <!-- if request.owner == session['name'] -->
   										<tr>
   											<td><a href="{{ url_for('request_name', name=request.name) }}">{{ request.name }}</a></td>
-                        {% if request.action == "terminate" %}
-                        <td><font color="red">{{ request.state }} <i class="fa fa-exclamation-circle" style="color:red"></i></font></td>
-                        {% elif request.state == "validated" or request.state == "new" or request.state == "configured" or request.state == "running" %}
-  											<td><font color="green">{{ request.state }} <i class="fa fa-check-circle-o" style="color:green"></i></font></td>
-                        {% elif request.state=="terminated" or request.state == "terminating"%}
-                        <td><font color="red">{{ request.state }} <i class="fa fa-circle-o-notch fa-spin" style="color:red"></i></font></td>
-                        {% else %}
-                        <td><font color="orange">{{ request.state }} <i class="fa fa-spinner fa-spin" style="color:orange"></i></font><option>{{ request.state_reason }}</option></td>
-                        {% endif %}
+                      {% if request.action == "terminate" %}
+                        <td><font color="orange">{{ request.state }} <i class="fa fa-exclamation-circle" style="color:red"></i></font><option>{{ request.state_reason }}</option><option>Action: {{ request.action }}</option></td>
+                      {% elif request.state == "validated" or request.state == "new" or request.state == "configured" or request.state == "running" %}
+  											<td><font color="green">{{ request.state }} <i class="fa fa-check-circle-o" style="color:green"></i></font><option>{{ request.state_reason }}</option><option>Action: {{ request.action }}</option></td>
+                      {% elif request.state=="terminated" or request.state == "terminating"%}
+                        <td><font color="red">{{ request.state }} <i class="fa fa-circle-o-notch fa-spin" style="color:red"></i></font><option>{{ request.state_reason }}</option><option>Action: {{ request.action }}</option></td>
+                      {% else %}
+                        <td><font color="orange">{{ request.state }} <i class="fa fa-spinner fa-spin" style="color:orange"></i></font><option>{{ request.state_reason }}</option><option>Action: {{ request.action }}</option></td>
+                      {% endif %}
 
-                        {% if request.statusraw['VC3-static'] == {} %}
+                      {% if request.statusraw['VC3-static'] == {} %}
                         <td>
                           Status Currently Unavailable
                         </td>
-                        {% elif request.statusraw == None %}
+                      {% elif request.statusraw == None %}
                         <td>
                           Status Currently Unavailable
                         </td>
-                        {% else %}
+                      {% else %}
                   			<td>
                           <option>Idle: {{ request.statusraw.values()[0].values()[0].values()[0]['idle'] }}</option>
                           <option>Running: {{ request.statusraw.values()[0].values()[0].values()[0]['running'] }}</option>
                         </td>
-                        {% endif %}
+                      {% endif %}
   										</tr>
                       <!-- endif  -->
-                    {% endfor %}
+                  {% endfor %}
   									</tbody>
   								</table>
   							</div>

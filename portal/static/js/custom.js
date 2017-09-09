@@ -426,3 +426,18 @@ jQuery(document).ready(function($) {
         window.location = $(this).data("href");
     });
 });
+
+// Copy Text Area on click
+
+function copyToClipboard(element) {
+  var $temp = $("<input>");
+  $("body").append($temp);
+  $temp.val($(element).text()).select();
+  document.execCommand("copy");
+  $temp.remove();
+}
+
+$(".btn").on("click", function() {
+    $(".alert").removeClass("in").show();
+	$(".alert").delay(200).addClass("in").fadeOut(8000);
+});

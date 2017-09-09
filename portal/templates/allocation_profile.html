@@ -21,13 +21,62 @@
           <div class="content description">
   					<div class="card-block">
 
-							<span id="label"><h3>Owner: {{ owner }}</h3></span>
-							<span id="label"><h3>Resource: {{ resource }}</h3></span>
-							<span id="label"><h3>Account Name: {{ accountname }}</h3></span>
-							<span id="label">
-                <h3>Public Token: <small>Message to users regarding adding pubtoken</small></h3>
-              </span>
-              <textarea readonly disabled>{{ pubtoken }}</textarea>
+              <div class="panel panel-info resource-profile" style="margin: 1em;">
+                <div class="panel-heading">
+                  <h3 class="panel-title"><strong>Owner</strong></h3>
+                </div>
+                <div class="panel-body">
+                  {{owner}}
+                </div>
+              </div>
+              <div class="panel panel-info resource-profile" style="margin: 1em;">
+                <div class="panel-heading">
+                  <h3 class="panel-title"><strong>Resource</strong></h3>
+                </div>
+                <div class="panel-body">
+                  {{resource.capitalize()}}
+                </div>
+              </div>
+              <div class="panel panel-info resource-profile" style="margin: 1em;">
+                <div class="panel-heading">
+                  <h3 class="panel-title"><strong>Account Name on Resource:</strong></h3>
+                </div>
+                <div class="panel-body">
+                  {{accountname}}
+                </div>
+              </div>
+              <div class="panel panel-info resource-profile" style="margin: 1em;">
+                <div class="panel-heading">
+                  <h3 class="panel-title"><strong>Public Token</strong></h3>
+                </div>
+                <!-- <div class="panel-body"> -->
+                  <div class="panel-body pubtoken">
+                    <p>Paste this SSH public key into your ~/.ssh/authorized_keys file on the remote resource</p>
+                    <textarea id="pubtoken" readonly disabled font-size="16">{{ pubtoken }}</textarea>
+                    <!-- <button onclick="copyToClipboard('#pubtoken')" class="btn btn-primary btn-sm">Copy to Clipboard</button> -->
+                    <div class="container">
+                      <div class="span10">
+                        <button class="btn btn-primary btn-sm" onclick="copyToClipboard('#pubtoken')">Copy to Clipboard</button>
+                      </div>
+                      <div class="span4">
+                        <div class="alert alert-info fade">
+                          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true" style="color:black">&times;</span>
+                          </button>
+                          Public token copied to clipboard
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                <!-- </div> -->
+              </div>
+
+              <!-- <span id="label"><h3 for="pubtoken">Public Token:</h3></span>
+              <h5 class="alert alert-info">Paste this SSH public key into your ~/.ssh/authorized_keys file on the remote resource</h5>
+              <div name="pubtoken">
+                <textarea id="pubtoken" readonly disabled>{{ pubtoken }}</textarea>
+                <button onclick="copyToClipboard('#pubtoken')" class="btn btn-primary btn-sm">Copy to Clipboard</button>
+              </div> -->
 	             <!-- <a href="{{url_for('allocation_edit', name=name)}}" class="btn btn-default">Update Allocation</a> -->
 
   					</div>

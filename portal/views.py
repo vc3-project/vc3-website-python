@@ -4,7 +4,6 @@ import requests
 import logging
 import os
 import base64
-
 # from configparser import ConfigParser
 # from vc3client.client import VC3ClientAPI
 
@@ -384,15 +383,17 @@ def cluster_new():
     nodesets = clientapi.listNodesets()
 
     if request.method == 'GET':
-        return render_template('cluster_new.html')
+        return render_template('cluster_new.html', clusters=clusters, projects=projects, nodesets=nodesets)
 
     elif request.method == 'POST':
-        name = request.form['name']
+        inputname = request.form['name']
         owner = session['name']
         node_number = request.form['node_number']
         app_type = request.form['app_type']
         app_role = "worker-nodes"
         environment = "lincolnb-env1"
+        translatename = "".join(inputname.split())
+        name = translatename + "." + owner
 
         nodeset = clientapi.defineNodeset(
             name=name, owner=owner, node_number=node_number, app_type=app_type, app_role=app_role, environment=environment)
@@ -469,7 +470,7 @@ def cluster_edit(name):
                 state = cluster.state
                 acl = cluster.acl
 
-        return render_template('cluster_edit.html', name=clustername, owner=owner, nodesets=nodesets, state=state, acl=acl)
+        return render_template('cluster_edit.html', name=clustername, owner=owner, nodesets=nodesets, state=state, acl=acl, projects=projects)
 
 
 @app.route('/allocation', methods=['GET', 'POST'])

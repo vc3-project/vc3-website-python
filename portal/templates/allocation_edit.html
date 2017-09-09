@@ -4,60 +4,40 @@
 
 {%block body%}
 
-<div class="content">
-  <div class="container-fluid">
+<div class="col-md-8 col-sm-12">
+<section id="new_project">
+  <div class="container new-project">
+    <form role="form" id="new-project-form" action="{{url_for('allocation_name', name=name)}}" method="POST">
+    <!-- Logo -->
+      <!-- <div class="col-lg-12 logo-vc3">
+        <img width="100" class="logo" src="https://image.ibb.co/e59s3v/logosmall.png" alt="Logo" />
+      </div> -->
 
-    <div class="row">
-      <div class="col-md-8 col-sm-12">
-        <div class="card">
-          <div class="header">
-            <h4 class="title">Edit Allocation: {{name}}</h4>
-						<hr />
-          </div>
-
-          <div class="content description">
-						<!-- <h2>Define New Allocation</h2> -->
-						<h5>An allocation is an allotted amount of core hours, or service units (SU) of computing time on a specific Cluster</h5>
-
-						<section id="new_allocation">
-							<div class="container new-allocation">
-								<form role="form" id="new-allocation-form" action="{{url_for('allocation_name', name=name)}}" method="POST">
-								<!-- Logo -->
-									<div class="col-lg-12 logo-vc3">
-										<img width="100" class="logo" src="https://image.ibb.co/e59s3v/logosmall.png" alt="Logo" />
-									</div>
-
-									<fieldset>
-										<label for="resource">Resource</label>
-										<select class="form-control" name="resource" tabindex="1" id="form-resource-list" required>
-											<option selected disabled>{{resource}}</option>
-											{% for resource in resources %}
-											<option value="{{resource.name}}">{{ resource.name }}</option>
-											{% endfor %}
-										</select>
-									</fieldset>
-									<fieldset>
-										<label for="accountname">Account Name</label>
-										<input
-											placeholder="Account Name"
-											name="accountname"
-											type="text"
-											tabindex="2"
-											autofocus
-											value="{{accountname}}">
-									</fieldset>
-									<fieldset>
-										<button type="submit" id="create-project" data-submit="...Sending">Update Allocation</button>
-									</fieldset>
-								</form>
-						  </div> <!-- allocation container -->
-            </section>
-
-          </div><!-- /.content description -->
-        </div>
-      </div>
-		</div>
-  </div>
+      <fieldset>
+        <label for="resource">Resource</label>
+        <select class="form-control" name="resource" tabindex="1" id="form-resource-list" required>
+          <option selected disabled>{{resource}}</option>
+          {% for resource in resources %}
+          <option value="{{resource.name}}">{{ resource.name }}</option>
+          {% endfor %}
+        </select>
+      </fieldset>
+      <fieldset>
+        <label for="accountname">Account Name</label>
+        <input
+          placeholder="Account Name"
+          name="accountname"
+          type="text"
+          tabindex="2"
+          autofocus
+          value="{{accountname}}">
+      </fieldset>
+      <fieldset>
+        <button type="submit" id="create-project" data-submit="...Sending">Update Allocation</button>
+      </fieldset>
+    </form>
+  </div> <!-- project container -->
+</section>
 </div>
 
 {%endblock%}

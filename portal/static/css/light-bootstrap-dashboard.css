@@ -827,7 +827,7 @@ body > .navbar-collapse {
   /*color: #FFFFFF;*/
   padding: 15px 25px;
   /*padding-top: 25px;*/
-  font-size: 18px; }
+  font-size: 16px;}
   .container .alert {
     border-radius: 4px; }
   .navbar .alert {
@@ -2335,7 +2335,36 @@ RESOURCE PROFILE INDEX PAGE
 
 textarea {
    resize: none;
-   width: 80%;
-   height: 200px;
+   width: 100%;
+   height: 175px;
    background-color: transparent;
+   border-color: transparent;
+}
+
+.resource-profile {
+  background-color: transparent;
+  border-color: #434857;
+  font-size: 18px;
+}
+.resource-profile .panel-heading {
+  background-color: transparent;
+  color: white;
+  border-color: #434857;
+}
+.resource-profile .panel-body:hover {
+  background-color: rgba(179, 179, 179, 0.1);
+}
+.resource-profile .pubtoken p {
+  color: #ffc500;
+}
+.resource-profile .pubtoken:hover {
+  background-color: transparent;
+}
+.resource-profile .panel-body .span10 {
+  width: 50%;
+  padding-top: 15px;
+}
+.resource-profile .panel-body .span4 {
+  width: 50%;
+  padding-top: 15px;
 }

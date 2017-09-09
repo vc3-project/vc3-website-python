@@ -11,10 +11,10 @@
       <div class="col-md-12">
         <div class="card">
           <div class="header">
-          	<h4 class="title">Resource Profile: {{name}}</h4>
+          	<h4 class="title">Resource Profile: {{name.capitalize()}}</h4>
             <div class="">
-							<h5 class="category">Help desk: test</h5>
-							<h5>Resource Description</h5>
+							<!-- <h5 class="category">Help desk: test</h5> -->
+							<h4><small>The Midway compute cluster is a shared resource used by the entire University of Chicago community.</small></h4>
 							<!-- <a href="{{url_for('cluster_edit', name=name)}}" class="btn btn-primary btn-sm">Update Cluster</a> -->
 						</div>
 						<hr />
@@ -22,7 +22,7 @@
 
           <div class="content description">
   					<div class="card-block">
-							<div class="content container">
+							<!-- <div class="content container">
                 <span id="label"><h3>List of Current Attributes <small>(not all will be displayed to users)</small></h3></span>
 								<h3>Owner: {{ owner }}</h3>
 								<h3>Access Type: {{ accesstype }}</h3>
@@ -38,7 +38,40 @@
                 <h3>State: Status of Resource State</h3>
                 <h3>"short_description": Serves as a "pretty name"</h3>
                 <h3>Description: 144 character text description for Resources</h3>
-							</div>
+							</div> -->
+              <div class="panel panel-info resource-profile" style="margin: 1em;">
+                <div class="panel-heading">
+                  <h3 class="panel-title"><strong>Institution</strong></h3>
+                </div>
+                <!-- <a href="#" class="panel-body list-group-item list-group-item-action">UChicago</a> -->
+                <div class="panel-body">
+                  UChicago
+                </div>
+              </div>
+              <div class="panel panel-info resource-profile" style="margin: 1em;">
+                <div class="panel-heading">
+                  <h3 class="panel-title"><strong>Resource URL/User-Guide</strong></h3>
+                </div>
+                <div class="panel-body">
+                  <a href="https://rcc.uchicago.edu/resources">https://rcc.uchicago.edu/resources</a>
+                </div>
+              </div>
+              <div class="panel panel-info resource-profile" style="margin: 1em;">
+                <div class="panel-heading">
+                  <h3 class="panel-title"><strong>Resource Status</strong></h3>
+                </div>
+                <div class="panel-body">
+                  <i class="fa fa-check" aria-hidden="true" style="color:green"></i> Healthy
+                </div>
+              </div>
+              <div class="panel panel-info resource-profile" style="margin: 1em;">
+                <div class="panel-heading">
+                  <h3 class="panel-title"><strong>Batch System</strong></h3>
+                </div>
+                <div class="panel-body">
+                  {{accessflavor.capitalize()}}
+                </div>
+              </div>
   					</div>
           </div><!-- /.content description -->
 
