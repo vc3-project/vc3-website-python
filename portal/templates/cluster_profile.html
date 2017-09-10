@@ -22,28 +22,48 @@
 
           <div class="content description">
   					<div class="card-block">
-							<div class="content container">
-								<span id="label"><h3>Owner: {{ owner }}</h3></span>
-								<span id="label"><h3>State: {{ state }}</h3></span>
-                <span id="label">
-                  <h3>Cluster Framework:
-                    {% for nodeset in nodesets %}
-                      {% if nodeset.name == name %}
-                        {{ nodeset.app_type }}
-                      {% endif %}
-                    {% endfor %}
-                  </h3>
-                </span>
-                <span id="label">
-                  <h3>Number of Workers:
+
+              <div class="panel panel-info resource-profile" style="margin: 1em;">
+                <div class="panel-heading">
+                  <h3 class="panel-title"><strong>Owner</strong></h3>
+                </div>
+                <div class="panel-body">
+                  {{owner.capitalize()}}
+                </div>
+              </div>
+              <div class="panel panel-info resource-profile" style="margin: 1em;">
+                <div class="panel-heading">
+                  <h3 class="panel-title"><strong>State</strong></h3>
+                </div>
+                <div class="panel-body">
+                  {{state.capitalize()}}
+                </div>
+              </div>
+              <div class="panel panel-info resource-profile" style="margin: 1em;">
+                <div class="panel-heading">
+                  <h3 class="panel-title"><strong>Cluster Framework</strong></h3>
+                </div>
+                <div class="panel-body">
+                  {% for nodeset in nodesets %}
+                    {% if nodeset.name == name %}
+                      {{ nodeset.app_type }}
+                    {% endif %}
+                  {% endfor %}
+                </div>
+              </div>
+              <div class="panel panel-info resource-profile" style="margin: 1em;">
+                <div class="panel-heading">
+                  <h3 class="panel-title"><strong>Number of Workers</strong></h3>
+                </div>
+                <div class="panel-body">
                   {% for nodeset in nodesets %}
                     {% if nodeset.name == name %}
                       {{ nodeset.node_number }}
                     {% endif %}
                   {% endfor %}
-                  </h3>
-                </span>
-							</div>
+                </div>
+              </div>
+
   					</div>
           </div><!-- /.content description -->
 

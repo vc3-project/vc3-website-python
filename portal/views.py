@@ -460,13 +460,14 @@ def cluster_name(name):
 def cluster_edit(name):
     clusters = clientapi.listClusters()
     projects = clientapi.listProjects()
+    nodesets = clientapi.listNodesets()
 
     if request.method == 'GET':
         for cluster in clusters:
             if cluster.name == name:
                 clustername = cluster.name
                 owner = cluster.owner
-                nodesets = cluster.nodesets
+                # nodesets = cluster.nodesets
                 state = cluster.state
                 acl = cluster.acl
 

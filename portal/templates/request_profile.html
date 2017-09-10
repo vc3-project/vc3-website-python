@@ -16,45 +16,107 @@
           </div>
 
           <div class="content description">
-
   					<div class="card-block">
-		          <h5>Virtual Cluster Details</h5>
-		          {% for request in requests %}
-						    {% if request.name == name %}
-		            <!-- <h5>{{ request }}</h5> -->
-		            <h5>Name: {{ request.name }}</h5>
-		            <h5>State: {{ request.state }}</h5>
-                <h5>State Reason: {{ request.state_reason }}</h5>
-		            <h5>Owner: {{ request.owner }}</h5>
-		            <h5>Expiration: {{ request.expiration }}</h5>
-		            <h5>Policy: {{ request.policy }}</h5>
-		            <h5>Allocations: {{ request.allocations }}</h5>
-		            <ul><h5><em>{{ request.allocations[0] }}</em></h5></ul>
-		            <ul><h5><em>{{ request.allocations[1] }}</em></h5></ul>
-		            <h5>Environments: {{ request.environments }}</h5>
-		            <ul><h5><em>{{ request.environments[0] }}</em></h5></ul>
-		            <h5>Status Raw: {{ request.statusraw }}</h5>
-                <h5>VC3 Static: {{ request.statusraw['VC3-static'] }}</h5>
-                {% if request.statusraw['VC3-static'] == {} %}
-                Status Currently Unavailable
-                {% elif request.statusraw == None %}
-                Status Currently Unavailable
-                {% else %}
-                <h5>Nodeset: {{ request.statusraw.values()[0].values()[0] }}</h5>
-                <h5>Jobs on Request: {{ request.statusraw.values()[0].values()[0].values()[0] }}</h5>
-                <h5>Idle Jobs: {{ request.statusraw.values()[0].values()[0].values()[0].values()[0] }}</h5>
-                <h5>Running Jobs: {{ request.statusraw.values()[0].values()[0].values()[0].values()[1] }}</h5>
-                {% endif %}
 
-  	            <hr/>
-						    {% endif%}
-		          {% endfor %}
+              {% for request in requests %}
+						    {% if request.name == name %}
+              <div class="panel panel-info resource-profile" style="margin: 1em;">
+                <div class="panel-heading">
+                  <h3 class="panel-title"><strong>Name</strong></h3>
+                </div>
+                <div class="panel-body">
+                  {{request.name.capitalize()}}
+                </div>
+              </div>
+              <div class="panel panel-info resource-profile" style="margin: 1em;">
+                <div class="panel-heading">
+                  <h3 class="panel-title"><strong>State</strong></h3>
+                </div>
+                <div class="panel-body">
+                  {{request.state.capitalize()}}
+                </div>
+              </div>
+              <div class="panel panel-info resource-profile" style="margin: 1em;">
+                <div class="panel-heading">
+                  <h3 class="panel-title"><strong>State Reason</strong></h3>
+                </div>
+                <div class="panel-body">
+                  {{request.state_reason.capitalize()}}
+                </div>
+              </div>
+              <div class="panel panel-info resource-profile" style="margin: 1em;">
+                <div class="panel-heading">
+                  <h3 class="panel-title"><strong>Owner</strong></h3>
+                </div>
+                <div class="panel-body">
+                  {{request.owner.capitalize()}}
+                </div>
+              </div>
+              <div class="panel panel-info resource-profile" style="margin: 1em;">
+                <div class="panel-heading">
+                  <h3 class="panel-title"><strong>Expiration</strong></h3>
+                </div>
+                <div class="panel-body">
+                  {{request.expiration}}
+                </div>
+              </div>
+              <div class="panel panel-info resource-profile" style="margin: 1em;">
+                <div class="panel-heading">
+                  <h3 class="panel-title"><strong>Policy</strong></h3>
+                </div>
+                <div class="panel-body">
+                  {{request.policy.capitalize()}}
+                </div>
+              </div>
+              <div class="panel panel-info resource-profile" style="margin: 1em;">
+                <div class="panel-heading">
+                  <h3 class="panel-title"><strong>Allocations</strong></h3>
+                </div>
+                <div class="panel-body">
+                  {% for allocation in request.allocations %}
+                    <a href="{{ url_for('allocation_name', name=allocation) }}"><option>{{allocation.capitalize()}}</option></a>
+                  {% endfor %}
+                </div>
+              </div>
+              <div class="panel panel-info resource-profile" style="margin: 1em;">
+                <div class="panel-heading">
+                  <h3 class="panel-title"><strong>Environments</strong></h3>
+                </div>
+                <div class="panel-body">
+                  yo
+                </div>
+              </div>
+              <div class="panel panel-info resource-profile" style="margin: 1em;">
+                <div class="panel-heading">
+                  <h3 class="panel-title"><strong>Status</strong></h3>
+                </div>
+                <div class="panel-body">
+                  {% if request.statusraw['VC3-static'] == {} %}
+                  Status Currently Unavailable
+                  {% elif request.statusraw == None %}
+                  Status Currently Unavailable
+                  {% else %}
+
+                  Allocations on Request:
+                    {% for key, value in request.statusraw.values()[0].values()[0].iteritems() %}
+                      <option>{{ key }}</option>
+                      {% for k, v in value.iteritems() %}
+                      <option>{{ k }}: {{v}}</option>
+                      {% endfor %}
+                    {% endfor %}
+                  {% endif %}
+                </div>
+              </div>
+              <hr/>
+                {% endif %}
+              {% endfor %}
               <!-- <a href="{{url_for('request_name', name=name)}}" method="POST" class="btn btn-primary btn-sm">Terminate Cluster</a> -->
                 <label for="clustername">Cluster Status:</label>
 
                 <form action="{{url_for('request_name', name=name)}}" method="POST">
                   <button type="submit" class="btn btn-primary" data-submit="...Terminating Cluster">Terminate Cluster</button>
                 </form>
+
               </div>
             </div>
 
