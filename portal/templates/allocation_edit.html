@@ -1,6 +1,6 @@
 {%extends "loginbase.html"%}
 
-{%block title%}Edit Allocation: {{ name }}{%endblock%}
+{%block title%}Edit Allocation{%endblock%}
 
 {%block body%}
 
@@ -12,6 +12,8 @@
       <!-- <div class="col-lg-12 logo-vc3">
         <img width="100" class="logo" src="https://image.ibb.co/e59s3v/logosmall.png" alt="Logo" />
       </div> -->
+      <h3>Edit Allocation: <small style="color:#111">{{name.capitalize()}}</small></h3>
+      <h4>Allocation Details</h4>
 
       <fieldset>
         <label for="resource">Resource</label>

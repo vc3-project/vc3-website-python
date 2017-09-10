@@ -10,7 +10,7 @@
     <link rel="shortcut icon" type="image/x-icon" href="{{url_for('static', filename='img/favicon.ico')}}" />
     <!-- <link rel="icon" type="image/x-icon" href="{{url_for('static', filename='img/favicon.ico')}}" /> -->
 
-    <title>VC3 | {%block title%}{%endblock%}</title>
+    <title>{%block title%}{%endblock%}</title>
 
     {# CSS files #}
     <!-- <link rel="stylesheet" type="text/css" href="{{url_for('static', filename='css/bootstrap.min.css')}}" /> -->
@@ -117,9 +117,6 @@
               </li> -->
               <li>
                 <a href="{{url_for('login')}}">Login</a>
-              </li>
-              <li>
-                <a href="{{url_for('signup')}}">Sign Up</a>
               </li>
             {%endif%}
           </ul>

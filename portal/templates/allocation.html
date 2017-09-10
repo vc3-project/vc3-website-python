@@ -51,7 +51,7 @@
                           {% else %}
                           <td><font color="orange"><i class="fa fa-spinner fa-spin" style="color:orange"></i> {{ allocation.state }} </font></td>
                           {% endif %}
-  											<td>{{ allocation.resource }}</td>
+  											<td><a href="{{ url_for('resource_name', name=allocation.resource) }}"><option>{{allocation.resource.capitalize()}}</option></a></td>
   										</tr>
                         {% endif %}
   										{% endfor %}

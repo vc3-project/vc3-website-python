@@ -467,7 +467,6 @@ def cluster_edit(name):
             if cluster.name == name:
                 clustername = cluster.name
                 owner = cluster.owner
-                # nodesets = cluster.nodesets
                 state = cluster.state
                 acl = cluster.acl
 

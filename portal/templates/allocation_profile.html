@@ -34,7 +34,7 @@
                   <h3 class="panel-title"><strong>Resource</strong></h3>
                 </div>
                 <div class="panel-body">
-                  {{resource.capitalize()}}
+                  <a href="{{ url_for('resource_name', name=resource) }}"><option>{{resource.capitalize()}}</option></a>
                 </div>
               </div>
               <div class="panel panel-info resource-profile" style="margin: 1em;">
