@@ -391,9 +391,9 @@ def cluster_new():
         node_number = request.form['node_number']
         app_type = request.form['app_type']
         app_role = "worker-nodes"
-        environment = "lincolnb-env1"
+        environment = "condor-glidein-password-env1"
         translatename = "".join(inputname.split())
-        name = translatename + "." + owner
+        name = translatename.lower()
 
         nodeset = clientapi.defineNodeset(
             name=name, owner=owner, node_number=node_number, app_type=app_type, app_role=app_role, environment=environment)
