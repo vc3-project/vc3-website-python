@@ -49,7 +49,7 @@
                           {% elif allocation.state == "terminated" %}
                           <td><font color="red"><i class="fa fa-exclamation-circle" style="color:red"></i> {{ allocation.state }} </font></td>
                           {% else %}
-                          <td><font color="orange"><i class="fa fa-spinner fa-spin" style="color:orange"></i> {{ allocation.state }} </font></td>
+                          <td><font color="orange"><i class="fa fa-circle" style="color:orange"></i> {{ allocation.state }} </font></td>
                           {% endif %}
   											<td><a href="{{ url_for('resource_name', name=allocation.resource) }}"><option>{{allocation.resource.capitalize()}}</option></a></td>
   										</tr>

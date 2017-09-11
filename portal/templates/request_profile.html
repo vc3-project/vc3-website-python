@@ -83,7 +83,7 @@
                   <h3 class="panel-title"><strong>Environments</strong></h3>
                 </div>
                 <div class="panel-body">
-                  yo
+                  Display Correct Nested Environments
                 </div>
               </div>
               <div class="panel panel-info resource-profile" style="margin: 1em;">
@@ -97,7 +97,7 @@
                   Status Currently Unavailable
                   {% else %}
 
-                  Allocations on Request:
+                  Allocations on Virtual Cluster:
                     {% for key, value in request.statusraw.values()[0].values()[0].iteritems() %}
                       <option>{{ key }}</option>
                       {% for k, v in value.iteritems() %}

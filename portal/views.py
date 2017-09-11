@@ -443,7 +443,10 @@ def cluster_name(name):
                 clustername = cluster.name
                 owner = cluster.owner
                 app_role = "worker-nodes"
-                environment = "lincolnb-env1"
+                if app_type == "htcondor":
+                    environment = "condor-glidein-password-env1"
+                elif app_type == "workqueue":
+                    environment = []
 
         nodeset = clientapi.defineNodeset(
             name=clustername, owner=owner, node_number=node_number, app_type=app_type, app_role=app_role, environment=environment)
