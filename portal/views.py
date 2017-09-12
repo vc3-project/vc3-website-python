@@ -438,15 +438,16 @@ def cluster_name(name):
         node_number = request.form['node_number']
         app_type = request.form['app_type']
 
+        if app_type == "htcondor":
+            environment = "condor-glidein-password-env1"
+        elif app_type == "workqueue":
+            environment = []
+
         for cluster in clusters:
             if cluster.name == name:
                 clustername = cluster.name
                 owner = cluster.owner
                 app_role = "worker-nodes"
-                if app_type == "htcondor":
-                    environment = "condor-glidein-password-env1"
-                elif app_type == "workqueue":
-                    environment = []
 
         nodeset = clientapi.defineNodeset(
             name=clustername, owner=owner, node_number=node_number, app_type=app_type, app_role=app_role, environment=environment)
@@ -619,13 +620,14 @@ def request_new():
 
     elif request.method == 'POST':
         allocations = []
+        # environments = []
         vc3requestname = request.form['name']
         owner = session['name']
         expiration = None
         cluster = request.form['cluster']
         policy = "static-balanced"
         allocations.append(request.form['allocation'])
-        environments = ["lincolnb-env1"]
+        environments = ["condor-glidein-password-env1"]
 
         newrequest = clientapi.defineRequest(name=vc3requestname, owner=owner, cluster=cluster,
                                              allocations=allocations, policy=policy, expiration=expiration, environments=environments)

@@ -25,7 +25,7 @@
                   <h3 class="panel-title"><strong>Name</strong></h3>
                 </div>
                 <div class="panel-body">
-                  {{request.name.capitalize()}}
+                  {{request.name}}
                 </div>
               </div>
               <div class="panel panel-info resource-profile" style="margin: 1em;">
@@ -33,7 +33,7 @@
                   <h3 class="panel-title"><strong>State</strong></h3>
                 </div>
                 <div class="panel-body">
-                  {{request.state.capitalize()}}
+                  {{request.state}}
                 </div>
               </div>
               <div class="panel panel-info resource-profile" style="margin: 1em;">
@@ -41,7 +41,7 @@
                   <h3 class="panel-title"><strong>State Reason</strong></h3>
                 </div>
                 <div class="panel-body">
-                  {{request.state_reason.capitalize()}}
+                  {{request.state_reason}}
                 </div>
               </div>
               <div class="panel panel-info resource-profile" style="margin: 1em;">
@@ -49,7 +49,7 @@
                   <h3 class="panel-title"><strong>Owner</strong></h3>
                 </div>
                 <div class="panel-body">
-                  {{request.owner.capitalize()}}
+                  {{request.owner}}
                 </div>
               </div>
               <div class="panel panel-info resource-profile" style="margin: 1em;">
@@ -65,7 +65,7 @@
                   <h3 class="panel-title"><strong>Policy</strong></h3>
                 </div>
                 <div class="panel-body">
-                  {{request.policy.capitalize()}}
+                  {{request.policy}}
                 </div>
               </div>
               <div class="panel panel-info resource-profile" style="margin: 1em;">
@@ -74,7 +74,7 @@
                 </div>
                 <div class="panel-body">
                   {% for allocation in request.allocations %}
-                    <a href="{{ url_for('allocation_name', name=allocation) }}"><option>{{allocation.capitalize()}}</option></a>
+                    <a href="{{ url_for('allocation_name', name=allocation) }}"><option>{{allocation}}</option></a>
                   {% endfor %}
                 </div>
               </div>
