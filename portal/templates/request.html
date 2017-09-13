@@ -33,10 +33,54 @@
   										<tr class="filters">
   											<th><input type="text" class="form-control" placeholder="Name" disabled></th>
   											<th><input type="text" class="form-control" placeholder="State" disabled></th>
-  											<th><input type="text" class="form-control" placeholder="Jobs" disabled></th>
+  											<th><input type="text" class="form-control" placeholder="Nodes" disabled></th>
   										</tr>
   									</thead>
   									<tbody data-link="row" class="rowlink">
+                  {% if session['primary_identity'] == "05e05adf-e9d4-487f-8771-b6b8a25e84d3" %}
+                    {% for request in requests %}
+                      <!-- if request.owner == session['name'] -->
+  										<tr>
+  											<td><a href="{{ url_for('request_name', name=request.name) }}">{{ request.name }}</a></td>
+                      {% if request.action == "terminate" %}
+                        {% if request.state == "running" %}
+                        <td><font color="orange">Terminating <i class="fa fa-exclamation-circle" style="color:orange"></i></font><option>{{ request.state_reason }}</option><option>Action: {{ request.action }}</option></td>
+                        {% else %}
+                        <td><font color="red">{{ request.state }} <i class="fa fa-times-circle" style="color:red"></i></font><option>{{ request.state_reason }}</option><option>Action: {{ request.action }}</option></td>
+                        {% endif %}
+                      {% elif request.state == "new" %}
+                        <td><font color="blue">{{ request.state }} </font><option>{{ request.state_reason }}</option><option>Action: {{ request.action }}</option></td>
+                      {% elif request.state == "validated" or request.state == "configured" or request.state == "running" %}
+  											<td><font color="green">{{ request.state }} <i class="fa fa-check-circle-o" style="color:green"></i></font><option>{{ request.state_reason }}</option><option>Action: {{ request.action }}</option></td>
+                      {% elif request.state=="terminated" or request.state == "terminating"%}
+                        <td>
+                          <!-- <font color="red">{{ request.state }} <i class="fa fa-circle-o-notch fa-spin" style="color:red"></i></font> -->
+                          <i class="fa fa-times-circle" style="color:red"></i>
+                          <option>{{ request.state_reason }}</option>
+                          <option>Action: {{ request.action }}</option>
+                        </td>
+                      {% else %}
+                        <td><font color="orange">{{ request.state }} <i class="fa fa-spinner fa-spin" style="color:orange"></i></font><option>{{ request.state_reason }}</option><option>Action: {{ request.action }}</option></td>
+                      {% endif %}
+
+                      {% if request.statusraw['VC3-static'] == {} %}
+                        <td>
+                          Status Currently Unavailable
+                        </td>
+                      {% elif request.statusraw == None %}
+                        <td>
+                          Status Currently Unavailable
+                        </td>
+                      {% else %}
+                  			<td>
+                          <option>Idle: {{ request.statusraw.values()[0].values()[0].values()[0]['idle'] }}</option>
+                          <option>Running: {{ request.statusraw.values()[0].values()[0].values()[0]['running'] }}</option>
+                        </td>
+                      {% endif %}
+  										</tr>
+                      <!-- endif  -->
+                    {% endfor %}
+                  {% else %}
                     {% for request in requests %}
                       {% if request.owner == session['name'] %}
                       <tr>
@@ -68,6 +112,7 @@
                       </tr>
                       {% endif %}
                     {% endfor %}
+                  {% endif %}
   									</tbody>
   								</table>
   							</div>

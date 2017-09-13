@@ -42,8 +42,8 @@
       </fieldset>
       <fieldset>
         <label for="allocation">Allocation</label>
-        <select class="form-control" name="allocation" tabindex="3" id="form-resource-list" required>
-          <option value="" selected disabled>Please Select Allocation</option>
+        <select class="selectpicker" multiple name="allocation" tabindex="3" id="allocation" required>
+          <option disabled>Please Select Allocation</option>
           {% for allocation in allocations %}
             {% if allocation.owner == session['name'] and allocation.state == "validated" %}
           <option value="{{allocation.name}}">{{ allocation.name }}</option>

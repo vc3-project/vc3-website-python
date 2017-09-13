@@ -200,7 +200,7 @@ def profile():
         # print(newuser)
         clientapi.storeUser(newuser)
 
-        flash('Thank you! Your profile has been successfully updated.')
+        flash('Thank you! Your profile has been successfully updated. You may now register an allocation!')
 
         if 'next' in session:
             redirect_to = session['next']
@@ -510,7 +510,7 @@ def new_allocation():
             name=name, owner=owner, resource=resource, accountname=accountname)
         clientapi.storeAllocation(newallocation)
 
-        flash('Your allocation has been successfully defined!')
+        flash('Your allocation has been successfully defined! You may find your SSH key in your new allocation profile after validation!')
 
         return redirect(url_for('allocation'))
 
@@ -626,8 +626,9 @@ def request_new():
         expiration = None
         cluster = request.form['cluster']
         policy = "static-balanced"
-        allocations.append(request.form['allocation'])
         environments = ["condor-glidein-password-env1"]
+        for selectedallocations in request.form.getlist('allocation'):
+            allocations.append(selectedallocations)
 
         newrequest = clientapi.defineRequest(name=vc3requestname, owner=owner, cluster=cluster,
                                              allocations=allocations, policy=policy, expiration=expiration, environments=environments)
