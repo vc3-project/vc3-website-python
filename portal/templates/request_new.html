@@ -41,9 +41,9 @@
         </select>
       </fieldset>
       <fieldset>
-        <label for="allocation">Allocation</label>
+        <label for="allocation">Allocations</label>
         <select class="selectpicker" multiple name="allocation" tabindex="3" id="allocation" required>
-          <option disabled>Please Select Allocation</option>
+          <option active disabled>Please Select Allocation</option>
           {% for allocation in allocations %}
             {% if allocation.owner == session['name'] and allocation.state == "validated" %}
           <option value="{{allocation.name}}">{{ allocation.name }}</option>
@@ -52,7 +52,7 @@
         </select>
       </fieldset>
       <fieldset>
-        <button type="submit" id="create-project" data-submit="...Sending">Launch Cluster</button>
+        <button type="submit" id="create-project" data-submit="...Sending" style="margin-top:25px">Launch Cluster</button>
       </fieldset>
     </form>
   </div> <!-- project container -->

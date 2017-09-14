@@ -427,11 +427,6 @@ body.mobile-nav-active #mobile-nav-toggle {
   display: block;
   margin: 0 auto;
 }
-#about .container {
-  /*padding: 10px;*/
-  /*display: flex;*/
-  /*align-items: center;*/
-}
 #about .container .content {
   padding-top: 70px;
 }
@@ -447,6 +442,9 @@ body.mobile-nav-active #mobile-nav-toggle {
 #about .carousel-inner {
   margin-top: 10px;
   margin-bottom: 50px;
+}
+#about .carousel-inner .item .content {
+  padding-top: 100px;
 }
 #about #myCarousel .carousel-indicators li {
   background: rgba(252, 197, 0, 0.7);
@@ -518,10 +516,8 @@ body.mobile-nav-active #mobile-nav-toggle {
 --------------------------------------------------------------*/
 
 #community {
-  /*background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('https://scontent-iad3-1.cdninstagram.com/t51.2885-15/e35/17595897_685587908295482_4170062324113080320_n.jpg') fixed center center;*/
-  /*background: #111;*/
   background-size: cover;
-  padding: 80px 0;
+  padding: 20px 0;
 }
 
 #community .community-title {
@@ -551,7 +547,6 @@ body.mobile-nav-active #mobile-nav-toggle {
 
 #community .community-btn-container {
   text-align: center;
-  padding-top: 20px;
 }
 
 #community .community-btn {
@@ -578,6 +573,9 @@ body.mobile-nav-active #mobile-nav-toggle {
 
 #community #bigSocial{
   text-align: center;
+  width: 40%;
+  margin: auto;
+
 }
 
 #community #bigSocial .fa-twitter:hover{
@@ -898,6 +896,9 @@ body.mobile-nav-active #mobile-nav-toggle {
 /*#footer .social a:hover {
   color: #03C4EB;
 }*/
+#footer #doelogo {
+  margin: 0 auto;
+}
 
 #footer .social .fa-twitter:hover{
   color: #0084b4;

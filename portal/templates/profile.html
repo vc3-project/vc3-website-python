@@ -98,9 +98,12 @@
                 {% for user in users %}
                   {% if user.name == session['name'] %}
                 <div class="col-md-6">
+                  <div>
                   <label for="addallocation">Register Allocation: </label>
-                  <a href="{{url_for('new_allocation')}}" class="btn btn-primary btn-xs" name="addallocation">Connect Allocation</a>
+                  </div>
+                  <a href="{{url_for('new_allocation')}}" class="btn btn-primary btn-sm" name="addallocation" title="Register New Allocation">+ Allocation</a>
                 </div>
+
                   {% endif %}
                 {% endfor %}
         			</div> <!-- row -->
@@ -182,7 +185,7 @@
                     </div>
 
                     <div class="form-group">
-                      <button type="submit" class="btn btn-primary">Update</button>
+                      <button type="submit" class="btn btn-primary" title="Update Profile">Update</button>
                     </div>
                   </form>
                 </div>

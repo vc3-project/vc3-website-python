@@ -15,7 +15,7 @@
           	<h4 class="title">Cluster Templates</h4>
             <div class="">
               <h5>A cluster is a complete collection of nodes with networking and file storage facilities</h5>
-							<a href="{{url_for('cluster_new')}}" class="btn btn-primary btn-sm">+ New Cluster Template</a>
+							<a href="{{url_for('cluster_new')}}" class="btn btn-primary btn-sm" title="Create New Cluster Template">+ New Cluster Template</a>
 						</div>
 						<hr />
           </div>
@@ -43,7 +43,7 @@
   										{% for cluster in clusters %}
                         {% if cluster.owner == session['name'] %}
   										<tr>
-  											<td><a href="{{ url_for('cluster_name', name=cluster.name) }}">{{ cluster.name }}</a></td>
+  											<td><a href="{{ url_for('cluster_name', name=cluster.name) }}" title="View Cluster Template">{{ cluster.name }}</a></td>
                           {% if cluster.state == "validated" %}
                           <td><font color="green"><i class="fa fa-check-circle-o" style="color:green"></i>{{ cluster.state }} </font></td>
                           {% elif cluster.state == "terminated" %}

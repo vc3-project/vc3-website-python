@@ -649,8 +649,10 @@ def request_name(name):
             if vc3request.name == name:
                 requestname = vc3request.name
                 owner = vc3request.owner
+                action = vc3request.action
+                state = vc3request.state
 
-        return render_template('request_profile.html', name=requestname, owner=owner, requests=vc3requests)
+        return render_template('request_profile.html', name=requestname, owner=owner, requests=vc3requests, action=action, state=state)
 
     elif request.method == 'POST':
         for vc3request in vc3requests:
