@@ -26,7 +26,7 @@
                     {% for member in members%}
                     <a href="#" class="list-group-item list-group-item-action" name="removeuser" value="{{member}}">{{ member }}
                       {% if session['name'] == owner %}
-                      <button type="submit" name="btn" value="removeuser" class="btn btn-danger btn-xs pull-right" data-submit="Removing User...">Remove User</button>
+                      <!-- <button type="submit" name="btn" value="removeuser" class="btn btn-danger btn-xs pull-right" data-submit="Removing User...">Remove User</button> -->
                       {% endif %}
                     </a>
                     {% endfor %}
