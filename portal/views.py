@@ -529,11 +529,15 @@ def allocation_name(name):
                 allocationname = allocation.name
                 owner = allocation.owner
                 resource = allocation.resource
+                state = allocation.state
                 accountname = allocation.accountname
                 encodedpubtoken = allocation.pubtoken
-                pubtoken = base64.b64decode(encodedpubtoken)
+                if encodedpubtoken == None:
+                    pubtoken = None
+                else:
+                    pubtoken = base64.b64decode(encodedpubtoken)
 
-        return render_template('allocation_profile.html', name=allocationname, owner=owner, resource=resource, accountname=accountname, pubtoken=pubtoken)
+        return render_template('allocation_profile.html', name=allocationname, owner=owner, resource=resource, accountname=accountname, pubtoken=pubtoken, state=state)
 
     elif request.method == 'POST':
 
@@ -543,7 +547,6 @@ def allocation_name(name):
                 owner = allocation.owner
                 resource = request.form['resource']
                 accountname = request.form['accountname']
-                pubtoken = allocation.pubtoken
 
         newallocation = clientapi.defineAllocation(
             name=allocationname, owner=owner, resource=resource, accountname=accountname)

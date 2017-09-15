@@ -12,9 +12,9 @@
         <div class="card">
           <div class="header">
           	<h4 class="title">Allocation: {{name}}</h4>
-            <div class="">
+            <!-- <div class="">
 							<a href="{{url_for('allocation_edit', name=name)}}" class="btn btn-primary btn-sm">Update Allocation</a>
-						</div>
+						</div> -->
 						<hr />
           </div>
 
@@ -51,8 +51,11 @@
                 </div>
                 <!-- <div class="panel-body"> -->
                   <div class="panel-body pubtoken">
-                    {% if pubtoken == "None" %}
-                    <p>Pubic Token will be available once your allocation has been validated.</p>
+                    {% if pubtoken == None %}
+                    <p>Your SSH public key will be available once your allocation has been validated. Please allow a few moments and refresh the page.</p>
+                    <div>
+                      <font color="orange">Current State: <i class="fa fa-spinner fa-spin" style="color:orange"></i> {{ state }} </font>
+                    </div>
                     {% else %}
                     <p>Paste this SSH public key into your ~/.ssh/authorized_keys file on the remote resource</p>
                     <textarea id="pubtoken" readonly disabled font-size="16">{{ pubtoken }}</textarea>

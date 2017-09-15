@@ -44,11 +44,7 @@
                         {% if allocation.owner == session['name'] %}
   										<tr>
   											<td>
-                          {% if allocation.state == "validated" %}
                           <a href="{{ url_for('allocation_name', name=allocation.name) }}" title="View Allocation">{{ allocation.name }}</a>
-                          {% else %}
-                          <small>Please allow a few moments for a validated state and refresh the page.</small>
-                          {% endif %}
                         </td>
                           {% if allocation.state == "validated" %}
     											<td><font color="green"><i class="fa fa-check-circle-o" style="color:green"></i> {{ allocation.state }} </font></td>
