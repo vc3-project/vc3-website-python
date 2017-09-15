@@ -51,6 +51,9 @@
                 </div>
                 <!-- <div class="panel-body"> -->
                   <div class="panel-body pubtoken">
+                    {% if pubtoken == "None" %}
+                    <p>Pubic Token will be available once your allocation has been validated.</p>
+                    {% else %}
                     <p>Paste this SSH public key into your ~/.ssh/authorized_keys file on the remote resource</p>
                     <textarea id="pubtoken" readonly disabled font-size="16">{{ pubtoken }}</textarea>
                     <!-- <button onclick="copyToClipboard('#pubtoken')" class="btn btn-primary btn-sm">Copy to Clipboard</button> -->
@@ -67,6 +70,7 @@
                         </div>
                       </div>
                     </div>
+                    {% endif %}
                   </div>
                 <!-- </div> -->
               </div>

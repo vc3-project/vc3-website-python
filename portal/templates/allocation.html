@@ -43,13 +43,19 @@
   										{% for allocation in allocations %}
                         {% if allocation.owner == session['name'] %}
   										<tr>
-  											<td><a href="{{ url_for('allocation_name', name=allocation.name) }}" title="View Allocation">{{ allocation.name }}</a></td>
+  											<td>
+                          {% if allocation.state == "validated" %}
+                          <a href="{{ url_for('allocation_name', name=allocation.name) }}" title="View Allocation">{{ allocation.name }}</a>
+                          {% else %}
+                          <small>Please allow a few moments for a validated state and refresh the page.</small>
+                          {% endif %}
+                        </td>
                           {% if allocation.state == "validated" %}
     											<td><font color="green"><i class="fa fa-check-circle-o" style="color:green"></i> {{ allocation.state }} </font></td>
                           {% elif allocation.state == "terminated" %}
                           <td><font color="red"><i class="fa fa-exclamation-circle" style="color:red"></i> {{ allocation.state }} </font></td>
                           {% else %}
-                          <td><font color="orange"><i class="fa fa-circle" style="color:orange"></i> {{ allocation.state }} </font></td>
+                          <td><font color="orange"><i class="fa fa-spinner fa-spin" style="color:orange"></i> {{ allocation.state }} </font></td>
                           {% endif %}
   											<td><a href="{{ url_for('resource_name', name=allocation.resource) }}"><option>{{allocation.resource}}</option></a></td>
   										</tr>
