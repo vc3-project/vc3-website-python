@@ -34,13 +34,17 @@
             <form action="{{url_for('request_name', name=name)}}" method="POST">
               <button type="submit" class="btn btn-primary" data-submit="...Terminating Cluster" title="Terminate your Virtual Cluster">Terminate Cluster</button>
             </form>
-            {% else %}
-            <!-- <div class="progress" style="height:25px">
-              <div class="progress-bar progress-bar-success progress-bar-striped active" role="progressbar"
+            {% elif state == "pending" %}
+            <div class="progress" style="height:25px">
+              <div class="progress-bar progress-bar-warning progress-bar-striped active" role="progressbar"
               aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width:100%">
-                <strong style="font-size:20px">Complete and Running</strong>
+                <strong style="font-size:20px">Pending...</strong>
               </div>
-            </div> -->
+            </div>
+            <form action="{{url_for('request_name', name=name)}}" method="POST">
+              <button type="submit" class="btn btn-primary" data-submit="...Terminating Cluster" title="Terminate your Virtual Cluster">Terminate Cluster</button>
+            </form>
+            {% else %}
             <h4><span class="label label-success" style="color:white">Successfully Running</span></h4>
             <form action="{{url_for('request_name', name=name)}}" method="POST">
               <button type="submit" class="btn btn-primary" data-submit="...Terminating Cluster" title="Terminate your Virtual Cluster">Terminate Cluster</button>
