@@ -179,7 +179,7 @@ def profile():
         first = session['first'] = request.form['first']
         last = session['last'] = request.form['last']
         email = session['email'] = request.form['email']
-        organization = session['institution'] = request.form['institution']
+        institution = session['institution'] = request.form['institution']
         identity_id = session['primary_identity']
         username = first[0] + last
         name = username.lower()
@@ -189,7 +189,7 @@ def profile():
                                        first=first,
                                        last=last,
                                        email=email,
-                                       organization=organization)
+                                       institution=institution)
 
         clientapi.storeUser(newuser)
 
@@ -591,14 +591,13 @@ def resource_name(name):
                 resourcename = resource.name
                 owner = resource.owner
                 accessflavor = resource.accessflavor
-                description = resource.description
-                displayname = resource.displayname
-                url = resource.url
-                docurl = resource.docurl
-                organization = resource.organization
+                # description = resource.description
+                # displayname = resource.displayname
+                # url = resource.url
+                # docurl = resource.docurl
+                # organization = resource.organization
 
-    return render_template('resource_profile.html', name=resourcename, owner=owner, accessflavor=accessflavor, resource=resource,
-                           description=description, displayname=displayname, url=url, docurl=docurl, organization=organization)
+    return render_template('resource_profile.html', name=resourcename, owner=owner, accessflavor=accessflavor, resource=resource)
 
 
 @app.route('/request', methods=['GET'])
