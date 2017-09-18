@@ -1,40 +1,38 @@
-from flask import (abort, flash, redirect, render_template, request,
-                   session, url_for, g)
-import requests
-import logging
-import os
 import base64
-# from configparser import ConfigParser
-# from vc3client.client import VC3ClientAPI
-
-from vc3client import client
 from ConfigParser import SafeConfigParser
+
+from flask import (abort, flash, redirect, render_template, request,
+                   session, url_for)
 
 try:
     from urllib.parse import urlencode
-except:
+except ImportError:
     from urllib import urlencode
 
-from globus_sdk import (TransferData, RefreshTokenAuthorizer,
-                        AuthClient, AccessTokenAuthorizer)
+
+from vc3client import client
 
 
 from portal import app, pages
 from portal.decorators import authenticated
-from portal.utils import (load_portal_client, get_portal_tokens,
-                          get_safe_redirect)
+from portal.utils import (load_portal_client, get_safe_redirect)
 
-c = SafeConfigParser()
-c.readfp(open('/etc/vc3/vc3-client.conf'))
 
-clientapi = client.VC3ClientAPI(c)
-users = clientapi.listUsers()
-allocations = clientapi.listAllocations()
-clusters = clientapi.listClusters()
-projects = clientapi.listProjects()
-resources = clientapi.listResources()
-vc3requests = clientapi.listRequests()
+def get_vc3_client():
+    """
+    Return a VC3 client instance
 
+    :return: VC3 client instance on success
+    """
+    c = SafeConfigParser()
+    # TODO: change this to use a environ or config param
+    c.readfp(open('/etc/vc3/vc3-client.conf'))
+
+    try:
+        client_api = client.VC3ClientAPI(c)
+        return client_api
+    except Exception as e:
+        abort(500)
 
 @app.route('/', methods=['GET'])
 def home():
@@ -72,8 +70,8 @@ def tag(tag):
 @app.route('/blog/<path:path>/', methods=['GET'])
 def page(path):
     """Automatic routing and generates markdown flatpages in /pages directory"""
-    page = pages.get_or_404(path)
-    return render_template('blog_page.html', page=page)
+    page_path = pages.get_or_404(path)
+    return render_template('blog_page.html', page=page_path)
 
 
 @app.route('/community', methods=['GET'])
@@ -146,11 +144,12 @@ def logout():
 
 @app.route('/profile', methods=['GET', 'POST'])
 @authenticated
-def profile():
+def show_profile_page():
     """User profile information. Assocated with a Globus Auth identity."""
 
+    vc3_client = get_vc3_client()
     if request.method == 'GET':
-        userlist = clientapi.listUsers()
+        userlist = vc3_client.listUsers()
         profile = None
 
         for user in userlist:
@@ -168,8 +167,8 @@ def profile():
             session['institution'] = profile.organization
             session['primary_identity'] = profile.identity_id
         else:
-            flash(
-                'Please complete any missing profile fields before launching a cluster.', 'warning')
+            flash('Please complete any missing profile fields before '
+                  'launching a cluster.', 'warning')
 
         if request.args.get('next'):
             session['next'] = get_safe_redirect()
@@ -184,16 +183,17 @@ def profile():
         username = first[0] + last
         name = username.lower()
 
-        newuser = clientapi.defineUser(identity_id=identity_id,
-                                       name=name,
-                                       first=first,
-                                       last=last,
-                                       email=email,
-                                       organization=organization)
+        newuser = vc3_client.defineUser(identity_id=identity_id,
+                                        name=name,
+                                        first=first,
+                                        last=last,
+                                        email=email,
+                                        organization=organization)
 
-        clientapi.storeUser(newuser)
+        vc3_client.storeUser(newuser)
 
-        flash('Thank you! Your profile has been successfully updated. You may now register an allocation!', 'success')
+        flash('Thank you. Your profile has been successfully updated. '
+              'You may now register an allocation.', 'success')
 
         if 'next' in session:
             redirect_to = session['next']
@@ -206,7 +206,7 @@ def profile():
 
 @app.route('/profile/edit', methods=['GET'])
 @authenticated
-def edit():
+def edit_profile():
     return render_template('profile_edit.html')
 
 
@@ -254,8 +254,8 @@ def authcallback():
             primary_username=id_token.get('preferred_username'),
             primary_identity=id_token.get('sub'),
         )
-
-        userlist = clientapi.listUsers()
+        vc3_client = get_vc3_client()
+        userlist = vc3_client.listUsers()
         profile = None
 
         for user in userlist:
@@ -286,9 +286,10 @@ def authcallback():
 
 @app.route('/new', methods=['GET', 'POST'])
 @authenticated
-def new():
+def create_project():
+    vc3_client = get_vc3_client()
     if request.method == 'GET':
-        users = clientapi.listUsers()
+        users = vc3_client.listUsers()
         return render_template('new.html', users=users)
 
     elif request.method == 'POST':
@@ -298,8 +299,9 @@ def new():
         # description = request.form['description']
         # organization = request.form['organization']
 
-        newproject = clientapi.defineProject(name=name, owner=owner, members=members)
-        clientapi.storeProject(newproject)
+        newproject = vc3_client.defineProject(name=name, owner=owner,
+                                              members=members)
+        vc3_client.storeProject(newproject)
 
         flash('Your project has been successfully created!', 'success')
 
@@ -308,78 +310,81 @@ def new():
 
 @app.route('/project', methods=['GET'])
 @authenticated
-def project():
-    projects = clientapi.listProjects()
+def list_projects():
+    vc3_client = get_vc3_client()
+    projects = vc3_client.listProjects()
 
-    if request.method == 'GET':
-        return render_template('project.html', projects=projects)
+    return render_template('project.html', projects=projects)
 
 
 @app.route('/project/<name>', methods=['GET'])
 @authenticated
-def project_name(name):
-    projects = clientapi.listProjects()
-    allocations = clientapi.listAllocations()
-    users = clientapi.listUsers()
+def view_project(name):
+    vc3_client = get_vc3_client()
+    projects = vc3_client.listProjects()
+    allocations = vc3_client.listAllocations()
+    users = vc3_client.listUsers()
 
-    if request.method == 'GET':
-        for project in projects:
-            if project.name == name:
-                name = project.name
-                owner = project.owner
-                members = project.members
-                # description = project.description
-                # organization = project.organization
-        return render_template('projects_pages.html', name=name, owner=owner, members=members, allocations=allocations, projects=projects, users=users)
+    for project in projects:
+        if project.name == name:
+            name = project.name
+            owner = project.owner
+            members = project.members
+            # description = project.description
+            # organization = project.organization
+    return render_template('projects_pages.html', name=name, owner=owner,
+                           members=members, allocations=allocations,
+                           projects=projects, users=users)
 
 
 @app.route('/project/<name>/addmember', methods=['POST'])
 @authenticated
-def add_member(name):
-    projects = clientapi.listProjects()
+def add_member_to_project(name):
+    vc3_client = get_vc3_client()
+    projects = vc3_client.listProjects()
 
-    if request.method == 'POST':
-        user = request.form['newuser']
+    user = request.form['newuser']
 
-        for project in projects:
-            if project.name == name:
-                name = project.name
-                owner = project.owner
-                clientapi.addUserToProject(project=name, user=user)
-                members = project.members
+    for project in projects:
+        if project.name == name:
+            name = project.name
+            vc3_client.addUserToProject(project=name, user=user)
 
-        flash('Successfully added member to project!', 'success')
+    flash('Successfully added member to project.', 'success')
 
-        return redirect(url_for('project_name', name=name))
+    return redirect(url_for('project_name', name=name))
 
 
 @app.route('/project/<name>/addallocation', methods=['POST'])
 @authenticated
-def add_allocation(name):
-    projects = clientapi.listProjects()
+def add_allocation_to_project(name):
+    vc3_client = get_vc3_client()
+    projects = vc3_client.listProjects()
 
-    if request.method == 'POST':
-        addallocation = request.form['allocation']
+    addallocation = request.form['allocation']
 
-        for project in projects:
-            if project.name == name:
-                name = project.name
-                clientapi.addAllocationToProject(allocation=addallocation, projectname=name)
+    for project in projects:
+        if project.name == name:
+            name = project.name
+            vc3_client.addAllocationToProject(allocation=addallocation,
+                                              projectname=name)
 
-        flash('Successfully added allocation to project!', 'success')
+    flash('Successfully added allocation to project!', 'success')
 
-        return redirect(url_for('project_name', name=name))
+    return redirect(url_for('project_name', name=name))
 
 
 @app.route('/cluster/new', methods=['GET', 'POST'])
 @authenticated
-def cluster_new():
-    clusters = clientapi.listClusters()
-    projects = clientapi.listProjects()
-    nodesets = clientapi.listNodesets()
+def create_cluster():
+    vc3_client = get_vc3_client()
+    clusters = vc3_client.listClusters()
+    projects = vc3_client.listProjects()
+    nodesets = vc3_client.listNodesets()
 
     if request.method == 'GET':
-        return render_template('cluster_new.html', clusters=clusters, projects=projects, nodesets=nodesets)
+        return render_template('cluster_new.html', clusters=clusters,
+                               projects=projects, nodesets=nodesets)
 
     elif request.method == 'POST':
         inputname = request.form['name']
@@ -391,13 +396,15 @@ def cluster_new():
         translatename = "".join(inputname.split())
         name = translatename.lower()
 
-        nodeset = clientapi.defineNodeset(
-            name=name, owner=owner, node_number=node_number, app_type=app_type, app_role=app_role, environment=environment)
-        clientapi.storeNodeset(nodeset)
-        # nodesets = clientapi.listNodesets()
-        newcluster = clientapi.defineCluster(name=name, owner=owner, nodesets=[])
-        clientapi.storeCluster(newcluster)
-        clientapi.addNodesetToCluster(nodesetname=nodeset.name, clustername=newcluster.name)
+        nodeset = vc3_client.defineNodeset(name=name, owner=owner,
+                                           node_number=node_number, app_type=app_type,
+                                           app_role=app_role, environment=environment)
+        vc3_client.storeNodeset(nodeset)
+        # nodesets = vc3_client.listNodesets()
+        newcluster = vc3_client.defineCluster(name=name, owner=owner, nodesets=[])
+        vc3_client.storeCluster(newcluster)
+        vc3_client.addNodesetToCluster(nodesetname=nodeset.name,
+                                       clustername=newcluster.name)
 
         flash('Your cluster template has been successfully defined!', 'success')
         return redirect(url_for('cluster'))
@@ -405,21 +412,23 @@ def cluster_new():
 
 @app.route('/cluster', methods=['GET'])
 @authenticated
-def cluster():
-    clusters = clientapi.listClusters()
-    projects = clientapi.listProjects()
-    nodesets = clientapi.listNodesets()
+def list_clusters():
+    vc3_client = get_vc3_client()
+    clusters = vc3_client.listClusters()
+    projects = vc3_client.listProjects()
+    nodesets = vc3_client.listNodesets()
 
-    if request.method == 'GET':
-        return render_template('cluster.html', clusters=clusters, projects=projects, nodesets=nodesets)
+    return render_template('cluster.html', clusters=clusters,
+                           projects=projects, nodesets=nodesets)
 
 
 @app.route('/cluster/<name>', methods=['GET', 'POST'])
 @authenticated
-def cluster_name(name):
-    clusters = clientapi.listClusters()
-    projects = clientapi.listProjects()
-    nodesets = clientapi.listNodesets()
+def view_cluster(name):
+    vc3_client = get_vc3_client()
+    clusters = vc3_client.listClusters()
+    projects = vc3_client.listProjects()
+    nodesets = vc3_client.listNodesets()
 
     if request.method == 'GET':
         for cluster in clusters:
@@ -428,7 +437,8 @@ def cluster_name(name):
                 owner = cluster.owner
                 state = cluster.state
 
-        return render_template('cluster_profile.html', name=clustername, owner=owner, state=state, nodesets=nodesets)
+        return render_template('cluster_profile.html', name=clustername,
+                               owner=owner, state=state, nodesets=nodesets)
 
     elif request.method == 'POST':
         node_number = request.form['node_number']
@@ -445,54 +455,64 @@ def cluster_name(name):
                 owner = cluster.owner
                 app_role = "worker-nodes"
 
-        nodeset = clientapi.defineNodeset(
-            name=clustername, owner=owner, node_number=node_number, app_type=app_type, app_role=app_role, environment=environment)
-        clientapi.storeNodeset(nodeset)
-        newcluster = clientapi.defineCluster(name=clustername, owner=owner)
-        clientapi.storeCluster(newcluster)
-        clientapi.addNodesetToCluster(nodesetname=nodeset.name, clustername=newcluster.name)
+        nodeset = vc3_client.defineNodeset(name=clustername, owner=owner,
+                                           node_number=node_number,
+                                           app_type=app_type, app_role=app_role,
+                                           environment=environment)
+        vc3_client.storeNodeset(nodeset)
+        newcluster = vc3_client.defineCluster(name=clustername, owner=owner)
+        vc3_client.storeCluster(newcluster)
+        vc3_client.addNodesetToCluster(nodesetname=nodeset.name,
+                                       clustername=newcluster.name)
 
-        return render_template('cluster_profile.html', name=clustername, owner=owner, clusters=clusters, projects=projects)
+        return render_template('cluster_profile.html', name=clustername,
+                               owner=owner, clusters=clusters,
+                               projects=projects)
 
 
 @app.route('/cluster/edit/<name>', methods=['GET'])
 @authenticated
-def cluster_edit(name):
-    clusters = clientapi.listClusters()
-    projects = clientapi.listProjects()
-    nodesets = clientapi.listNodesets()
+def edit_cluster(name):
+    vc3_client = get_vc3_client()
+    clusters = vc3_client.listClusters()
+    projects = vc3_client.listProjects()
+    nodesets = vc3_client.listNodesets()
 
-    if request.method == 'GET':
-        for cluster in clusters:
-            if cluster.name == name:
-                clustername = cluster.name
-                owner = cluster.owner
-                state = cluster.state
-                acl = cluster.acl
+    for cluster in clusters:
+        if cluster.name == name:
+            clustername = cluster.name
+            owner = cluster.owner
+            state = cluster.state
+            acl = cluster.acl
 
-        return render_template('cluster_edit.html', name=clustername, owner=owner, nodesets=nodesets, state=state, acl=acl, projects=projects)
+    return render_template('cluster_edit.html', name=clustername,
+                           owner=owner, nodesets=nodesets,
+                           state=state, acl=acl, projects=projects)
 
 
 @app.route('/allocation', methods=['GET'])
 @authenticated
-def allocation():
-    allocations = clientapi.listAllocations()
-    resources = clientapi.listResources()
-    projects = clientapi.listProjects()
-    users = clientapi.listUsers()
+def list_allocations():
+    vc3_client = get_vc3_client()
+    allocations = vc3_client.listAllocations()
+    resources = vc3_client.listResources()
+    projects = vc3_client.listProjects()
+    users = vc3_client.listUsers()
 
-    if request.method == 'GET':
-        return render_template('allocation.html', allocations=allocations, resources=resources, users=users, projects=projects)
+    return render_template('allocation.html', allocations=allocations,
+                           resources=resources, users=users, projects=projects)
 
 
 @app.route('/allocation/new', methods=['GET', 'POST'])
 @authenticated
-def new_allocation():
+def create_allocation():
+    vc3_client = get_vc3_client()
     if request.method == 'GET':
-        resources = clientapi.listResources()
+        resources = vc3_client.listResources()
         for resource in resources:
             resourcename = resource.name
-        return render_template('allocation_new.html', resources=resources, name=resourcename)
+        return render_template('allocation_new.html', resources=resources,
+                               name=resourcename)
 
     elif request.method == 'POST':
         # name = request.form['name']
@@ -504,22 +524,22 @@ def new_allocation():
         # description = request.form['description']
         # url = request.form['url']
 
-        newallocation = clientapi.defineAllocation(
+        newallocation = vc3_client.defineAllocation(
             name=name, owner=owner, resource=resource, accountname=accountname)
-        clientapi.storeAllocation(newallocation)
+        vc3_client.storeAllocation(newallocation)
 
-        flash('You may find your SSH key in your new allocation profile after validation!', 'info')
+        flash('You may find your SSH key in your new allocation profile '
+              'after validation.', 'info')
 
         return redirect(url_for('allocation'))
 
 
 @app.route('/allocation/<name>', methods=['GET', 'POST'])
 @authenticated
-def allocation_name(name):
-    allocations = clientapi.listAllocations()
-    resources = clientapi.listResources()
-    projects = clientapi.listProjects()
-    users = clientapi.listUsers()
+def view_allocation(name):
+    vc3_client = get_vc3_client()
+    allocations = vc3_client.listAllocations()
+    resources = vc3_client.listResources()
 
     if request.method == 'GET':
         for allocation in allocations:
@@ -535,7 +555,10 @@ def allocation_name(name):
                 else:
                     pubtoken = base64.b64decode(encodedpubtoken)
 
-        return render_template('allocation_profile.html', name=allocationname, owner=owner, resource=resource, accountname=accountname, pubtoken=pubtoken, state=state)
+        return render_template('allocation_profile.html', name=allocationname,
+                               owner=owner, resource=resource,
+                               accountname=accountname, pubtoken=pubtoken,
+                               state=state)
 
     elif request.method == 'POST':
 
@@ -546,83 +569,89 @@ def allocation_name(name):
                 resource = request.form['resource']
                 accountname = request.form['accountname']
 
-        newallocation = clientapi.defineAllocation(
-            name=allocationname, owner=owner, resource=resource, accountname=accountname)
-        clientapi.storeAllocation(newallocation)
+        newallocation = vc3_client.defineAllocation(name=allocationname,
+                                                    owner=owner,
+                                                    resource=resource,
+                                                    accountname=accountname)
+        vc3_client.storeAllocation(newallocation)
 
-        return render_template('allocation_profile.html', name=allocationname, owner=owner, accountname=accountname, resource=resource, allocations=allocations, resources=resources)
+        return render_template('allocation_profile.html', name=allocationname,
+                               owner=owner, accountname=accountname,
+                               resource=resource, allocations=allocations,
+                               resources=resources)
 
 
 @app.route('/allocation/edit/<name>', methods=['GET'])
 @authenticated
-def allocation_edit(name):
-    allocations = clientapi.listAllocations()
-    resources = clientapi.listResources()
+def edit_allocation(name):
+    vc3_client = get_vc3_client()
+    allocations = vc3_client.listAllocations()
+    resources = vc3_client.listResources()
 
-    if request.method == 'GET':
-        for allocation in allocations:
-            if allocation.name == name:
-                allocationname = allocation.name
-                owner = allocation.owner
-                resource = allocation.resource
-                accountname = allocation.accountname
-                pubtoken = allocation.pubtoken
+    for allocation in allocations:
+        if allocation.name == name:
+            allocationname = allocation.name
+            owner = allocation.owner
+            resource = allocation.resource
+            accountname = allocation.accountname
+            pubtoken = allocation.pubtoken
 
-        return render_template('allocation_edit.html', name=allocationname, owner=owner, resources=resources, resource=resource, accountname=accountname, pubtoken=pubtoken)
+    return render_template('allocation_edit.html', name=allocationname,
+                           owner=owner, resources=resources, resource=resource,
+                           accountname=accountname, pubtoken=pubtoken)
 
 
 @app.route('/resource', methods=['GET'])
 @authenticated
-def resource():
-    if request.method == 'GET':
-        resources = clientapi.listResources()
+def list_resources():
+    vc3_client = get_vc3_client()
+    resources = vc3_client.listResources()
 
-        return render_template('resource.html', resources=resources)
+    return render_template('resource.html', resources=resources)
 
 
 @app.route('/resource/<name>', methods=['GET'])
 @authenticated
-def resource_name(name):
-    resources = clientapi.listResources()
+def view_resource(name):
+    vc3_client = get_vc3_client()
+    resources = vc3_client.listResources()
 
-    if request.method == 'GET':
-        for resource in resources:
-            if resource.name == name:
-                resourcename = resource.name
-                owner = resource.owner
-                accessflavor = resource.accessflavor
-                description = resource.description
-                displayname = resource.displayname
-                url = resource.url
-                docurl = resource.docurl
-                organization = resource.organization
+    for resource in resources:
+        if resource.name == name:
+            resourcename = resource.name
+            owner = resource.owner
+            accessflavor = resource.accessflavor
+            description = resource.description
+            displayname = resource.displayname
+            url = resource.url
+            docurl = resource.docurl
+            organization = resource.organization
 
     return render_template('resource_profile.html', name=resourcename,
                            owner=owner, accessflavor=accessflavor,
-                           resource=resource, description=description,
-                           displayname=displayname, url=url, docurl=docurl,
-                           organization=organization)
+                           resource=resource,
+                           description=description, displayname=displayname,
+                           url=url, docurl=docurl, organization=organization)
 
 
 @app.route('/request', methods=['GET'])
 @authenticated
-def vc3request():
-    vc3requests = clientapi.listRequests()
-    nodesets = clientapi.listNodesets()
-    clusters = clientapi.listClusters
+def list_requests():
+    vc3_client = get_vc3_client()
+    vc3requests = vc3_client.listRequests()
 
-    if request.method == 'GET':
-        return render_template('request.html', requests=vc3requests, nodesets=nodesets, clusters=clusters)
+    return render_template('request.html', requests=vc3requests)
 
 
 @app.route('/request/new', methods=['GET', 'POST'])
 @authenticated
-def request_new():
-
+def create_request():
+    vc3_client = get_vc3_client()
     if request.method == 'GET':
-        allocations = clientapi.listAllocations()
-        clusters = clientapi.listClusters()
-        return render_template('request_new.html', allocations=allocations, clusters=clusters)
+        allocations = vc3_client.listAllocations()
+        clusters = vc3_client.listClusters()
+        return render_template('request_new.html', allocations=allocations,
+                               clusters=clusters)
 
     elif request.method == 'POST':
         allocations = []
@@ -636,9 +665,12 @@ def request_new():
         for selectedallocations in request.form.getlist('allocation'):
             allocations.append(selectedallocations)
 
-        newrequest = clientapi.defineRequest(name=vc3requestname, owner=owner, cluster=cluster,
-                                             allocations=allocations, environments=environments, policy=policy, expiration=expiration)
-        clientapi.storeRequest(newrequest)
+        newrequest = vc3_client.defineRequest(name=vc3requestname,
+                                              owner=owner, cluster=cluster,
+                                              allocations=allocations,
+                                              environments=environments, policy=policy,
+                                              expiration=expiration)
+        vc3_client.storeRequest(newrequest)
 
         flash('Your Virtual Cluster has been successfully requested!', 'success')
 
@@ -647,10 +679,9 @@ def request_new():
 
 @app.route('/request/<name>', methods=['GET', 'POST'])
 @authenticated
-def request_name(name):
-    vc3requests = clientapi.listRequests()
-    nodesets = clientapi.listNodesets()
-    clusters = clientapi.listClusters()
+def view_request(name):
+    vc3_client = get_vc3_client()
+    vc3requests = vc3_client.listRequests()
 
     if request.method == 'GET':
         for vc3request in vc3requests:
@@ -661,17 +692,18 @@ def request_name(name):
                 state = vc3request.state
 
         return render_template('request_profile.html', name=requestname,
-                               owner=owner, requests=vc3requests, action=action,
-                               state=state, clusters=clusters, nodesets=nodesets)
+                               owner=owner, requests=vc3requests,
+                               action=action, state=state)
 
     elif request.method == 'POST':
         for vc3request in vc3requests:
             if vc3request.name == name:
                 requestname = vc3request.name
 
-        clientapi.terminateRequest(requestname=requestname)
+        vc3_client.terminateRequest(requestname=requestname)
 
-        flash('Your Virtual Cluster has successfully begun termination!', 'success')
+        flash('Your Virtual Cluster has successfully begun termination!',
+              'success')
 
         return redirect(url_for('vc3request'))
 
