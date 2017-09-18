@@ -169,17 +169,13 @@ def profile():
             session['primary_identity'] = profile.identity_id
         else:
             flash(
-                'Please complete any missing profile fields before launching a cluster.')
+                'Please complete any missing profile fields before launching a cluster.', 'warning')
 
         if request.args.get('next'):
             session['next'] = get_safe_redirect()
 
-        return render_template('profile.html', users=userlist, allocations=allocations, clusters=clusters,
-                               projects=projects, resources=resources, vc3requests=vc3requests)
+        return render_template('profile.html')
     elif request.method == 'POST':
-        # name = session['name']
-        # have name = session['primary_username'] =
-        # request.form['primary_username'] no spaces or capitals?
         first = session['first'] = request.form['first']
         last = session['last'] = request.form['last']
         email = session['email'] = request.form['email']
@@ -188,8 +184,6 @@ def profile():
         username = first[0] + last
         name = username.lower()
 
-        # print identity_id
-
         newuser = clientapi.defineUser(identity_id=identity_id,
                                        name=name,
                                        first=first,
@@ -197,10 +191,9 @@ def profile():
                                        email=email,
                                        institution=institution)
 
-        # print(newuser)
         clientapi.storeUser(newuser)
 
-        flash('Thank you! Your profile has been successfully updated. You may now register an allocation!')
+        flash('Thank you! Your profile has been successfully updated. You may now register an allocation!', 'success')
 
         if 'next' in session:
             redirect_to = session['next']
@@ -262,7 +255,6 @@ def authcallback():
             primary_identity=id_token.get('sub'),
         )
 
-        # print(session)
         userlist = clientapi.listUsers()
         profile = None
 
@@ -307,7 +299,7 @@ def new():
         newproject = clientapi.defineProject(name=name, owner=owner, members=members)
         clientapi.storeProject(newproject)
 
-        flash('Your project has been successfully created!')
+        flash('Your project has been successfully created!', 'success')
 
         return redirect(url_for('project'))
 
@@ -352,7 +344,7 @@ def add_member(name):
                 clientapi.addUserToProject(project=name, user=user)
                 members = project.members
 
-        flash('Successfully added member to project!')
+        flash('Successfully added member to project!', 'success')
 
         return redirect(url_for('project_name', name=name))
 
@@ -370,7 +362,7 @@ def add_allocation(name):
                 name = project.name
                 clientapi.addAllocationToProject(allocation=addallocation, projectname=name)
 
-        flash('Successfully added allocation to project!')
+        flash('Successfully added allocation to project!', 'success')
 
         return redirect(url_for('project_name', name=name))
 
@@ -403,7 +395,7 @@ def cluster_new():
         clientapi.storeCluster(newcluster)
         clientapi.addNodesetToCluster(nodesetname=nodeset.name, clustername=newcluster.name)
 
-        flash('Your cluster template has been successfully defined!')
+        flash('Your cluster template has been successfully defined!', 'success')
         return redirect(url_for('cluster'))
 
 
@@ -510,7 +502,7 @@ def new_allocation():
             name=name, owner=owner, resource=resource, accountname=accountname)
         clientapi.storeAllocation(newallocation)
 
-        flash('Your allocation has been successfully defined! You may find your SSH key in your new allocation profile after validation!')
+        flash('You may find your SSH key in your new allocation profile after validation!', 'info')
 
         return redirect(url_for('allocation'))
 
@@ -569,6 +561,8 @@ def allocation_edit(name):
                 resource = allocation.resource
                 accountname = allocation.accountname
                 pubtoken = allocation.pubtoken
+            else:
+                return redirect('')
 
         return render_template('allocation_edit.html', name=allocationname, owner=owner, resources=resources, resource=resource, accountname=accountname, pubtoken=pubtoken)
 
@@ -637,7 +631,7 @@ def request_new():
                                              allocations=allocations, environments=environments, policy=policy, expiration=expiration)
         clientapi.storeRequest(newrequest)
 
-        flash('Your Virtual Cluster has been successfully requested!')
+        flash('Your Virtual Cluster has been successfully requested!', 'success')
 
         return redirect(url_for('vc3request'))
 
@@ -664,7 +658,7 @@ def request_name(name):
 
         clientapi.terminateRequest(requestname=requestname)
 
-        flash('Your Virtual Cluster has successfully begun termination!')
+        flash('Your Virtual Cluster has successfully begun termination!', 'success')
 
         return redirect(url_for('vc3request'))
 
@@ -673,3 +667,11 @@ def request_name(name):
 @authenticated
 def dashboard():
     return render_template('dashboard.html')
+
+
+@app.route('/error', methods=['GET'])
+@authenticated
+def errorpage():
+
+    if request.method == 'GET':
+        return render_template('error.html')
