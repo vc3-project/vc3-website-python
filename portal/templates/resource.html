@@ -34,7 +34,7 @@
   										<tr class="filters">
   											<th><input type="text" class="form-control" placeholder="Name" disabled></th>
   											<th><input type="text" class="form-control" placeholder="Status" disabled></th>
-  											<th><input type="text" class="form-control" placeholder="Institution" disabled></th>
+  											<th><input type="text" class="form-control" placeholder="Organization" disabled></th>
   										</tr>
   									</thead>
   									<tbody data-link="row" class="rowlink">
@@ -42,7 +42,7 @@
 											<tr>
 												<td><a href="{{ url_for('resource_name', name=resource.name) }}" title="View Resource Profile">{{ resource.name }}</a></td>
 												<td><i class="fa fa-check" aria-hidden="true" style="color:green"></i> Healthy</td>
-												<td>The University of Chicago</td>
+												<td>{{resource.organization}}</td>
 											</tr>
 											{% endfor %}
                       <tr>

@@ -13,8 +13,8 @@
           <div class="header">
           	<h4 class="title">Resource: {{name}}</h4>
             <div class="">
-							<!-- <h5 class="category">Help desk: test</h5> -->
-							<!-- <h4><small>The Midway compute cluster is a shared resource used by the entire University of Chicago community.</small></h4> -->
+							<!-- <h4 class="category" for="description">Description:</h4> -->
+							<h4><small name="description" id="description">Description: {{description}}</small></h4>
 							<!-- <a href="{{url_for('cluster_edit', name=name)}}" class="btn btn-primary btn-sm">Update Cluster</a> -->
 						</div>
 						<hr />
@@ -24,10 +24,18 @@
   					<div class="card-block">
               <div class="panel panel-info resource-profile" style="margin: 1em;">
                 <div class="panel-heading">
-                  <h3 class="panel-title"><strong>Institution</strong></h3>
+                  <h3 class="panel-title"><strong>Organization</strong></h3>
                 </div>
                 <div class="panel-body">
-                  UChicago
+                  {{organization}}
+                </div>
+              </div>
+              <div class="panel panel-info resource-profile" style="margin: 1em;">
+                <div class="panel-heading">
+                  <h3 class="panel-title"><strong>Resource Website</strong></h3>
+                </div>
+                <div class="panel-body">
+                  <a href="#">{{url}}</a>
                 </div>
               </div>
               <div class="panel panel-info resource-profile" style="margin: 1em;">
@@ -35,7 +43,7 @@
                   <h3 class="panel-title"><strong>User-Guide</strong></h3>
                 </div>
                 <div class="panel-body">
-                  <a href="https://rcc.uchicago.edu/resources">https://rcc.uchicago.edu/resources</a>
+                  <a href="#">{{docurl}}</a>
                 </div>
               </div>
               <div class="panel panel-info resource-profile" style="margin: 1em;">
