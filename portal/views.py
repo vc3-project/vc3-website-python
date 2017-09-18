@@ -28,12 +28,6 @@ c = SafeConfigParser()
 c.readfp(open('/etc/vc3/vc3-client.conf'))
 
 clientapi = client.VC3ClientAPI(c)
-users = clientapi.listUsers()
-allocations = clientapi.listAllocations()
-clusters = clientapi.listClusters()
-projects = clientapi.listProjects()
-resources = clientapi.listResources()
-vc3requests = clientapi.listRequests()
 
 
 @app.route('/', methods=['GET'])
@@ -165,7 +159,7 @@ def profile():
             session['first'] = profile.first
             session['last'] = profile.last
             session['email'] = profile.email
-            session['institution'] = profile.institution
+            session['institution'] = profile.organization
             session['primary_identity'] = profile.identity_id
         else:
             flash(
@@ -179,7 +173,7 @@ def profile():
         first = session['first'] = request.form['first']
         last = session['last'] = request.form['last']
         email = session['email'] = request.form['email']
-        institution = session['institution'] = request.form['institution']
+        organization = session['institution'] = request.form['institution']
         identity_id = session['primary_identity']
         username = first[0] + last
         name = username.lower()
@@ -189,7 +183,7 @@ def profile():
                                        first=first,
                                        last=last,
                                        email=email,
-                                       institution=institution)
+                                       organization=organization)
 
         clientapi.storeUser(newuser)
 
@@ -268,7 +262,7 @@ def authcallback():
             session['first'] = profile.first
             session['last'] = profile.last
             session['email'] = profile.email
-            session['institution'] = profile.institution
+            session['institution'] = profile.organization
             session['primary_identity'] = profile.identity_id
             username = profile.name[0] + profile.last
             session['name'] = username.lower()
@@ -295,6 +289,8 @@ def new():
         name = request.form['name']
         owner = session['name']
         members = request.form['members'].split(",")
+        # description = request.form['description']
+        # organization = request.form['organization']
 
         newproject = clientapi.defineProject(name=name, owner=owner, members=members)
         clientapi.storeProject(newproject)
@@ -326,6 +322,8 @@ def project_name(name):
                 name = project.name
                 owner = project.owner
                 members = project.members
+                # description = project.description
+                # organization = project.organization
         return render_template('projects_pages.html', name=name, owner=owner, members=members, allocations=allocations, projects=projects, users=users)
 
 
@@ -497,6 +495,8 @@ def new_allocation():
         accountname = request.form['accountname']
         allocationname = owner + "." + resource
         name = allocationname.lower()
+        # description = request.form['description']
+        # url = request.form['url']
 
         newallocation = clientapi.defineAllocation(
             name=name, owner=owner, resource=resource, accountname=accountname)
@@ -577,22 +577,22 @@ def resource():
 @app.route('/resource/<name>', methods=['GET'])
 @authenticated
 def resource_name(name):
+    resources = clientapi.listResources()
 
     if request.method == 'GET':
         for resource in resources:
             if resource.name == name:
                 resourcename = resource.name
                 owner = resource.owner
-                accesstype = resource.accesstype
-                accessmethod = resource.accessmethod
                 accessflavor = resource.accessflavor
-                accesshost = resource.accesshost
-                accessport = resource.accessport
-                gridresource = resource.gridresource
+                description = resource.description
+                displayname = resource.displayname
+                url = resource.url
+                docurl = resource.docurl
+                organization = resource.organization
 
-    return render_template('resource_profile.html', name=resourcename, owner=owner,
-                           accesstype=accesstype, accessmethod=accessmethod, accessflavor=accessflavor,
-                           accesshost=accesshost, accessport=accessport, gridresource=gridresource, resource=resource)
+    return render_template('resource_profile.html', name=resourcename, owner=owner, accessflavor=accessflavor, resource=resource,
+                           description=description, displayname=displayname, url=url, docurl=docurl, organization=organization)
 
 
 @app.route('/request', methods=['GET'])

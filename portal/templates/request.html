@@ -121,7 +121,6 @@
                         {% else %}
                         <td>
                           {% for key, value in request.statusraw.values()[0].values()[0].iteritems() %}
-                            <!-- <option>{{ key }}</option> -->
                             {% for k, v in value.iteritems() %}
                             <option>{{ k }}: {{v}}</option>
                             {% endfor %}
