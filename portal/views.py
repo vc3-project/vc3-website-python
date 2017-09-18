@@ -28,6 +28,12 @@ c = SafeConfigParser()
 c.readfp(open('/etc/vc3/vc3-client.conf'))
 
 clientapi = client.VC3ClientAPI(c)
+users = clientapi.listUsers()
+allocations = clientapi.listAllocations()
+clusters = clientapi.listClusters()
+projects = clientapi.listProjects()
+resources = clientapi.listResources()
+vc3requests = clientapi.listRequests()
 
 
 @app.route('/', methods=['GET'])
@@ -159,7 +165,7 @@ def profile():
             session['first'] = profile.first
             session['last'] = profile.last
             session['email'] = profile.email
-            session['institution'] = profile.organization
+            session['institution'] = profile.institution
             session['primary_identity'] = profile.identity_id
         else:
             flash(
@@ -262,7 +268,7 @@ def authcallback():
             session['first'] = profile.first
             session['last'] = profile.last
             session['email'] = profile.email
-            session['institution'] = profile.organization
+            session['institution'] = profile.institution
             session['primary_identity'] = profile.identity_id
             username = profile.name[0] + profile.last
             session['name'] = username.lower()

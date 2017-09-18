@@ -1,6 +1,6 @@
 {%extends "loginbase.html"%}
 
-{%block title%}User Profile: {{ session.name }}{%endblock%}
+{%block title%}User Profile: {{ session['name'] }}{%endblock%}
 
 {%block body%}
 {%include 'messages.html'%}
