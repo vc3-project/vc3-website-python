@@ -608,9 +608,11 @@ def resource_name(name):
 @authenticated
 def vc3request():
     vc3requests = clientapi.listRequests()
+    nodesets = clientapi.listNodesets()
+    clusters = clientapi.listClusters
 
     if request.method == 'GET':
-        return render_template('request.html', requests=vc3requests)
+        return render_template('request.html', requests=vc3requests, nodesets=nodesets, clusters=clusters)
 
 
 @app.route('/request/new', methods=['GET', 'POST'])
@@ -647,6 +649,8 @@ def request_new():
 @authenticated
 def request_name(name):
     vc3requests = clientapi.listRequests()
+    nodesets = clientapi.listNodesets()
+    clusters = clientapi.listClusters()
 
     if request.method == 'GET':
         for vc3request in vc3requests:
@@ -656,7 +660,9 @@ def request_name(name):
                 action = vc3request.action
                 state = vc3request.state
 
-        return render_template('request_profile.html', name=requestname, owner=owner, requests=vc3requests, action=action, state=state)
+        return render_template('request_profile.html', name=requestname,
+                               owner=owner, requests=vc3requests, action=action,
+                               state=state, clusters=clusters, nodesets=nodesets)
 
     elif request.method == 'POST':
         for vc3request in vc3requests:

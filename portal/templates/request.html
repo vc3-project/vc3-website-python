@@ -9,7 +9,7 @@
   <div class="container-fluid">
 
     <div class="row">
-      <div class="col-md-12">
+      <div class="col-sm-12">
         <div class="card">
           <div class="header">
           	<h4 class="title">Virtual Clusters</h4>
@@ -34,6 +34,7 @@
   											<th><input type="text" class="form-control" placeholder="Name" disabled></th>
   											<th><input type="text" class="form-control" placeholder="State" disabled></th>
   											<th><input type="text" class="form-control" placeholder="Nodes" disabled></th>
+                        <th><input type="text" class="form-control" placeholder="Head Node" disabled></th>
   										</tr>
   									</thead>
   									<tbody data-link="row" class="rowlink">
@@ -64,23 +65,40 @@
                       {% endif %}
 
                       {% if request.statusraw['MYSITE-hostname-sysadminname'] == {} %}
-                      <td>
-                        Status Currently Unavailable
-                      </td>
+                        <td>
+                          Status Currently Unavailable
+                        </td>
                       {% elif request.statusraw == None %}
-                      <td>
-                        Status Currently Unavailable
-                      </td>
+                        <td>
+                          Status Currently Unavailable
+                        </td>
                       {% else %}
-                      <td>
+                        <td>
                         {% for key, value in request.statusraw.values()[0].values()[0].iteritems() %}
                           <!-- <option>{{ key }}</option> -->
                           {% for k, v in value.iteritems() %}
                           <option>{{ k }}: {{v}}</option>
                           {% endfor %}
                         {% endfor %}
-                      </td>
+                        {% for nodeset in nodesets %}
+                          {% if nodeset.name == request.cluster %}
+                            <option>Requested: {{nodeset.node_number}}</option>
+                          {% endif %}
+                        {% endfor %}
+                        </td>
                       {% endif %}
+                        <td>
+                      {% for nodeset in nodesets %}
+                        {% if nodeset.name == request.cluster %}
+                          {% if nodeset.app_type == "htcondor" %}
+                            <option>condor-dev.virtualclusters.org</option>
+                          {% elif nodeset.app_type == "workqueue" %}
+                            <option>condor-dev.virtualclusters.org</option>
+                            <option>WQ Project Name: {{ request.name }}</option>
+                          {% endif %}
+                        {% endif %}
+                      {% endfor %}
+                        </td>
   										</tr>
                       <!-- endif  -->
                     {% endfor %}
@@ -127,6 +145,18 @@
                           {% endfor %}
                         </td>
                         {% endif %}
+                        <td>
+                        {% for nodeset in nodesets %}
+                          {% if nodeset.name == request.cluster %}
+                            {% if nodeset.app_type == "htcondor" %}
+                              <option>condor-dev.virtualclusters.org</option>
+                            {% elif nodeset.app_type == "workqueue" %}
+                              <option>condor-dev.virtualclusters.org</option>
+                              <option>WQ Project Name: {{ request.name }}</option>
+                            {% endif %}
+                          {% endif %}
+                        {% endfor %}
+                        </td>
                       </tr>
                       {% endif %}
                     {% endfor %}
