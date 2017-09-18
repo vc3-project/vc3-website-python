@@ -12,7 +12,7 @@
       <div class="col-md-12">
         <div class="card">
           <div class="header">
-          	<h4 class="title">Project:<a href="{{url_for('project_name', name=name)}}" method="GET"> {{ name }}</a></h4>
+          	<h4 class="title">Project:<a href="{{url_for('view_project', name=name)}}" method="GET"> {{ name }}</a></h4>
             <div class="">
 							<!-- <h5>Current project description</h5> -->
 						</div>
@@ -32,7 +32,7 @@
                     {% endfor %}
 								</div>
               {% if session['name'] == owner %}
-							<form role="form" action="{{url_for('add_member', name=name)}}" method="POST">
+							<form role="form" action="{{url_for('add_member_to_project', name=name)}}" method="POST">
 								<fieldset>
 					        <label for="newuser">Add New Users</label>
 					        <select class="form-control" name="newuser" tabindex="2" id="form-resource-list" required>
@@ -58,7 +58,7 @@
                     </a>
                     {% else %}
                       {% for allocation in project.allocations %}
-                    <a href="{{ url_for('allocation_name', name=allocation) }}" class="list-group-item list-group-item-action">
+                    <a href="{{ url_for('view_allocation', name=allocation) }}" class="list-group-item list-group-item-action">
                       {{ allocation }}
                     </a>
                       {% endfor %}
@@ -67,7 +67,7 @@
 								{% endfor %}
 								</div>
 
-								<form role="form" action="{{url_for('add_allocation', name=name)}}" method="POST">
+								<form role="form" action="{{url_for('add_allocation_to_project', name=name)}}" method="POST">
 									<fieldset>
 										<label for="allocation">Select Allocation:</label>
 										<select class="form-control" id="form-resource-list" name="allocation" tabindex="3" required>

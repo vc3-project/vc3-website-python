@@ -11,19 +11,27 @@
     <div class="row">
       <div class="col-md-12">
         <div class="card">
-          <div class="header">
-          	<h4 class="title">Error <i class="fa fa-exclamation-circle" style="color:red"></i></h4>
-            <div class="">
-							<h5>An error has occurred!</h5>
-						</div>
-						<hr />
-          </div>
+            <div class="header">
+                <h4 class="title">Error <i class="fa fa-exclamation-circle" style="color:red"></i></h4>
+                <div class="">
+                    <div class="panel-body">
+                        Unfortunately an error has occurred.  The error has been logged and an admin will review it.
+                        If you need help, please contact us at
+                        <a href="mailto:support@virtualclusters.org">support@virtualclusters.org</a> .
+                    </div>
+                    {% if debug %}
+                    <h5>Python Stacktrace:</h5>
+                    <div class="panel-body">{{ exception|safe }}</div>
+                    {% endif %}
+                </div>
+                <hr />
+            </div>
 
           <div class="content description">
 
             <div class="card">
   						<div class="card-block">
-                <p><i class="fa fa-window-close" aria-hidden="true" style="color:red"></i> Please return from whenst you came...</p>
+                <p class="btn btn-primary btn-sm" onclick="javascript:history.go(-1)">Return to previous page</p>
   						</div>
   					</div>
 

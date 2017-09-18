@@ -15,7 +15,7 @@ def authenticated(fn):
         if (not session.get('name') or
                 not session.get('email') or
                 not session.get('institution')) and request.path != '/profile':
-            return redirect(url_for('profile', next=request.url))
+            return redirect(url_for('show_profile_page', next=request.url))
 
         return fn(*args, **kwargs)
     return decorated_function

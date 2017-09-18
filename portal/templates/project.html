@@ -15,7 +15,7 @@
           	<h4 class="title">Projects</h4>
             <div class="">
 							<h5>A list of your current projects</h5>
-							<a href="{{url_for('new')}}" class="btn btn-primary btn-sm" title="Create New Project">+ New Project</a>
+							<a href="{{url_for('create_project')}}" class="btn btn-primary btn-sm" title="Create New Project">+ New Project</a>
 						</div>
 						<hr />
           </div>
@@ -43,7 +43,7 @@
 											{% for project in projects %}
 												{% if project.owner == session['name'] or session['name'] in project.members %}
   										<tr>
-  											<td><a href="{{ url_for('project_name', name=project.name) }}" title="View Project">{{ project.name }}</a></td>
+  											<td><a href="{{ url_for('view_project', name=project.name) }}" title="View Project">{{ project.name }}</a></td>
   											<td>
                           {% for member in project.members %}
                           <option>{{ member }}</option>

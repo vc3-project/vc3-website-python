@@ -13,7 +13,7 @@
         <div class="card">
           <div class="header">
           	<h4 class="title">Virtual Clusters</h4>
-            <a href="{{url_for('request_new')}}" class="btn btn-primary btn-sm">+ New Virtual Cluster</a>
+            <a href="{{url_for('create_request')}}" class="btn btn-primary btn-sm">+ New Virtual Cluster</a>
 						<hr />
           </div>
 
@@ -42,7 +42,7 @@
                     {% for request in requests %}
                       <!-- if request.owner == session['name'] -->
   										<tr>
-  											<td><a href="{{ url_for('request_name', name=request.name) }}" title="View Info on {{request.name.capitalize()}} Virtual Cluster">{{ request.name }}</a></td>
+  											<td><a href="{{ url_for('view_request', name=request.name) }}" title="View Info on {{request.name.capitalize()}} Virtual Cluster">{{ request.name }}</a></td>
                       {% if request.action == "terminate" %}
                         {% if request.state == "running" %}
                         <td><font color="orange">Terminating <i class="fa fa-exclamation-circle" style="color:orange"></i></font><option>{{ request.state_reason }}</option><option>Action: {{ request.action }}</option></td>
@@ -106,7 +106,7 @@
                     {% for request in requests %}
                       {% if request.owner == session['name'] %}
                       <tr>
-  											<td><a href="{{ url_for('request_name', name=request.name) }}" title="View Info on {{request.name.capitalize()}} Virtual Cluster">{{ request.name }}</a></td>
+  											<td><a href="{{ url_for('view_request', name=request.name) }}" title="View Info on {{request.name.capitalize()}} Virtual Cluster">{{ request.name }}</a></td>
                         {% if request.action == "terminate" %}
                           {% if request.state == "running" %}
                         <td><font color="orange">Terminating <i class="fa fa-exclamation-circle" style="color:orange"></i></font><option>{{ request.state_reason }}</option><option>Action: {{ request.action }}</option></td>

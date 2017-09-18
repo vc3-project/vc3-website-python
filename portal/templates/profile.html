@@ -32,7 +32,7 @@
         				</div> -->
 
         				<div class="col-md-6">
-        					<form role="form" action="{{url_for('profile')}}" method="POST">
+        					<form role="form" action="{{url_for('show_profile_page')}}" method="POST">
 
                     <div class="form-group">
         							<label for="first">First Name</label>
@@ -101,7 +101,7 @@
                   <div>
                   <label for="addallocation">Register Allocation: </label>
                   </div>
-                  <a href="{{url_for('new_allocation')}}" class="btn btn-primary btn-sm" name="addallocation" title="Register New Allocation">+ New Allocation</a>
+                  <a href="{{url_for('create_allocation')}}" class="btn btn-primary btn-sm" name="addallocation" title="Register New Allocation">+ New Allocation</a>
                 </div>
 
                   {% endif %}
@@ -113,7 +113,7 @@
               <div class="row">
 
                 <div class="col-md-6">
-                  <form role="form" action="{{url_for('profile')}}" method="POST">
+                  <form role="form" action="{{url_for('show_profile_page')}}" method="POST">
                     <div class="form-group">
                       <label for="name">User Name</label>
                       <input

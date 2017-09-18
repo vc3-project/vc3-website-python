@@ -31,7 +31,7 @@
                 <strong style="font-size:20px">Growing...</strong>
               </div>
             </div>
-            <form action="{{url_for('request_name', name=name)}}" method="POST">
+            <form action="{{url_for('view_request', name=name)}}" method="POST">
               <button type="submit" class="btn btn-primary" data-submit="...Terminating Cluster" title="Terminate your Virtual Cluster">Terminate Cluster</button>
             </form>
             {% elif state == "pending"%}
@@ -41,7 +41,7 @@
                 <strong style="font-size:20px">Pending...</strong>
               </div>
             </div>
-            <form action="{{url_for('request_name', name=name)}}" method="POST">
+            <form action="{{url_for('view_request', name=name)}}" method="POST">
               <button type="submit" class="btn btn-primary" data-submit="...Terminating Cluster" title="Terminate your Virtual Cluster">Terminate Cluster</button>
             </form>
             {% elif state == "new" and action == "new" %}
@@ -51,7 +51,7 @@
             </form>
             {% else %}
             <h4><span class="label label-success" style="color:white">Successfully Running</span></h4>
-            <form action="{{url_for('request_name', name=name)}}" method="POST">
+            <form action="{{url_for('view_request', name=name)}}" method="POST">
               <button type="submit" class="btn btn-primary" data-submit="...Terminating Cluster" title="Terminate your Virtual Cluster">Terminate Cluster</button>
             </form>
             {% endif %}
@@ -117,7 +117,7 @@
                 </div>
                 <div class="panel-body">
                   {% for allocation in request.allocations %}
-                    <a href="{{ url_for('allocation_name', name=allocation) }}" title="View {{allocation.capitalize()}}"><option>{{allocation}}</option></a>
+                    <a href="{{ url_for('view_allocation', name=allocation) }}" title="View {{allocation.capitalize()}}"><option>{{allocation}}</option></a>
                   {% endfor %}
                 </div>
               </div>

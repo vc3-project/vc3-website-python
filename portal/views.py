@@ -1,4 +1,7 @@
 import base64
+import traceback
+import sys
+import time
 from ConfigParser import SafeConfigParser
 
 from flask import (abort, flash, redirect, render_template, request,
@@ -12,10 +15,20 @@ except ImportError:
 
 from vc3client import client
 
-
 from portal import app, pages
 from portal.decorators import authenticated
 from portal.utils import (load_portal_client, get_safe_redirect)
+
+
+# Create a custom error handler for Exceptions
+@app.errorhandler(Exception)
+def page_not_found(e):
+    trace = traceback.format_tb(sys.exc_info()[2])
+    app.logger.error("{0} Traceback occurred:\n".format(time.ctime()) +
+                     "{0}\nTraceback completed".format("n".join(trace)))
+    trace = "<br>".join(trace)
+    trace.replace('\n', '<br>')
+    return render_template('error.html', exception=trace, debug=True)
 
 
 def get_vc3_client():
@@ -33,6 +46,7 @@ def get_vc3_client():
         return client_api
     except Exception as e:
         abort(500)
+
 
 @app.route('/', methods=['GET'])
 def home():
@@ -61,9 +75,9 @@ def blog():
 
 
 @app.route('/blog/tag/<string:tag>/', methods=['GET'])
-def tag(tag):
+def tag(tag_name):
     """Automatic routing and compiling for article tags"""
-    tagged = [p for p in pages if tag in p.meta.get('tags', [])]
+    tagged = [p for p in pages if tag_name in p.meta.get('tags', [])]
     return render_template('blog_tag.html', pages=tagged, tag=tag)
 
 
@@ -148,6 +162,7 @@ def show_profile_page():
     """User profile information. Assocated with a Globus Auth identity."""
 
     vc3_client = get_vc3_client()
+    raise KeyError
     if request.method == 'GET':
         userlist = vc3_client.listUsers()
         profile = None
@@ -199,7 +214,7 @@ def show_profile_page():
             redirect_to = session['next']
             session.pop('next')
         else:
-            redirect_to = url_for('profile')
+            redirect_to = url_for('show_profile_page')
 
         return redirect(redirect_to)
 
@@ -273,10 +288,10 @@ def authcallback():
             username = profile.name[0] + profile.last
             session['name'] = username.lower()
         else:
-            return redirect(url_for('profile',
-                                    next=url_for('profile')))
+            return redirect(url_for('show_profile_page',
+                                    next=url_for('show_profile_page')))
 
-        return redirect(url_for('profile'))
+        return redirect(url_for('show_profile_page'))
 
 
 # -----------------------------------------
@@ -303,9 +318,9 @@ def create_project():
                                               members=members)
         vc3_client.storeProject(newproject)
 
-        flash('Your project has been successfully created!', 'success')
+        flash('Your project has been successfully created.', 'success')
 
-        return redirect(url_for('project'))
+        return redirect(url_for('list_projects'))
 
 
 @app.route('/project', methods=['GET'])
@@ -332,6 +347,7 @@ def view_project(name):
             members = project.members
             # description = project.description
             # organization = project.organization
+            break
     return render_template('projects_pages.html', name=name, owner=owner,
                            members=members, allocations=allocations,
                            projects=projects, users=users)
@@ -352,7 +368,7 @@ def add_member_to_project(name):
 
     flash('Successfully added member to project.', 'success')
 
-    return redirect(url_for('project_name', name=name))
+    return redirect(url_for('view_project', name=name))
 
 
 @app.route('/project/<name>/addallocation', methods=['POST'])
@@ -369,9 +385,9 @@ def add_allocation_to_project(name):
             vc3_client.addAllocationToProject(allocation=addallocation,
                                               projectname=name)
 
-    flash('Successfully added allocation to project!', 'success')
+    flash('Successfully added allocation to project.', 'success')
 
-    return redirect(url_for('project_name', name=name))
+    return redirect(url_for('view_project', name=name))
 
 
 @app.route('/cluster/new', methods=['GET', 'POST'])
@@ -406,8 +422,8 @@ def create_cluster():
         vc3_client.addNodesetToCluster(nodesetname=nodeset.name,
                                        clustername=newcluster.name)
 
-        flash('Your cluster template has been successfully defined!', 'success')
-        return redirect(url_for('cluster'))
+        flash('Your cluster template has been successfully defined.', 'success')
+        return redirect(url_for('list_clusters'))
 
 
 @app.route('/cluster', methods=['GET'])
@@ -436,6 +452,7 @@ def view_cluster(name):
                 clustername = cluster.name
                 owner = cluster.owner
                 state = cluster.state
+                break
 
         return render_template('cluster_profile.html', name=clustername,
                                owner=owner, state=state, nodesets=nodesets)
@@ -454,6 +471,7 @@ def view_cluster(name):
                 clustername = cluster.name
                 owner = cluster.owner
                 app_role = "worker-nodes"
+                break
 
         nodeset = vc3_client.defineNodeset(name=clustername, owner=owner,
                                            node_number=node_number,
@@ -484,6 +502,7 @@ def edit_cluster(name):
             owner = cluster.owner
             state = cluster.state
             acl = cluster.acl
+            break
 
     return render_template('cluster_edit.html', name=clustername,
                            owner=owner, nodesets=nodesets,
@@ -531,7 +550,7 @@ def create_allocation():
         flash('You may find your SSH key in your new allocation profile '
               'after validation.', 'info')
 
-        return redirect(url_for('allocation'))
+        return redirect(url_for('list_allocations'))
 
 
 @app.route('/allocation/<name>', methods=['GET', 'POST'])
@@ -550,10 +569,11 @@ def view_allocation(name):
                 state = allocation.state
                 accountname = allocation.accountname
                 encodedpubtoken = allocation.pubtoken
-                if encodedpubtoken == None:
+                if encodedpubtoken is None:
                     pubtoken = None
                 else:
                     pubtoken = base64.b64decode(encodedpubtoken)
+                break
 
         return render_template('allocation_profile.html', name=allocationname,
                                owner=owner, resource=resource,
@@ -568,6 +588,7 @@ def view_allocation(name):
                 owner = allocation.owner
                 resource = request.form['resource']
                 accountname = request.form['accountname']
+                break
 
         newallocation = vc3_client.defineAllocation(name=allocationname,
                                                     owner=owner,
@@ -595,6 +616,7 @@ def edit_allocation(name):
             resource = allocation.resource
             accountname = allocation.accountname
             pubtoken = allocation.pubtoken
+            break
 
     return render_template('allocation_edit.html', name=allocationname,
                            owner=owner, resources=resources, resource=resource,
@@ -626,6 +648,7 @@ def view_resource(name):
             url = resource.url
             docurl = resource.docurl
             organization = resource.organization
+            break
 
     return render_template('resource_profile.html', name=resourcename,
                            owner=owner, accessflavor=accessflavor,
@@ -672,9 +695,9 @@ def create_request():
                                               expiration=expiration)
         vc3_client.storeRequest(newrequest)
 
-        flash('Your Virtual Cluster has been successfully requested!', 'success')
+        flash('Your Virtual Cluster has been successfully requested.', 'success')
 
-        return redirect(url_for('vc3request'))
+        return redirect(url_for('list_requests'))
 
 
 @app.route('/request/<name>', methods=['GET', 'POST'])
@@ -690,6 +713,7 @@ def view_request(name):
                 owner = vc3request.owner
                 action = vc3request.action
                 state = vc3request.state
+                break
 
         return render_template('request_profile.html', name=requestname,
                                owner=owner, requests=vc3requests,
@@ -702,10 +726,10 @@ def view_request(name):
 
         vc3_client.terminateRequest(requestname=requestname)
 
-        flash('Your Virtual Cluster has successfully begun termination!',
+        flash('Your Virtual Cluster has successfully begun termination.',
               'success')
 
-        return redirect(url_for('vc3request'))
+        return redirect(url_for('list_requests'))
 
 
 @app.route('/dashboard', methods=['GET'])

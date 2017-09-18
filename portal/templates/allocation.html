@@ -15,7 +15,7 @@
           	<h4 class="title">Allocations</h4>
             <div class="">
 							<h5>A list of your current allocations</h5>
-							<a href="{{url_for('new_allocation')}}" class="btn btn-primary btn-sm" title="Register New Allocation">+ New Allocation</a>
+							<a href="{{url_for('create_allocation')}}" class="btn btn-primary btn-sm" title="Register New Allocation">+ New Allocation</a>
 						</div>
 						<hr />
           </div>
@@ -44,7 +44,7 @@
                         {% if allocation.owner == session['name'] %}
   										<tr>
   											<td>
-                          <a href="{{ url_for('allocation_name', name=allocation.name) }}" title="View Allocation">{{ allocation.name }}</a>
+                          <a href="{{ url_for('view_allocation', name=allocation.name) }}" title="View Allocation">{{ allocation.name }}</a>
                         </td>
                           {% if allocation.state == "validated" %}
     											<td><font color="green"><i class="fa fa-check-circle-o" style="color:green"></i> {{ allocation.state }} </font></td>
@@ -53,7 +53,7 @@
                           {% else %}
                           <td><font color="orange"><i class="fa fa-spinner fa-spin" style="color:orange"></i> {{ allocation.state }} </font></td>
                           {% endif %}
-  											<td><a href="{{ url_for('resource_name', name=allocation.resource) }}"><option>{{allocation.resource}}</option></a></td>
+  											<td><a href="{{ url_for('view_resource', name=allocation.resource) }}"><option>{{allocation.resource}}</option></a></td>
   										</tr>
                         {% endif %}
   										{% endfor %}
