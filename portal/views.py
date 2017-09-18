@@ -204,7 +204,7 @@ def profile():
         return redirect(redirect_to)
 
 
-@app.route('/profile/edit', methods=['GET', 'POST'])
+@app.route('/profile/edit', methods=['GET'])
 @authenticated
 def edit():
     return render_template('profile_edit.html')
@@ -304,7 +304,7 @@ def new():
         return redirect(url_for('project'))
 
 
-@app.route('/project', methods=['GET', 'POST'])
+@app.route('/project', methods=['GET'])
 @authenticated
 def project():
     projects = clientapi.listProjects()
@@ -313,7 +313,7 @@ def project():
         return render_template('project.html', projects=projects)
 
 
-@app.route('/project/<name>', methods=['GET', 'POST'])
+@app.route('/project/<name>', methods=['GET'])
 @authenticated
 def project_name(name):
     projects = clientapi.listProjects()
@@ -399,7 +399,7 @@ def cluster_new():
         return redirect(url_for('cluster'))
 
 
-@app.route('/cluster', methods=['GET', 'POST'])
+@app.route('/cluster', methods=['GET'])
 @authenticated
 def cluster():
     clusters = clientapi.listClusters()
@@ -451,7 +451,7 @@ def cluster_name(name):
         return render_template('cluster_profile.html', name=clustername, owner=owner, clusters=clusters, projects=projects)
 
 
-@app.route('/cluster/edit/<name>', methods=['GET', 'POST'])
+@app.route('/cluster/edit/<name>', methods=['GET'])
 @authenticated
 def cluster_edit(name):
     clusters = clientapi.listClusters()
@@ -469,7 +469,7 @@ def cluster_edit(name):
         return render_template('cluster_edit.html', name=clustername, owner=owner, nodesets=nodesets, state=state, acl=acl, projects=projects)
 
 
-@app.route('/allocation', methods=['GET', 'POST'])
+@app.route('/allocation', methods=['GET'])
 @authenticated
 def allocation():
     allocations = clientapi.listAllocations()
@@ -547,7 +547,7 @@ def allocation_name(name):
         return render_template('allocation_profile.html', name=allocationname, owner=owner, accountname=accountname, resource=resource, allocations=allocations, resources=resources)
 
 
-@app.route('/allocation/edit/<name>', methods=['GET', 'POST'])
+@app.route('/allocation/edit/<name>', methods=['GET'])
 @authenticated
 def allocation_edit(name):
     allocations = clientapi.listAllocations()
@@ -561,13 +561,11 @@ def allocation_edit(name):
                 resource = allocation.resource
                 accountname = allocation.accountname
                 pubtoken = allocation.pubtoken
-            else:
-                return redirect('')
 
         return render_template('allocation_edit.html', name=allocationname, owner=owner, resources=resources, resource=resource, accountname=accountname, pubtoken=pubtoken)
 
 
-@app.route('/resource', methods=['GET', 'POST'])
+@app.route('/resource', methods=['GET'])
 @authenticated
 def resource():
     if request.method == 'GET':
@@ -576,7 +574,7 @@ def resource():
         return render_template('resource.html', resources=resources)
 
 
-@app.route('/resource/<name>', methods=['GET', 'POST'])
+@app.route('/resource/<name>', methods=['GET'])
 @authenticated
 def resource_name(name):
 
@@ -597,7 +595,7 @@ def resource_name(name):
                            accesshost=accesshost, accessport=accessport, gridresource=gridresource, resource=resource)
 
 
-@app.route('/request', methods=['GET', 'POST'])
+@app.route('/request', methods=['GET'])
 @authenticated
 def vc3request():
     vc3requests = clientapi.listRequests()
@@ -663,7 +661,7 @@ def request_name(name):
         return redirect(url_for('vc3request'))
 
 
-@app.route('/dashboard', methods=['GET', 'POST'])
+@app.route('/dashboard', methods=['GET'])
 @authenticated
 def dashboard():
     return render_template('dashboard.html')
