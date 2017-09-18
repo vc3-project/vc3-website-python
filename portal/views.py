@@ -165,7 +165,7 @@ def profile():
             session['first'] = profile.first
             session['last'] = profile.last
             session['email'] = profile.email
-            session['institution'] = profile.institution
+            session['institution'] = profile.organization
             session['primary_identity'] = profile.identity_id
         else:
             flash(
@@ -179,7 +179,7 @@ def profile():
         first = session['first'] = request.form['first']
         last = session['last'] = request.form['last']
         email = session['email'] = request.form['email']
-        institution = session['institution'] = request.form['institution']
+        organization = session['institution'] = request.form['institution']
         identity_id = session['primary_identity']
         username = first[0] + last
         name = username.lower()
@@ -189,7 +189,7 @@ def profile():
                                        first=first,
                                        last=last,
                                        email=email,
-                                       institution=institution)
+                                       organization=organization)
 
         clientapi.storeUser(newuser)
 
@@ -268,7 +268,7 @@ def authcallback():
             session['first'] = profile.first
             session['last'] = profile.last
             session['email'] = profile.email
-            session['institution'] = profile.institution
+            session['institution'] = profile.organization
             session['primary_identity'] = profile.identity_id
             username = profile.name[0] + profile.last
             session['name'] = username.lower()
@@ -591,13 +591,17 @@ def resource_name(name):
                 resourcename = resource.name
                 owner = resource.owner
                 accessflavor = resource.accessflavor
-                # description = resource.description
-                # displayname = resource.displayname
-                # url = resource.url
-                # docurl = resource.docurl
-                # organization = resource.organization
+                description = resource.description
+                displayname = resource.displayname
+                url = resource.url
+                docurl = resource.docurl
+                organization = resource.organization
 
-    return render_template('resource_profile.html', name=resourcename, owner=owner, accessflavor=accessflavor, resource=resource)
+    return render_template('resource_profile.html', name=resourcename,
+                           owner=owner, accessflavor=accessflavor,
+                           resource=resource, description=description,
+                           displayname=displayname, url=url, docurl=docurl,
+                           organization=organization)
 
 
 @app.route('/request', methods=['GET'])
