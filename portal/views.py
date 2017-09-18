@@ -634,7 +634,7 @@ def request_new():
             allocations.append(selectedallocations)
 
         newrequest = clientapi.defineRequest(name=vc3requestname, owner=owner, cluster=cluster,
-                                             allocations=allocations, policy=policy, expiration=expiration, environments=environments)
+                                             allocations=allocations, environments=environments, policy=policy, expiration=expiration)
         clientapi.storeRequest(newrequest)
 
         flash('Your Virtual Cluster has been successfully requested!')

@@ -64,18 +64,22 @@
                       {% endif %}
 
                       {% if request.statusraw['VC3-static'] == {} %}
-                        <td>
-                          Status Currently Unavailable
-                        </td>
+                      <td>
+                        Status Currently Unavailable
+                      </td>
                       {% elif request.statusraw == None %}
-                        <td>
-                          Status Currently Unavailable
-                        </td>
+                      <td>
+                        Status Currently Unavailable
+                      </td>
                       {% else %}
-                  			<td>
-                          <option>Idle: {{ request.statusraw.values()[0].values()[0].values()[0]['idle'] }}</option>
-                          <option>Running: {{ request.statusraw.values()[0].values()[0].values()[0]['running'] }}</option>
-                        </td>
+                      <td>
+                        {% for key, value in request.statusraw.values()[0].values()[0].iteritems() %}
+                          <!-- <option>{{ key }}</option> -->
+                          {% for k, v in value.iteritems() %}
+                          <option>{{ k }}: {{v}}</option>
+                          {% endfor %}
+                        {% endfor %}
+                      </td>
                       {% endif %}
   										</tr>
                       <!-- endif  -->
