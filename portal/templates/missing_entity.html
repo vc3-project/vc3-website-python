@@ -1,0 +1,44 @@
+{%extends "loginbase.html"%}
+
+{%block title%}Error{%endblock%}
+
+{%block body%}
+{%include 'messages.html'%}
+
+<div class="content">
+  <div class="container-fluid">
+
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card">
+            <div class="header">
+                <h4 class="title">Error: Object not found<i class="fa fa-exclamation-circle" style="color:red"></i></h4>
+                <div class="">
+                    <div class="panel-body">
+                        The object you are trying to view could not be found in the system.
+                        <br>
+                        If you need help, please contact us at
+                        <a href="mailto:support@virtualclusters.org">support@virtualclusters.org</a> .
+                    </div>
+                </div>
+                <hr />
+            </div>
+
+            <div class="content description">
+
+                <div class="card">
+                    <div class="card-block">
+                        <p class="btn btn-primary btn-sm" onclick="javascript:history.go(-1)">Return to previous page</p>
+                    </div>
+                </div>
+
+            </div><!-- /.content description -->
+
+        </div>
+      </div>
+		</div>
+
+  </div>
+</div>
+
+{%endblock%}

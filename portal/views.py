@@ -20,7 +20,7 @@ from portal.utils import (load_portal_client, get_safe_redirect)
 
 # Create a custom error handler for Exceptions
 @app.errorhandler(Exception)
-def exception_occurred():
+def exception_occurred(e):
     trace = traceback.format_tb(sys.exc_info()[2])
     app.logger.error("{0} Traceback occurred:\n".format(time.ctime()) +
                      "{0}\nTraceback completed".format("n".join(trace)))
@@ -30,7 +30,7 @@ def exception_occurred():
 
 
 @app.errorhandler(LookupError)
-def missing_object_error_page():
+def missing_object_error_page(e):
     return render_template('missing_entity.html')
 
 
