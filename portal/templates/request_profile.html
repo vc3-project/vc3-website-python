@@ -46,7 +46,7 @@
             </form>
             {% elif state == "new" and action == "new" %}
             <h4><span class="label label-info" style="color:white">New Cluster</span></h4>
-            <form action="{{url_for('request_name', name=name)}}" method="POST">
+            <form action="{{url_for('view_request', name=name)}}" method="POST">
               <button type="submit" class="btn btn-primary" data-submit="...Terminating Cluster" title="Terminate your Virtual Cluster">Terminate Cluster</button>
             </form>
             {% else %}

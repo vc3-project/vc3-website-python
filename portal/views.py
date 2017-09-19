@@ -216,7 +216,7 @@ def show_profile_page():
             redirect_to = session['next']
             session.pop('next')
         else:
-            redirect_to = url_for('profile')
+            redirect_to = url_for('show_profile_page')
 
         return redirect(redirect_to)
 
@@ -290,10 +290,10 @@ def authcallback():
             username = profile.name[0] + profile.last
             session['name'] = username.lower()
         else:
-            return redirect(url_for('profile',
-                                    next=url_for('profile')))
+            return redirect(url_for('show_profile_page',
+                                    next=url_for('show_profile_page')))
 
-        return redirect(url_for('profile'))
+        return redirect(url_for('show_profile_page'))
 
 
 # -----------------------------------------
@@ -322,7 +322,7 @@ def create_project():
 
         flash('Your project has been successfully created!', 'success')
 
-        return redirect(url_for('project'))
+        return redirect(url_for('list_projects'))
 
 
 @app.route('/project', methods=['GET'])
@@ -369,7 +369,7 @@ def add_member_to_project(name):
 
     flash('Successfully added member to project.', 'success')
 
-    return redirect(url_for('project_name', name=name))
+    return redirect(url_for('view_project', name=name))
 
 
 @app.route('/project/<name>/addallocation', methods=['POST'])
@@ -424,7 +424,7 @@ def create_cluster():
                                        clustername=newcluster.name)
 
         flash('Your cluster template has been successfully defined!', 'success')
-        return redirect(url_for('cluster'))
+        return redirect(url_for('list_clusters'))
 
 
 @app.route('/cluster', methods=['GET'])
@@ -548,7 +548,7 @@ def create_allocation():
         flash('You may find your SSH key in your new allocation profile '
               'after validation.', 'info')
 
-        return redirect(url_for('allocation'))
+        return redirect(url_for('list_allocations'))
 
 
 @app.route('/allocation/<name>', methods=['GET', 'POST'])
@@ -694,7 +694,7 @@ def create_request():
 
         flash('Your Virtual Cluster has been successfully requested!', 'success')
 
-        return redirect(url_for('vc3request'))
+        return redirect(url_for('list_requests'))
 
 
 @app.route('/request/<name>', methods=['GET', 'POST'])
@@ -728,7 +728,7 @@ def view_request(name):
         flash('Your Virtual Cluster has successfully begun termination.',
               'success')
 
-        return redirect(url_for('vc3request'))
+        return redirect(url_for('list_requests'))
 
 
 @app.route('/dashboard', methods=['GET'])
