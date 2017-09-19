@@ -1,5 +1,4 @@
 from flask import Flask
-import json
 from flask_flatpages import FlatPages
 from flask_frozen import Freezer
 from portal.database import Database
