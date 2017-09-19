@@ -12,16 +12,16 @@
       <div class="col-md-12">
         <div class="card">
             <div class="header">
-                <h4 class="title">Error <i class="fa fa-exclamation-circle" style="color:red"></i></h4>
+                <h4 class="title"><i class="fa fa-exclamation-circle" style="color:red"></i> Error </h4>
                 <div class="">
-                    <div class="panel-body">
+                    <div class="description">
                         Unfortunately an error has occurred.  The error has been logged and an admin will review it.
                         If you need help, please contact us at
                         <a href="mailto:support@virtualclusters.org">support@virtualclusters.org</a> .
                     </div>
                     {% if debug %}
                     <h5>Python Stacktrace:</h5>
-                    <div class="panel-body">{{ exception|safe }}</div>
+                    <div class="description">{{ exception|safe }}</div>
                     {% endif %}
                 </div>
                 <hr />

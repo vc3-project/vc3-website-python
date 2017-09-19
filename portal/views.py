@@ -26,7 +26,8 @@ def exception_occurred(e):
                      "{0}\nTraceback completed".format("n".join(trace)))
     trace = "<br>".join(trace)
     trace.replace('\n', '<br>')
-    return render_template('error.html', exception=trace, debug=True)
+    return render_template('error.html', exception=trace,
+                           debug=app.config['DEBUG'])
 
 
 @app.errorhandler(LookupError)
@@ -48,7 +49,7 @@ def get_vc3_client():
         client_api = client.VC3ClientAPI(c)
         return client_api
     except Exception as e:
-        abort(500)
+        raise
 
 
 @app.route('/', methods=['GET'])
@@ -349,9 +350,10 @@ def view_project(name):
             members = project.members
             # description = project.description
             # organization = project.organization
-    return render_template('projects_pages.html', name=name, owner=owner,
-                           members=members, allocations=allocations,
-                           projects=projects, users=users)
+            return render_template('projects_pages.html', name=name, owner=owner,
+                                   members=members, allocations=allocations,
+                                   projects=projects, users=users)
+    raise LookupError('project')
 
 
 @app.route('/project/<name>/addmember', methods=['POST'])
@@ -386,8 +388,10 @@ def add_allocation_to_project(name):
             vc3_client.addAllocationToProject(allocation=addallocation,
                                               projectname=name)
 
-    flash('Successfully added allocation to project.', 'success')
+            flash('Successfully added allocation to project.', 'success')
 
+            return redirect(url_for('view_project', name=name))
+    flash('Could not add allocation to project', 'warning')
     return redirect(url_for('view_project', name=name))
 
 
@@ -450,12 +454,14 @@ def view_cluster(name):
     if request.method == 'GET':
         for cluster in clusters:
             if cluster.name == name:
-                clustername = cluster.name
+                cluster_name = cluster.name
                 owner = cluster.owner
                 state = cluster.state
 
-        return render_template('cluster_profile.html', name=clustername,
-                               owner=owner, state=state, nodesets=nodesets)
+                return render_template('cluster_profile.html', name=cluster_name,
+                                       owner=owner, state=state,
+                                       nodesets=nodesets)
+        raise LookupError('cluster')
 
     elif request.method == 'POST':
         node_number = request.form['node_number']
@@ -465,24 +471,33 @@ def view_cluster(name):
             environment = "condor-glidein-password-env1"
         elif app_type == "workqueue":
             environment = []
+        else:
+            raise ValueError('app_type not a recognized framework')
 
+        cluster_name = None
+        owner = None
+        app_role = None
         for cluster in clusters:
             if cluster.name == name:
-                clustername = cluster.name
+                cluster_name = cluster.name
                 owner = cluster.owner
                 app_role = "worker-nodes"
+                break
+        if cluster_name is None:
+            # could not find cluster, punt
+            LookupError('cluster')
 
-        nodeset = vc3_client.defineNodeset(name=clustername, owner=owner,
+        nodeset = vc3_client.defineNodeset(name=cluster_name, owner=owner,
                                            node_number=node_number,
                                            app_type=app_type, app_role=app_role,
                                            environment=environment)
         vc3_client.storeNodeset(nodeset)
-        newcluster = vc3_client.defineCluster(name=clustername, owner=owner)
+        newcluster = vc3_client.defineCluster(name=cluster_name, owner=owner)
         vc3_client.storeCluster(newcluster)
         vc3_client.addNodesetToCluster(nodesetname=nodeset.name,
                                        clustername=newcluster.name)
 
-        return render_template('cluster_profile.html', name=clustername,
+        return render_template('cluster_profile.html', name=cluster_name,
                                owner=owner, clusters=clusters,
                                projects=projects)
 
@@ -502,9 +517,10 @@ def edit_cluster(name):
             state = cluster.state
             acl = cluster.acl
 
-    return render_template('cluster_edit.html', name=clustername,
-                           owner=owner, nodesets=nodesets,
-                           state=state, acl=acl, projects=projects)
+            return render_template('cluster_edit.html', name=clustername,
+                                   owner=owner, nodesets=nodesets,
+                                   state=state, acl=acl, projects=projects)
+    raise LookupError('cluster')
 
 
 @app.route('/allocation', methods=['GET'])
@@ -526,10 +542,7 @@ def create_allocation():
     vc3_client = get_vc3_client()
     if request.method == 'GET':
         resources = vc3_client.listResources()
-        for resource in resources:
-            resourcename = resource.name
-        return render_template('allocation_new.html', resources=resources,
-                               name=resourcename)
+        return render_template('allocation_new.html', resources=resources)
 
     elif request.method == 'POST':
         # name = request.form['name']
@@ -568,14 +581,16 @@ def view_allocation(name):
                 accountname = allocation.accountname
                 encodedpubtoken = allocation.pubtoken
                 if encodedpubtoken is None:
-                    pubtoken = None
+                    pubtoken = 'Pub token still being generated'
                 else:
                     pubtoken = base64.b64decode(encodedpubtoken)
 
-        return render_template('allocation_profile.html', name=allocationname,
-                               owner=owner, resource=resource,
-                               accountname=accountname, pubtoken=pubtoken,
-                               state=state)
+                return render_template('allocation_profile.html',
+                                       name=allocationname,
+                                       owner=owner, resource=resource,
+                                       accountname=accountname,
+                                       pubtoken=pubtoken, state=state)
+        raise LookupError('allocation')
 
     elif request.method == 'POST':
 
@@ -586,16 +601,16 @@ def view_allocation(name):
                 resource = request.form['resource']
                 accountname = request.form['accountname']
 
-        newallocation = vc3_client.defineAllocation(name=allocationname,
-                                                    owner=owner,
-                                                    resource=resource,
-                                                    accountname=accountname)
-        vc3_client.storeAllocation(newallocation)
-
-        return render_template('allocation_profile.html', name=allocationname,
-                               owner=owner, accountname=accountname,
-                               resource=resource, allocations=allocations,
-                               resources=resources)
+                newallocation = vc3_client.defineAllocation(name=allocationname,
+                                                            owner=owner,
+                                                            resource=resource,
+                                                            accountname=accountname)
+                vc3_client.storeAllocation(newallocation)
+                flash('Allocation created', 'success')
+                return render_template('allocation_profile.html', name=allocationname,
+                                       owner=owner, accountname=accountname,
+                                       resource=resource, allocations=allocations,
+                                       resources=resources)
 
 
 @app.route('/allocation/edit/<name>', methods=['GET'])
@@ -613,9 +628,11 @@ def edit_allocation(name):
             accountname = allocation.accountname
             pubtoken = allocation.pubtoken
 
-    return render_template('allocation_edit.html', name=allocationname,
-                           owner=owner, resources=resources, resource=resource,
-                           accountname=accountname, pubtoken=pubtoken)
+            return render_template('allocation_edit.html', name=allocationname,
+                                   owner=owner, resources=resources,
+                                   resource=resource, accountname=accountname,
+                                   pubtoken=pubtoken)
+    raise LookupError('alliocation')
 
 
 @app.route('/resource', methods=['GET'])
@@ -644,11 +661,12 @@ def view_resource(name):
             docurl = resource.docurl
             organization = resource.organization
 
-    return render_template('resource_profile.html', name=resourcename,
-                           owner=owner, accessflavor=accessflavor,
-                           resource=resource,
-                           description=description, displayname=displayname,
-                           url=url, docurl=docurl, organization=organization)
+            return render_template('resource_profile.html', name=resourcename,
+                                   owner=owner, accessflavor=accessflavor,
+                                   resource=resource, description=description,
+                                   displayname=displayname, url=url,
+                                   docurl=docurl, organization=organization)
+    raise LookupError('resource')
 
 
 @app.route('/request', methods=['GET'])
@@ -713,20 +731,22 @@ def view_request(name):
                 action = vc3_request.action
                 state = vc3_request.state
 
-        return render_template('request_profile.html', name=requestname,
-                               owner=owner, requests=vc3_requests,
-                               clusters=clusters, nodesets=nodesets,
-                               action=action, state=state)
+                return render_template('request_profile.html', name=requestname,
+                                       owner=owner, requests=vc3_requests,
+                                       clusters=clusters, nodesets=nodesets,
+                                       action=action, state=state)
+        raise LookupError('virtual cluster')
 
     elif request.method == 'POST':
         for vc3_request in vc3_requests:
             if vc3_request.name == name:
                 requestname = vc3_request.name
 
-        vc3_client.terminateRequest(requestname=requestname)
+                vc3_client.terminateRequest(requestname=requestname)
 
-        flash('Your Virtual Cluster has successfully begun termination.',
-              'success')
+                flash('Your Virtual Cluster has successfully begun termination.',
+                      'success')
+        flash('Could not find specified Virtual Cluster', 'warning')
 
         return redirect(url_for('list_requests'))
 
