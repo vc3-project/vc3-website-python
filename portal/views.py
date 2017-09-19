@@ -42,8 +42,7 @@ def get_vc3_client():
     :return: VC3 client instance on success
     """
     c = SafeConfigParser()
-    # TODO: change this to use a environ or config param
-    c.readfp(open('/etc/vc3/vc3-client.conf'))
+    c.readfp(open(app.config['VC3_CLIENT_CONFIG']))
 
     try:
         client_api = client.VC3ClientAPI(c)

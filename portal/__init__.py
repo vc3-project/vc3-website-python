@@ -20,11 +20,5 @@ app.logger.addHandler(handler)
 pages = FlatPages(app)
 freezer = Freezer(app)
 
-database = Database(app)
-
-
-with open(app.config['DATASETS']) as f:
-    datasets = json.load(f)
-
 # need to put this here since views uses the app object
 import portal.views
