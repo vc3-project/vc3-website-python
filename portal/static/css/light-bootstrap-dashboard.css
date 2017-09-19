@@ -2263,14 +2263,14 @@ RESOURCE PROFILE INDEX PAGE
 .filterable {
     margin-top: 15px;
     border-color: #fcc500;
-    font-size: 18px;
+    font-size: 16px;
 }
 .filterable .panel-heading .pull-right {
     margin-top: -25px;
 }
 .filterable .panel-heading .panel-title {
   font-weight: 400;
-  font-size: 22px;
+  font-size: 20px;
   text-align: center;
 }
 .filterable .filters input[disabled] {

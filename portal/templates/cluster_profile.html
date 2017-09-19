@@ -13,8 +13,6 @@
           <div class="header">
           	<h4 class="title">Cluster: {{name}}</h4>
             <div class="">
-							<!-- <h5 class="category">Help desk: test</h5> -->
-							<!-- <h5>Cluster Description</h5> -->
 							<a href="{{url_for('edit_cluster', name=name)}}" class="btn btn-primary btn-sm">Update Cluster</a>
 						</div>
 						<hr />
@@ -27,7 +25,7 @@
                 <div class="panel-heading">
                   <h3 class="panel-title"><strong>Owner</strong></h3>
                 </div>
-                <div class="panel-body">
+                <div class="panel-body disabled">
                   {{owner}}
                 </div>
               </div>
@@ -35,7 +33,7 @@
                 <div class="panel-heading">
                   <h3 class="panel-title"><strong>State</strong></h3>
                 </div>
-                <div class="panel-body">
+                <div class="panel-body disabled">
                   {{state}}
                 </div>
               </div>
@@ -43,7 +41,7 @@
                 <div class="panel-heading">
                   <h3 class="panel-title"><strong>Cluster Framework</strong></h3>
                 </div>
-                <div class="panel-body">
+                <div class="panel-body disabled">
                   {% for nodeset in nodesets %}
                     {% if nodeset.name == name %}
                       {{ nodeset.app_type }}
@@ -55,7 +53,7 @@
                 <div class="panel-heading">
                   <h3 class="panel-title"><strong>Number of Workers</strong></h3>
                 </div>
-                <div class="panel-body">
+                <div class="panel-body disabled">
                   {% for nodeset in nodesets %}
                     {% if nodeset.name == name %}
                       {{ nodeset.node_number }}

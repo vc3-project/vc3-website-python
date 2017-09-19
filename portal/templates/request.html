@@ -42,26 +42,61 @@
                     {% for request in requests %}
                       <!-- if request.owner == session['name'] -->
   										<tr>
-  											<td><a href="{{ url_for('view_request', name=request.name) }}" title="View Info on {{request.name.capitalize()}} Virtual Cluster">{{ request.name }}</a></td>
+  											<td>
+                          <a href="{{ url_for('view_request', name=request.name) }}"
+                          title="View Info on {{request.name.capitalize()}} Virtual Cluster">
+                          {{ request.name }}
+                          </a>
+                        </td>
                       {% if request.action == "terminate" %}
                         {% if request.state == "running" %}
-                        <td><font color="orange">Terminating <i class="fa fa-exclamation-circle" style="color:orange"></i></font><option>{{ request.state_reason }}</option><option>Action: {{ request.action }}</option></td>
+                        <td>
+                          <font color="orange">
+                            Terminating <i class="fa fa-exclamation-circle" style="color:orange"></i>
+                          </font>
+                          <!-- <option>{{ request.state_reason }}</option> -->
+                          <!-- <option>Action: {{ request.action }}</option> -->
+                        </td>
                         {% else %}
-                        <td><font color="red">{{ request.state }} <i class="fa fa-times-circle" style="color:red"></i></font><option>{{ request.state_reason }}</option><option>Action: {{ request.action }}</option></td>
+                        <td>
+                          <font color="red">
+                            {{ request.state }} <i class="fa fa-times-circle" style="color:red"></i>
+                          </font>
+                          <!-- <option>{{ request.state_reason }}</option> -->
+                          <!-- <option>Action: {{ request.action }}</option> -->
+                        </td>
                         {% endif %}
                       {% elif request.state == "new" %}
-                        <td><font color="blue">{{ request.state }} </font><option>{{ request.state_reason }}</option><option>Action: {{ request.action }}</option></td>
+                        <td>
+                          <font color="blue">
+                            {{ request.state }}
+                          </font>
+                          <!-- <option>{{ request.state_reason }}</option> -->
+                          <!-- <option>Action: {{ request.action }}</option> -->
+                        </td>
                       {% elif request.state == "validated" or request.state == "configured" or request.state == "running" %}
-  											<td><font color="green">{{ request.state }} <i class="fa fa-check-circle-o" style="color:green"></i></font><option>{{ request.state_reason }}</option><option>Action: {{ request.action }}</option></td>
+  											<td>
+                          <font color="green">
+                            {{ request.state }} <i class="fa fa-check-circle-o" style="color:green"></i>
+                          </font>
+                          <!-- <option>{{ request.state_reason }}</option> -->
+                          <!-- <option>Action: {{ request.action }}</option> -->
+                        </td>
                       {% elif request.state=="terminated" or request.state == "terminating"%}
                         <td>
                           <!-- <font color="red">{{ request.state }} <i class="fa fa-circle-o-notch fa-spin" style="color:red"></i></font> -->
                           <i class="fa fa-times-circle" style="color:red"></i>
-                          <option>{{ request.state_reason }}</option>
-                          <option>Action: {{ request.action }}</option>
+                          <!-- <option>{{ request.state_reason }}</option> -->
+                          <!-- <option>Action: {{ request.action }}</option> -->
                         </td>
                       {% else %}
-                        <td><font color="orange">{{ request.state }} <i class="fa fa-spinner fa-spin" style="color:orange"></i></font><option>{{ request.state_reason }}</option><option>Action: {{ request.action }}</option></td>
+                        <td>
+                          <font color="orange">
+                            {{ request.state }} <i class="fa fa-spinner fa-spin" style="color:orange"></i>
+                          </font>
+                          <!-- <option>{{ request.state_reason }}</option> -->
+                          <!-- <option>Action: {{ request.action }}</option> -->
+                        </td>
                       {% endif %}
 
                       {% if request.statusraw['MYSITE-hostname-sysadminname'] == {} %}
@@ -74,8 +109,8 @@
                         </td>
                       {% else %}
                         <td>
-                        {% for key, value in request.statusraw.values()[0].values()[0].iteritems() %}
-                          <!-- <option>{{ key }}</option> -->
+                        {% for key, value in request.statusinfo.iteritems() %}
+                          <option>{{ key }}</option>
                           {% for k, v in value.iteritems() %}
                           <option>{{ k }}: {{v}}</option>
                           {% endfor %}
@@ -87,6 +122,7 @@
                         {% endfor %}
                         </td>
                       {% endif %}
+
                         <td>
                       {% for nodeset in nodesets %}
                         {% if nodeset.name == request.cluster %}
@@ -106,26 +142,58 @@
                     {% for request in requests %}
                       {% if request.owner == session['name'] %}
                       <tr>
-  											<td><a href="{{ url_for('view_request', name=request.name) }}" title="View Info on {{request.name.capitalize()}} Virtual Cluster">{{ request.name }}</a></td>
+  											<td>
+                          <a href="{{ url_for('view_request', name=request.name) }}" title="View Info on {{request.name.capitalize()}} Virtual Cluster">
+                            {{ request.name }}
+                          </a>
+                        </td>
                         {% if request.action == "terminate" %}
                           {% if request.state == "running" %}
-                        <td><font color="orange">Terminating <i class="fa fa-exclamation-circle" style="color:orange"></i></font><option>{{ request.state_reason }}</option><option>Action: {{ request.action }}</option></td>
+                        <td>
+                          <font color="orange">Terminating <i class="fa fa-exclamation-circle" style="color:orange"></i>
+                          </font>
+                          <!-- <option>{{ request.state_reason }}</option> -->
+                          <!-- <option>Action: {{ request.action }}</option> -->
+                        </td>
                           {% else %}
-                        <td><font color="red">{{ request.state }} <i class="fa fa-times-circle" style="color:red"></i></font><option>{{ request.state_reason }}</option><option>Action: {{ request.action }}</option></td>
+                        <td>
+                          <font color="red">
+                            {{ request.state }} <i class="fa fa-times-circle" style="color:red"></i>
+                          </font>
+                          <!-- <option>{{ request.state_reason }}</option> -->
+                          <!-- <option>Action: {{ request.action }}</option> -->
+                        </td>
                           {% endif %}
                         {% elif request.state == "new" %}
-                        <td><font color="blue">{{ request.state }} </font><option>{{ request.state_reason }}</option><option>Action: {{ request.action }}</option></td>
+                        <td>
+                          <font color="blue">
+                            {{ request.state }} </font>
+                          <!-- <option>{{ request.state_reason }}</option> -->
+                          <!-- <option>Action: {{ request.action }}</option> -->
+                        </td>
                         {% elif request.state == "validated" or request.state == "configured" or request.state == "running" %}
-  											<td><font color="green">{{ request.state }} <i class="fa fa-check-circle-o" style="color:green"></i></font><option>{{ request.state_reason }}</option><option>Action: {{ request.action }}</option></td>
+  											<td>
+                          <font color="green">
+                            {{ request.state }} <i class="fa fa-check-circle-o" style="color:green"></i>
+                          </font>
+                          <!-- <option>{{ request.state_reason }}</option> -->
+                          <!-- <option>Action: {{ request.action }}</option> -->
+                        </td>
                         {% elif request.state=="terminated" or request.state == "terminating"%}
                         <td>
                           <!-- <font color="red">{{ request.state }} <i class="fa fa-circle-o-notch fa-spin" style="color:red"></i></font> -->
                           <i class="fa fa-times-circle" style="color:red"></i>
-                          <option>{{ request.state_reason }}</option>
-                          <option>Action: {{ request.action }}</option>
+                          <!-- <option>{{ request.state_reason }}</option> -->
+                          <!-- <option>Action: {{ request.action }}</option> -->
                         </td>
                         {% else %}
-                        <td><font color="orange">{{ request.state }} <i class="fa fa-spinner fa-spin" style="color:orange"></i></font><option>{{ request.state_reason }}</option><option>Action: {{ request.action }}</option></td>
+                        <td>
+                          <font color="orange">
+                            {{ request.state }} <i class="fa fa-spinner fa-spin" style="color:orange"></i>
+                          </font>
+                          <!-- <option>{{ request.state_reason }}</option> -->
+                          <!-- <option>Action: {{ request.action }}</option> -->
+                        </td>
                         {% endif %}
 
                         {% if request.statusraw['MYSITE-hostname-sysadminname'] == {} %}

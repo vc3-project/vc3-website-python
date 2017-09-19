@@ -11,11 +11,21 @@
       <div class="col-md-12">
         <div class="card">
           <div class="header">
-          	<h4 class="title">Virtual Cluster:</h4>
+          	<h4 class="title">Virtual Cluster:
+              {% for request in requests %}
+                {% if request.name == name %}
+                  {{ request.name }}
+                {% endif %}
+              {% endfor %}
+            </h4>
             <!-- <label for="clustername">Cluster Status:</label> -->
             {% if action == "terminate" %}
               {% if state == "terminated" %}
-            <h4><span class="label label-danger" style="color:white">Successfully Terminated</span></h4>
+            <h4>
+              <span class="label label-danger" style="color:white">
+                Successfully Terminated
+              </span>
+            </h4>
               {% else %}
             <div class="progress" style="height:25px">
               <div class="progress-bar progress-bar-danger progress-bar-striped active" role="progressbar"
@@ -63,19 +73,19 @@
 
               {% for request in requests %}
 						    {% if request.name == name %}
-              <div class="panel panel-info resource-profile" style="margin: 1em;">
+              <!-- <div class="panel panel-info resource-profile" style="margin: 1em;">
                 <div class="panel-heading">
                   <h3 class="panel-title"><strong>Name</strong></h3>
                 </div>
                 <div class="panel-body">
                   {{request.name}}
                 </div>
-              </div>
+              </div> -->
               <div class="panel panel-info resource-profile" style="margin: 1em;">
                 <div class="panel-heading">
                   <h3 class="panel-title"><strong>State</strong></h3>
                 </div>
-                <div class="panel-body">
+                <div class="panel-body disabled">
                   {{request.state}}
                 </div>
               </div>
@@ -83,7 +93,7 @@
                 <div class="panel-heading">
                   <h3 class="panel-title"><strong>State Reason</strong></h3>
                 </div>
-                <div class="panel-body">
+                <div class="panel-body disabled">
                   {{request.state_reason}}
                 </div>
               </div>
@@ -91,7 +101,7 @@
                 <div class="panel-heading">
                   <h3 class="panel-title"><strong>Owner</strong></h3>
                 </div>
-                <div class="panel-body">
+                <div class="panel-body disabled">
                   {{request.owner}}
                 </div>
               </div>
@@ -99,7 +109,7 @@
                 <div class="panel-heading">
                   <h3 class="panel-title"><strong>Expiration</strong></h3>
                 </div>
-                <div class="panel-body">
+                <div class="panel-body disabled">
                   {{request.expiration}}
                 </div>
               </div>
@@ -107,7 +117,7 @@
                 <div class="panel-heading">
                   <h3 class="panel-title"><strong>Policy</strong></h3>
                 </div>
-                <div class="panel-body">
+                <div class="panel-body disabled">
                   {{request.policy}}
                 </div>
               </div>
@@ -125,7 +135,7 @@
                 <div class="panel-heading">
                   <h3 class="panel-title"><strong>Environments</strong></h3>
                 </div>
-                <div class="panel-body">
+                <div class="panel-body disabled">
                   {% for environment in request.environments %}
                     <option>{{environment}}</option>
                   {% endfor %}
@@ -135,7 +145,7 @@
                 <div class="panel-heading">
                   <h3 class="panel-title"><strong>Head Node</strong></h3>
                 </div>
-                <div class="panel-body">
+                <div class="panel-body disabled">
                   {% for nodeset in nodesets %}
                     {% if nodeset.name == request.cluster %}
                       {% if nodeset.app_type == "htcondor" %}
@@ -152,7 +162,7 @@
                 <div class="panel-heading">
                   <h3 class="panel-title"><strong>Status</strong></h3>
                 </div>
-                <div class="panel-body">
+                <div class="panel-body disabled">
                   {% if request.statusraw['MYSITE-hostname-sysadminname'] == {} %}
                   Status Currently Unavailable
                   {% elif request.statusraw == None %}
