@@ -307,7 +307,8 @@ def create_project():
     vc3_client = get_vc3_client()
     if request.method == 'GET':
         users = vc3_client.listUsers()
-        return render_template('new.html', users=users)
+        owner = session['name']
+        return render_template('project_new.html', owner=owner, users=users)
 
     elif request.method == 'POST':
         name = request.form['name']
@@ -366,10 +367,13 @@ def add_member_to_project(name):
     for project in projects:
         if project.name == name:
             name = project.name
+            if project.owner == user:
+                flash('User is already the project owner.', 'warning')
+                return redirect(url_for('view_project', name=name))
             vc3_client.addUserToProject(project=name, user=user)
-
-    flash('Successfully added member to project.', 'success')
-
+            flash('Successfully added member to project.', 'success')
+            return redirect(url_for('view_project', name=name))
+    flash('Project not found, can\'t add user', 'warning')
     return redirect(url_for('view_project', name=name))
 
 
@@ -379,18 +383,16 @@ def add_allocation_to_project(name):
     vc3_client = get_vc3_client()
     projects = vc3_client.listProjects()
 
-    addallocation = request.form['allocation']
+    new_allocation = request.form['allocation']
 
     for project in projects:
         if project.name == name:
             name = project.name
-            vc3_client.addAllocationToProject(allocation=addallocation,
+            vc3_client.addAllocationToProject(allocation=new_allocation,
                                               projectname=name)
-
             flash('Successfully added allocation to project.', 'success')
-
             return redirect(url_for('view_project', name=name))
-    flash('Could not add allocation to project', 'warning')
+    flash('Project not found, could not add allocation to project', 'warning')
     return redirect(url_for('view_project', name=name))
 
 
