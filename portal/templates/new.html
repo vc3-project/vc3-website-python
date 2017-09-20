@@ -1,8 +1,6 @@
 {%extends "loginbase.html"%}
 
-{%block title%}
-  Create a new project
-{%endblock%}
+{%block title%}Create a new project{%endblock%}
 
 {%block body%}
 
@@ -34,9 +32,11 @@
       <fieldset>
         <label for="members">Project Members</label>
         <select class="form-control" name="members" tabindex="2" id="form-resource-list" required>
-          <option selected disabled>Please Select User</option>
+          <option value="" selected disabled>Add User to Project</option>
           {% for user in users %}
+            {% if user.name != session['name'] %}
           <option value="{{user.name}}">{{ user.name }}</option>
+            {% endif %}
           {% endfor %}
         </select>
       </fieldset>

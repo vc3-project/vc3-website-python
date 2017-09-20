@@ -441,3 +441,101 @@ $(".btn").on("click", function() {
     $(".alert").removeClass("in").show();
 	$(".alert").delay(200).addClass("in").fadeOut(8000);
 });
+
+// Start New User Tour
+
+(function(){
+    var name = "Friend";
+    var tour = new Tour({
+        storage : window.localStorage
+        // storage: false
+    });
+
+    tour.addSteps([
+      {
+        // element: ".tour-step.tour-step-one",
+        // placement: "right",
+        // backdrop: true,
+        orphan: true,
+        title: "Welcome to VC3!",
+        content: "What's your name? <br><input class='form-control' type='text' name='your_name'>",
+        onNext : function(tour){
+            var nameProvided = $("input[name=your_name]").val();
+            if ($.trim(nameProvided) !== ""){
+                name = nameProvided;
+            }
+        }
+      },
+      {
+        element: ".tour-step.tour-step-two",
+        placement: "top",
+        // backdrop: true,
+        title: function(){ return "Welcome, " + name; },
+        content: "Here are the sections of this page, easily laid out."
+      },
+      {
+        element: ".tour-step.tour-step-three",
+        placement: "right",
+        // backdrop: true,
+        title: "Allocations",
+        content: "Begin by registering your allocation for validation."
+      },
+      {
+        path: "/allocation",
+        element: ".tour-step.tour-step-four",
+        placement: "right",
+        // title: "Cluster Templates",
+        content: "You may register new allocations and view them below"
+      },
+      {
+        element: ".tour-step.tour-step-five",
+        placement: "right",
+        // backdrop: true,
+        title: "Cluster Templates",
+        content: "Create your project and add members and allocations accordingly."
+      },
+      {
+        element: ".tour-step.tour-step-six",
+        placement: "right",
+        // backdrop: true,
+        title: "Projects",
+        content: "Create your project and add members and allocations accordingly."
+      },
+      {
+        element: ".tour-step.tour-step-seven",
+        placement: "right",
+        // backdrop: true,
+        title: "Resources",
+        content: "Browse known resources"
+      },
+      {
+        element: ".tour-step.tour-step-eigth",
+        placement: "right",
+        // backdrop: true,
+        title: "Virtual Clusters",
+        content: "Launch your Virtual Cluster!"
+      },
+      {
+        element: ".tour-step.tour-step-nine",
+        placement: "right",
+        // backdrop: true,
+        title: "Dashboard",
+        content: "Keep an eye on your Virtual Clusters"
+      },
+      {
+        element: ".tour-step.tour-step-ten",
+        placement: "top",
+        orphan: true,
+        title: "Thank you.",
+        content: function(){ return "We can't wait to see what you think, "+name+"!" }
+      },
+
+    ]);
+
+    // Initialize the tour
+    tour.init();
+
+    // Start the tour
+    tour.start();
+
+}());

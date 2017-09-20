@@ -58,7 +58,8 @@ button.close {
 
 h1, .h1, h2, .h2, h3, .h3, h4, .h4 {
   font-weight: 300;
-  margin: 30px 0 15px; }
+  /*margin: 30px 0 15px; */
+}
 
 h1, .h1 {
   font-size: 52px; }
@@ -72,7 +73,8 @@ h3, .h3 {
 
 h4, .h4 {
   font-size: 22px;
-  line-height: 30px; }
+  /*line-height: 30px; */
+}
 
 h5, .h5 {
   font-size: 16px;
@@ -2323,7 +2325,13 @@ RESOURCE PROFILE INDEX PAGE
 .filterable a:hover {
   color: #fcc500;
 }
+.filterable tbody tr td #node-status {
+  margin-right: 60px;
+}
 
+.filterable tbody tr td #node-status-name {
+  align-items: center;
+}
 
 #dashboard .content iframe {
   display: block;

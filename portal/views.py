@@ -155,8 +155,8 @@ def logout():
     ga_logout_url.append('&redirect_name=Globus Sample Data Portal')
 
     # Redirect the user to the Globus Auth logout page
-    # return redirect(''.join(ga_logout_url))
-    return redirect(url_for('home'))
+    return redirect(''.join(ga_logout_url))
+    # return redirect(url_for('home'))
 
 
 @app.route('/profile', methods=['GET', 'POST'])
@@ -210,7 +210,7 @@ def show_profile_page():
         vc3_client.storeUser(newuser)
 
         flash('Thank you. Your profile has been successfully updated. '
-              'You may now register an allocation.', 'success')
+              'You may now register an allocation.', 'warning')
 
         if 'next' in session:
             redirect_to = session['next']
@@ -320,7 +320,7 @@ def create_project():
                                               members=members)
         vc3_client.storeProject(newproject)
 
-        flash('Your project has been successfully created!', 'success')
+        flash('Your project has been successfully created.', 'warning')
 
         return redirect(url_for('list_projects'))
 
@@ -368,7 +368,7 @@ def add_member_to_project(name):
             name = project.name
             vc3_client.addUserToProject(project=name, user=user)
 
-    flash('Successfully added member to project.', 'success')
+    flash('Successfully added member to project.', 'warning')
 
     return redirect(url_for('view_project', name=name))
 
@@ -387,7 +387,7 @@ def add_allocation_to_project(name):
             vc3_client.addAllocationToProject(allocation=addallocation,
                                               projectname=name)
 
-            flash('Successfully added allocation to project.', 'success')
+            flash('Successfully added allocation to project.', 'warning')
 
             return redirect(url_for('view_project', name=name))
     flash('Could not add allocation to project', 'warning')
@@ -426,7 +426,7 @@ def create_cluster():
         vc3_client.addNodesetToCluster(nodesetname=nodeset.name,
                                        clustername=newcluster.name)
 
-        flash('Your cluster template has been successfully defined!', 'success')
+        flash('Your cluster template has been successfully defined.', 'warning')
         return redirect(url_for('list_clusters'))
 
 
@@ -499,6 +499,7 @@ def view_cluster(name):
         return render_template('cluster_profile.html', name=cluster_name,
                                owner=owner, clusters=clusters,
                                projects=projects)
+        # return redirect(url_for('view_cluster'))
 
 
 @app.route('/cluster/edit/<name>', methods=['GET'])
@@ -558,7 +559,7 @@ def create_allocation():
         vc3_client.storeAllocation(newallocation)
 
         flash('You may find your SSH key in your new allocation profile '
-              'after validation.', 'info')
+              'after validation.', 'warning')
 
         return redirect(url_for('list_allocations'))
 
@@ -605,7 +606,7 @@ def view_allocation(name):
                                                             resource=resource,
                                                             accountname=accountname)
                 vc3_client.storeAllocation(newallocation)
-                flash('Allocation created', 'success')
+                flash('Allocation created', 'warning')
                 return render_template('allocation_profile.html', name=allocationname,
                                        owner=owner, accountname=accountname,
                                        resource=resource, allocations=allocations,
@@ -709,7 +710,7 @@ def create_request():
                                               expiration=expiration)
         vc3_client.storeRequest(newrequest)
 
-        flash('Your Virtual Cluster has been successfully requested!', 'success')
+        flash('Your Virtual Cluster has been successfully requested.', 'warning')
 
         return redirect(url_for('list_requests'))
 
@@ -744,7 +745,7 @@ def view_request(name):
                 vc3_client.terminateRequest(requestname=requestname)
 
                 flash('Your Virtual Cluster has successfully begun termination.',
-                      'success')
+                      'warning')
         flash('Could not find specified Virtual Cluster', 'warning')
 
         return redirect(url_for('list_requests'))
