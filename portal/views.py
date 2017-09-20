@@ -48,6 +48,7 @@ def get_vc3_client():
         client_api = client.VC3ClientAPI(c)
         return client_api
     except Exception as e:
+        app.logger.error("Couldn't get vc3 client: {0}".format(e))
         raise
 
 
@@ -353,6 +354,7 @@ def view_project(name):
             return render_template('projects_pages.html', name=name, owner=owner,
                                    members=members, allocations=allocations,
                                    projects=projects, users=users)
+    app.logger.error("Could not find project when viewing: {0}".format(name))
     raise LookupError('project')
 
 
@@ -369,10 +371,14 @@ def add_member_to_project(name):
             name = project.name
             if project.owner == user:
                 flash('User is already the project owner.', 'warning')
+                app.logger.error("Trying to add owner as member:" +
+                                 "owner: {0} project:{1}".format(user, name))
                 return redirect(url_for('view_project', name=name))
             vc3_client.addUserToProject(project=name, user=user)
             flash('Successfully added member to project.', 'success')
             return redirect(url_for('view_project', name=name))
+    app.logger.error("Could not find project when adding user: " +
+                     "user: {0} project:{1}".format(user, name))
     flash('Project not found, can\'t add user', 'warning')
     return redirect(url_for('view_project', name=name))
 
@@ -392,6 +398,8 @@ def add_allocation_to_project(name):
                                               projectname=name)
             flash('Successfully added allocation to project.', 'success')
             return redirect(url_for('view_project', name=name))
+    app.logger.error("Could not find project when adding allocation: " +
+                     "alloc: {0} project:{1}".format(new_allocation, name))
     flash('Project not found, could not add allocation to project', 'warning')
     return redirect(url_for('view_project', name=name))
 
@@ -473,6 +481,8 @@ def view_cluster(name):
         elif app_type == "workqueue":
             environment = []
         else:
+            app.logger.error("Got unsupported framework when viewing " +
+                             "cluster template: {0}".format(app_type))
             raise ValueError('app_type not a recognized framework')
 
         cluster_name = None
@@ -521,6 +531,7 @@ def edit_cluster(name):
             return render_template('cluster_edit.html', name=clustername,
                                    owner=owner, nodesets=nodesets,
                                    state=state, acl=acl, projects=projects)
+    app.logger.error("Could not find cluster when editing: {0}".format(name))
     raise LookupError('cluster')
 
 
@@ -591,6 +602,7 @@ def view_allocation(name):
                                        owner=owner, resource=resource,
                                        accountname=accountname,
                                        pubtoken=pubtoken, state=state)
+        app.logger.error("Could not find allocation when viewing: {0}".format(name))
         raise LookupError('allocation')
 
     elif request.method == 'POST':
@@ -633,6 +645,7 @@ def edit_allocation(name):
                                    owner=owner, resources=resources,
                                    resource=resource, accountname=accountname,
                                    pubtoken=pubtoken)
+    app.logger.error("Could not find allocation when editing: {0}".format(name))
     raise LookupError('alliocation')
 
 
@@ -667,6 +680,7 @@ def view_resource(name):
                                    resource=resource, description=description,
                                    displayname=displayname, url=url,
                                    docurl=docurl, organization=organization)
+    app.logger.error("Could not find Resource when viewing: {0}".format(name))
     raise LookupError('resource')
 
 
@@ -736,6 +750,7 @@ def view_request(name):
                                        owner=owner, requests=vc3_requests,
                                        clusters=clusters, nodesets=nodesets,
                                        action=action, state=state)
+        app.logger.error("Could not find VC when viewing: {0}".format(name))
         raise LookupError('virtual cluster')
 
     elif request.method == 'POST':
@@ -749,6 +764,7 @@ def view_request(name):
                       'success')
                 return redirect(url_for('list_requests'))
         flash('Could not find specified Virtual Cluster', 'warning')
+        app.logger.error("Could not find VC when terminating: {0}".format(name))
         return redirect(url_for('list_requests'))
 
 
