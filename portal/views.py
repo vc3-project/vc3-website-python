@@ -699,8 +699,8 @@ def create_request():
         cluster = request.form['cluster']
         policy = "static-balanced"
         environments = ["condor-glidein-password-env1"]
-        for selectedallocations in request.form.getlist('allocation'):
-            allocations.append(selectedallocations)
+        for selected_allocations in request.form.getlist('allocation'):
+            allocations.append(selected_allocations)
 
         newrequest = vc3_client.defineRequest(name=vc3requestname,
                                               owner=owner, cluster=cluster,
