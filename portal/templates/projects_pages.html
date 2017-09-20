@@ -12,33 +12,33 @@
       <div class="col-md-12">
         <div class="card">
           <div class="header">
-          	<h4 class="title">Project:<a href="{{url_for('view_project', name=name)}}" method="GET"> {{ name }}</a></h4>
+          	<h4 class="title">Project:<a href="{{url_for('view_project', name=name)}}" > {{ name }}</a></h4>
             <div class="">
 							<!-- <h5>Current project description</h5> -->
 						</div>
 						<hr />
           </div>
 
-          <div class="content description">
-						<label for="members">Project Members</label>
-								<div name="members" class="list-group">
-									<div href="#" class="list-group-item active">{{ owner }} (Owner)</div>
-                    {% for member in members%}
-                    <a href="#" class="list-group-item list-group-item-action" name="removeuser" value="{{member}}">{{ member }}
-                      {% if session['name'] == owner %}
-                      <!-- <button type="submit" name="btn" value="removeuser" class="btn btn-danger btn-xs pull-right" data-submit="Removing User...">Remove User</button> -->
-                      {% endif %}
-                    </a>
-                    {% endfor %}
-								</div>
-              {% if session['name'] == owner %}
+			<div class="content description">
+				<label for="members">Project Members</label>
+				<div class="list-group">
+					<div class="list-group-item active">{{ owner }} (Owner)</div>
+					{% for member in members%}
+					<a href="#" class="list-group-item list-group-item-action" name="removeuser">{{ member }}
+						{% if session['name'] == owner %}
+						<!-- <button type="submit" name="btn" value="removeuser" class="btn btn-danger btn-xs pull-right" data-submit="Removing User...">Remove User</button> -->
+						{% endif %}
+					</a>
+					{% endfor %}
+				</div>
+				{% if session['name'] == owner %}
 							<form role="form" action="{{url_for('add_member_to_project', name=name)}}" method="POST">
 								<fieldset>
 					        <label for="newuser">Add New Users</label>
 					        <select class="form-control" name="newuser" tabindex="2" id="form-resource-list" required>
 					          <option selected disabled>Please Select User</option>
 					          {% for user in users %}
-                      {% if user.name not in members %}
+                      {% if (user.name not in members) and (user.name != owner) %}
 					          <option value="{{user.name}}" required>{{ user.name }}</option>
                       {% endif %}
 					          {% endfor %}
