@@ -3,12 +3,8 @@ import traceback
 import sys
 import time
 from ConfigParser import SafeConfigParser
-try:
-    from urllib.parse import urlencode
-except ImportError:
-    from urllib import urlencode
 
-from flask import (abort, flash, redirect, render_template, request,
+from flask import (flash, redirect, render_template, request,
                    session, url_for)
 
 from vc3client import client

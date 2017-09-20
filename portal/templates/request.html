@@ -129,10 +129,16 @@
                         {% for nodeset in nodesets %}
                           {% if nodeset.name == request.cluster %}
                             {% if nodeset.app_type == "htcondor" %}
-                              <small><option>condor-dev.virtualclusters.org</option></small>
+                              <div class="row">
+                                <small>condor-dev.virtualclusters.org</small>
+                              </div>
                             {% elif nodeset.app_type == "workqueue" %}
-                              <small><option>condor-dev.virtualclusters.org</option></small>
-                              <small><option>WQ Project Name: {{ request.name }}</option></small>
+                              <div class="row">
+                                <small>condor-dev.virtualclusters.org</small>
+                              </div>
+                              <div class="row">
+                                <small>WQ Project Name: {{ request.name }}</small>
+                              </div>
                             {% endif %}
                           {% endif %}
                         {% endfor %}
@@ -231,10 +237,16 @@
                         {% for nodeset in nodesets %}
                           {% if nodeset.name == request.cluster %}
                             {% if nodeset.app_type == "htcondor" %}
-                              <small><option>condor-dev.virtualclusters.org</option></small>
+                              <div class="row">
+                                <small>condor-dev.virtualclusters.org</small>
+                              </div>
                             {% elif nodeset.app_type == "workqueue" %}
-                              <small><option>condor-dev.virtualclusters.org</option></small>
-                              <small><option>WQ Project Name: {{ request.name }}</option></small>
+                              <div class="row">
+                                <small>condor-dev.virtualclusters.org</small>
+                              </div>
+                              <div class="row">
+                                <small>WQ Project Name: {{ request.name }}</small>
+                              </div>
                             {% endif %}
                           {% endif %}
                         {% endfor %}
