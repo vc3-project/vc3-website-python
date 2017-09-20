@@ -745,8 +745,8 @@ def view_request(name):
 
                 flash('Your Virtual Cluster has successfully begun termination.',
                       'success')
+                return redirect(url_for('list_requests'))
         flash('Could not find specified Virtual Cluster', 'warning')
-
         return redirect(url_for('list_requests'))
 
 
