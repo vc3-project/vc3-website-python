@@ -149,11 +149,11 @@ def logout():
     ga_logout_url.append(app.config['GLOBUS_AUTH_LOGOUT_URI'])
     ga_logout_url.append('?client={}'.format(app.config['PORTAL_CLIENT_ID']))
     ga_logout_url.append('&redirect_uri={}'.format(redirect_uri))
-    ga_logout_url.append('&redirect_name=Globus Sample Data Portal')
+    ga_logout_url.append('&redirect_name=VC3 Home')
 
     # Redirect the user to the Globus Auth logout page
-    return redirect(''.join(ga_logout_url))
-    # return redirect(url_for('home'))
+    # return redirect(''.join(ga_logout_url))
+    return redirect(url_for('home'))
 
 
 @app.route('/profile', methods=['GET', 'POST'])
@@ -765,10 +765,16 @@ def view_request(name):
         return redirect(url_for('list_requests'))
 
 
-@app.route('/dashboard', methods=['GET'])
+@app.route('/monitoring', methods=['GET'])
 @authenticated
 def dashboard():
     return render_template('dashboard.html')
+
+
+@app.route('/timeline', methods=['GET'])
+@authenticated
+def timeline():
+    return render_template('timeline.html')
 
 
 @app.route('/error', methods=['GET'])
