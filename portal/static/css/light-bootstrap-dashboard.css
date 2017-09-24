@@ -53,7 +53,8 @@ td,
 button.close {
   -moz-osx-font-smoothing: grayscale;
   -webkit-font-smoothing: antialiased;
-  font-family: "Roboto","Helvetica Neue",Arial,sans-serif;
+  /*font-family: "Roboto","Helvetica Neue",Arial,sans-serif;*/
+  font-family: "Open Sans", sans-serif;
   font-weight: 400; }
 
 h1, .h1, h2, .h2, h3, .h3, h4, .h4 {
@@ -233,7 +234,9 @@ body > .navbar-collapse {
       margin: 10px 10px;
       color: #FFFFFF;
       line-height: 20px;
-      font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; }
+      /*font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;*/
+      font-family: "Open Sans", Helvetica, Arial, sans-serif;
+     }
     .sidebar .logo .simple-text,
     body > .navbar-collapse .logo .simple-text {
       text-transform: uppercase;
@@ -316,7 +319,9 @@ body > .navbar-collapse {
       margin: 10px 10px;
       color: #FFFFFF;
       line-height: 20px;
-      font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; }
+      /*font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;*/
+      font-family: "Open Sans", Helvetica, Arial, sans-serif;
+     }
     .sidebar .logo .simple-text,
     body > .navbar-collapse .logo .simple-text {
       text-transform: uppercase;
@@ -897,12 +902,19 @@ body > .navbar-collapse {
 .navbar {
   border: 0;
   font-size: 16px;
-  border-radius: 0; }
+  border-radius: 0;
+  margin-bottom: 0px;
+ }
   .navbar .navbar-brand {
     font-weight: 400;
     margin: 5px 0px;
     padding: 15px 15px;
-    font-size: 20px; }
+    font-size: 20px;
+    color: #b3b3b3;
+  }
+  .navbar .navbar-brand:hover {
+    color: #ffc500;
+  }
   .navbar .navbar-nav > li > a {
     padding: 10px 15px;
     margin: 10px 3px;
@@ -1021,10 +1033,10 @@ body > .navbar-collapse {
 
 .navbar-default {
   /*background-color: rgba(255, 255, 255, 0.96);*/
-  background-color: rgba(0, 0, 0, 0.8);
+  background-color: rgba(0, 0, 0, 1.0);
   border-bottom: 1px solid rgba(0, 0, 0, 0.1); }
   .navbar-default .navbar-nav > li > a:not(.btn) {
-    color: #9A9A9A; }
+    color: #b3b3b3; }
   .navbar-default .navbar-nav > .active > a,
   .navbar-default .navbar-nav > .active > a:not(.btn):hover,
   .navbar-default .navbar-nav > .active > a:not(.btn):focus,
@@ -1050,7 +1062,7 @@ body > .navbar-collapse {
     color: #ffc500;
     border-color: #ffc500; }
   .navbar-default:not(.navbar-transparent) .btn-neutral, .navbar-default:not(.navbar-transparent) .btn-neutral:hover, .navbar-default:not(.navbar-transparent) .btn-neutral:active {
-    color: #9A9A9A; }
+    color: #b3b3b3; }
 
 /*      Navbar with icons            */
 .navbar-icons.navbar .navbar-brand {

@@ -243,6 +243,7 @@ h1, h2, h3, h4, h5, h6 {
 .navbar-brand{
   background: url(https://image.ibb.co/e59s3v/logosmall.png) center / contain no-repeat;
   width: 200px;
+  margin-right: -60px;
 }
 /*.nav a{
   display: flex;
@@ -327,23 +328,6 @@ h1, h2, h3, h4, h5, h6 {
 #mobile-nav ul li li {
   padding-left: 30px;
 }
-
-/*#mobile-nav ul .menu-has-children i {
-  position: absolute;
-  right: 0;
-  z-index: 99;
-  padding: 15px;
-  cursor: pointer;
-  color: #fff;
-}
-
-#mobile-nav ul .menu-has-children i.fa-chevron-up {
-  color: #03C4EB;
-}*/
-
-/*#mobile-nav ul .menu-item-active {
-  color: #03C4EB;
-}*/
 
 #mobile-body-overly {
   width: 100%;

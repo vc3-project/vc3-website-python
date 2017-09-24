@@ -471,59 +471,81 @@ $(".btn").on("click", function() {
         placement: "top",
         // backdrop: true,
         title: function(){ return "Welcome, " + name; },
-        content: "Here are the sections of this page, easily laid out."
+        content: "Here are the sections of VC3, easily laid out."
       },
       {
+        path: "/profile",
         element: ".tour-step.tour-step-three",
-        placement: "right",
+        placement: "top",
         // backdrop: true,
-        title: "Allocations",
-        content: "Begin by registering your allocation for validation."
+        title: "Profile",
+        content: "Begin by saving your profile information"
       },
       {
-        path: "/allocation",
         element: ".tour-step.tour-step-four",
         placement: "right",
-        // title: "Cluster Templates",
-        content: "You may register new allocations and view them below"
+        // backdrop: true,
+        title: "Resources",
+        content: "Here, you may browse known resources"
       },
       {
         element: ".tour-step.tour-step-five",
+        placement: "right",
+        // backdrop: true,
+        title: "Allocations",
+        content: "Next, you may register your allocation for validation"
+      },
+      {
+        path: "/allocation",
+        element: ".tour-step.tour-step-six",
+        placement: "right",
+        // title: "Cluster Templates",
+        content: "Here, once you register new allocations, you may view them below"
+      },
+      {
+        element: ".tour-step.tour-step-seven",
         placement: "right",
         // backdrop: true,
         title: "Cluster Templates",
         content: "Create your project and add members and allocations accordingly."
       },
       {
-        element: ".tour-step.tour-step-six",
+        path: "/clusters",
+        element: ".tour-step.tour-step-eight",
+        placement: "right",
+        // title: "Cluster Templates",
+        content: "You may define new templates and view them below"
+      },
+      {
+        element: ".tour-step.tour-step-nine",
         placement: "right",
         // backdrop: true,
         title: "Projects",
         content: "Create your project and add members and allocations accordingly."
       },
       {
-        element: ".tour-step.tour-step-seven",
+        element: ".tour-step.tour-step-ten",
         placement: "right",
         // backdrop: true,
         title: "Resources",
         content: "Browse known resources"
       },
       {
-        element: ".tour-step.tour-step-eigth",
+        element: ".tour-step.tour-step-eleven",
         placement: "right",
         // backdrop: true,
         title: "Virtual Clusters",
         content: "Launch your Virtual Cluster!"
       },
       {
-        element: ".tour-step.tour-step-nine",
+        element: ".tour-step.tour-step-twelve",
         placement: "right",
         // backdrop: true,
         title: "Dashboard",
         content: "Keep an eye on your Virtual Clusters"
       },
       {
-        element: ".tour-step.tour-step-ten",
+        element: ".tour-step.tour-step-thirteen",
         placement: "top",
         orphan: true,
         title: "Thank you.",

@@ -207,7 +207,7 @@ def show_profile_page():
         vc3_client.storeUser(newuser)
 
         flash('Thank you. Your profile has been successfully updated. '
-              'You may now register an allocation.', 'warning')
+              'You may now register an allocation.', 'success')
 
         if 'next' in session:
             redirect_to = session['next']
@@ -318,7 +318,7 @@ def create_project():
                                               members=members)
         vc3_client.storeProject(newproject)
 
-        flash('Your project has been successfully created.', 'warning')
+        flash('Your project has been successfully created.', 'success')
 
         return redirect(url_for('list_projects'))
 
@@ -432,7 +432,7 @@ def create_cluster():
         vc3_client.addNodesetToCluster(nodesetname=nodeset.name,
                                        clustername=newcluster.name)
 
-        flash('Your cluster template has been successfully defined.', 'warning')
+        flash('Your cluster template has been successfully defined.', 'success')
         return redirect(url_for('list_clusters'))
 
 
@@ -616,7 +616,7 @@ def view_allocation(name):
                                                             resource=resource,
                                                             accountname=accountname)
                 vc3_client.storeAllocation(newallocation)
-                flash('Allocation created', 'warning')
+                flash('Allocation created', 'success')
                 return render_template('allocation_profile.html', name=allocationname,
                                        owner=owner, accountname=accountname,
                                        resource=resource, allocations=allocations,
@@ -722,7 +722,7 @@ def create_request():
                                               expiration=expiration)
         vc3_client.storeRequest(newrequest)
 
-        flash('Your Virtual Cluster has been successfully requested.', 'warning')
+        flash('Your Virtual Cluster has been successfully launched.', 'success')
 
         return redirect(url_for('list_requests'))
 

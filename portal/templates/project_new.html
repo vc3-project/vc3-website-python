@@ -35,7 +35,7 @@ Create a new project
                     <label for="members">Project Members</label>
                     <!-- owner: {{ owner }} -->
                     <select class="form-control" name="members" tabindex="2" id="form-resource-list" required>
-                        <option selected disabled>Add User to Project<</option>
+                        <option selected disabled>Add User to Project</option>
                         {% for user in users %}
                             {% if (user.name not in members) and (user.name != owner) %}
                             <option value="{{user.name}}">{{ user.name }}</option>
