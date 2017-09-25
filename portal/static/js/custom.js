@@ -76,7 +76,7 @@ jQuery(document).ready(function() {
   // Initiate superfish on nav menu
   jQuery('.nav-menu').superfish({
     animation: {opacity:'show'},
-    speed: 400
+    speed: 500
   });
 
   // Mobile Navigation
@@ -375,9 +375,6 @@ $(document).ready(function() {
 
 // Search Function for Resource Page
 
-/*
-Please consider that the JS part isn't production ready at all, I just code it to show the concept of merging filters and titles together !
-*/
 $(document).ready(function(){
     $('.filterable .btn-filter').click(function(){
         var $panel = $(this).parents('.filterable'),
@@ -561,3 +558,11 @@ $(".btn").on("click", function() {
     tour.start();
 
 }());
+
+// Flash Message fade out
+
+$(function() {
+   $('#flash').delay(500).fadeIn('normal', function() {
+      $(this).delay(2500).fadeOut();
+   });
+});
