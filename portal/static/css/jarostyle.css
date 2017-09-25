@@ -411,6 +411,12 @@ body.mobile-nav-active #mobile-nav-toggle {
   display: block;
   margin: 0 auto;
 }
+#about #vc3homediagram #apf-icon {
+  max-width: 60%;
+  max-height: 60%;
+  display: block;
+  margin: 0 auto;
+}
 #about .container .content {
   padding-top: 70px;
 }
