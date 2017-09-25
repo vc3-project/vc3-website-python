@@ -28,7 +28,7 @@
           >
       </fieldset> -->
       <fieldset>
-        <label for="resource">Resource</label>
+        <label for="resource">Resource <span id="asterik">*</span></label>
         <select class="form-control" name="resource" tabindex="2" id="form-resource-list" required>
           <option value="" selected disabled>Please Select Resource</option>
           {% for resource in resources %}
@@ -37,7 +37,7 @@
         </select>
       </fieldset>
       <fieldset>
-        <label for="accountname">Account Name on Resource</label>
+        <label for="accountname">Account Name on Resource <span id="asterik">*</span></label>
         <input
           placeholder="Account Name"
           name="accountname"

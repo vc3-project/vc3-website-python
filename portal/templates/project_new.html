@@ -15,7 +15,7 @@ Create a new project
         <h4>A project connects your allocations to your team members</h4>
 
         <fieldset>
-          <label for="name">Project Name</label>
+          <label for="name">Project Name <span id="asterik">*</span></label>
             <input
               placeholder="Your Project name"
               name="name"
@@ -27,14 +27,14 @@ Create a new project
         </fieldset>
         <fieldset>
           <label for="members">Project Members</label>
-                    <!-- owner: {{ owner }} -->
+            <!-- owner: {{ owner }} -->
             <select class="form-control" name="members" tabindex="2" id="form-resource-list">
               <option value="" selected>Add User to Project</option>
-              {% for user in users %}
-                {% if (user.name not in members) and (user.name != owner) %}
+            {% for user in users %}
+              {% if (user.name not in members) and (user.name != owner) %}
               <option value="{{user.name}}">{{ user.name }}</option>
-                {% endif %}
-              {% endfor %}
+              {% endif %}
+            {% endfor %}
             </select>
         </fieldset>
         <fieldset>

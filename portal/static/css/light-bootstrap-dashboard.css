@@ -1988,13 +1988,14 @@ body > .navbar-collapse {
       width: 100%;
       margin: 0 auto;
       position: relative;
+      padding-top: 30px;
     }
 
     #new-project-form input[type="text"],
     #new-project-form input[type="url"],
     #new-project-form textarea,
     #new-project-form button[type="submit"] {
-      font: 400 14px/18px "Roboto", Helvetica, Arial, sans-serif;
+      font: 400 14px/18px "Open Sans", Helvetica, Arial, sans-serif;
     }
 
     #new-project-form {
@@ -2229,6 +2230,9 @@ body > .navbar-collapse {
 
     :-ms-input-placeholder {
       color: #888;
+    }
+    label #asterik {
+      color: red;
     }
 
     /*--------------------------------------------------------------

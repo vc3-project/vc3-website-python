@@ -19,7 +19,7 @@
       <h5 style="color:black">A cluster template is a blueprint for your virtual cluster</h5>
 
       <fieldset>
-        <label for="name">Cluster Template Name</label>
+        <label for="name">Cluster Template Name <span id="asterik">*</span></label>
         <input
           placeholder="Your Template Name"
           name="name"
@@ -30,7 +30,7 @@
           value="{{request.name}}">
       </fieldset>
       <fieldset>
-        <label for="app_type">Cluster Framework</label>
+        <label for="app_type">Cluster Framework <span id="asterik">*</span></label>
         <select class="form-control" name="app_type" tabindex="2" id="form-resource-list" required>
           <option value="" selected disabled>Please Select Framework</option>
           <option value="htcondor">HTCondor</option>
@@ -46,7 +46,7 @@
         </select>
       </fieldset> -->
       <fieldset>
-        <label for="node_number">Number of Nodes:</label>
+        <label for="node_number">Number of Nodes: <span id="asterik">*</span></label>
         <input
           placeholder="1"
           name="node_number"
