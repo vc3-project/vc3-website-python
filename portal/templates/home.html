@@ -16,8 +16,12 @@
     <h1>Virtual Clusters for Community Computation</h1>
     <h2><span class="rotating">Deploy HTCondor and WorkQueue clusters/ Integrate diverse HPC resources/ Enable collaborative science/ Open to beta testers early 2018 </span></h2>
     <div class="actions">
+    {%if session.get('is_authenticated')%}
+      <a href="#aboutvc3" class="btn-about-vc3">About VC3</a>
+    {% else %}
       <a href="#aboutvc3" class="btn-about-vc3">About VC3</a>
       <a href="{{url_for('signup')}}" class="btn-about-vc3">Sign Up</a>
+    {% endif %}
     </div>
   </div>
 </section>
@@ -130,7 +134,7 @@
 
     <div class="content col-sm-12">
 
-      <div class="row" id="left">
+      <div class="row">
          <div class="col-sm-12 col-md-8 col-lg-8">
            <h3 class="section-title">Pilot Factory</h3>
            <div class="section-title-divider"></div>
@@ -143,7 +147,20 @@
          </div>
        </div>
 
-     <div class="row" id="left">
+       <div class="row">
+         <div class="col-sm-12 col-md-4 col-lg-4" id="vc3homediagram">
+           <img id="ciconnect-icon" src="{{url_for('static', filename='img/aboutvc3/ciconnect.jpg')}}">
+         </div>
+         <div class="col-sm-12 col-md-8 col-lg-8">
+           <h3 class="section-title">CI-Connect</h3>
+           <div class="section-title-divider"></div>
+           <h4 class="section-description">
+             Information about CI-Connect
+           </h4>
+         </div>
+       </div>
+
+     <div class="row">
         <div class="col-sm-12 col-md-8 col-lg-8">
           <h3 class="section-title">Resource Provisioning</h3>
           <div class="section-title-divider"></div>
@@ -156,7 +173,7 @@
         </div>
       </div>
 
-      <div class="row" id="left">
+      <div class="row">
         <div class="col-sm-12 col-md-4 col-lg-4" id="vc3homediagram">
           <img id="wq-icon" src="{{url_for('static', filename='img/aboutvc3/wq.png')}}">
         </div>
@@ -169,7 +186,7 @@
         </div>
       </div>
 
-      <div class="row" id="left">
+      <div class="row">
         <div class="col-sm-12 col-md-4 col-lg-4" id="vc3homediagram">
           <img id="globus-icon" src="{{url_for('static', filename='img/aboutvc3/globus.png')}}">
         </div>
@@ -183,7 +200,7 @@
       </div>
 
 
-      <div class="row" id="left">
+      <div class="row">
         <div class="col-sm-12 col-md-8 col-lg-8">
           <h3 class="section-title">Grid Computing</h3>
           <div class="section-title-divider"></div>
