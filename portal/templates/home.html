@@ -26,7 +26,7 @@
   </div>
 </section>
 
-<section id="about" class="container wow fadeInUp">
+<section id="about" class="container wow fadeInLeft">
   <div class="container" id="about-vc3">
     <div class="col-sm-12 col-md-4 col-lg-4" id="vc3homediagram">
       <img src="https://image.ibb.co/eOOgHF/homepagev4.png">
@@ -42,7 +42,7 @@
   <img src="https://image.ibb.co/cpdMMa/vc3divider.png" alt="Virtual Clusters 3 Divider">
 </div>
 
-<section id="about" class="container wow fadeInUp">
+<section id="about" class="container wow fadeInLeft">
   <div id="myCarousel" class="carousel slide" data-ride="carousel" data-interval="5000">
 
     <!-- Indicators -->
@@ -140,21 +140,11 @@
         </div>
         <div class="col-sm-12 col-md-8 col-lg-8">
           <h4 class="section-description">
-            VC3 uses the Automatic Pilot Factory (APF) which was developed for the ATLAS experiment at the CERN Large Hadron Collider. In prodduction since 2009, the APF distributes ATLAS pilots to more than XX clusters located in YY countries in support of the PanDA workload management service.
+            APF = AutoPyFactory = Automatic Python Factory. APF is a scalable, flexible, easily deployed generic provisioning factory. It monitors idle workloads, calculates the appropriate number of jobs/containers to submit/launch (or kill), and then does so.
           </h4>
         </div>
       </div>
 
-      <div class="row container wow fadeInRight">
-        <div class="col-sm-12 col-md-4 col-lg-4" id="vc3homediagram">
-          <img id="ciconnect-icon" src="{{url_for('static', filename='img/aboutvc3/ciconnect2.jpg')}}">
-        </div>
-        <div class="col-sm-12 col-md-8 col-lg-8">
-          <h4 class="section-description">
-            Information about CI-Connect
-          </h4>
-        </div>
-      </div>
 
       <div class="row container wow fadeInRight">
         <div class="col-sm-12 col-md-4 col-lg-4" id="vc3homediagram">
@@ -162,10 +152,11 @@
         </div>
         <div class="col-sm-12 col-md-8 col-lg-8">
           <h4 class="section-description">
-            The APF is itself using HTCondor software and relies heavily on the "HTCondor-G" protocol for accessing cluster resources.
+            Leveraging Condor-G from HTCondor, APF can manage submissions to a wide array of resources. It is plugin-based to allow flexible and robust combinations of monitored workloads, resource targets, and submission types. A unique 'algorithm by configuration' mechanism allows the deployer to program APF's submission behavior without coding.
           </h4>
         </div>
       </div>
+
 
       <div class="row container wow fadeInRight">
         <div class="col-sm-12 col-md-4 col-lg-4" id="vc3homediagram">
@@ -173,7 +164,7 @@
         </div>
         <div class="col-sm-12 col-md-8 col-lg-8">
           <h4 class="section-description">
-            Work Queue is a framework for building large master-worker applications that span thousands of machines drawn from clusters, clouds, and grids.
+            A framework for massively scalable scientific applications.
           </h4>
         </div>
       </div>
@@ -196,6 +187,18 @@
         <div class="col-sm-12 col-md-8 col-lg-8">
           <h4 class="section-description">
             VC3 leverages the authorization service from Globus to manage identities.  Researchers can use their home institutional ("campus") IDs when logging into the VC3 portal.
+          </h4>
+        </div>
+      </div>
+
+
+      <div class="row container wow fadeInRight">
+        <div class="col-sm-12 col-md-4 col-lg-4" id="vc3homediagram">
+          <img id="ciconnect-icon" src="{{url_for('static', filename='img/aboutvc3/ciconnect2.jpg')}}">
+        </div>
+        <div class="col-sm-12 col-md-8 col-lg-8">
+          <h4 class="section-description">
+          CI Connect offers several capabilities based on Globus, HTCondor and other HTC and data sharing technologies. It is the basis of OSG Connect, ATLAS Connect, CMS Connect among other submission services.
           </h4>
         </div>
       </div>
