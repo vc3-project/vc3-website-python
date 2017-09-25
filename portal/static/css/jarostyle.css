@@ -411,14 +411,56 @@ body.mobile-nav-active #mobile-nav-toggle {
   display: block;
   margin: 0 auto;
 }
-#about #vc3homediagram #apf-icon {
-  max-width: 60%;
-  max-height: 60%;
+#about #aboutvc3 {
+  margin: 0px;
+  margin-top: -10px;
+}
+#about #aboutvc3 .row {
+  padding: 10px;
+}
+/*#about #aboutvc3 img {
+  max-width: 65%;
+  max-height: 65%;
+  display: block;
+  margin: 0 auto;
+}*/
+#about #aboutvc3 #apf-icon {
+  max-width: 40%;
+  max-height: 40%;
+  display: block;
+  margin: 0 auto;
+  padding-top: 15px;
+}
+#about #aboutvc3 #htcondor-icon {
+  max-width: 80%;
+  max-height: 80%;
+  display: block;
+  margin: 0 auto;
+  padding-top: 25px;
+}
+#about #aboutvc3 #wq-icon {
+  max-width: 85%;
+  max-height: 85%;
+  display: block;
+  margin: 0 auto;
+}
+#about #aboutvc3 #globus-icon {
+  max-width: 50%;
+  max-height: 50%;
+  display: block;
+  margin: 0 auto;
+}
+#about #aboutvc3 #osg-icon {
+  max-width: 80%;
+  max-height: 80%;
   display: block;
   margin: 0 auto;
 }
 #about .container .content {
   padding-top: 70px;
+}
+#about #aboutvc3 .content {
+  padding-top: 0px;
 }
 #about #vc3homediagram img {
   max-height: 280px;
