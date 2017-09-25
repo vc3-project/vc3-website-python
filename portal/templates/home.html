@@ -121,48 +121,52 @@
 </div>
 
 <section id="about" class="container wow fadeInUp">
-  <div class="container" id="aboutvc3">
-    <div class="content container col-sm-12">
+  <div class="container">
+    <div class="content container col-xs-12" id="aboutvc3-main">
       <h2 class="section-title">
         About <span id="brand">VC3</span>
       </h2>
        <h4 class="section-description">
              VC3 is built from a number of software tools, technologies, and integrative experiences.
        </h4>
-      <!-- <div class="section-title-divider"></div> -->
+      <div class="section-title-divider"></div>
     </div>
 
-    <div class="content col-sm-12">
+    <div class="content col-xs-12" id="aboutvc3">
 
       <div class="row container wow fadeInRight">
-        <div class="col-sm-12 col-md-4 col-lg-4" id="vc3homediagram">
-          <img id="apf-icon" src="{{url_for('static', filename='img/aboutvc3/apf-factory-icon.jpg')}}">
+        <div class="col-xs-12 col-md-4" id="vc3homediagram">
+          <a href="#">
+            <img class="img-responsive" id="apf-icon" src="{{url_for('static', filename='img/aboutvc3/apf-factory-icon.jpg')}}">
+          </a>
         </div>
-        <div class="col-sm-12 col-md-8 col-lg-8">
+        <div class="col-xs-12 col-md-8">
           <h4 class="section-description">
             APF = AutoPyFactory = Automatic Python Factory. APF is a scalable, flexible, easily deployed generic provisioning factory. It monitors idle workloads, calculates the appropriate number of jobs/containers to submit/launch (or kill), and then does so.
           </h4>
         </div>
       </div>
 
-
       <div class="row container wow fadeInRight">
-        <div class="col-sm-12 col-md-4 col-lg-4" id="vc3homediagram">
-          <img id="htcondor-icon" src="{{url_for('static', filename='img/aboutvc3/htcondor.png')}}">
+        <div class="col-xs-12 col-md-4" id="vc3homediagram">
+          <a href="https://research.cs.wisc.edu/htcondor/" target="_blank">
+            <img class="img-responsive" id="htcondor-icon" src="{{url_for('static', filename='img/aboutvc3/htcondor.png')}}">
+          </a>
         </div>
-        <div class="col-sm-12 col-md-8 col-lg-8">
+        <div class="col-xs-12 col-md-8">
           <h4 class="section-description">
             Leveraging Condor-G from HTCondor, APF can manage submissions to a wide array of resources. It is plugin-based to allow flexible and robust combinations of monitored workloads, resource targets, and submission types. A unique 'algorithm by configuration' mechanism allows the deployer to program APF's submission behavior without coding.
           </h4>
         </div>
       </div>
 
-
       <div class="row container wow fadeInRight">
-        <div class="col-sm-12 col-md-4 col-lg-4" id="vc3homediagram">
-          <img id="wq-icon" src="{{url_for('static', filename='img/aboutvc3/wq.png')}}">
+        <div class="col-xs-12 col-md-4" id="vc3homediagram">
+          <a href="https://ccl.cse.nd.edu/software/workqueue/" target="_blank">
+            <img class="img-responsive" id="wq-icon" src="{{url_for('static', filename='img/aboutvc3/wq.png')}}">
+          </a>
         </div>
-        <div class="col-sm-12 col-md-8 col-lg-8">
+        <div class="col-xs-12 col-md-8">
           <h4 class="section-description">
             A cluster framework for massively scalable scientific applications supported by VC3. Tasks are executed by a standard worker process that can run on any available machine. Each worker calls home to the master process, arranges for data transfer, and executes the tasks. The system handles a wide variety of failures, allowing for dynamically scalable and robust applications.
           </h4>
@@ -170,33 +174,38 @@
       </div>
 
       <div class="row container wow fadeInRight">
-        <div class="col-sm-12 col-md-4 col-lg-4" id="vc3homediagram">
-          <img id="makeflow-icon" src="{{url_for('static', filename='img/aboutvc3/MakeflowLogoSmall.png')}}">
+        <div class="col-xs-12 col-md-4" id="vc3homediagram">
+          <a href="https://ccl.cse.nd.edu/software/makeflow/" target="_blank">
+            <img class="img-responsive" id="makeflow-icon" src="{{url_for('static', filename='img/aboutvc3/MakeflowLogoSmall.png')}}">
+          </a>
         </div>
-        <div class="col-sm-12 col-md-8 col-lg-8">
+        <div class="col-xs-12 col-md-8">
           <h4 class="section-description">
-            A portable, scalable workflow manager for scientific computing. The Makeflow language is similar to traditional Make, so if you can write a Makefile, then you can write a Makeflow. A workflow can be just a few commands chained together, or it can be a complex application consisting of thousands of tasks. 
+            A portable, scalable workflow manager for scientific computing. The Makeflow language is similar to traditional Make, so if you can write a Makefile, then you can write a Makeflow. A workflow can be just a few commands chained together, or it can be a complex application consisting of thousands of tasks.
           </h4>
         </div>
       </div>
 
       <div class="row container wow fadeInRight">
-        <div class="col-sm-12 col-md-4 col-lg-4" id="vc3homediagram">
-          <img id="globus-icon" src="{{url_for('static', filename='img/aboutvc3/globus.png')}}">
+        <div class="col-xs-12 col-md-4" id="vc3homediagram">
+          <a href="https://www.globus.org/" target="_blank">
+            <img class="img-responsive" id="globus-icon" src="{{url_for('static', filename='img/aboutvc3/globus.png')}}">
+          </a>
         </div>
-        <div class="col-sm-12 col-md-8 col-lg-8">
+        <div class="col-xs-12 col-md-8">
           <h4 class="section-description">
             VC3 leverages the authorization service from Globus to manage identities.  Researchers can use their home institutional ("campus") IDs when logging into the VC3 portal.
           </h4>
         </div>
       </div>
 
-
       <div class="row container wow fadeInRight">
-        <div class="col-sm-12 col-md-4 col-lg-4" id="vc3homediagram">
-          <img id="ciconnect-icon" src="{{url_for('static', filename='img/aboutvc3/ciconnect2.jpg')}}">
+        <div class="col-xs-12 col-md-4" id="vc3homediagram">
+          <a href="https://ci-connect.net/" target="_blank">
+            <img class="img-responsive" id="ciconnect-icon" src="{{url_for('static', filename='img/aboutvc3/ciconnect2.jpg')}}">
+          </a>
         </div>
-        <div class="col-sm-12 col-md-8 col-lg-8">
+        <div class="col-xs-12 col-md-8">
           <h4 class="section-description">
           CI Connect offers several capabilities based on Globus, HTCondor and other HTC and data sharing technologies. It is the basis of OSG Connect, ATLAS Connect, CMS Connect among other submission services.
           </h4>
@@ -205,12 +214,27 @@
 
 
       <div class="row container wow fadeInRight">
-        <div class="col-sm-12 col-md-4 col-lg-4" id="vc3homediagram">
-          <img id="osg-icon" src="{{url_for('static', filename='img/aboutvc3/osg.jpg')}}">
+        <div class="col-xs-12 col-md-4" id="vc3homediagram">
+          <a href="https://osgconnect.net/" target="_blank">
+            <img class="img-responsive" id="osg-icon" src="{{url_for('static', filename='img/aboutvc3/osg.jpg')}}">
+          </a>
         </div>
-        <div class="col-sm-12 col-md-8 col-lg-8">
+        <div class="col-xs-12 col-md-8">
           <h4 class="section-description">
            VC3 builds on foundational high-throughput principles established by the HTCondor team and implemented at scale by the Open Science Grid which operates services connecting over 115 clusters at institutions across the U.S. and  internationally.
+          </h4>
+        </div>
+      </div>
+
+      <div class="row container wow fadeInRight">
+        <div class="col-xs-12 col-md-4" id="vc3homediagram">
+          <a href="https://sciencegateways.org/" target="_blank">
+            <img class="img-responsive" id="sci-gateway-icon" src="{{url_for('static', filename='img/aboutvc3/sci-gateway.png')}}">
+          </a>
+        </div>
+        <div class="col-xs-12 col-md-8">
+          <h4 class="section-description">
+            Science gateways allow science and engineering communities to access shared data, software, computing services, instruments, educational materials, and other resources specific to their disciplines.
           </h4>
         </div>
       </div>
