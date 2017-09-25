@@ -714,11 +714,13 @@ def create_request():
     elif request.method == 'POST':
         allocations = []
         # environments = []
-        vc3requestname = request.form['name']
+        inputname = request.form['name']
         owner = session['name']
         expiration = None
         cluster = request.form['cluster']
         policy = "static-balanced"
+        translatename = "".join(inputname.split())
+        vc3requestname = translatename.lower()
         environments = ["condor-glidein-password-env1"]
         for selected_allocations in request.form.getlist('allocation'):
             allocations.append(selected_allocations)

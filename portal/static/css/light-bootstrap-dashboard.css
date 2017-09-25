@@ -206,14 +206,14 @@ body > .navbar-collapse {
   background-position: center center; }
   .sidebar .sidebar-wrapper,
   body > .navbar-collapse .sidebar-wrapper {
-    position: relative;
+    position: fixed;
     max-height: calc(100vh - 75px);
-    min-height: 100%;
+    /*min-height: 100%;*/
     overflow: auto;
     width: 260px;
     z-index: 4;
-    padding-top: 80px;
-    padding-bottom: 100px;
+    padding-top: 70px;
+    /*padding-bottom: calc(100vh - 75px);*/
     background-color: rgba(37, 40, 48, 0.7)}
   .sidebar .sidebar-background,
   body > .navbar-collapse .sidebar-background {
@@ -296,7 +296,7 @@ body > .navbar-collapse {
       line-height: 30px;
       font-size: 12px;
       font-weight: 600;
-      text-transform: uppercase;
+      /*text-transform: uppercase;*/
       margin-left: 45px; }
     .sidebar .nav i,
     body > .navbar-collapse .nav i {
@@ -374,7 +374,9 @@ body > .navbar-collapse {
     background: linear-gradient(to bottom, #787878 0%, #343434 100%);
     background-size: 150% 150%;
     z-index: 3;
-    opacity: 1; }
+    opacity: 1;
+    background: rgba(37, 40, 48, 1.0)
+   }
   .sidebar[data-image]:after, .sidebar.has-image:after,
   body > .navbar-collapse[data-image]:after,
   body > .navbar-collapse.has-image:after {
@@ -460,6 +462,7 @@ body > .navbar-collapse {
   overflow: auto;
   max-height: 100%;
   height: 100%;
+  /*padding-bottom: 120px;*/
   -webkit-transition-property: top,bottom;
   transition-property: top,bottom;
   -webkit-transition-duration: .2s,.2s;
