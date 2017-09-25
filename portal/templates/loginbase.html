@@ -37,38 +37,14 @@
 	</head>
 <body>
 
-<nav class="navbar navbar-default navbar-fixed-top">
-	<div class="container-fluid">
-		<div class="navbar-header">
-			<button type="button" class="navbar-toggle" data-toggle="collapse">
-				<span class="sr-only">Toggle navigation</span>
-				<span class="icon-bar"></span>
-				<span class="icon-bar"></span>
-				<span class="icon-bar"></span>
-			</button>
-			<a class="navbar-brand-logo pull-left" href="{{url_for('home')}}"><strong id="title">VC3</strong></a>
-			<a class="navbar-brand" href="{{url_for('blog')}}">News</a>
-			<a class="navbar-brand" href="{{url_for('community')}}">Community</a>
-		</div>
-		<div class="collapse navbar-collapse">
-
-			<div class="nav navbar-nav navbar-right">
-				<a class="navbar-brand" href="{{url_for('show_profile_page')}}">{{session['first']}} {{session['last']}}</a>
-				<a class="navbar-brand" href="{{url_for('logout')}}">Logout</a>
-			</div>
-		</div>
-	</div>
-</nav>
-
 <div class="wrapper">
-  <div class="sidebar tour-step tour-step-two" data-color="black" data-image="https://s.hswstatic.com/gif/disruptive-technologies-10-orig.jpg">
+  <div class="sidebar tour-step tour-step-two">
     <div class="sidebar-wrapper">
-      <!-- <div class="logo">
-        <a href="{{url_for('show_profile_page')}}" class="simple-text">
+      <div class="logo">
+        <!-- <a href="{{url_for('show_profile_page')}}" class="simple-text">
           <img src="https://image.ibb.co/e59s3v/logosmall.png" alt="" title="" width="100px" height="100px" /></img>
-        </a>
-      </div> -->
-
+        </a> -->
+      </div>
       <ul class="nav">
 				<li class="">
           <a href="{{url_for('list_resources')}}">
@@ -111,6 +87,28 @@
   </div>
 
   <div class="main-panel">
+		<nav class="navbar navbar-default navbar-fixed-top">
+			<div class="container-fluid">
+				<div class="navbar-header">
+					<button type="button" class="navbar-toggle" data-toggle="collapse">
+						<span class="sr-only">Toggle navigation</span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+					</button>
+					<a class="navbar-brand-logo pull-left" href="{{url_for('home')}}"><strong id="title">VC3</strong></a>
+					<a class="navbar-brand" href="{{url_for('blog')}}">News</a>
+					<a class="navbar-brand" href="{{url_for('community')}}">Community</a>
+				</div>
+				<div class="collapse navbar-collapse">
+
+					<div class="nav navbar-nav navbar-right">
+						<a class="navbar-brand" href="{{url_for('show_profile_page')}}">{{session['first']}} {{session['last']}}</a>
+						<a class="navbar-brand" href="{{url_for('logout')}}">Logout</a>
+					</div>
+				</div>
+			</div>
+		</nav>
 
 <!-- Page body -->
 {%block body%}
