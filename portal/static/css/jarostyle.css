@@ -245,9 +245,9 @@ h1, h2, h3, h4, h5, h6 {
   width: 200px;
   margin-right: -60px;
 }
-/*.nav a{
-  display: flex;
-}*/
+.navbar-default .navbar-nav li a{
+  color: #b3b3b3;
+}
 #header #title {
   font-size: 24px;
   color: #ffc500;

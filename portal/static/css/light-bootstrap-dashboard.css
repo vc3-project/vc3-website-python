@@ -187,7 +187,9 @@ input:focus {
 .wrapper {
   position: relative;
   top: 0;
-  height: 100vh; }
+  height: 100vh;
+  padding-top: 50px;
+ }
 
 .sidebar,
 body > .navbar-collapse {
@@ -210,6 +212,7 @@ body > .navbar-collapse {
     overflow: auto;
     width: 260px;
     z-index: 4;
+    padding-top: 80px;
     padding-bottom: 100px;
     background-color: rgba(37, 40, 48, 0.7)}
   .sidebar .sidebar-background,
@@ -901,18 +904,28 @@ body > .navbar-collapse {
 
 .navbar {
   border: 0;
-  font-size: 16px;
+  font-size: 14px;
   border-radius: 0;
   margin-bottom: 0px;
+  height: 90px;
+  padding: 15px 0;
  }
   .navbar .navbar-brand {
     font-weight: 400;
     margin: 5px 0px;
     padding: 15px 15px;
-    font-size: 20px;
+    font-size: 16px;
     color: #b3b3b3;
   }
   .navbar .navbar-brand:hover {
+    color: #ffc500;
+  }
+  .navbar-brand-logo{
+    background: url(https://image.ibb.co/e59s3v/logosmall.png) center / contain no-repeat;
+    width: 160px;
+    line-height: 2.3;
+    margin-right: -20px;
+    font-size: 24px;
     color: #ffc500;
   }
   .navbar .navbar-nav > li > a {
@@ -1033,8 +1046,10 @@ body > .navbar-collapse {
 
 .navbar-default {
   /*background-color: rgba(255, 255, 255, 0.96);*/
-  background-color: rgba(0, 0, 0, 1.0);
-  border-bottom: 1px solid rgba(0, 0, 0, 0.1); }
+  background-color: #111;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  border-color: #e7e7e7;
+ }
   .navbar-default .navbar-nav > li > a:not(.btn) {
     color: #b3b3b3; }
   .navbar-default .navbar-nav > .active > a,
