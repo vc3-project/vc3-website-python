@@ -839,7 +839,7 @@ body > .navbar-collapse {
   border-radius: 0;
   /*color: #FFFFFF;*/
   padding: 15px 25px;
-  /*padding-top: 25px;*/
+  padding-top: 60px;
   font-size: 16px;}
   .container .alert {
     border-radius: 4px; }
