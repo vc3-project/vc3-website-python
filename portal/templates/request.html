@@ -13,7 +13,10 @@
         <div class="card">
           <div class="header">
           	<h4 class="title">Virtual Clusters</h4>
-            <a href="{{url_for('create_request')}}" class="btn btn-primary btn-sm">+ New Virtual Cluster</a>
+            <a href="{{url_for('create_request')}}" class="btn btn-primary btn-sm">
+              <i class="fa fa-cloud-upload" aria-hidden="true"></i>
+              New Virtual Cluster
+            </a>
 						<hr />
           </div>
 
@@ -34,6 +37,7 @@
     										<tr class="filters">
     											<th><input type="text" class="form-control" placeholder="Name" disabled></th>
     											<th><input type="text" class="form-control" placeholder="State" disabled></th>
+                          <th><input type="text" class="form-control" placeholder="Cluster Template" disabled></th>
     											<th><input type="text" class="form-control" placeholder="Nodes" disabled></th>
                           <th><input type="text" class="form-control" placeholder="Head Node" disabled></th>
     										</tr>
@@ -45,7 +49,7 @@
     										<tr>
     											<td>
                             <a href="{{ url_for('view_request', name=request.name) }}"
-                            title="View Info on {{request.name.capitalize()}} Virtual Cluster">
+                            title="View Info on {{request.name}} Virtual Cluster">
                             {{ request.name }}
                             </a>
                           </td>
@@ -81,28 +85,34 @@
                           </td>
                         {% else %}
                           <td>
-                            <font color="orange">
-                              {{ request.state }} <i class="fa fa-spinner fa-spin" style="color:orange"></i>
+                            <font color="green">
+                              {{ request.state }} <i class="fa fa-spinner fa-spin" style="color:green"></i>
                             </font>
                           </td>
                         {% endif %}
 
                         {% if request.statusraw['MYSITE-hostname-sysadminname'] == {} %}
                           <td>
-                            <small class="label label-warning">Status Currently Unavailable</small>
+                            <div>Cluster Template Name</div>
+                          </td>
+                          <td>
+                            <small class="label label-warning">Status Currently Initializing</small>
                           </td>
                         {% elif request.statusraw == None %}
                           <td>
-                            <small class="label label-warning">Status Currently Unavailable</small>
+                            <div>Cluster Template Name</div>
+                          </td>
+                          <td>
+                            <small class="label label-warning">Status Currently Initializing</small>
                           </td>
                         {% else %}
                           <td>
                           {% for key, value in request.statusinfo.iteritems() %}
-                            <div class="row">
-                              <div id="node-status-name">
-                                Template: <strong>{{key.capitalize()}}</strong>
-                              </div>
-                            </div>
+                            <div>{{key}}</div>
+                          {% endfor %}
+                          </td>
+                          <td>
+                          {% for key, value in request.statusinfo.iteritems() %}
                             {% for k, v in value.iteritems() %}
                               {% if k == "idle" %}
                               <div class="row">
@@ -153,7 +163,7 @@
                         <tr>
     											<td>
                             <a href="{{ url_for('view_request', name=request.name) }}"
-                            title="View Info on {{request.name.capitalize()}} Virtual Cluster">
+                            title="View Info on {{request.name}} Virtual Cluster">
                             {{ request.name }}
                             </a>
                           </td>
@@ -189,28 +199,34 @@
                           </td>
                         {% else %}
                           <td>
-                            <font color="orange">
-                              {{ request.state }} <i class="fa fa-spinner fa-spin" style="color:orange"></i>
+                            <font color="green">
+                              {{ request.state }} <i class="fa fa-spinner fa-spin" style="color:green"></i>
                             </font>
                           </td>
                         {% endif %}
 
                         {% if request.statusraw['MYSITE-hostname-sysadminname'] == {} %}
                           <td>
-                            <small class="label label-warning">Status Currently Unavailable</small>
+                            <div>Cluster Template Name</div>
+                          </td>
+                          <td>
+                            <small class="label label-warning">Status Currently Initializing</small>
                           </td>
                         {% elif request.statusraw == None %}
                           <td>
-                            <small class="label label-warning">Status Currently Unavailable</small>
+                            <div>Cluster Template Name</div>
+                          </td>
+                          <td>
+                            <small class="label label-warning">Status Currently Initializing</small>
                           </td>
                         {% else %}
                           <td>
                           {% for key, value in request.statusinfo.iteritems() %}
-                            <div class="row">
-                              <div id="node-status-name">
-                                Template: <strong>{{key.capitalize()}}</strong>
-                              </div>
-                            </div>
+                            <div>{{key}}</div>
+                          {% endfor %}
+                          </td>
+                          <td>
+                          {% for key, value in request.statusinfo.iteritems() %}
                             {% for k, v in value.iteritems() %}
                               {% if k == "idle" %}
                               <div class="row">

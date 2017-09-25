@@ -35,7 +35,7 @@
   								<table class="table table-hover">
   									<thead>
   										<tr class="filters">
-  											<th><input type="text" class="form-control" placeholder="Name" disabled></th>
+  											<th><input type="text" class="form-control" placeholder="Allocation Profile" disabled></th>
   											<th><input type="text" class="form-control" placeholder="State" disabled></th>
   											<th><input type="text" class="form-control" placeholder="Resource" disabled></th>
   										</tr>
@@ -54,7 +54,15 @@
                           {% else %}
                           <td><font color="orange"><i class="fa fa-spinner fa-spin" style="color:orange"></i> {{ allocation.state }} </font></td>
                           {% endif %}
-  											<td><a href="{{ url_for('view_resource', name=allocation.resource) }}"><option>{{allocation.resource}}</option></a></td>
+  											<td>
+                          <a href="{{ url_for('view_resource', name=allocation.resource) }}">
+                          {% for resource in resources %}
+                            {% if allocation.resource == resource.name %}
+                            <div>{{resource.displayname}}</div>
+                            {% endif %}
+                          {% endfor %}
+                          </a>
+                        </td>
   										</tr>
                         {% endif %}
   										{% endfor %}

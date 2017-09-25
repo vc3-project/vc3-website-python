@@ -31,7 +31,13 @@
                   <h3 class="panel-title"><strong>Resource</strong></h3>
                 </div>
                 <div class="panel-body">
-                  <a href="{{ url_for('view_resource', name=resource) }}"><option>{{resource}}</option></a>
+                  <a href="{{ url_for('view_resource', name=resource) }}">
+                    {% for r in resources %}
+                      {% if resource == r.name %}
+                      <div>{{r.displayname}}</div>
+                      {% endif %}
+                    {% endfor %}
+                  </a>
                 </div>
               </div>
               <div class="panel panel-info resource-profile" style="margin: 1em;">
@@ -48,13 +54,13 @@
                 </div>
                 <!-- <div class="panel-body"> -->
                   <div class="panel-body pubtoken">
-                    {% if pubtoken == None %}
-                    <p>Your SSH public key will be available once your allocation has been validated. Please allow a few moments and refresh the page.</p>
+                    {% if pubtoken == "None" %}
+                    <p>Your SSH Public Key will be available once your allocation has been validated. Please allow a few moments and refresh the page.</p>
                     <div>
                       <font color="orange">Current State: <i class="fa fa-spinner fa-spin" style="color:orange"></i> {{ state }} </font>
                     </div>
                     {% else %}
-                    <p>Paste this SSH public key into your ~/.ssh/authorized_keys file on the remote resource</p>
+                    <p>To use this resource, paste this SSH Public Key into your ~/.ssh/authorized_keys file on the remote resource</p>
                     <textarea id="pubtoken" readonly disabled font-size="16">{{ pubtoken }}</textarea>
                     <!-- <button onclick="copyToClipboard('#pubtoken')" class="btn btn-primary btn-sm">Copy to Clipboard</button> -->
                     <div class="container">
@@ -62,11 +68,11 @@
                         <button class="btn btn-primary btn-sm" onclick="copyToClipboard('#pubtoken')">Copy to Clipboard</button>
                       </div>
                       <div class="span4">
-                        <div class="alert alert-info fade">
+                        <div class="alert alert-warning fade">
                           <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                             <span aria-hidden="true" style="color:black">&times;</span>
                           </button>
-                          Public token copied to clipboard
+                          SSH Public Key copied to clipboard
                         </div>
                       </div>
                     </div>

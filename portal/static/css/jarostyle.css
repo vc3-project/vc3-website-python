@@ -400,7 +400,7 @@ body.mobile-nav-active #mobile-nav-toggle {
 --------------------------------------------------------------*/
 
 #about {
-  padding: 10px 0;
+  padding: 25px 0;
   /*max-width: 100%;
   max-height: 100%;*/
   /*position: relative;*/
@@ -599,96 +599,9 @@ body.mobile-nav-active #mobile-nav-toggle {
 # Team Section
 --------------------------------------------------------------*/
 
-/*#team {
-  background: #fff;
-  padding: 80px 0 60px 0;
-}
-
-#team .member {
-  text-align: center;
-  margin-bottom: 20px;
-  position: relative;
-  width: 80%;
-}
-
-#team .member .pic {
-  margin-bottom: 15px;
-  overflow: hidden;
-}
-
-#team .member .pic img {
-  max-width: 100%;
-  max-height: 100%;
-  display: block;
-}
-
-#team .member h5 {
-  font-weight: 700;
-  margin-bottom: 2px;
-}
-
-#team .member span {
-  font-style: italic;
-  font-size: 13px;
-}
-
-#team .caption-style .overlay {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  border-radius: 50%;
-  margin-bottom: 50px;
-  overflow: hidden;
-  opacity: 0;
-  transition: .5s ease;
-  background-color: rgba(255, 197, 0, 0.8);
-}
-
-#team .caption-style .member:hover .overlay {
-  opacity: 1;
-}
-
-#team .caption-style .text {
-  color: black;
-  font-size: 20px;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 100%;
-  transform: translate(-50%, -50%);
-  -ms-transform: translate(-50%, -50%);
-}
-
-#team .caption-style .overlay a {
-  color: white;
-}
-#team .caption-style .overlay a:hover {
-  color: black;
-}*/
-
-
-/*@media only screen and (min-width : 320px) and (max-width: 640px) {
-
-        #team .member div img:not(.logoOP){
-           width: 320px !important;
-           height: auto;
-           display: inline-block;
-        }
-}
-
-@media only screen and (min-width : 320px) and (max-width: 640px) {
-
-        #team .caption-style .overlay:not {
-           width: 320px !important;
-           height: auto;
-           display: inline-block;
-        }
-}*/
-
 .bootstrap .snippet {
   padding: 60px 0 60px 0;
+  width: 1000px;
 }
 .page-title{
     color:#111;
@@ -699,9 +612,10 @@ body.mobile-nav-active #mobile-nav-toggle {
 }
 
 .member-content .details {
-    margin:20px 0 0 20px;
+    /*margin:20px 0 0 20px;*/
     position:relative;
-    padding:30px;
+    padding: 15px;
+    width: 90%;
     /*padding-left:100px;*/
     background:#f5f5f5;
     border-radius:10px;
@@ -738,7 +652,7 @@ body.mobile-nav-active #mobile-nav-toggle {
 }
 
 .member-content.right .details {
-    margin:20px 20px 0 0;
+    /*margin:20px 20px 0 0;*/
     box-shadow:-5px 5px 0 rgba(0,0,0,0.08);
 }
 

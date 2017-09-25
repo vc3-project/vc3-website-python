@@ -7,47 +7,42 @@ Create a new project
 {%block body%}
 
 <div class="col-md-8 col-sm-12">
-    <section id="new_project">
-        <div class="container new-project">
-            <form role="form" id="new-project-form" action="{{url_for('create_project')}}" method="POST">
+  <section id="new_project">
+    <div class="container new-project">
+      <form role="form" id="new-project-form" action="{{url_for('create_project')}}" method="POST">
 
-                <!-- Logo -->
+        <h3>Create a New Project</h3>
+        <h4>A project connects your allocations to your team members</h4>
 
-                <!-- <div class="col-lg-12 logo-vc3">
-                    <img width="100" class="logo" src="https://image.ibb.co/e59s3v/logosmall.png" alt="Logo" />
-                </div> -->
-
-                <h3>Create a New Project</h3>
-                <h4>A project contains all the allocations and resource requests from your research</h4>
-
-                <fieldset>
-                    <label for="name">Project Name</label>
-                    <input
-                            placeholder="Your Project name"
-                            name="name"
-                            type="text"
-                            tabindex="1"
-                            required
-                            autofocus
-                            value="{{request.name}}">
-                </fieldset>
-                <fieldset>
-                    <label for="members">Project Members</label>
+        <fieldset>
+          <label for="name">Project Name</label>
+            <input
+              placeholder="Your Project name"
+              name="name"
+              type="text"
+              tabindex="1"
+              required
+              autofocus
+              value="{{request.name}}">
+        </fieldset>
+        <fieldset>
+          <label for="members">Project Members</label>
                     <!-- owner: {{ owner }} -->
-                    <select class="form-control" name="members" tabindex="2" id="form-resource-list" required>
-                        <option selected disabled>Add User to Project</option>
-                        {% for user in users %}
-                            {% if (user.name not in members) and (user.name != owner) %}
-                            <option value="{{user.name}}">{{ user.name }}</option>
-                            {% endif %}
-                        {% endfor %}
-                    </select>
-                </fieldset>
-                <fieldset>
-                    <button type="submit" id="create-project" data-submit="...Sending">Create Project</button>
-                </fieldset>
-            </form>
-        </div> <!-- project container -->
-    </section>
+            <select class="form-control" name="members" tabindex="2" id="form-resource-list">
+              <option value="" selected>Add User to Project</option>
+              {% for user in users %}
+                {% if (user.name not in members) and (user.name != owner) %}
+              <option value="{{user.name}}">{{ user.name }}</option>
+                {% endif %}
+              {% endfor %}
+            </select>
+        </fieldset>
+        <fieldset>
+          <button type="submit" id="create-project" data-submit="...Sending">Create Project</button>
+        </fieldset>
+
+      </form>
+    </div> <!-- project container -->
+  </section>
 </div>
 {%endblock%}

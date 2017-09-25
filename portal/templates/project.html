@@ -45,6 +45,13 @@
   										<tr>
   											<td><a href="{{ url_for('view_project', name=project.name) }}" title="View Project">{{ project.name }}</a></td>
   											<td>
+                          <div>Owner:
+                            {% for user in users %}
+                              {% if user.name == project.owner %}
+                                {{user.name}}
+                              {% endif %}
+                            {% endfor %}
+                          </div>
                           {% for member in project.members %}
                           <option>{{ member }}</option>
                           {% endfor %}

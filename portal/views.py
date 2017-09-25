@@ -310,7 +310,10 @@ def create_project():
     elif request.method == 'POST':
         name = request.form['name']
         owner = session['name']
-        members = request.form['members'].split(",")
+        if request.form['members'] == "":
+            members = []
+        else:
+            members = request.form['members'].split(",")
         # description = request.form['description']
         # organization = request.form['organization']
 
@@ -328,8 +331,9 @@ def create_project():
 def list_projects():
     vc3_client = get_vc3_client()
     projects = vc3_client.listProjects()
+    users = vc3_client.listUsers()
 
-    return render_template('project.html', projects=projects)
+    return render_template('project.html', projects=projects, users=users)
 
 
 @app.route('/project/<name>', methods=['GET'])
@@ -567,8 +571,8 @@ def create_allocation():
             name=name, owner=owner, resource=resource, accountname=accountname)
         vc3_client.storeAllocation(newallocation)
 
-        flash('You may find your SSH key in your new allocation profile '
-              'after validation.', 'warning')
+        flash('Configuring your allocation, when complete, please view your '
+              'allocation to complete the setup.', 'warning')
 
         return redirect(url_for('list_allocations'))
 
@@ -590,7 +594,7 @@ def view_allocation(name):
                 accountname = allocation.accountname
                 encodedpubtoken = allocation.pubtoken
                 if encodedpubtoken is None:
-                    pubtoken = 'Pub token still being generated'
+                    pubtoken = 'None'
                 else:
                     pubtoken = base64.b64decode(encodedpubtoken)
 
@@ -598,7 +602,8 @@ def view_allocation(name):
                                        name=allocationname,
                                        owner=owner, resource=resource,
                                        accountname=accountname,
-                                       pubtoken=pubtoken, state=state)
+                                       pubtoken=pubtoken, state=state,
+                                       resources=resources)
         app.logger.error("Could not find allocation when viewing: {0}".format(name))
         raise LookupError('allocation')
 
@@ -610,6 +615,9 @@ def view_allocation(name):
                 owner = allocation.owner
                 resource = request.form['resource']
                 accountname = request.form['accountname']
+                # displayname = request.form['displayname']
+                # description_input = request.form['description']
+                # description = str(description_input)
 
                 newallocation = vc3_client.defineAllocation(name=allocationname,
                                                             owner=owner,

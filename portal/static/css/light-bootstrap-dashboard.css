@@ -2341,8 +2341,8 @@ RESOURCE PROFILE INDEX PAGE
   margin-right: 60px;
 }
 
-.filterable tbody tr td #node-status-name {
-  align-items: center;
+.filterable tbody tr td {
+  vertical-align: middle;
 }
 
 #dashboard .content iframe {
