@@ -35,8 +35,9 @@
   									<thead>
   										<tr class="filters">
   											<th><input type="text" class="form-control" placeholder="Name" disabled></th>
-  											<th><input type="text" class="form-control" placeholder="State" disabled></th>
+  											<th><input type="text" class="form-control" placeholder="Framework" disabled></th>
   											<th><input type="text" class="form-control" placeholder="Workers" disabled></th>
+                        <th><input type="text" class="form-control" placeholder="No. of Head Nodes" disabled></th>
   										</tr>
   									</thead>
   									<tbody data-link="row" class="rowlink">
@@ -44,21 +45,22 @@
                         {% if cluster.owner == session['name'] %}
   										<tr>
   											<td><a href="{{ url_for('view_cluster', name=cluster.name) }}" title="View Cluster Template">{{ cluster.name }}</a></td>
-                          {% if cluster.state == "validated" %}
-                          <td><font color="green"><i class="fa fa-check-circle-o" style="color:green"></i>{{ cluster.state }} </font></td>
-                          {% elif cluster.state == "terminated" %}
-                          <td><font color="red"><i class="fa fa-exclamation-circle" style="color:red"></i> {{ cluster.state }}</font></td>
-                          {% elif cluster.state == "new" %}
-                          <td><font color="blue">{{ cluster.state }}</font></td>
-                          {% else %}
-                          <td><font color="orange"><i class="fa fa-circle-o-notch" style="color:orange"></i> {{ cluster.state }}</font></td>
-                          {% endif %}
+                        <td>
+                          {% for nodeset in nodesets %}
+                            {% if nodeset.name == cluster.name %}
+                              {{ nodeset.app_type }}
+                            {% endif %}
+                          {% endfor %}
+                        </td>
   											<td>
                           {% for nodeset in nodesets %}
                             {% if nodeset.name == cluster.name %}
                               {{ nodeset.node_number }}
                             {% endif %}
                           {% endfor %}
+                        </td>
+                        <td>
+                          1
                         </td>
   										</tr>
   										  {% endif %}
