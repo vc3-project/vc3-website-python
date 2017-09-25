@@ -377,7 +377,7 @@ body.mobile-nav-active #mobile-nav-toggle {
 }
 .section-description {
   text-align: center;
-  /*margin-bottom: 40px;*/
+  margin-top: 50px;
 }
 
 .section-title-divider {
@@ -448,6 +448,12 @@ body.mobile-nav-active #mobile-nav-toggle {
   padding-top: 35px;
 }
 #about #aboutvc3 #wq-icon {
+  max-width: 80%;
+  max-height: 80%;
+  display: block;
+  margin: 0 auto;
+}
+#about #aboutvc3 #makeflow-icon {
   max-width: 80%;
   max-height: 80%;
   display: block;
