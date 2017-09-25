@@ -427,41 +427,41 @@ body.mobile-nav-active #mobile-nav-toggle {
   margin: 0 auto;
 }*/
 #about #aboutvc3 #apf-icon {
-  max-width: 40%;
-  max-height: 40%;
+  max-width: 30%;
+  max-height: 30%;
   display: block;
   margin: 0 auto;
-  padding-top: 15px;
+  padding-top: 30px;
 }
 #about #aboutvc3 #ciconnect-icon {
-  max-width: 100%;
-  max-height: 100%;
+  max-width: 60%;
+  max-height: 60%;
   display: block;
   margin: 0 auto;
   padding-top: 45px;
 }
 #about #aboutvc3 #htcondor-icon {
-  max-width: 80%;
-  max-height: 80%;
+  max-width: 60%;
+  max-height: 60%;
   display: block;
   margin: 0 auto;
-  padding-top: 25px;
+  padding-top: 35px;
 }
 #about #aboutvc3 #wq-icon {
-  max-width: 85%;
-  max-height: 85%;
+  max-width: 80%;
+  max-height: 80%;
   display: block;
   margin: 0 auto;
 }
 #about #aboutvc3 #globus-icon {
-  max-width: 50%;
-  max-height: 50%;
+  max-width: 40%;
+  max-height: 40%;
   display: block;
   margin: 0 auto;
 }
 #about #aboutvc3 #osg-icon {
-  max-width: 80%;
-  max-height: 80%;
+  max-width: 65%;
+  max-height: 65%;
   display: block;
   margin: 0 auto;
 }

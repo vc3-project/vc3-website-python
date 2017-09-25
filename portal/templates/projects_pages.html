@@ -19,70 +19,70 @@
 						<hr />
           </div>
 
-			<div class="content description">
-				<label for="members">Project Members</label>
-				<div class="list-group">
-					<div class="list-group-item active">{{ owner }} (Owner)</div>
-					{% for member in members%}
-					<a href="#" class="list-group-item list-group-item-action" name="removeuser">{{ member }}
-						{% if session['name'] == owner %}
-						<!-- <button type="submit" name="btn" value="removeuser" class="btn btn-danger btn-xs pull-right" data-submit="Removing User...">Remove User</button> -->
-						{% endif %}
-					</a>
-					{% endfor %}
-				</div>
-				{% if session['name'] == owner %}
-							<form role="form" action="{{url_for('add_member_to_project', name=name)}}" method="POST">
-								<fieldset>
-					        <label for="newuser">Add New Users</label>
-					        <select class="form-control" name="newuser" tabindex="2" id="form-resource-list" required>
-					          <option selected disabled>Please Select User</option>
-					          {% for user in users %}
-                      {% if (user.name not in members) and (user.name != owner) %}
-					          <option value="{{user.name}}" required>{{ user.name }}</option>
-                      {% endif %}
-					          {% endfor %}
-					        </select>
-					      </fieldset>
-					      <button type="submit" name="btn" value="adduser" class="btn btn-primary" id="create-project" data-submit="...Sending">Add User</button>
-							</form>
-              {% endif %}
+    			<div class="content description">
+    				<label for="members">Project Members</label>
+    				<div class="list-group">
+    					<div class="list-group-item active">{{ owner }} (Owner)</div>
+    					{% for member in members%}
+    					<a href="#" class="list-group-item list-group-item-action" name="removeuser">{{ member }}
+    						{% if session['name'] == owner %}
+    						<!-- <button type="submit" name="btn" value="removeuser" class="btn btn-danger btn-xs pull-right" data-submit="Removing User...">Remove User</button> -->
+    						{% endif %}
+    					</a>
+    					{% endfor %}
+    				</div>
 
-								<span id="label"><h3>Allocations:</h3></span>
-								<div class="list-group">
-								{% for project in projects %}
-                  {% if project.name == name %}
-                    {% if project.allocations == [] or project.allocations == None %}
-                    <a class="list-group-item list-group-item-action">
-                      No Current Allocations
-                    </a>
-                    {% else %}
-                      {% for allocation in project.allocations %}
-                    <a href="{{ url_for('view_allocation', name=allocation) }}" class="list-group-item list-group-item-action">
-                      {{ allocation }}
-                    </a>
-                      {% endfor %}
+				    {% if session['name'] == owner %}
+						<form role="form" action="{{url_for('add_member_to_project', name=name)}}" method="POST">
+							<fieldset>
+					       <label for="newuser">Add New Users</label>
+					       <select class="form-control" name="newuser" tabindex="2" id="form-resource-list" required>
+					         <option selected disabled>Please Select User</option>
+					         {% for user in users %}
+                    {% if (user.name not in members) and (user.name != owner) %}
+					         <option value="{{user.name}}" required>{{ user.name }}</option>
                     {% endif %}
-                  {% endif %}
-								{% endfor %}
-								</div>
+					         {% endfor %}
+					       </select>
+					     </fieldset>
+					     <button type="submit" name="btn" value="adduser" class="btn btn-primary" id="create-project" data-submit="...Sending">Add User</button>
+						</form>
+            {% endif %}
 
-								<form role="form" action="{{url_for('add_allocation_to_project', name=name)}}" method="POST">
-									<fieldset>
-										<label for="allocation">Select Allocation:</label>
-										<select class="form-control" id="form-resource-list" name="allocation" tabindex="3" required>
-											<option selected disabled>Please Select Allocation</option>
-										<!-- Populate List of Allocations that has been defined by User -->
-										{% for allocation in allocations %}
-											{% if allocation.owner == owner and session['name'] == owner %}
-										  	<option value="{{allocation.name}}" required>{{ allocation.name }}</option>
-											{% endif %}
-									  {% endfor %}
-										</select>
-									</fieldset>
-										<button type="submit" name="btn" value="addallocation" class="btn btn-primary" id="create-project" data-submit="...Sending">Add Allocation to Project</button>
-								</form>
+						<span id="label"><h3>Allocations:</h3></span>
+						<div class="list-group">
+						{% for project in projects %}
+              {% if project.name == name %}
+                {% if project.allocations == [] or project.allocations == None %}
+                <a class="list-group-item list-group-item-action">
+                  No Current Allocations
+                </a>
+                {% else %}
+                  {% for allocation in project.allocations %}
+                <a href="{{ url_for('view_allocation', name=allocation) }}" class="list-group-item list-group-item-action">
+                  {{ allocation }}
+                </a>
+                  {% endfor %}
+                {% endif %}
+              {% endif %}
+						{% endfor %}
+						</div>
 
+						<form role="form" action="{{url_for('add_allocation_to_project', name=name)}}" method="POST">
+							<fieldset>
+								<label for="allocation">Select Allocation:</label>
+								<select class="form-control" id="form-resource-list" name="allocation" tabindex="3" required>
+									<option selected disabled>Please Select Allocation</option>
+								<!-- Populate List of Allocations that has been defined by User -->
+								{% for allocation in allocations %}
+									{% if allocation.owner == owner and session['name'] == owner %}
+										 <option value="{{allocation.name}}" required>{{ allocation.name }}</option>
+									{% endif %}
+									{% endfor %}
+								</select>
+							</fieldset>
+								<button type="submit" name="btn" value="addallocation" class="btn btn-primary" id="create-project" data-submit="...Sending">Add Allocation to Project</button>
+						</form>
           </div><!-- /.content description -->
 
         </div>
