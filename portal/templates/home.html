@@ -23,10 +23,10 @@
     </h2>
     <div class="actions">
     {%if session.get('is_authenticated')%}
-      <a href="#aboutvc3" class="btn-about-vc3">About VC3</a>
+      <a href="#about-vc3-scroll" class="btn-about-vc3">About VC3</a>
     {% else %}
-      <a href="#aboutvc3" class="btn-about-vc3">About VC3</a>
-      <!-- <a href="{{url_for('signup')}}" class="btn-about-vc3">Sign Up</a> -->
+      <a href="#about-vc3-scroll" class="btn-about-vc3">About VC3</a>
+      <a href="{{url_for('signup')}}" class="btn-about-vc3">Sign Up</a>
     {% endif %}
     </div>
   </div>
@@ -148,7 +148,7 @@
 </div>
 
 <section id="about" class="container wow fadeInUp">
-  <div class="container">
+  <div class="container" id="about-vc3-scroll">
     <div class="content container col-xs-12" id="aboutvc3-main">
       <h2 class="section-title">
         About <span id="brand">VC3</span>
@@ -254,8 +254,10 @@
         </div>
         <div class="col-xs-12 col-md-8">
           <h4 class="section-description">
-            VC3 leverages advanced identity management, single sign-on, and authorization capabilities from the Globus
-            Platform. Globus federates identities from over 150 identity providers including the DOE national laboratories, InCommon, Google, XSEDE and Internet2.  Researchers can use their home institution identity with VC3 portal services.
+            VC3 leverages advanced identity management and authorization capabilities of the Globus Platform.
+            Globus federates identities from over 400 identity providers including the DOE national laboratories,
+            InCommon, Google, XSEDE and Internet2. Researchers can use their home
+            institution credentials to access VC3 services.
           </h4>
         </div>
       </div>
@@ -283,10 +285,7 @@
         </div>
         <div class="col-xs-12 col-md-8">
           <h4 class="section-description">
-            VC3 utilized the technical advising and consulting services of the
-            Science Gateways Community Institute. The Extended Developer Support
-            from SGCI provided guidance on the overall design of the portal
-            architecture and its integration with VC3 core platform components.
+            VC3 utilized the technical advising and consulting services of the Science Gateways Community Institute. The Extended Developer Support from SGCI provided guidance on the overall design of the portal architecture and its integration with VC3 core platform components.
           </h4>
         </div>
       </div>
