@@ -50,7 +50,7 @@
   <img src="https://image.ibb.co/cpdMMa/vc3divider.png" alt="Virtual Clusters 3 Divider">
 </div>
 
-<section id="about" class="container wow fadeInLeft">
+<section id="about" class="container wow fadeInRight">
   <div id="myCarousel" class="carousel slide" data-ride="carousel" data-interval="5000">
 
     <!-- Indicators -->
@@ -202,7 +202,7 @@
         </div>
         <div class="col-xs-12 col-md-8">
           <h4 class="section-description">
-            A cluster framework for massively scalable scientific applications
+            A cluster framework from the  <a href="https://ccl.cse.nd.edu/" target="_blank">Cooperative Computing Lab</a> for massively scalable scientific applications
             supported by VC3. Tasks are executed by a standard worker process
             that can run on any available machine. Each worker calls home to
             the master process, arranges for data transfer, and executes the
@@ -211,6 +211,8 @@
           </h4>
         </div>
       </div>
+
+      <!--
 
       <div class="row container wow fadeInRight">
         <div class="col-xs-12 col-md-4" id="vc3homediagram">
@@ -229,20 +231,7 @@
         </div>
       </div>
 
-      <div class="row container wow fadeInRight">
-        <div class="col-xs-12 col-md-4" id="vc3homediagram">
-          <a href="https://www.globus.org/" target="_blank">
-            <img class="img-responsive" id="globus-icon" src="{{url_for('static', filename='img/aboutvc3/globus.png')}}">
-          </a>
-        </div>
-        <div class="col-xs-12 col-md-8">
-          <h4 class="section-description">
-            VC3 leverages the authorization service from Globus to manage
-            identities.  Researchers can use their home institutional
-            ("campus") IDs when logging into the VC3 portal.
-          </h4>
-        </div>
-      </div>
+      -->
 
       <div class="row container wow fadeInRight">
         <div class="col-xs-12 col-md-4" id="vc3homediagram">
@@ -252,26 +241,36 @@
         </div>
         <div class="col-xs-12 col-md-8">
           <h4 class="section-description">
-          CI Connect offers several capabilities based on Globus, HTCondor and
-          other HTC and data sharing technologies. It is the basis of OSG
-          Connect, ATLAS Connect, CMS Connect among other submission services.
+          VC3 builds on lessons from the the CI Connect project which resulted in <a href="https://osgconnect.net/" target="_blank">OSG Connect</a>, <a href="https://connect.usatlas.org/" target="_blank">ATLAS Connect</a>, <a href="https://ci-connect.uchicago.edu/" target="_blank">UChicago CI Connect</a>, <a href="https://duke.ci-connect.net/" target="_blank">Duke CI Connect</a>, and <a href="https://connect.uscms.org/" target="_blank">CMS Connect</a> virtual cluster systems.
           </h4>
         </div>
       </div>
 
+      <div class="row container wow fadeInRight">
+        <div class="col-xs-12 col-md-4" id="vc3homediagram">
+          <a href="https://www.globus.org/" target="_blank">
+            <img class="img-responsive" id="globus-icon" src="{{url_for('static', filename='img/aboutvc3/globus.png')}}">
+          </a>
+        </div>
+        <div class="col-xs-12 col-md-8">
+          <h4 class="section-description">
+            VC3 leverages advanced identity management, single sign-on, and authorization capabilities from the Globus
+            Platform. Globus federates identities from over 150 identity providers including the DOE national laboratories, InCommon, Google, XSEDE and Internet2.  Researchers can use their home institution identity with VC3 portal services.
+          </h4>
+        </div>
+      </div>
 
       <div class="row container wow fadeInRight">
         <div class="col-xs-12 col-md-4" id="vc3homediagram">
-          <a href="https://osgconnect.net/" target="_blank">
+          <a href="https://opensciencegrid.org/" target="_blank">
             <img class="img-responsive" id="osg-icon" src="{{url_for('static', filename='img/aboutvc3/osg.jpg')}}">
           </a>
         </div>
         <div class="col-xs-12 col-md-8">
           <h4 class="section-description">
-           VC3 builds on foundational high-throughput principles established
+           VC3 extends the foundational high-throughput computing principles established
            by the HTCondor team and implemented at scale by the Open Science
-           Grid which operates services connecting over 115 clusters at
-           institutions across the U.S. and internationally.
+           Grid Consortium.
           </h4>
         </div>
       </div>
@@ -284,10 +283,10 @@
         </div>
         <div class="col-xs-12 col-md-8">
           <h4 class="section-description">
-            Science gateways allow science and engineering communities to
-            access shared data, software, computing services, instruments,
-            educational materials, and other resources specific to their
-            disciplines.
+            VC3 utilized the technical advising and consulting services of the
+            Science Gateways Community Institute. The Extended Developer Support
+            from SGCI provided guidance on the overall design of the portal
+            architecture and its integration with VC3 core platform components.
           </h4>
         </div>
       </div>
