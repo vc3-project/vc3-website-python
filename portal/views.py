@@ -304,12 +304,15 @@ def create_project():
     vc3_client = get_vc3_client()
     if request.method == 'GET':
         users = vc3_client.listUsers()
+        allocations = vc3_client.listAllocations()
         owner = session['name']
-        return render_template('project_new.html', owner=owner, users=users)
+        return render_template('project_new.html', owner=owner, users=users, allocations=allocations)
 
     elif request.method == 'POST':
+        projects = vc3_client.listProjects()
         name = request.form['name']
         owner = session['name']
+
         if request.form['members'] == "":
             members = []
         else:
@@ -320,6 +323,13 @@ def create_project():
         newproject = vc3_client.defineProject(name=name, owner=owner,
                                               members=members)
         vc3_client.storeProject(newproject)
+        if request.form['allocation'] != "":
+            allocation = request.form['allocation']
+            for project in projects:
+                if project.name == newproject.name:
+                    projectname = project.name
+                    vc3_client.addAllocationToProject(allocation=allocation,
+                                                      projectname=projectname)
 
         flash('Your project has been successfully created.', 'success')
 
@@ -558,17 +568,19 @@ def create_allocation():
         return render_template('allocation_new.html', resources=resources)
 
     elif request.method == 'POST':
-        # name = request.form['name']
+        displayname = request.form['displayname']
         owner = session['name']
         resource = request.form['resource']
         accountname = request.form['accountname']
         allocationname = owner + "." + resource
         name = allocationname.lower()
-        # description = request.form['description']
+        description_input = request.form['description']
+        description = str(description_input)
         # url = request.form['url']
 
         newallocation = vc3_client.defineAllocation(
-            name=name, owner=owner, resource=resource, accountname=accountname)
+            name=name, owner=owner, resource=resource, accountname=accountname,
+            displayname=displayname, description=description)
         vc3_client.storeAllocation(newallocation)
 
         flash('Configuring your allocation, when complete, please view your '
@@ -583,6 +595,7 @@ def view_allocation(name):
     vc3_client = get_vc3_client()
     allocations = vc3_client.listAllocations()
     resources = vc3_client.listResources()
+    users = vc3_client.listUsers()
 
     if request.method == 'GET':
         for allocation in allocations:
@@ -591,6 +604,8 @@ def view_allocation(name):
                 owner = allocation.owner
                 resource = allocation.resource
                 state = allocation.state
+                displayname = allocation.displayname
+                description = allocation.description
                 accountname = allocation.accountname
                 encodedpubtoken = allocation.pubtoken
                 if encodedpubtoken is None:
@@ -603,7 +618,8 @@ def view_allocation(name):
                                        owner=owner, resource=resource,
                                        accountname=accountname,
                                        pubtoken=pubtoken, state=state,
-                                       resources=resources)
+                                       resources=resources, displayname=displayname,
+                                       description=description, users=users)
         app.logger.error("Could not find allocation when viewing: {0}".format(name))
         raise LookupError('allocation')
 

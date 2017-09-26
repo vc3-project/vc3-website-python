@@ -900,6 +900,12 @@ body > .navbar-collapse {
 .alert-danger {
   background-color: #fc727a; }
 
+/*Copy to Clipboard Message Alert*/
+
+.span4 .alert {
+  padding-top: 15px;
+}
+
 
 .nav > li > a:hover,
 .nav > li > a:focus {
@@ -2367,6 +2373,9 @@ RESOURCE PROFILE INDEX PAGE
   vertical-align: middle;
 }
 
+/*----------------------------------
+DASHBOARD
+----------------------------------*/
 #dashboard .content iframe {
   display: block;
   width: 100%;
@@ -2374,6 +2383,10 @@ RESOURCE PROFILE INDEX PAGE
 #dashboard .container-fluid #card-container {
   width: 100%;
 }
+
+/*----------------------------------
+RESOURCE PROFILE
+----------------------------------*/
 
 textarea {
    resize: none;
@@ -2420,3 +2433,17 @@ textarea {
    pointer-events: none;
    cursor: default;
 }
+
+/*----------------------------------
+ALLOCATION LIST PAGE
+----------------------------------*/
+
+.filterable tbody tr td #allocation-description {
+  /*height:20px;*/
+  width:180px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis; /* Limits amount of text being displayed */
+  /*margin:0 auto;*/
+  /*color:#ffffff;*/
+ }

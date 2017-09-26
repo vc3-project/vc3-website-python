@@ -17,16 +17,18 @@
       <h3>Register a New Allocation</h3>
       <h5 style="color:black">An allocation is an allotted amount of CPU hours or service units (SU) of computing time on a specific resource</h5>
 
-      <!-- <fieldset>
-        <label for="displayname">Allocation Name</label>
+      <fieldset>
+        <label for="displayname">Allocation Name <span id="asterik">*</span></label>
         <input
           placeholder="Allocation Name"
           name="displayname"
           type="text"
           tabindex="1"
           autofocus
+          required
+          value="{{request.displayname}}"
           >
-      </fieldset> -->
+      </fieldset>
       <fieldset>
         <label for="resource">Resource <span id="asterik">*</span></label>
         <select class="form-control" name="resource" tabindex="2" id="form-resource-list" required>
@@ -44,17 +46,20 @@
           type="text"
           tabindex="3"
           autofocus
-          value="{{request.accountname}}">
+          value="{{request.accountname}}"
+          required>
       </fieldset>
-      <!-- <fieldset>
+      <fieldset>
         <label for="description">Description</label>
         <textarea
           placeholder="Brief Description..."
           name="description"
           tabindex="3"
           autofocus
+          maxlength="144"
+          value="{{request.description}}"
           ></textarea>
-      </fieldset> -->
+      </fieldset>
       <fieldset>
         <button type="submit" id="create-project" data-submit="...Sending">Register Allocation</button>
       </fieldset>

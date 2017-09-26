@@ -32,42 +32,67 @@
   										<button class="btn btn-primary btn-sm btn-filter"><span class="glyphicon glyphicon-filter"></span> Filter</button>
   									</div>
   								</div>
-  								<table class="table table-hover">
-  									<thead>
-  										<tr class="filters">
-  											<th><input type="text" class="form-control" placeholder="Allocation Profile" disabled></th>
-  											<th><input type="text" class="form-control" placeholder="State" disabled></th>
-  											<th><input type="text" class="form-control" placeholder="Resource" disabled></th>
-  										</tr>
-  									</thead>
-  									<tbody data-link="row" class="rowlink">
-  										{% for allocation in allocations %}
-                        {% if allocation.owner == session['name'] %}
-  										<tr>
-  											<td>
-                          <a href="{{ url_for('view_allocation', name=allocation.name) }}" title="View Allocation">{{ allocation.name }}</a>
-                        </td>
-                          {% if allocation.state == "validated" %}
-    											<td><font color="green"><i class="fa fa-check-circle-o" style="color:green"></i> {{ allocation.state }} </font></td>
-                          {% elif allocation.state == "terminated" %}
-                          <td><font color="red"><i class="fa fa-exclamation-circle" style="color:red"></i> {{ allocation.state }} </font></td>
-                          {% else %}
-                          <td><font color="orange"><i class="fa fa-spinner fa-spin" style="color:orange"></i> {{ allocation.state }} </font></td>
-                          {% endif %}
-  											<td>
-                          <a href="{{ url_for('view_resource', name=allocation.resource) }}">
-                          {% for resource in resources %}
-                            {% if allocation.resource == resource.name %}
-                            <div>{{resource.displayname}}</div>
+                  <div class="table-responsive" style="overflow-x:auto;">
+    								<table class="display table table-hover" width="100%">
+    									<thead>
+    										<tr class="filters">
+    											<th><input type="text" class="form-control" placeholder="Allocation Profile" disabled></th>
+    											<th><input type="text" class="form-control" placeholder="State" disabled></th>
+    											<th><input type="text" class="form-control" placeholder="Resource" disabled></th>
+                          <th><input type="text" class="form-control" placeholder="Description" disabled></th>
+    										</tr>
+    									</thead>
+    									<tbody data-link="row" class="rowlink">
+    										{% for allocation in allocations %}
+                          {% if allocation.owner == session['name'] %}
+    										<tr>
+    											<td>
+                            <a href="{{ url_for('view_allocation', name=allocation.name) }}" title="View Allocation">{{ allocation.displayname }}</a>
+                          </td>
+                            {% if allocation.state == "validated" %}
+      										<td>
+                            <font color="green">
+                              <i class="fa fa-check-circle-o" style="color:green"></i>
+                              {{ allocation.state }}
+                            </font>
+                          </td>
+                            {% elif allocation.state == "terminated" %}
+                          <td>
+                            <font color="red">
+                              <i class="fa fa-exclamation-circle" style="color:red"></i>
+                              {{ allocation.state }}
+                            </font>
+                          </td>
+                            {% else %}
+                          <td>
+                            <font color="orange">
+                              <i class="fa fa-spinner fa-spin" style="color:orange"></i>
+                              {{ allocation.state }}
+                            </font>
+                          </td>
                             {% endif %}
-                          {% endfor %}
-                          </a>
-                        </td>
-  										</tr>
-                        {% endif %}
-  										{% endfor %}
-  									</tbody>
-  								</table>
+    											<td>
+                            <a href="{{ url_for('view_resource', name=allocation.resource) }}">
+                            {% for resource in resources %}
+                              {% if allocation.resource == resource.name %}
+                              <div>{{resource.displayname}}</div>
+                              {% endif %}
+                            {% endfor %}
+                            </a>
+                          </td>
+                          <td>
+                            {% if allocation.description == None %}
+                              Currently no description
+                            {% else %}
+                              <div id="allocation-description">{{allocation.description}}</div>
+                            {% endif %}
+                          </td>
+    										</tr>
+                          {% endif %}
+    										{% endfor %}
+    									</tbody>
+    								</table>
+                  </div>
   							</div>
   						</div>
   					</div>
