@@ -181,8 +181,11 @@ def show_profile_page():
             session['institution'] = profile.organization
             session['primary_identity'] = profile.identity_id
         else:
-            flash('Please complete any missing profile fields before '
-                  'launching a cluster.', 'warning')
+            if session['primary_identity'] not in ["c887eb90-d274-11e5-bf28-779c8998e810", "05e05adf-e9d4-487f-8771-b6b8a25e84d3", "c4686d14-d274-11e5-b866-0febeb7fd79e", "be58c8e2-fc13-11e5-82f7-f7141a8b0c16", "c456b77c-d274-11e5-b82c-23a245a48997", "f1f26455-cbd5-4933-986b-47c57ee20987", "aebe29b8-d274-11e5-ba4b-ffec0df955f2", "c444a294-d274-11e5-b7f1-e3782ed16687"]:
+                next
+            else:
+                flash('Please complete any missing profile fields before '
+                      'launching a cluster.', 'warning')
 
         if request.args.get('next'):
             session['next'] = get_safe_redirect()
@@ -583,6 +586,7 @@ def view_allocation(name):
     vc3_client = get_vc3_client()
     allocations = vc3_client.listAllocations()
     resources = vc3_client.listResources()
+    users = vc3_client.listUsers()
 
     if request.method == 'GET':
         for allocation in allocations:
@@ -603,7 +607,7 @@ def view_allocation(name):
                                        owner=owner, resource=resource,
                                        accountname=accountname,
                                        pubtoken=pubtoken, state=state,
-                                       resources=resources)
+                                       resources=resources, users=users)
         app.logger.error("Could not find allocation when viewing: {0}".format(name))
         raise LookupError('allocation')
 
