@@ -2293,7 +2293,7 @@ body > .navbar-collapse {
     }
 
 /*----------------------------------
-RESOURCE PROFILE INDEX PAGE
+FILTERABLE TABLE INDEX PAGE
 ----------------------------------*/
 
 .filterable {
@@ -2367,6 +2367,10 @@ RESOURCE PROFILE INDEX PAGE
   vertical-align: middle;
 }
 
+/*----------------------------------
+DASHBOARD PAGE
+----------------------------------*/
+
 #dashboard .content iframe {
   display: block;
   width: 100%;
@@ -2382,6 +2386,10 @@ textarea {
    background-color: transparent;
    border-color: transparent;
 }
+
+/*----------------------------------
+RESOURCE PROFILE
+----------------------------------*/
 
 .resource-profile {
   background-color: transparent;
@@ -2419,4 +2427,18 @@ textarea {
 .disabled {
    pointer-events: none;
    cursor: default;
+}
+
+/*----------------------------------
+ALLOCATION LIST PAGE
+----------------------------------*/
+
+.filterable tbody tr td #allocation-description {
+    /*height:20px;*/
+    width:180px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis; /* Limits amount of text being displayed */
+    /*margin:0 auto;*/
+    /*color:#ffffff;*/
 }

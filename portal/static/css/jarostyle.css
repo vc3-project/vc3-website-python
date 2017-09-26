@@ -88,8 +88,8 @@ h1, h2, h3, h4, h5, h6 {
 --------------------------------------------------------------*/
 
 #hero {
-  /*background-image: url('https://s.hswstatic.com/gif/disruptive-technologies-10-orig.jpg');*/
-  background-image: url('https://rcc.uchicago.edu/sites/rcc.uchicago.edu/files/styles/slideshow-image/public/uploads/images/slideshows/20140430_RCC_8978.jpg?itok=BmRuJ-wq');
+  background-image: url('https://s.hswstatic.com/gif/disruptive-technologies-10-orig.jpg');
+  /*background-image: url('../img/home/uchicagohpc1.jpg');*/
   box-shadow: inset 0 0 0 1000px rgba(0,0,0,0.3);
   background-position: center center;
   background-repeat: no-repeat;
