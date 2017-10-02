@@ -66,12 +66,14 @@ def status():
 
 @app.route('/blog', methods=['GET'])
 def blog():
+    taglist = []
     """Articles are pages with a publication date"""
     articles = (p for p in pages if 'date' in p.meta)
     """Show the 10 most recent articles, most recent first"""
     latest = sorted(articles, reverse=True, key=lambda p: p.meta['date'])
+    blog_pages = latest[:10]
     """Send the user to the blog page"""
-    return render_template('blog.html', pages=latest[:10])
+    return render_template('blog.html', pages=blog_pages)
 
 
 @app.route('/blog/tag/<string:tag>/', methods=['GET'])
@@ -306,7 +308,8 @@ def create_project():
         users = vc3_client.listUsers()
         allocations = vc3_client.listAllocations()
         owner = session['name']
-        return render_template('project_new.html', owner=owner, users=users, allocations=allocations)
+        return render_template('project_new.html', owner=owner,
+                               users=users, allocations=allocations)
 
     elif request.method == 'POST':
         projects = vc3_client.listProjects()
@@ -323,14 +326,10 @@ def create_project():
         newproject = vc3_client.defineProject(name=name, owner=owner,
                                               members=members)
         vc3_client.storeProject(newproject)
-        if request.form['allocation'] != "":
+        if not (request.form['allocation'] == ""):
             allocation = request.form['allocation']
-            for project in projects:
-                if project.name == newproject.name:
-                    projectname = project.name
-                    vc3_client.addAllocationToProject(allocation=allocation,
-                                                      projectname=projectname)
-
+            vc3_client.addAllocationToProject(allocation=allocation,
+                                              projectname=newproject.name)
         flash('Your project has been successfully created.', 'success')
 
         return redirect(url_for('list_projects'))
@@ -342,8 +341,9 @@ def list_projects():
     vc3_client = get_vc3_client()
     projects = vc3_client.listProjects()
     users = vc3_client.listUsers()
+    allocations = vc3_client.listAllocations()
 
-    return render_template('project.html', projects=projects, users=users)
+    return render_template('project.html', projects=projects, users=users, allocations=allocations)
 
 
 @app.route('/project/<name>', methods=['GET'])
@@ -760,6 +760,7 @@ def view_request(name):
     vc3_requests = vc3_client.listRequests()
     nodesets = vc3_client.listNodesets()
     clusters = vc3_client.listClusters
+    users = vc3_client.listUsers()
 
     if request.method == 'GET':
         for vc3_request in vc3_requests:
@@ -772,7 +773,7 @@ def view_request(name):
                 return render_template('request_profile.html', name=requestname,
                                        owner=owner, requests=vc3_requests,
                                        clusters=clusters, nodesets=nodesets,
-                                       action=action, state=state)
+                                       action=action, state=state, users=users)
         app.logger.error("Could not find VC when viewing: {0}".format(name))
         raise LookupError('virtual cluster')
 

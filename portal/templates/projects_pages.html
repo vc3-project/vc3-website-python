@@ -22,13 +22,17 @@
     			<div class="content description">
     				<label for="members">Project Members</label>
     				<div class="list-group">
-    					<div class="list-group-item active">{{ owner }} (Owner)</div>
+    					<div class="list-group-item active">{{ session['first'] }} {{ session['last'] }} (Owner)</div>
     					{% for member in members%}
-    					<a href="#" class="list-group-item list-group-item-action" name="removeuser">{{ member }}
+                {% for user in users %}
+                  {% if user.name == member %}
+    					<a href="#" class="list-group-item list-group-item-action" name="removeuser">{{ user.first }} {{ user.last }}
     						{% if session['name'] == owner %}
     						<!-- <button type="submit" name="btn" value="removeuser" class="btn btn-danger btn-xs pull-right" data-submit="Removing User...">Remove User</button> -->
     						{% endif %}
     					</a>
+                  {% endif %}
+                {% endfor %}
     					{% endfor %}
     				</div>
 
@@ -40,7 +44,7 @@
 					         <option selected disabled>Please Select User</option>
 					         {% for user in users %}
                     {% if (user.name not in members) and (user.name != owner) %}
-					         <option value="{{user.name}}" required>{{ user.name }}</option>
+					         <option value="{{user.name}}" required>{{ user.first }} {{ user.last}}</option>
                     {% endif %}
 					         {% endfor %}
 					       </select>
@@ -58,10 +62,14 @@
                   No Current Allocations
                 </a>
                 {% else %}
-                  {% for allocation in project.allocations %}
-                <a href="{{ url_for('view_allocation', name=allocation) }}" class="list-group-item list-group-item-action">
-                  {{ allocation }}
+                  {% for allocation_name in project.allocations %}
+                    {% for allocation in allocations %}
+                      {% if allocation_name == allocation.name %}
+                <a href="{{ url_for('view_allocation', name=allocation.name) }}" class="list-group-item list-group-item-action">
+                  {{ allocation.displayname }}
                 </a>
+                      {% endif %}
+                    {% endfor %}
                   {% endfor %}
                 {% endif %}
               {% endif %}

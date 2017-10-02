@@ -15,25 +15,25 @@
 
       </div>
 
-      <!-- <div class="col-sm-4 blog-sidebar">
+      <div class="col-sm-4 blog-sidebar">
         <div class="blog-sidebar-section">
           <h2>Tags</h2>
 
             {% for page in pages %}
               {% if page.meta.tags|length %}
-                  {% for page_tag in page.meta.tags %}
-                      <h3>{{ page_tag }}</h3>
-                  {% endfor %}
-                  <ul>
-                    <li>
-                      <a href="{{ url_for('page', path=page.path) }}">{{ page.title}}</a>
-                    </li>
-                  </ul>
+                {% for page_tag in page.meta.tags %}
+                <h3>{{ page_tag }}</h3>
+                {% endfor %}
+                <ul>
+                  <li>
+                    <a href="{{ url_for('page', path=page.path) }}">{{ page.title}}</a>
+                  </li>
+                </ul>
               {% endif %}
             {% endfor %}
 
           </div>
-        </div> -->
+        </div>
 
       </div>
     </div>
