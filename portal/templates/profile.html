@@ -38,13 +38,13 @@
         							<label for="displayname">User Name</label>
         							<input
         								type="text"
-        								id="first"
+        								id="displayname"
         								name="displayname"
                         placeholder="Choose User Name..."
         								class="form-control tour-step tour-step-three"
         								required="required"
         								tabindex="1"
-        								value="{{request.displayname}}"
+        								value="{{session['displayname']}}"
         							>
         					  </div>
 

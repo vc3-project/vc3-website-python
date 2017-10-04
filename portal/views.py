@@ -66,14 +66,17 @@ def status():
 
 @app.route('/blog', methods=['GET'])
 def blog():
-    taglist = []
     """Articles are pages with a publication date"""
     articles = (p for p in pages if 'date' in p.meta)
     """Show the 10 most recent articles, most recent first"""
     latest = sorted(articles, reverse=True, key=lambda p: p.meta['date'])
     blog_pages = latest[:10]
+    taglist = []
+    for p in blog_pages:
+        if p.meta['tags'][0] not in taglist:
+            taglist.append(p.meta['tags'][0])
     """Send the user to the blog page"""
-    return render_template('blog.html', pages=blog_pages)
+    return render_template('blog.html', pages=blog_pages, taglist=taglist)
 
 
 @app.route('/blog/tag/<string:tag>/', methods=['GET'])
@@ -174,9 +177,10 @@ def show_profile_page():
 
         if profile:
 
-            # session['name'] = profile.name
-            username = profile.name[0] + profile.last
-            session['name'] = username.lower()
+            session['name'] = profile.name
+            session['displayname'] = profile.displayname
+            # username = profile.name[0] + profile.last
+            # session['name'] = username.lower()
             session['first'] = profile.first
             session['last'] = profile.last
             session['email'] = profile.email
@@ -196,15 +200,18 @@ def show_profile_page():
         email = session['email'] = request.form['email']
         organization = session['institution'] = request.form['institution']
         identity_id = session['primary_identity']
-        username = first[0] + last
-        name = username.lower()
+        # username = first[0] + last
+        # name = username.lower()
+        name = first + last
+        displayname = session['displayname'] = request.form['displayname']
 
         newuser = vc3_client.defineUser(identity_id=identity_id,
                                         name=name,
                                         first=first,
                                         last=last,
                                         email=email,
-                                        organization=organization)
+                                        organization=organization,
+                                        displayname=displayname)
 
         vc3_client.storeUser(newuser)
 
@@ -286,8 +293,10 @@ def authcallback():
             session['email'] = profile.email
             session['institution'] = profile.organization
             session['primary_identity'] = profile.identity_id
-            username = profile.name[0] + profile.last
-            session['name'] = username.lower()
+            # username = profile.name[0] + profile.last
+            # session['name'] = username.lower()
+            session['name'] = profile.name
+            session['displayname'] = profile.displayname
         else:
             return redirect(url_for('show_profile_page',
                                     next=url_for('show_profile_page')))
