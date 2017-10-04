@@ -101,6 +101,7 @@ vc3-client/etc/vc3-client.conf
 
 # run portal local not necessary
 run_portal.py
+run_local_portal.py
 
 # data
 /portal/data/app.db

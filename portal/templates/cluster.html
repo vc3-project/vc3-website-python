@@ -17,7 +17,7 @@
               <h5>A list of your available cluster templates</h5>
 							<a href="{{url_for('create_cluster')}}" class="btn btn-primary btn-sm" title="Create New Cluster Template">+ New Cluster Template</a>
 						</div>
-						<hr />
+						<hr><hr />
           </div>
 
           <div class="content description">
@@ -31,42 +31,44 @@
   										<button class="btn btn-primary btn-sm btn-filter"><span class="glyphicon glyphicon-filter"></span> Filter</button>
   									</div>
   								</div>
-  								<table class="table table-hover">
-  									<thead>
-  										<tr class="filters">
-  											<th><input type="text" class="form-control" placeholder="Name" disabled></th>
-  											<th><input type="text" class="form-control" placeholder="Framework" disabled></th>
-  											<th><input type="text" class="form-control" placeholder="No. of Compute Nodes" disabled></th>
-                        <th><input type="text" class="form-control" placeholder="No. of Head Nodes" disabled></th>
-  										</tr>
-  									</thead>
-  									<tbody data-link="row" class="rowlink">
-  										{% for cluster in clusters %}
-                        {% if cluster.owner == session['name'] %}
-  										<tr>
-  											<td><a href="{{ url_for('view_cluster', name=cluster.name) }}" title="View Cluster Template">{{ cluster.name }}</a></td>
-                        <td>
-                          {% for nodeset in nodesets %}
-                            {% if nodeset.name == cluster.name %}
-                              {{ nodeset.app_type }}
-                            {% endif %}
-                          {% endfor %}
-                        </td>
-  											<td>
-                          {% for nodeset in nodesets %}
-                            {% if nodeset.name == cluster.name %}
-                              {{ nodeset.node_number }}
-                            {% endif %}
-                          {% endfor %}
-                        </td>
-                        <td>
-                          1
-                        </td>
-  										</tr>
-  										  {% endif %}
-  										{% endfor %}
-  									</tbody>
-  								</table>
+                  <div class="table-responsive" style="overflow-x:auto;">
+    								<table class="display table table-hover" width="100%">
+    									<thead>
+    										<tr class="filters">
+    											<th><input type="text" class="form-control" placeholder="Name" disabled></th>
+    											<th><input type="text" class="form-control" placeholder="Framework" disabled></th>
+    											<th><input type="text" class="form-control" placeholder="No. of Compute Nodes" disabled></th>
+                          <th><input type="text" class="form-control" placeholder="No. of Head Nodes" disabled></th>
+    										</tr>
+    									</thead>
+    									<tbody data-link="row" class="rowlink">
+    										{% for cluster in clusters %}
+                          {% if cluster.owner == session['name'] %}
+    										<tr>
+    											<td><a href="{{ url_for('view_cluster', name=cluster.name) }}" title="View Cluster Template">{{ cluster.name }}</a></td>
+                          <td>
+                            {% for nodeset in nodesets %}
+                              {% if nodeset.name == cluster.name %}
+                                {{ nodeset.app_type }}
+                              {% endif %}
+                            {% endfor %}
+                          </td>
+    											<td>
+                            {% for nodeset in nodesets %}
+                              {% if nodeset.name == cluster.name %}
+                                {{ nodeset.node_number }}
+                              {% endif %}
+                            {% endfor %}
+                          </td>
+                          <td>
+                            1
+                          </td>
+    										</tr>
+    										  {% endif %}
+    										{% endfor %}
+    									</tbody>
+    								</table>
+                  </div>
   							</div>
   						</div>
   					</div>

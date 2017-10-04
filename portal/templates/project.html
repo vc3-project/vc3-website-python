@@ -17,7 +17,7 @@
 							<h5>A list of your current projects</h5>
 							<a href="{{url_for('create_project')}}" class="btn btn-primary btn-sm" title="Create New Project">+ New Project</a>
 						</div>
-						<hr />
+						<hr><hr />
           </div>
 
           <div class="content description">
@@ -48,20 +48,28 @@
                           <div>
                             {% for user in users %}
                               {% if user.name == project.owner %}
-                                <small>{{user.first}} {{user.last}} (Owner)</small>
+                                <small><strong>{{user.first}} {{user.last}} (Owner)</strong></small>
                               {% endif %}
                             {% endfor %}
                           </div>
                           {% for member in project.members %}
-                          <div><small>{{ member }}</small></div>
+                            {% for user in users %}
+                              {% if user.name == member %}
+                          <div><small>{{ user.first }} {{ user.last}} ({{ user.organization }})</small></div>
+                              {% endif %}
+                            {% endfor %}
                           {% endfor %}
                         </td>
   											<td>
                           {% if project.allocations == [] or project.allocations == None %}
-                            No Current Allocations
+                            <div>No Current Allocations</div>
                           {% else %}
-                            {% for allocation in project.allocations %}
-                              <option>{{ allocation }}</option>
+                            {% for allocation_name in project.allocations %}
+                              {% for allocation in allocations %}
+                                {% if allocation_name == allocation.name %}
+                              <div>{{ allocation.displayname }}</div>
+                                {% endif %}
+                              {% endfor %}
                             {% endfor %}
                           {% endif %}
                         </td>

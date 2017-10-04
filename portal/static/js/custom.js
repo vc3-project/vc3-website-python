@@ -557,7 +557,7 @@ $(".btn").on("click", function() {
     // Start the tour
     tour.start();
 
-}());
+});
 
 // Flash Message fade out
 
@@ -566,3 +566,12 @@ $(function() {
       $(this).delay(2500).fadeOut();
    });
 });
+
+// $(document).ready(function() { /// Wait till page is loaded
+// setInterval(timingLoad, 3000);
+// function timingLoad() {
+// $('#allocationstates').load('allocation.html #allocationstates', function() {
+// /// can add another function here
+// });
+// }
+// }); //// End of Wait till page is loaded
