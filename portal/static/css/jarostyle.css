@@ -4,13 +4,16 @@
 body {
   background: #fff;
   color: #666666;
-  font-family: "Open Sans", sans-serif;
+  /*font-family: "Open Sans", sans-serif;*/
+  font-family: "Raleway", sans-serif;
+  /*-webkit-font-smoothing: antialiased;*/
 }
 
 a {
   /*color: #03C4EB;*/
   color: #b3b3b3;
   transition: 0.5s;
+  /*-webkit-font-smoothing: antialiased;*/
 }
 
 a:hover, a:active, a:focus {
@@ -18,11 +21,13 @@ a:hover, a:active, a:focus {
   color: #ffc500;
   outline: none;
   text-decoration: none;
+  /*-webkit-font-smoothing: antialiased;*/
 }
 
 p {
   padding: 0;
   margin: 0 0 30px 0;
+  /*-webkit-font-smoothing: antialiased;*/
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -30,6 +35,7 @@ h1, h2, h3, h4, h5, h6 {
   font-weight: 400;
   margin: 0 0 20px 0;
   padding: 0;
+  /*-webkit-font-smoothing: antialiased;*/
 }
 
 /*--------------------------------------------------------------

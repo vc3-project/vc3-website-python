@@ -52,10 +52,12 @@ a,
 td,
 button.close {
   -moz-osx-font-smoothing: grayscale;
-  -webkit-font-smoothing: antialiased;
+  /*-webkit-font-smoothing: antialiased;*/
   /*font-family: "Roboto","Helvetica Neue",Arial,sans-serif;*/
-  font-family: "Open Sans", sans-serif;
-  font-weight: 400; }
+  font-family: "Raleway", sans-serif;
+  font-weight: 400;
+  transition: 0.5s;
+ }
 
 h1, .h1, h2, .h2, h3, .h3, h4, .h4 {
   font-weight: 300;
@@ -237,8 +239,7 @@ body > .navbar-collapse {
       margin: 10px 10px;
       color: #FFFFFF;
       line-height: 20px;
-      /*font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;*/
-      font-family: "Open Sans", Helvetica, Arial, sans-serif;
+      font-family: "Raleway", sans-serif;
      }
     .sidebar .logo .simple-text,
     body > .navbar-collapse .logo .simple-text {
@@ -322,8 +323,7 @@ body > .navbar-collapse {
       margin: 10px 10px;
       color: #FFFFFF;
       line-height: 20px;
-      /*font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;*/
-      font-family: "Open Sans", Helvetica, Arial, sans-serif;
+      font-family: "Raleway", sans-serif;
      }
     .sidebar .logo .simple-text,
     body > .navbar-collapse .logo .simple-text {
@@ -923,19 +923,29 @@ body > .navbar-collapse {
     font-weight: 400;
     margin: 5px 0px;
     padding: 15px 15px;
-    font-size: 16px;
+    font-size: 14px;
     color: #b3b3b3;
+  }
+  .navbar .container-fluid .navbar-brand {
+    margin-left: 0;
   }
   .navbar .navbar-brand:hover {
     color: #ffc500;
   }
   .navbar-brand-logo{
     background: url(https://image.ibb.co/e59s3v/logosmall.png) center / contain no-repeat;
-    width: 160px;
-    line-height: 2.3;
-    margin-right: -20px;
+    width: 200px;
+    margin-right: -60px;
+    margin-left: -15px;
+    margin-top: 5px;
+    height: 50px;
+    padding: 15px 15px;
     font-size: 24px;
+    /*line-height: 20px;*/
     color: #ffc500;
+  }
+  .navbar .navbar-brand-logo strong {
+
   }
   .navbar .navbar-nav > li > a {
     padding: 10px 15px;
