@@ -205,7 +205,7 @@ def show_profile_page():
         identity_id = session['primary_identity']
         # username = first[0] + last
         # name = username.lower()
-        name = first + last
+        name = first + last + identity_id
         displayname = session['displayname'] = request.form['displayname']
 
         newuser = vc3_client.defineUser(identity_id=identity_id,
