@@ -178,13 +178,11 @@ def show_profile_page():
         if profile:
 
             session['name'] = profile.name
-            # session['displayname'] = profile.displayname
-            # username = profile.name[0] + profile.last
-            # session['name'] = username.lower()
+            session['displayname'] = profile.displayname
             session['first'] = profile.first
             session['last'] = profile.last
             session['email'] = profile.email
-            session['institution'] = profile.institution
+            session['institution'] = profile.organization
             session['primary_identity'] = profile.identity_id
         else:
             if session['primary_identity'] not in ["c887eb90-d274-11e5-bf28-779c8998e810", "05e05adf-e9d4-487f-8771-b6b8a25e84d3", "c4686d14-d274-11e5-b866-0febeb7fd79e", "be58c8e2-fc13-11e5-82f7-f7141a8b0c16", "c456b77c-d274-11e5-b82c-23a245a48997", "f1f26455-cbd5-4933-986b-47c57ee20987", "aebe29b8-d274-11e5-ba4b-ffec0df955f2", "c444a294-d274-11e5-b7f1-e3782ed16687"]:
@@ -203,17 +201,16 @@ def show_profile_page():
         email = session['email'] = request.form['email']
         organization = session['institution'] = request.form['institution']
         identity_id = session['primary_identity']
-        # username = first[0] + last
-        # name = username.lower()
         name = identity_id
-        # displayname = session['displayname'] = request.form['displayname']
+        displayname = session['displayname'] = request.form['displayname']
 
         newuser = vc3_client.defineUser(identity_id=identity_id,
                                         name=name,
                                         first=first,
                                         last=last,
                                         email=email,
-                                        institution=organization)
+                                        organization=organization,
+                                        displayname=displayname)
 
         vc3_client.storeUser(newuser)
 
@@ -289,16 +286,14 @@ def authcallback():
 
         if profile:
 
-            # session['name'] = profile.name
+            session['name'] = profile.name
             session['first'] = profile.first
             session['last'] = profile.last
             session['email'] = profile.email
-            session['institution'] = profile.institution
+            session['institution'] = profile.organization
             session['primary_identity'] = profile.identity_id
-            # username = profile.name[0] + profile.last
-            # session['name'] = username.lower()
             session['name'] = profile.name
-            # session['displayname'] = profile.displayname
+            session['displayname'] = profile.displayname
         else:
             return redirect(url_for('show_profile_page',
                                     next=url_for('show_profile_page')))
