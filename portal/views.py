@@ -213,7 +213,7 @@ def show_profile_page():
                                         first=first,
                                         last=last,
                                         email=email,
-                                        organization=organization)
+                                        institution=organization)
 
         vc3_client.storeUser(newuser)
 
