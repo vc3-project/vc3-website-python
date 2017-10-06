@@ -178,7 +178,7 @@ def show_profile_page():
         if profile:
 
             session['name'] = profile.name
-            session['displayname'] = profile.displayname
+            # session['displayname'] = profile.displayname
             # username = profile.name[0] + profile.last
             # session['name'] = username.lower()
             session['first'] = profile.first
