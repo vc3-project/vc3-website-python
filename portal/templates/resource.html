@@ -41,7 +41,7 @@
     									<tbody data-link="row" class="rowlink">
   											{% for resource in resources %}
   											<tr>
-  												<td><a href="{{ url_for('view_resource', name=resource.name) }}" title="View Resource Profile">{{ resource.displayname }}</a></td>
+  												<td><a href="{{ url_for('view_resource', name=resource.name) }}" title="View Resource Profile">{{ resource.name }}</a></td>
   												<td><i class="fa fa-check" aria-hidden="true" style="color:green"></i> Healthy</td>
   												<td>{{resource.organization}}</td>
   											</tr>
