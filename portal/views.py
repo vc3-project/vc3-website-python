@@ -196,7 +196,7 @@ def show_profile_page():
         if request.args.get('next'):
             session['next'] = get_safe_redirect()
 
-        return render_template('profile.html')
+        return render_template('profile.html', userlist=userlist)
     elif request.method == 'POST':
         first = session['first'] = request.form['first']
         last = session['last'] = request.form['last']
@@ -205,16 +205,15 @@ def show_profile_page():
         identity_id = session['primary_identity']
         # username = first[0] + last
         # name = username.lower()
-        name = first + last + identity_id
-        displayname = session['displayname'] = request.form['displayname']
+        name = identity_id
+        # displayname = session['displayname'] = request.form['displayname']
 
         newuser = vc3_client.defineUser(identity_id=identity_id,
                                         name=name,
                                         first=first,
                                         last=last,
                                         email=email,
-                                        organization=organization,
-                                        displayname=displayname)
+                                        organization=organization)
 
         vc3_client.storeUser(newuser)
 
@@ -299,7 +298,7 @@ def authcallback():
             # username = profile.name[0] + profile.last
             # session['name'] = username.lower()
             session['name'] = profile.name
-            session['displayname'] = profile.displayname
+            # session['displayname'] = profile.displayname
         else:
             return redirect(url_for('show_profile_page',
                                     next=url_for('show_profile_page')))

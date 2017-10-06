@@ -44,7 +44,7 @@
         				<div class="col-md-6">
         					<form role="form" action="{{url_for('show_profile_page')}}" method="POST">
 
-                    <div class="form-group">
+                    <!-- <div class="form-group">
         							<label for="displayname">User Name</label>
         							<input
         								type="text"
@@ -56,7 +56,7 @@
         								tabindex="1"
         								value="{{session['displayname']}}"
         							>
-        					  </div>
+        					  </div> -->
 
                     <div class="form-group">
         							<label for="first">First Name</label>
@@ -67,7 +67,7 @@
                         placeholder="First Name"
         								class="form-control"
         								required="required"
-        								tabindex="2"
+        								tabindex="1"
         								value="{{session['first']}}"
         							>
         					  </div>
@@ -81,7 +81,7 @@
                         placeholder="Last Name"
         								class="form-control"
         								required="required"
-        								tabindex="3"
+        								tabindex="2"
         								value="{{session['last']}}"
         							>
         						</div>
@@ -95,7 +95,7 @@
         								class="form-control"
         								placeholder="me@example.com"
         								required="required"
-        								tabindex="4"
+        								tabindex="3"
         								value="{{session['email']}}"
         							>
         						</div>
@@ -109,7 +109,7 @@
                         name="institution"
                         placeholder="Institution Name"
                         required="required"
-                        tabindex="5"
+                        tabindex="4"
                         value="{{session['institution']}}"
                       >
                     </div>
@@ -127,61 +127,62 @@
 
                 <div class="col-md-6">
                   <form role="form" action="{{url_for('show_profile_page')}}" method="POST">
-                    <div class="form-group">
-                      <label for="name">User Name</label>
-                      <input
-                        type="text"
-                        class="form-control"
-                        id="name"
-                        name="name"
-                        placeholder="Username"
-                        required="required"
-                        tabindex="1"
-                        value="{{session['name']}}"
-                      >
-                    </div>
+
+                    <!-- <div class="form-group">
+        							<label for="displayname">User Name</label>
+        							<input
+        								type="text"
+        								id="displayname"
+        								name="displayname"
+                        placeholder="Choose User Name..."
+        								class="form-control tour-step tour-step-three"
+        								required="required"
+        								tabindex="1"
+        								value="{{session['displayname']}}"
+        							>
+        					  </div> -->
 
                     <div class="form-group">
-                      <label for="first">First Name</label>
-                      <input
-                        type="text"
-                        id="first"
-                        name="first"
+        							<label for="first">First Name</label>
+        							<input
+        								type="text"
+        								id="first"
+        								name="first"
                         placeholder="First Name"
-                        class="form-control"
-                        required="required"
-                        tabindex="2"
-                        value="{{session['first']}}"
-                      >
-                    </div>
+        								class="form-control"
+        								required="required"
+        								tabindex="1"
+        								value="{{session['first']}}"
+        							>
+        					  </div>
 
                     <div class="form-group">
-                      <label for="last">Last Name</label>
-                      <input
-                        type="text"
-                        id="last"
-                        name="last"
+        							<label for="last">Last Name</label>
+        							<input
+        								type="text"
+        								id="last"
+        								name="last"
                         placeholder="Last Name"
-                        class="form-control"
-                        required="required"
-                        tabindex="3"
-                        value="{{session['last']}}"
-                      >
-                    </div>
+        								class="form-control"
+        								required="required"
+        								tabindex="2"
+        								value="{{session['last']}}"
+        							>
+        						</div>
 
-                    <div class="form-group">
-                      <label for="email">Email</label>
-                      <input
-                        type="email"
-                        id="email"
-                        name="email"
-                        class="form-control"
-                        placeholder="me@example.com"
-                        required="required"
-                        tabindex="4"
-                        value="{{session['email']}}"
-                      >
-                    </div>
+        						<div class="form-group">
+        							<label for="email">Email</label>
+        							<input
+        								type="email"
+        								id="email"
+        								name="email"
+        								class="form-control"
+        								placeholder="me@example.com"
+        								required="required"
+        								tabindex="3"
+        								value="{{session['email']}}"
+        							>
+        						</div>
 
                     <div class="form-group">
                       <label for="institution">Institution/Department</label>
@@ -192,7 +193,7 @@
                         name="institution"
                         placeholder="Institution Name"
                         required="required"
-                        tabindex="5"
+                        tabindex="4"
                         value="{{session['institution']}}"
                       >
                     </div>
