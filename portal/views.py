@@ -70,8 +70,13 @@ def blog():
     articles = (p for p in pages if 'date' in p.meta)
     """Show the 10 most recent articles, most recent first"""
     latest = sorted(articles, reverse=True, key=lambda p: p.meta['date'])
+    blog_pages = latest[:10]
+    taglist = []
+    for p in blog_pages:
+        if p.meta['tags'][0] not in taglist:
+            taglist.append(p.meta['tags'][0])
     """Send the user to the blog page"""
-    return render_template('blog.html', pages=latest[:10])
+    return render_template('blog.html', pages=blog_pages, taglist=taglist)
 
 
 @app.route('/blog/tag/<string:tag>/', methods=['GET'])
