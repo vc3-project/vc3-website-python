@@ -39,6 +39,7 @@
     											<th><input type="text" class="form-control" placeholder="Framework" disabled></th>
     											<th><input type="text" class="form-control" placeholder="No. of Compute Nodes" disabled></th>
                           <th><input type="text" class="form-control" placeholder="No. of Head Nodes" disabled></th>
+                          <th><input type="text" class="form-control" placeholder="Description" disabled></th>
     										</tr>
     									</thead>
     									<tbody data-link="row" class="rowlink">
@@ -62,6 +63,13 @@
                           </td>
                           <td>
                             1
+                          </td>
+                          <td>
+                            {% if cluster.description == None %}
+                              Currently no description
+                            {% else %}
+                              <div id="allocation-description">{{cluster.description}}</div>
+                            {% endif %}
                           </td>
     										</tr>
     										  {% endif %}

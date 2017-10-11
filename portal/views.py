@@ -441,13 +441,15 @@ def create_cluster():
         environment = "condor-glidein-password-env1"
         translatename = "".join(inputname.split())
         name = translatename.lower()
+        description_input = request.form['description']
+        description = str(description_input)
 
         nodeset = vc3_client.defineNodeset(name=name, owner=owner,
                                            node_number=node_number, app_type=app_type,
                                            app_role=app_role, environment=environment)
         vc3_client.storeNodeset(nodeset)
-        # nodesets = vc3_client.listNodesets()
-        newcluster = vc3_client.defineCluster(name=name, owner=owner, nodesets=[])
+        newcluster = vc3_client.defineCluster(
+            name=name, owner=owner, nodesets=[], description=description)
         vc3_client.storeCluster(newcluster)
         vc3_client.addNodesetToCluster(nodesetname=nodeset.name,
                                        clustername=newcluster.name)
@@ -475,6 +477,7 @@ def view_cluster(name):
     clusters = vc3_client.listClusters()
     projects = vc3_client.listProjects()
     nodesets = vc3_client.listNodesets()
+    users = vc3_client.listUsers()
 
     if request.method == 'GET':
         for cluster in clusters:
@@ -482,15 +485,18 @@ def view_cluster(name):
                 cluster_name = cluster.name
                 owner = cluster.owner
                 state = cluster.state
+                description = cluster.description
 
                 return render_template('cluster_profile.html', name=cluster_name,
                                        owner=owner, state=state,
-                                       nodesets=nodesets)
+                                       nodesets=nodesets, description=description,
+                                       users=users)
         raise LookupError('cluster')
 
     elif request.method == 'POST':
         node_number = request.form['node_number']
         app_type = request.form['app_type']
+        description = request.form['description']
 
         if app_type == "htcondor":
             environment = "condor-glidein-password-env1"
@@ -519,7 +525,8 @@ def view_cluster(name):
                                            app_type=app_type, app_role=app_role,
                                            environment=environment)
         vc3_client.storeNodeset(nodeset)
-        newcluster = vc3_client.defineCluster(name=cluster_name, owner=owner)
+        newcluster = vc3_client.defineCluster(
+            name=cluster_name, owner=owner, description=description)
         vc3_client.storeCluster(newcluster)
         vc3_client.addNodesetToCluster(nodesetname=nodeset.name,
                                        clustername=newcluster.name)
@@ -537,6 +544,7 @@ def edit_cluster(name):
     clusters = vc3_client.listClusters()
     projects = vc3_client.listProjects()
     nodesets = vc3_client.listNodesets()
+    frameworks = []
 
     for cluster in clusters:
         if cluster.name == name:
@@ -544,10 +552,18 @@ def edit_cluster(name):
             owner = cluster.owner
             state = cluster.state
             acl = cluster.acl
+            description = cluster.description
+    for nodeset in nodesets:
+        if nodeset.name == name:
+            node_number = nodeset.node_number
+            if nodeset.app_type not in frameworks:
+                frameworks.append(nodeset.app_type)
 
             return render_template('cluster_edit.html', name=clustername,
                                    owner=owner, nodesets=nodesets,
-                                   state=state, acl=acl, projects=projects)
+                                   state=state, acl=acl, projects=projects,
+                                   frameworks=frameworks, node_number=node_number,
+                                   description=description)
     app.logger.error("Could not find cluster when editing: {0}".format(name))
     raise LookupError('cluster')
 

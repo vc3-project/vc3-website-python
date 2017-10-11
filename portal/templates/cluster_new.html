@@ -58,19 +58,17 @@
           autofocus
           value="{{request.node_number}}">
       </fieldset>
-      <!-- <fieldset>
-        <label for="cores">Number of Cores (between 1 and 20)</label>
-        <input
-          placeholder="0"
-          name="cores"
-          type="number"
-          min="1"
-          max="20"
-          tabindex="5"
-          required
+      <fieldset>
+        <label for="description">Description (optional)</label>
+        <textarea
+          placeholder="Brief 144 Character Description..."
+          name="description"
+          tabindex="4"
           autofocus
-          value="{{request.cores}}">
-      </fieldset> -->
+          maxlength="144"
+          value="{{request.description}}"
+          ></textarea>
+      </fieldset>
       <fieldset>
         <button type="submit" id="create-project" data-submit="...Sending">Define Template</button>
       </fieldset>
