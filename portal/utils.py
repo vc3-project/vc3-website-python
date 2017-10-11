@@ -1,11 +1,14 @@
 from flask import request
 from threading import Lock
+from ConfigParser import SafeConfigParser
 
 import globus_sdk
 
+from vc3client import client
+
 try:
     from urllib.parse import urlparse, urljoin
-except:
+except ImportError:
     from urlparse import urlparse, urljoin
 
 from portal import app
@@ -70,6 +73,22 @@ def get_portal_tokens(
             })
 
         return get_portal_tokens.access_tokens
+
+def get_vc3_client():
+    """
+    Return a VC3 client instance
+
+    :return: VC3 client instance on success
+    """
+    c = SafeConfigParser()
+    c.readfp(open(app.config['VC3_CLIENT_CONFIG']))
+
+    try:
+        client_api = client.VC3ClientAPI(c)
+        return client_api
+    except Exception as e:
+        app.logger.error("Couldn't get vc3 client: {0}".format(e))
+        raise
 
 
 get_portal_tokens.lock = Lock()
