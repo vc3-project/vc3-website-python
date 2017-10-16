@@ -81,7 +81,7 @@
                             </a>
                           </td>
                           <td>
-                            {% if allocation.description == None %}
+                            {% if allocation.description == None or allocation.description == "" %}
                               Currently no description
                             {% else %}
                               <div id="allocation-description">{{allocation.description}}</div>

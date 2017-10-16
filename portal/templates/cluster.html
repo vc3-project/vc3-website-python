@@ -65,7 +65,7 @@
                             1
                           </td>
                           <td>
-                            {% if cluster.description == None %}
+                            {% if cluster.description == None or cluster.description == "" %}
                               Currently no description
                             {% else %}
                               <div id="allocation-description">{{cluster.description}}</div>

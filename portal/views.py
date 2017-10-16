@@ -471,7 +471,8 @@ def view_cluster(name):
                 return render_template('cluster_profile.html', name=cluster_name,
                                        owner=owner, state=state,
                                        nodesets=nodesets, description=description,
-                                       users=users)
+                                       users=users, clusters=clusters,
+                                       projects=projects)
         raise LookupError('cluster')
 
     elif request.method == 'POST':
@@ -512,10 +513,11 @@ def view_cluster(name):
         vc3_client.addNodesetToCluster(nodesetname=nodeset.name,
                                        clustername=newcluster.name)
 
-        return render_template('cluster_profile.html', name=cluster_name,
-                               owner=owner, clusters=clusters,
-                               projects=projects)
-        # return redirect(url_for('view_cluster'))
+        # return render_template('cluster_profile.html', name=cluster_name,
+        #                        owner=owner, clusters=clusters,
+        #                        projects=projects)
+        flash('Your cluster template has been successfully updated.', 'success')
+        return redirect(url_for('list_clusters'))
 
 
 @app.route('/cluster/edit/<name>', methods=['GET'])

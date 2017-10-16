@@ -16,6 +16,7 @@
               <h2 class="title">Thanks for your interest in VC3!  </h2>
           {% else %}
             <h2 class="title">Profile: {{session['first']}} {{session['last']}}</h2>
+            <label><span id="asterik">*</span> <small style="color:white">= indicates required</small></label>
           {% endif %}
 						<hr/>
           </div>
@@ -44,7 +45,7 @@
         					<form role="form" action="{{url_for('show_profile_page')}}" method="POST">
 
                     <div class="form-group">
-        							<label for="displayname">User Name</label>
+        							<label for="displayname">User Name <span id="asterik">*</span></label>
         							<input
         								type="text"
         								id="displayname"
@@ -58,7 +59,7 @@
         					  </div>
 
                     <div class="form-group">
-        							<label for="first">First Name</label>
+        							<label for="first">First Name <span id="asterik">*</span></label>
         							<input
         								type="text"
         								id="first"
@@ -72,7 +73,7 @@
         					  </div>
 
                     <div class="form-group">
-        							<label for="last">Last Name</label>
+        							<label for="last">Last Name <span id="asterik">*</span></label>
         							<input
         								type="text"
         								id="last"
@@ -86,7 +87,7 @@
         						</div>
 
         						<div class="form-group">
-        							<label for="email">Email</label>
+        							<label for="email">Email <span id="asterik">*</span></label>
         							<input
         								type="email"
         								id="email"
@@ -100,7 +101,7 @@
         						</div>
 
                     <div class="form-group">
-                      <label for="institution">Institution/Department</label>
+                      <label for="institution">Institution/Department <span id="asterik">*</span></label>
                       <input
                         type="text"
                         class="form-control"
@@ -128,7 +129,7 @@
                   <form role="form" action="{{url_for('show_profile_page')}}" method="POST">
 
                     <div class="form-group">
-        							<label for="displayname">User Name</label>
+        							<label for="displayname">User Name <span id="asterik">*</span></label>
         							<input
         								type="text"
         								id="displayname"
@@ -142,7 +143,7 @@
         					  </div>
 
                     <div class="form-group">
-        							<label for="first">First Name</label>
+        							<label for="first">First Name <span id="asterik">*</span></label>
         							<input
         								type="text"
         								id="first"
@@ -156,7 +157,7 @@
         					  </div>
 
                     <div class="form-group">
-        							<label for="last">Last Name</label>
+        							<label for="last">Last Name <span id="asterik">*</span></label>
         							<input
         								type="text"
         								id="last"
@@ -170,7 +171,7 @@
         						</div>
 
         						<div class="form-group">
-        							<label for="email">Email</label>
+        							<label for="email">Email <span id="asterik">*</span></label>
         							<input
         								type="email"
         								id="email"
@@ -184,7 +185,7 @@
         						</div>
 
                     <div class="form-group">
-                      <label for="institution">Institution/Department</label>
+                      <label for="institution">Institution/Department <span id="asterik">*</span></label>
                       <input
                         type="text"
                         class="form-control"
