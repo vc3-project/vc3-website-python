@@ -11,8 +11,9 @@ Create a new project
     <div class="container new-project">
       <form role="form" id="new-project-form" action="{{url_for('create_project')}}" method="POST">
 
-        <h3>Create a New Project</h3>
+        <h2>Create a New Project</h2>
         <h4>A project connects your allocations to your team members</h4>
+        <h4><label><span id="asterik">*</span> = indicates required</label></h4>
 
         <fieldset>
           <label for="name">Project Name <span id="asterik">*</span></label>
@@ -50,7 +51,7 @@ Create a new project
           </select>
         </fieldset>
         <fieldset>
-          <label for="description">Description (optional)</label>
+          <label for="description">Description</label>
           <textarea
             placeholder="Brief 144 Character Description..."
             name="description"

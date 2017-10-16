@@ -567,6 +567,14 @@ $(function() {
    });
 });
 
+// Auto-selects options within edit forms based on select ID and option value
+// where a = 'select-id-string'  and b = 'option value string'
+
+function autoSelect(a,b) {
+  var selector = document.getElementById(a);
+  selector.value = b;
+}
+
 // $(document).ready(function() { /// Wait till page is loaded
 // setInterval(timingLoad, 3000);
 // function timingLoad() {

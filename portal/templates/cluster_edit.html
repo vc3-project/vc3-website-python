@@ -13,7 +13,8 @@
       <!-- <div class="col-lg-12 logo-vc3">
         <img width="100" class="logo" src="https://image.ibb.co/e59s3v/logosmall.png" alt="Logo" />
       </div> -->
-      <h3>Edit Cluster Template: <small style="color:#111">{{name}}</small></h3>
+      <h2>Edit Cluster Template: <small style="color:#111">{{name}}</small></h2>
+      <h4><label><span id="asterik">*</span> = indicates required</label></h4>
 
       <fieldset>
         <label for="app_type">Cluster Framework <span id="asterik">*</span></label>
@@ -35,7 +36,7 @@
           value="{{node_number}}">
       </fieldset>
       <fieldset>
-        <label for="description">Description (optional)</label>
+        <label for="description">Description</label>
         <textarea
           placeholder="Brief 144 Character Description..."
           name="description"
@@ -54,6 +55,7 @@
 </div>
 
 <script>
+
 
 window.onload = autoSelect('form-framework-list', '{{framework}}');
 
