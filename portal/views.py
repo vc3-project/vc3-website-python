@@ -556,6 +556,7 @@ def edit_cluster(name):
     for nodeset in nodesets:
         if nodeset.name == name:
             node_number = nodeset.node_number
+            framework = nodeset.app_type
             if nodeset.app_type not in frameworks:
                 frameworks.append(nodeset.app_type)
 
@@ -563,7 +564,7 @@ def edit_cluster(name):
                                    owner=owner, nodesets=nodesets,
                                    state=state, acl=acl, projects=projects,
                                    frameworks=frameworks, node_number=node_number,
-                                   description=description)
+                                   description=description, framework=framework)
     app.logger.error("Could not find cluster when editing: {0}".format(name))
     raise LookupError('cluster')
 

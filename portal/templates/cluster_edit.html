@@ -17,17 +17,9 @@
 
       <fieldset>
         <label for="app_type">Cluster Framework <span id="asterik">*</span></label>
-        <select class="form-control" name="app_type" tabindex="1" id="form-resource-list" required>
-        {% for framework in frameworks %}
-          {% if framework == "htcondor" %}
-          <option selected value="{{framework}}">HTCondor</option>
-          <option value="workqueue">WorkQueue</option>
-          {% elif framework == "workqueue" %}
-          <option selected value="{{framework}}">WorkQueue</option>
-          <option value="htcondor">HTCondor</option>
-          {% endif %}
-        {% endfor %}
-          </option>
+        <select class="form-control" name="app_type" tabindex="1" id="form-framework-list" required>
+          <option value="htcondor" id="htcondor">HTCondor</option>
+          <option value="workqueue" id="workqueue">WorkQueue</option>
         </select>
       </fieldset>
       <fieldset>
@@ -61,4 +53,14 @@
 </section>
 </div>
 
+<script>
+
+window.onload = autoSelect('form-framework-list', '{{framework}}');
+
+function autoSelect(a,b) {
+  var selector = document.getElementById(a);
+  selector.value = b
+}
+
+</script>
 {%endblock%}
