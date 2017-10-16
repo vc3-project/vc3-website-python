@@ -1,7 +1,6 @@
 from flask import Flask
 from flask_flatpages import FlatPages
 from flask_frozen import Freezer
-from portal.database import Database
 import logging.handlers
 import logging
 
@@ -24,3 +23,4 @@ freezer = Freezer(app)
 
 # need to put this here since views uses the app object
 import portal.views
+import portal.rest_api

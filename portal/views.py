@@ -2,16 +2,14 @@ import base64
 import traceback
 import sys
 import time
-from ConfigParser import SafeConfigParser
 
 from flask import (flash, redirect, render_template, request,
                    session, url_for)
 
-from vc3client import client
 
 from portal import app, pages
 from portal.decorators import authenticated
-from portal.utils import (load_portal_client, get_safe_redirect)
+from portal.utils import (load_portal_client, get_safe_redirect, get_vc3_client)
 
 
 # Create a custom error handler for Exceptions
@@ -29,23 +27,6 @@ def exception_occurred(e):
 @app.errorhandler(LookupError)
 def missing_object_error_page(e):
     return render_template('missing_entity.html')
-
-
-def get_vc3_client():
-    """
-    Return a VC3 client instance
-
-    :return: VC3 client instance on success
-    """
-    c = SafeConfigParser()
-    c.readfp(open(app.config['VC3_CLIENT_CONFIG']))
-
-    try:
-        client_api = client.VC3ClientAPI(c)
-        return client_api
-    except Exception as e:
-        app.logger.error("Couldn't get vc3 client: {0}".format(e))
-        raise
 
 
 @app.route('/', methods=['GET'])
