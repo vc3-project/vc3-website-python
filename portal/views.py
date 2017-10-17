@@ -516,8 +516,8 @@ def view_cluster(name):
         # return render_template('cluster_profile.html', name=cluster_name,
         #                        owner=owner, clusters=clusters,
         #                        projects=projects)
-        flash('Your cluster template has been successfully updated.', 'success')
-        return redirect(url_for('list_clusters'))
+        # flash('Your cluster template has been successfully updated.', 'success')
+        return redirect(url_for('view_cluster', name=name))
 
 
 @app.route('/cluster/edit/<name>', methods=['GET'])
@@ -750,7 +750,8 @@ def create_request():
         newrequest = vc3_client.defineRequest(name=vc3requestname,
                                               owner=owner, cluster=cluster,
                                               allocations=allocations,
-                                              environments=environments, policy=policy,
+                                              environments=environments,
+                                              policy=policy,
                                               expiration=expiration)
         vc3_client.storeRequest(newrequest)
 
