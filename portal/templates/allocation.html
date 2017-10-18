@@ -94,6 +94,11 @@
     								</table>
                   </div>
   							</div>
+
+                <div id="ajaxTesting">
+                  <h5 id="test">{{name}}</h5>
+                </div>
+
   						</div>
   					</div>
 
@@ -105,5 +110,42 @@
 
   </div>
 </div>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 
+<script>
+
+window.onload = function(){
+  get_states('05e05adf-e9d4-487f-8771-b6b8a25e84d3.uchicago-midway');
+  setInterval( function() {
+      get_states('05e05adf-e9d4-487f-8771-b6b8a25e84d3.uchicago-midway');
+    }, 5000 );
+}
+
+// function get_states(name) {
+//   var allocationURL = '/rest/allocation/' + name;
+//     $.getJSON(allocationURL,
+//             function (data) {
+//                 $('#allocationstates').text(data.state);
+//                 $('#test').text(data.description);
+//             }
+//     );
+//
+// }
+// var name = '05e05adf-e9d4-487f-8771-b6b8a25e84d3.nersc-cori';
+function get_states(name) {
+  $.ajax({
+      url: "/rest/allocation/" + name,
+      type: "get",
+      dataType: 'json',
+      success: function(data) {
+        $("#allocationstates").html(data.state);
+        $("#test").html(data.description);
+      },
+      error: function(xhr) {
+        //Do Something to handle error
+      }
+    });
+}
+
+</script>
 {%endblock%}
