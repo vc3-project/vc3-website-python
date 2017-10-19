@@ -309,14 +309,18 @@ def create_project():
             members = request.form['members'].split(",")
         # description = request.form['description']
         # organization = request.form['organization']
+        if request.form['description'] == "":
+            description = None
+        else:
+            description = request.form['description']
 
         newproject = vc3_client.defineProject(name=name, owner=owner,
-                                              members=members)
+                                              members=members, description=description)
         vc3_client.storeProject(newproject)
         if not (request.form['allocation'] == ""):
-            allocation = request.form['allocation']
-            vc3_client.addAllocationToProject(allocation=allocation,
-                                              projectname=newproject.name)
+            for selected_allocations in request.form.getlist('allocation'):
+                vc3_client.addAllocationToProject(allocation=selected_allocations,
+                                                  projectname=newproject.name)
         flash('Your project has been successfully created.', 'success')
 
         return redirect(url_for('list_projects'))

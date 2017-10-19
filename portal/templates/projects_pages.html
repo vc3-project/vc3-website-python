@@ -58,16 +58,16 @@
 						{% for project in projects %}
               {% if project.name == name %}
                 {% if project.allocations == [] or project.allocations == None %}
-                <a class="list-group-item list-group-item-action">
+                <div class="list-group-item active">
                   No Current Allocations
-                </a>
+                </div>
                 {% else %}
                   {% for allocation_name in project.allocations %}
                     {% for allocation in allocations %}
                       {% if allocation_name == allocation.name %}
-                <a href="{{ url_for('view_allocation', name=allocation.name) }}" class="list-group-item list-group-item-action">
+                <div class="list-group-item active">
                   {{ allocation.displayname }}
-                </a>
+                </div>
                       {% endif %}
                     {% endfor %}
                   {% endfor %}
@@ -82,11 +82,13 @@
 								<select class="form-control" id="form-resource-list" name="allocation" tabindex="3" required>
 									<option selected disabled>Please Select Allocation</option>
 								<!-- Populate List of Allocations that has been defined by User -->
-								{% for allocation in allocations %}
-									{% if allocation.owner == owner and session['name'] == owner %}
-										 <option value="{{allocation.name}}" required>{{ allocation.displayname }}</option>
-									{% endif %}
-								{% endfor %}
+                {% for project in projects %}
+  								{% for allocation in allocations %}
+  									{% if allocation.owner == owner and session['name'] == owner and allocation.name not in project.allocations %}
+  								<option value="{{allocation.name}}" required>{{ allocation.displayname }}</option>
+  									{% endif %}
+  								{% endfor %}
+                {% endfor %}
 								</select>
 							</fieldset>
 								<button type="submit" name="btn" value="addallocation" class="btn btn-primary" id="create-project" data-submit="...Sending">Add Allocation to Project</button>
