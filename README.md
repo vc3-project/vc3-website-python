@@ -81,5 +81,3 @@ Below is a suggested starting template for new .html pages for development of th
 
 {endblock}
 ```
-
-test
