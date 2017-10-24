@@ -77,6 +77,26 @@
 						    {% if request.name == name %}
               <div class="panel panel-info resource-profile" style="margin: 1em;">
                 <div class="panel-heading">
+                  <h3 class="panel-title"><strong>Owner</strong></h3>
+                </div>
+                <div class="panel-body disabled">
+                {% for user in users %}
+                  {% if user.name == owner %}
+                    {{user.first }} {{user.last}}
+                  {% endif %}
+                {% endfor %}
+                </div>
+              </div>
+              <div class="panel panel-info resource-profile" style="margin: 1em;">
+                <div class="panel-heading">
+                  <h3 class="panel-title"><strong>Cluster Template</strong></h3>
+                </div>
+                <div class="panel-body disabled">
+                  {{request.cluster}}
+                </div>
+              </div>
+              <div class="panel panel-info resource-profile" style="margin: 1em;">
+                <div class="panel-heading">
                   <h3 class="panel-title"><strong>State</strong></h3>
                 </div>
                 <div class="panel-body disabled">
@@ -89,18 +109,6 @@
                 </div>
                 <div class="panel-body disabled">
                   {{request.state_reason}}
-                </div>
-              </div>
-              <div class="panel panel-info resource-profile" style="margin: 1em;">
-                <div class="panel-heading">
-                  <h3 class="panel-title"><strong>Owner</strong></h3>
-                </div>
-                <div class="panel-body disabled">
-                {% for user in users %}
-                  {% if user.name == owner %}
-                    {{user.first }} {{user.last}}
-                  {% endif %}
-                {% endfor %}
                 </div>
               </div>
               <div class="panel panel-info resource-profile" style="margin: 1em;">
@@ -123,9 +131,9 @@
                 <div class="panel-heading">
                   <h3 class="panel-title"><strong>Allocations</strong></h3>
                 </div>
-                <div class="panel-body">
+                <div class="panel-body disabled">
                   {% for allocation in request.allocations %}
-                    <a href="{{ url_for('view_allocation', name=allocation) }}" title="View {{allocation}}"><option>{{allocation}}</option></a>
+                    <div title="View {{allocation}}"><row>{{allocation}}</row></div>
                   {% endfor %}
                 </div>
               </div>
@@ -161,14 +169,15 @@
                   <h3 class="panel-title"><strong>Status</strong></h3>
                 </div>
                 <div class="panel-body disabled">
-                  {% if request.statusraw['MYSITE-hostname-sysadminname'] == {} %}
+                  <!-- MYSITE-hostname-sysadminname -->
+                  {% if request.statusraw['VC3-static'] == {} %}
                   Status Currently Unavailable
                   {% elif request.statusraw == None %}
                   Status Currently Unavailable
                   {% else %}
 
                   Allocations on Virtual Cluster:
-                    {% for key, value in request.statusraw.values()[0].values()[0].iteritems() %}
+                    {% for key, value in request.statusraw.values()[0].iteritems() %}
                       <option>{{ key }}</option>
                       {% for k, v in value.iteritems() %}
                       <option>{{ k }}: {{v}}</option>

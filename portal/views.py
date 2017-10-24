@@ -350,11 +350,12 @@ def view_project(name):
             name = project.name
             owner = project.owner
             members = project.members
+            project = project
             # description = project.description
             # organization = project.organization
             return render_template('projects_pages.html', name=name, owner=owner,
                                    members=members, allocations=allocations,
-                                   projects=projects, users=users)
+                                   projects=projects, users=users, project=project)
     app.logger.error("Could not find project when viewing: {0}".format(name))
     raise LookupError('project')
 
