@@ -360,6 +360,7 @@ def view_project(name):
     projects = vc3_client.listProjects()
     allocations = vc3_client.listAllocations()
     users = vc3_client.listUsers()
+    validation = False
 
     ''' Scanning list of projects and matching with name of project that was
     passed through '''
@@ -370,11 +371,15 @@ def view_project(name):
             owner = project.owner
             members = project.members
             project = project
+            if (session['name'] in project.members
+                    or session['name'] == project.owner):
+                validation = True
             # description = project.description
             # organization = project.organization
             return render_template('projects_pages.html', name=name, owner=owner,
                                    members=members, allocations=allocations,
-                                   projects=projects, users=users, project=project)
+                                   projects=projects, users=users, project=project,
+                                   validation=validation)
     app.logger.error("Could not find project when viewing: {0}".format(name))
     raise LookupError('project')
 

@@ -7,7 +7,21 @@
 
 <div class="content">
   <div class="container-fluid">
-
+{% if validation == False %}
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="header">
+            <h4 class="title">Oops!</h4>
+            <h5>You do not appear to be a member of this project. If you would
+              like to join this project, please send a request to the owner.
+            </h5>
+            <hr />
+          </div>
+        </div>
+      </div>
+    </div>
+{% else %}
     <div class="row">
       <div class="col-md-12">
         <div class="card">
@@ -22,7 +36,11 @@
     			<div class="content description">
     				<label for="members">Project Members</label>
     				<div class="list-group">
-    					<div class="list-group-item active">{{ session['first'] }} {{ session['last'] }} (Owner)</div>
+              {% for user in users %}
+                {% if user.name == project.owner %}
+    					<div class="list-group-item active">{{ user.first }} {{ user.last }} (Owner)</div>
+                {% endif %}
+              {% endfor %}
     					{% for member in members%}
                 {% for user in users %}
                   {% if user.name == member %}
@@ -100,7 +118,7 @@
         </div>
       </div>
 		</div>
-
+{% endif %}
   </div>
 </div>
 
