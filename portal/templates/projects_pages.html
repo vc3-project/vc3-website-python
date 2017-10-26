@@ -59,7 +59,7 @@
 							<fieldset>
 					       <label for="newuser">Add New Users</label>
 					       <select class="form-control" multiple data-live-search="true" name="newuser" tabindex="2" id="form-resource-list" required>
-					         <option selected disabled>Please Select User</option>
+					         <option value="" selected disabled>Please Select User</option>
 					         {% for user in users %}
                     {% if (user.name not in members) and (user.name != owner) %}
 					         <option value="{{user.name}}" data-tokens="{{user.first}} {{user.last}}" required>{{ user.first }} {{ user.last}}</option>
@@ -102,7 +102,7 @@
 							<fieldset>
 								<label for="allocation">Select Allocation:</label>
 								<select class="form-control" multiple data-live-search="true" id="form-resource-list" name="allocation" tabindex="3" required>
-									<option selected disabled>Please Select Allocation</option>
+									<option value="" selected disabled>Please Select Allocation</option>
 								<!-- Populate List of Allocations that has been defined by User -->
   								{% for allocation in allocations %}
   									{% if allocation.owner == owner and session['name'] == owner and allocation.name not in project.allocations %}
