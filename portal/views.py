@@ -8,7 +8,7 @@ from flask import (flash, redirect, render_template, request,
 
 
 from portal import app, pages
-from portal.decorators import authenticated, allocation_validated
+from portal.decorators import authenticated, allocation_validated, project_validated
 from portal.utils import (load_portal_client, get_safe_redirect, get_vc3_client)
 
 
@@ -349,6 +349,7 @@ def list_projects():
 
 @app.route('/project/<name>', methods=['GET'])
 @authenticated
+@project_validated
 def view_project(name):
     """
     View Specific Project Profile View, with name passed in as argument
