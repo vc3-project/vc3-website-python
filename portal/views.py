@@ -302,8 +302,9 @@ def create_project():
                                users=users, allocations=allocations)
 
     elif request.method == 'POST':
+        # Method to define and store projects
+        # along with associated members and allocations
         # Initial members and allocations not required
-
         projects = vc3_client.listProjects()
         name = request.form['name']
         owner = session['name']
@@ -352,7 +353,7 @@ def view_project(name):
     """
     View Specific Project Profile View, with name passed in as argument
 
-    :name: name attribute of project
+    :param name: name attribute of project
     :return: Project profile page specific to project name
     """
 
@@ -385,7 +386,7 @@ def add_member_to_project(name):
     Adding members to project from project profile page
     Only owner of project may add members to project
 
-    :name: name attribute of project
+    :param name: name attribute of project
     :return: Project profile page specific to project name
     """
 
@@ -420,7 +421,7 @@ def add_allocation_to_project(name):
     Adding allocations to project from project profile page
     Only owner/members of project may add their own allocations to project
 
-    :name: name attribute of project to match
+    :param name: name attribute of project to match
     :return: Project page specific to project name, with new allocation added
     """
     vc3_client = get_vc3_client()
@@ -505,7 +506,7 @@ def view_cluster(name):
     """
     Specific page view, pertaining to Cluster Template
 
-    :name: name attribute of cluster
+    :param name: name attribute of cluster
     :return: Cluster Template profile view specific to cluster name
     """
     vc3_client = get_vc3_client()
@@ -581,7 +582,7 @@ def edit_cluster(name):
     Edit Page for specific cluster templates
     Only owner of cluster template may make edits to cluster template
 
-    :name: name attribute of cluster template to match
+    :param name: name attribute of cluster template to match
     :return: Edit Page with information pertaining to the cluster template
     """
     vc3_client = get_vc3_client()
@@ -619,7 +620,7 @@ def delete_cluster(name):
     """
     Route for method to delete cluster template
 
-    :name: name attribute of cluster template to delete
+    :param name: name attribute of cluster template to delete
     :return: Redirect to List Cluster Template page with cluster template deleted
     """
     vc3_client = get_vc3_client()
@@ -684,7 +685,14 @@ def create_allocation():
 
 @app.route('/allocation/<name>', methods=['GET', 'POST'])
 @authenticated
+@allocation_validated
 def view_allocation(name):
+    """
+    Allocation Detailed Page View
+
+    :param name: name attribute of allocation
+    :return: Allocation detailed page with associated attributes
+    """
     vc3_client = get_vc3_client()
     allocations = vc3_client.listAllocations()
     resources = vc3_client.listResources()
@@ -717,6 +725,8 @@ def view_allocation(name):
         raise LookupError('allocation')
 
     elif request.method == 'POST':
+        # Iterate through allocations list in infoservice for allocation
+        # with the matching name argument and update with new form input
 
         for allocation in allocations:
             if allocation.name == name:
@@ -742,6 +752,7 @@ def view_allocation(name):
 
 @app.route('/allocation/edit/<name>', methods=['GET'])
 @authenticated
+@allocation_validated
 def edit_allocation(name):
     vc3_client = get_vc3_client()
     allocations = vc3_client.listAllocations()
@@ -766,6 +777,7 @@ def edit_allocation(name):
 @app.route('/resource', methods=['GET'])
 @authenticated
 def list_resources():
+    """ Route for HPC and Resources List View """
     vc3_client = get_vc3_client()
     resources = vc3_client.listResources()
 
@@ -775,6 +787,12 @@ def list_resources():
 @app.route('/resource/<name>', methods=['GET'])
 @authenticated
 def view_resource(name):
+    """
+    Route to view specific Resource profiles
+
+    :param name: name attribute of Resource to view
+    :return: Directs to detailed profile view of said Resource
+    """
     vc3_client = get_vc3_client()
     resources = vc3_client.listResources()
 
@@ -801,6 +819,7 @@ def view_resource(name):
 @app.route('/request', methods=['GET'])
 @authenticated
 def list_requests():
+    """ List View of Virtual Clusters """
     vc3_client = get_vc3_client()
     vc3_requests = vc3_client.listRequests()
     nodesets = vc3_client.listNodesets()
@@ -813,6 +832,11 @@ def list_requests():
 @app.route('/request/new', methods=['GET', 'POST'])
 @authenticated
 def create_request():
+    """
+    Form to launch new Virtual Cluster
+
+    Users must have both, a validated allocation and cluster template to launch
+    """
     vc3_client = get_vc3_client()
     if request.method == 'GET':
         allocations = vc3_client.listAllocations()
@@ -821,8 +845,11 @@ def create_request():
                                clusters=clusters)
 
     elif request.method == 'POST':
+        # Define and store new Virtual Clusters within infoservice
+        # Policies currently default to "static-balanced"
+        # Environments currently default to "condor-glidein-password-env1"
+        # Return redirects to Virtual Clusters List View after creation
         allocations = []
-        # environments = []
         inputname = request.form['name']
         owner = session['name']
         expiration = None
@@ -850,6 +877,13 @@ def create_request():
 @app.route('/request/<name>', methods=['GET', 'POST'])
 @authenticated
 def view_request(name):
+    """
+    Route for specific detailed page view of Virtual Clusters
+
+    :param name: name attribute of Virtual Cluster
+    :return: Directs to detailed page view of Virtual Clusters with
+    associated attributes
+    """
     vc3_client = get_vc3_client()
     vc3_requests = vc3_client.listRequests()
     nodesets = vc3_client.listNodesets()
@@ -872,6 +906,8 @@ def view_request(name):
         raise LookupError('virtual cluster')
 
     elif request.method == 'POST':
+        # Method to terminate running a specific Virtual Cluster
+        # based on name argument that is passed through
         for vc3_request in vc3_requests:
             if vc3_request.name == name:
                 requestname = vc3_request.name
