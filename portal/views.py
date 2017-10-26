@@ -297,14 +297,9 @@ def create_project():
         users = vc3_client.listUsers()
         allocations = vc3_client.listAllocations()
         owner = session['name']
-        validation = False
-        for allocation in allocations:
-            if allocation.owner == owner and allocation.state == "validated":
-                validation = True
 
         return render_template('project_new.html', owner=owner,
-                               users=users, allocations=allocations,
-                               validation=validation)
+                               users=users, allocations=allocations)
 
     elif request.method == 'POST':
         # Initial members and allocations not required
@@ -365,7 +360,6 @@ def view_project(name):
     projects = vc3_client.listProjects()
     allocations = vc3_client.listAllocations()
     users = vc3_client.listUsers()
-    validation = False
 
     # Scanning list of projects and matching with name of project argument
 
@@ -375,15 +369,11 @@ def view_project(name):
             owner = project.owner
             members = project.members
             project = project
-            if (session['name'] in project.members
-                    or session['name'] == project.owner):
-                validation = True
             # description = project.description
             # organization = project.organization
             return render_template('projects_pages.html', name=name, owner=owner,
                                    members=members, allocations=allocations,
-                                   projects=projects, users=users, project=project,
-                                   validation=validation)
+                                   projects=projects, users=users, project=project)
     app.logger.error("Could not find project when viewing: {0}".format(name))
     raise LookupError('project')
 
@@ -453,6 +443,7 @@ def add_allocation_to_project(name):
 
 @app.route('/cluster/new', methods=['GET', 'POST'])
 @authenticated
+@allocation_validated
 def create_cluster():
     """ Create New Cluster Template Form """
 
