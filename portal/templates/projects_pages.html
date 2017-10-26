@@ -26,11 +26,11 @@
     					{% for member in members%}
                 {% for user in users %}
                   {% if user.name == member %}
-    					<a href="#" class="list-group-item list-group-item-action" name="removeuser">{{ user.first }} {{ user.last }}
+    					<div href="#" class="list-group-item active" name="removeuser">{{ user.first }} {{ user.last }}
     						{% if session['name'] == owner %}
     						<!-- <button type="submit" name="btn" value="removeuser" class="btn btn-danger btn-xs pull-right" data-submit="Removing User...">Remove User</button> -->
     						{% endif %}
-    					</a>
+    					</div>
                   {% endif %}
                 {% endfor %}
     					{% endfor %}
@@ -40,11 +40,11 @@
 						<form role="form" action="{{url_for('add_member_to_project', name=name)}}" method="POST">
 							<fieldset>
 					       <label for="newuser">Add New Users</label>
-					       <select class="form-control" name="newuser" tabindex="2" id="form-resource-list" required>
+					       <select class="form-control" multiple data-live-search="true" name="newuser" tabindex="2" id="form-resource-list" required>
 					         <option selected disabled>Please Select User</option>
 					         {% for user in users %}
                     {% if (user.name not in members) and (user.name != owner) %}
-					         <option value="{{user.name}}" required>{{ user.first }} {{ user.last}}</option>
+					         <option value="{{user.name}}" data-tokens="{{user.first}} {{user.last}}" required>{{ user.first }} {{ user.last}}</option>
                     {% endif %}
 					         {% endfor %}
 					       </select>
@@ -65,9 +65,13 @@
                   {% for allocation_name in project.allocations %}
                     {% for allocation in allocations %}
                       {% if allocation_name == allocation.name %}
+                        {% for user in users %}
+                          {% if allocation.owner == user.name %}
                 <div class="list-group-item active">
-                  {{ allocation.displayname }}
+                  {{ allocation.displayname }} ({{user.first}} {{user.last}})
                 </div>
+                          {% endif %}
+                        {% endfor %}
                       {% endif %}
                     {% endfor %}
                   {% endfor %}
@@ -79,12 +83,12 @@
 						<form role="form" action="{{url_for('add_allocation_to_project', name=name)}}" method="POST">
 							<fieldset>
 								<label for="allocation">Select Allocation:</label>
-								<select class="form-control" id="form-resource-list" name="allocation" tabindex="3" required>
+								<select class="form-control" multiple data-live-search="true" id="form-resource-list" name="allocation" tabindex="3" required>
 									<option selected disabled>Please Select Allocation</option>
 								<!-- Populate List of Allocations that has been defined by User -->
   								{% for allocation in allocations %}
   									{% if allocation.owner == owner and session['name'] == owner and allocation.name not in project.allocations %}
-  								<option value="{{allocation.name}}" required>{{ allocation.displayname }}</option>
+  								<option value="{{allocation.name}}" data-tokens="{{allocation.displayname}}" required>{{ allocation.displayname }}</option>
   									{% endif %}
   								{% endfor %}
 								</select>

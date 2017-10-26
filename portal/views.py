@@ -8,7 +8,7 @@ from flask import (flash, redirect, render_template, request,
 
 
 from portal import app, pages
-from portal.decorators import authenticated
+from portal.decorators import authenticated, allocation_validated
 from portal.utils import (load_portal_client, get_safe_redirect, get_vc3_client)
 
 
@@ -289,16 +289,26 @@ def authcallback():
 
 @app.route('/new', methods=['GET', 'POST'])
 @authenticated
+# @allocation_validated
 def create_project():
+    '''Creating New Project Form '''
     vc3_client = get_vc3_client()
     if request.method == 'GET':
         users = vc3_client.listUsers()
         allocations = vc3_client.listAllocations()
         owner = session['name']
+        validation = False
+        for allocation in allocations:
+            if allocation.owner == owner and allocation.state == "validated":
+                validation = True
+
         return render_template('project_new.html', owner=owner,
-                               users=users, allocations=allocations)
+                               users=users, allocations=allocations,
+                               validation=validation)
 
     elif request.method == 'POST':
+        ''' Initial members and allocations not required '''
+
         projects = vc3_client.listProjects()
         name = request.form['name']
         owner = session['name']
@@ -317,6 +327,9 @@ def create_project():
         newproject = vc3_client.defineProject(name=name, owner=owner,
                                               members=members, description=description)
         vc3_client.storeProject(newproject)
+        if not (request.form['members'] == ""):
+            for selected_members in request.form.getlist('members'):
+                vc3_client.addUserToProject(project=name, user=selected_members)
         if not (request.form['allocation'] == ""):
             for selected_allocations in request.form.getlist('allocation'):
                 vc3_client.addAllocationToProject(allocation=selected_allocations,
@@ -329,6 +342,7 @@ def create_project():
 @app.route('/project', methods=['GET'])
 @authenticated
 def list_projects():
+    ''' Project List View '''
     vc3_client = get_vc3_client()
     projects = vc3_client.listProjects()
     users = vc3_client.listUsers()
@@ -340,10 +354,15 @@ def list_projects():
 @app.route('/project/<name>', methods=['GET'])
 @authenticated
 def view_project(name):
+    ''' Specific Project List View, with name passed in as argument '''
+
     vc3_client = get_vc3_client()
     projects = vc3_client.listProjects()
     allocations = vc3_client.listAllocations()
     users = vc3_client.listUsers()
+
+    ''' Scanning list of projects and matching with name of project that was
+    passed through '''
 
     for project in projects:
         if project.name == name:
@@ -363,6 +382,9 @@ def view_project(name):
 @app.route('/project/<name>/addmember', methods=['POST'])
 @authenticated
 def add_member_to_project(name):
+    ''' Adding members to project from project profile page '''
+    ''' Only owner of project may add members to project '''
+
     vc3_client = get_vc3_client()
     projects = vc3_client.listProjects()
 
@@ -376,7 +398,9 @@ def add_member_to_project(name):
                 app.logger.error("Trying to add owner as member:" +
                                  "owner: {0} project:{1}".format(user, name))
                 return redirect(url_for('view_project', name=name))
-            vc3_client.addUserToProject(project=name, user=user)
+            if not (request.form['newuser'] == ""):
+                for selected_members in request.form.getlist('newuser'):
+                    vc3_client.addUserToProject(project=name, user=selected_members)
             flash('Successfully added member to project.', 'success')
             return redirect(url_for('view_project', name=name))
     app.logger.error("Could not find project when adding user: " +
@@ -388,6 +412,8 @@ def add_member_to_project(name):
 @app.route('/project/<name>/addallocation', methods=['POST'])
 @authenticated
 def add_allocation_to_project(name):
+    ''' Adding allocations to project from project profile page '''
+    ''' Owner/Members may only add their own allocations to project '''
     vc3_client = get_vc3_client()
     projects = vc3_client.listProjects()
 
@@ -409,6 +435,8 @@ def add_allocation_to_project(name):
 @app.route('/cluster/new', methods=['GET', 'POST'])
 @authenticated
 def create_cluster():
+    ''' Create New Cluster Template Form'''
+
     vc3_client = get_vc3_client()
     clusters = vc3_client.listClusters()
     projects = vc3_client.listProjects()
@@ -419,6 +447,10 @@ def create_cluster():
                                projects=projects, nodesets=nodesets)
 
     elif request.method == 'POST':
+        ''' Assigning attribute variables by form input and presets '''
+        ''' Create and save new nodeset first, followed by new cluster
+        and finally add said nodeset to the new cluster '''
+
         inputname = request.form['name']
         owner = session['name']
         node_number = request.form['node_number']
@@ -447,6 +479,7 @@ def create_cluster():
 @app.route('/cluster', methods=['GET'])
 @authenticated
 def list_clusters():
+    ''' List Cluster Template View '''
     vc3_client = get_vc3_client()
     clusters = vc3_client.listClusters()
     projects = vc3_client.listProjects()
@@ -459,6 +492,8 @@ def list_clusters():
 @app.route('/cluster/<name>', methods=['GET', 'POST'])
 @authenticated
 def view_cluster(name):
+    ''' Specific Cluster Template Profile View '''
+    ''' Name of cluster passed through as argument '''
     vc3_client = get_vc3_client()
     clusters = vc3_client.listClusters()
     projects = vc3_client.listProjects()
@@ -555,6 +590,20 @@ def edit_cluster(name):
                                    description=description, framework=framework)
     app.logger.error("Could not find cluster when editing: {0}".format(name))
     raise LookupError('cluster')
+
+
+@app.route('/cluster/deletecluster', methods=['POST'])
+@authenticated
+def delete_cluster(name):
+    vc3_client = get_vc3_client()
+    clusters = vc3_client.listClusters()
+
+    for cluster in clusters:
+        if cluster.name == name:
+            clustername = cluster.name
+            vc3_client.deleteCluster(clustername=clustername)
+
+    return redirect(url_for('list_clusters'))
 
 
 @app.route('/allocation', methods=['GET'])
