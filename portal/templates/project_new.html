@@ -5,30 +5,7 @@ Create a new project
 {%endblock%}
 
 {%block body%}
-{% if validation == False %}
-<div class="content">
-  <div class="container-fluid">
 
-    <div class="row">
-      <div class="col-md-12">
-        <div class="card">
-          <div class="header">
-          	<h4 class="title">Oops!</h4>
-            <h5>You must have a validated
-              <a href="{{url_for('create_allocation')}}">allocation</a> in
-              order to create a project. If you've registered an allocation,
-              it may take a few moments for validation. You may check the status
-              of your allocation <a href="{{url_for('list_allocations')}}">here</a>
-            </h5>
-						<hr />
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
-{% else %}
 <div class="col-md-8 col-sm-12">
   <section id="new_project">
     <div class="container new-project">
@@ -93,5 +70,4 @@ Create a new project
     </div> <!-- project container -->
   </section>
 </div>
-{%endif%}
 {%endblock%}

@@ -1,4 +1,4 @@
-from flask import redirect, request, session, url_for
+from flask import redirect, request, session, url_for, flash
 from functools import wraps
 from portal.utils import get_vc3_client
 
@@ -24,14 +24,14 @@ def authenticated(fn):
 
 def allocation_validated(f):
     """Mark a route as requiring a validated allocation."""
-    vc3_client = get_vc3_client()
-    allocations = vc3_client.listAllocations()
-
     @wraps(f)
     def decorated_function(*args, **kwargs):
+        vc3_client = get_vc3_client()
+        allocations = vc3_client.listAllocations()
         for allocation in allocations:
-            if (not session['name'] == allocation.owner and
-                    not allocation.state == "validated"):
-                return redirect(url_for('create_allocation', next=request.url))
-            return f(*args, **kwargs)
+            if (session['name'] == allocation.owner and
+                    allocation.state == "validated"):
+                return f(*args, **kwargs)
+        flash('You must have a validated allocation in order to create a project.', 'warning')
+        return redirect(url_for('list_allocations', next=request.url))
     return decorated_function
