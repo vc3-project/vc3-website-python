@@ -29,7 +29,7 @@ Create a new project
         <fieldset>
           <label for="members">Project Members</label>
             <!-- owner: {{ owner }} -->
-          <select class="form-control" name="members" tabindex="2" id="form-resource-list">
+          <select class="form-control" multiple name="members" tabindex="2" id="form-resource-list">
             <option value="" selected>Add User to Project</option>
             {% for user in users %}
               {% if (user.name not in members) and (user.name != owner) %}

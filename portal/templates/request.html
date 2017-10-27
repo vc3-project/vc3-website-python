@@ -91,19 +91,17 @@
                           </td>
                         {% endif %}
 
-                        {% if request.statusraw['MYSITE-hostname-sysadminname'] == {} %}
+                        <td>
+                          <div>{{request.cluster}}</div>
+                        </td>
+
+                        {% if request.statusraw['VC3-static'] == {} %}
                           <td>
-                            <div>Cluster Template Name</div>
-                          </td>
-                          <td>
-                            <small class="label label-warning">Status Currently Initializing</small>
+                            <small class="label label-warning">Status currently pending</small>
                           </td>
                         {% elif request.statusraw == None %}
                           <td>
-                            <div>Cluster Template Name</div>
-                          </td>
-                          <td>
-                            <small class="label label-warning">Status Currently Initializing</small>
+                            <small class="label label-warning">Status currently pending</small>
                           </td>
                         {% else %}
                           <td>
@@ -205,17 +203,15 @@
                           </td>
                         {% endif %}
 
-                        {% if request.statusraw['MYSITE-hostname-sysadminname'] == {} %}
-                          <td>
-                            <div>Cluster Template Name</div>
-                          </td>
+                        <td>
+                          <div>{{request.cluster}}</div>
+                        </td>
+
+                        {% if request.statusraw['VC3-static'] == {} %}
                           <td>
                             <small class="label label-warning">Status Currently Initializing</small>
                           </td>
                         {% elif request.statusraw == None %}
-                          <td>
-                            <div>Cluster Template Name</div>
-                          </td>
                           <td>
                             <small class="label label-warning">Status Currently Initializing</small>
                           </td>

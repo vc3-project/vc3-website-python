@@ -82,13 +82,11 @@
 								<select class="form-control" id="form-resource-list" name="allocation" tabindex="3" required>
 									<option selected disabled>Please Select Allocation</option>
 								<!-- Populate List of Allocations that has been defined by User -->
-                {% for project in projects %}
   								{% for allocation in allocations %}
   									{% if allocation.owner == owner and session['name'] == owner and allocation.name not in project.allocations %}
   								<option value="{{allocation.name}}" required>{{ allocation.displayname }}</option>
   									{% endif %}
   								{% endfor %}
-                {% endfor %}
 								</select>
 							</fieldset>
 								<button type="submit" name="btn" value="addallocation" class="btn btn-primary" id="create-project" data-submit="...Sending">Add Allocation to Project</button>
