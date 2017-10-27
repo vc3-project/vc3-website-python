@@ -37,6 +37,7 @@
   											<th><input type="text" class="form-control" placeholder="Name" disabled></th>
   											<th><input type="text" class="form-control" placeholder="Members" disabled></th>
   											<th><input type="text" class="form-control" placeholder="Allocations" disabled></th>
+                        <th><input type="text" class="form-control" placeholder="Description" disabled></th>
   										</tr>
   									</thead>
   									<tbody data-link="row" class="rowlink">
@@ -48,7 +49,7 @@
                           <div>
                             {% for user in users %}
                               {% if user.name == project.owner %}
-                                <small><strong>{{user.first}} {{user.last}} (Owner)</strong></small>
+                                <small><strong>{{user.first}} {{user.last}} (Owner) - {{user.email}}</strong></small>
                               {% endif %}
                             {% endfor %}
                           </div>
@@ -71,6 +72,13 @@
                                 {% endif %}
                               {% endfor %}
                             {% endfor %}
+                          {% endif %}
+                        </td>
+                        <td>
+                          {% if project.description == None or project.description == "" %}
+                            Currently no description
+                          {% else %}
+                            <div id="allocation-description">{{project.description}}</div>
                           {% endif %}
                         </td>
   										</tr>

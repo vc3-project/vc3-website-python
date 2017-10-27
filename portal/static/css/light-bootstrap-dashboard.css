@@ -2293,7 +2293,7 @@ body > .navbar-collapse {
     .card .list-group .active {
       background-color: transparent;
       border-color: #434857;
-      font-weight: 600;
+      /*font-weight: 600;*/
       color: #FFF;
     }
     .card select {
