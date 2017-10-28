@@ -46,20 +46,22 @@
   										<tr>
   											<td><a href="{{ url_for('view_project', name=project.name) }}" title="View Project">{{ project.name }}</a></td>
   											<td>
-                          <div>
-                            {% for user in users %}
-                              {% if user.name == project.owner %}
-                                <small><strong>{{user.first}} {{user.last}} (Owner) - {{user.email}}</strong></small>
-                              {% endif %}
-                            {% endfor %}
-                          </div>
+                          <div class="members">
+                          {% for user in users %}
+                            {% if user.name == project.owner %}
+                            <small><strong>{{user.first}} {{user.last}} (Owner) - {{user.email}}</strong></small>
+                            {% endif %}
+                          {% endfor %}
                           {% for member in project.members %}
                             {% for user in users %}
                               {% if user.name == member %}
-                          <div><small>{{ user.first }} {{ user.last}} ({{ user.organization }})</small></div>
+                            <div>
+                              <small>{{ user.first }} {{ user.last}} ({{ user.organization }})</small>
+                            </div>
                               {% endif %}
                             {% endfor %}
                           {% endfor %}
+                          </div>
                         </td>
   											<td>
                           {% if project.allocations == [] or project.allocations == None %}
