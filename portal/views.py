@@ -308,13 +308,8 @@ def create_project():
         projects = vc3_client.listProjects()
         name = request.form['name']
         owner = session['name']
+        members = []
 
-        if request.form['members'] == "":
-            members = []
-        else:
-            members = request.form['members'].split(",")
-        # description = request.form['description']
-        # organization = request.form['organization']
         if request.form['description'] == "":
             description = None
         else:
@@ -323,13 +318,12 @@ def create_project():
         newproject = vc3_client.defineProject(name=name, owner=owner,
                                               members=members, description=description)
         vc3_client.storeProject(newproject)
-        if not (request.form['members'] == ""):
-            for selected_members in request.form.getlist('members'):
-                vc3_client.addUserToProject(project=name, user=selected_members)
-        if not (request.form['allocation'] == ""):
-            for selected_allocations in request.form.getlist('allocation'):
-                vc3_client.addAllocationToProject(allocation=selected_allocations,
-                                                  projectname=newproject.name)
+
+        for selected_members in request.form.getlist('members'):
+            vc3_client.addUserToProject(project=name, user=selected_members)
+        for selected_allocations in request.form.getlist('allocation'):
+            vc3_client.addAllocationToProject(allocation=selected_allocations,
+                                              projectname=newproject.name)
         flash('Your project has been successfully created.', 'success')
 
         return redirect(url_for('list_projects'))
@@ -405,9 +399,8 @@ def add_member_to_project(name):
                 app.logger.error("Trying to add owner as member:" +
                                  "owner: {0} project:{1}".format(user, name))
                 return redirect(url_for('view_project', name=name))
-            if not (request.form['newuser'] == ""):
-                for selected_members in request.form.getlist('newuser'):
-                    vc3_client.addUserToProject(project=name, user=selected_members)
+            for selected_members in request.form.getlist('newuser'):
+                vc3_client.addUserToProject(project=name, user=selected_members)
             flash('Successfully added member to project.', 'success')
             return redirect(url_for('view_project', name=name))
     app.logger.error("Could not find project when adding user: " +
@@ -429,13 +422,14 @@ def add_allocation_to_project(name):
     vc3_client = get_vc3_client()
     projects = vc3_client.listProjects()
 
-    new_allocation = request.form['allocation']
+    # new_allocation = request.form['allocation']
 
     for project in projects:
         if project.name == name:
             name = project.name
-            vc3_client.addAllocationToProject(allocation=new_allocation,
-                                              projectname=name)
+            for selected_allocations in request.form.getlist('allocation'):
+                vc3_client.addAllocationToProject(allocation=selected_allocations,
+                                                  projectname=name)
             flash('Successfully added allocation to project.', 'success')
             return redirect(url_for('view_project', name=name))
     app.logger.error("Could not find project when adding allocation: " +
@@ -504,6 +498,7 @@ def list_clusters():
 
 @app.route('/cluster/<name>', methods=['GET', 'POST'])
 @authenticated
+@allocation_validated
 def view_cluster(name):
     """
     Specific page view, pertaining to Cluster Template
@@ -687,7 +682,7 @@ def create_allocation():
 
 @app.route('/allocation/<name>', methods=['GET', 'POST'])
 @authenticated
-@allocation_validated
+# @allocation_validated
 def view_allocation(name):
     """
     Allocation Detailed Page View
