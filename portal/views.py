@@ -148,8 +148,9 @@ def show_profile_page():
     """User profile information. Assocated with a Globus Auth identity."""
 
     vc3_client = get_vc3_client()
+    userlist = vc3_client.listUsers()
+
     if request.method == 'GET':
-        userlist = vc3_client.listUsers()
         profile = None
 
         for user in userlist:
@@ -184,6 +185,10 @@ def show_profile_page():
         identity_id = session['primary_identity']
         name = session['primary_identity']
         displayname = session['displayname'] = request.form['displayname']
+
+        for user in userlist:
+            if user.name == name:
+                vc3_client.deleteUser(username=name)
 
         newuser = vc3_client.defineUser(identity_id=identity_id,
                                         name=name,
@@ -356,21 +361,22 @@ def view_project(name):
     projects = vc3_client.listProjects()
     allocations = vc3_client.listAllocations()
     users = vc3_client.listUsers()
+    project = None
 
     # Scanning list of projects and matching with name of project argument
 
-    for project in projects:
-        if project.name == name:
-            name = project.name
-            owner = project.owner
-            members = project.members
-            project = project
-            description = project.description
-            # organization = project.organization
-            return render_template('projects_pages.html', name=name, owner=owner,
-                                   members=members, allocations=allocations,
-                                   projects=projects, users=users, project=project,
-                                   description=description)
+    project = vc3_client.getProject(projectname=name)
+    if project:
+        name = project.name
+        owner = project.owner
+        members = project.members
+        project = project
+        description = project.description
+        # organization = project.organization
+        return render_template('projects_pages.html', name=name, owner=owner,
+                               members=members, allocations=allocations,
+                               projects=projects, users=users, project=project,
+                               description=description)
     app.logger.error("Could not find project when viewing: {0}".format(name))
     raise LookupError('project')
 
@@ -544,6 +550,7 @@ def view_cluster(name):
         cluster_name = None
         owner = None
         app_role = None
+
         for cluster in clusters:
             if cluster.name == name:
                 cluster_name = cluster.name
@@ -554,6 +561,8 @@ def view_cluster(name):
             # could not find cluster, punt
             LookupError('cluster')
 
+        vc3_client.deleteNodeset(nodesetname=name)
+        vc3_client.deleteCluster(clustername=name)
         nodeset = vc3_client.defineNodeset(name=cluster_name, owner=owner,
                                            node_number=node_number,
                                            app_type=app_type, app_role=app_role,
