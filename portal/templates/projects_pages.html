@@ -16,6 +16,11 @@
             <div class="">
 							<h5>Description: {{description}}</h5>
 						</div>
+            {% if session['name'] == owner %}
+            <div class="delete_entity">
+							<a href="{{url_for('delete_project', name=name)}}" class="btn btn-danger btn-sm">Delete Project</a>
+						</div>
+            {% endif %}
 						<hr />
           </div>
 
@@ -63,14 +68,16 @@
               				{% if user.name == member %}
               			<tr>
               				<td>
-              					<div>
-                          {{user.first}} {{user.last}}
-                        </div>
+                        <form role="form" action="{{url_for('remove_member_from_project', name=name)}}" method="POST">
+                					<div selected name="newuser" value="{{user.name}}">
+                            {{user.first}} {{user.last}}
+                          </div>
                         {% if session['name'] == owner %}
-                        <div>
-                          <button type="submit" name="btn" value="removeuser" class="btn btn-danger btn-xs pull-right" data-submit="Removing User...">Remove User</button>
-                        </div>
+                          <div>
+                            <button type="submit" class="btn btn-danger btn-xs pull-right" data-submit="Removing User...">Remove User</button>
+                          </div>
                         {% endif %}
+                      </form>
               				</td>
               				<td>
               					<div>
@@ -135,12 +142,19 @@
               			<tr>
               				<td>
               					<div>{{allocation.displayname}}</div>
+                        {% if (session['name'] == allocation.owner) %}
+                        <form role="form" action="{{url_for('remove_allocation_from_project', name=name)}}" method="POST">
+                          <div>
+                            <button type="submit" name="remove_allocation" value="{{allocation.name}}" class="btn btn-danger btn-xs pull-right" data-submit="Removing Allocation...">Remove Allocation</button>
+                          </div>
+                        </form>
+                        {% endif %}
               				</td>
               				<td>
               					<div>
                           {{user.first}} {{user.last}}
-                          </div>
-                        </td>
+                        </div>
+                      </td>
               				<td>
                         <div>
                           {{ user.organization }}

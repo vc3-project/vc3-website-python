@@ -420,6 +420,26 @@ def add_member_to_project(name):
     return redirect(url_for('view_project', name=name))
 
 
+@app.route('/project/<name>/removemember', methods=['POST'])
+@authenticated
+def remove_member_from_project(name):
+    """
+    Removing members from project
+    Only owner of project may remove members to project
+
+    :param name: name attribute of project
+    :return: Project profile page specific to project name
+    """
+
+    vc3_client = get_vc3_client()
+    project = vc3_client.getProject(projectname=name)
+    user = request.form['newuser']
+
+    vc3_client.removeUserFromProject(user=user, project=project.name)
+
+    return redirect(url_for('view_project', name=name))
+
+
 @app.route('/project/<name>/addallocation', methods=['POST'])
 @authenticated
 def add_allocation_to_project(name):
@@ -447,6 +467,53 @@ def add_allocation_to_project(name):
                      "alloc: {0} project:{1}".format(new_allocation, name))
     flash('Project not found, could not add allocation to project', 'warning')
     return redirect(url_for('view_project', name=name))
+
+
+@app.route('/project/<name>/removeallocation', methods=['POST'])
+@authenticated
+def remove_allocation_from_project(name):
+    """
+    Removing allocation from project
+    Only owner of project and/or owner of allocation may remove allocations
+    from said project
+
+    :param name: name attribute of project
+    :return: Project profile page specific to project name
+    """
+
+    vc3_client = get_vc3_client()
+    remove_allocation = request.form['remove_allocation']
+
+    vc3_client.removeAllocationFromProject(allocation=remove_allocation, projectname=name)
+    flash('You have successfully removed allocation from this project', 'success')
+
+    return redirect(url_for('view_project', name=name))
+
+
+@app.route('/project/delete/<name>', methods=['GET'])
+@authenticated
+def delete_project(name):
+    """
+    Route for method to delete project
+
+    :param name: name attribute of project to delete
+    :return: Redirect to List Project page with project deleted
+    """
+
+    project_validation = project_validated(name=name)
+    if project_validation == False:
+        flash('You do not have the authority to delete this project.', 'warning')
+        return redirect(url_for('list_projects'))
+
+    vc3_client = get_vc3_client()
+
+    # Grab project by name and delete entity
+
+    project = vc3_client.getProject(projectname=name)
+    vc3_client.deleteProject(projectname=project.name)
+    flash('Project has been successfully deleted', 'success')
+
+    return redirect(url_for('list_projects'))
 
 
 @app.route('/cluster/new', methods=['GET', 'POST'])
