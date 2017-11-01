@@ -870,6 +870,33 @@ def edit_allocation(name):
     raise LookupError('alliocation')
 
 
+@app.route('/allocation/delete/<name>', methods=['GET'])
+@authenticated
+def delete_allocation(name):
+    """
+    Route for method to delete allocation
+
+    :param name: name attribute of allocation to delete
+    :return: Redirect to List Allocation page with Allocation deleted
+    """
+    vc3_client = get_vc3_client()
+    projects = vc3_client.listProjects()
+
+    # Grab allocation by name
+    allocation = vc3_client.getAllocation(allocationname=name)
+    # Scan through and remove allocations from any projects
+    for project in projects:
+        if allocation.name in project.allocations:
+            vc3_client.removeAllocationFromProject(
+                allocation=allocation.name, projectname=project.name)
+    # Finally delete allocation entity
+    vc3_client.deleteAllocation(allocationname=allocation.name)
+
+    flash('Allocation has been successfully removed from any projects and deleted', 'success')
+
+    return redirect(url_for('list_allocations'))
+
+
 @app.route('/resource', methods=['GET'])
 @authenticated
 def list_resources():
