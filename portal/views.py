@@ -432,9 +432,21 @@ def remove_member_from_project(name):
     """
 
     vc3_client = get_vc3_client()
-    project = vc3_client.getProject(projectname=name)
-    user = request.form['newuser']
 
+    # Grab project by name and user is user.name from submit button
+    project = vc3_client.getProject(projectname=name)
+    user = request.form['submit']
+
+    # List of user's allocations
+    allocations = vc3_client.listAllocations()
+    user_allocations = [a.name for a in allocations if user == a.owner]
+
+    # Remove allocation if user has allocation in project
+    for allocation in project.allocations:
+        if allocation in user_allocations:
+            vc3_client.removeAllocationFromProject(allocation=allocation, projectname=name)
+
+    # Finally remove user from project entirely
     vc3_client.removeUserFromProject(user=user, project=project.name)
 
     return redirect(url_for('view_project', name=name))

@@ -69,12 +69,12 @@
               			<tr>
               				<td>
                         <form role="form" action="{{url_for('remove_member_from_project', name=name)}}" method="POST">
-                					<div selected name="newuser" value="{{user.name}}">
+                					<div>
                             {{user.first}} {{user.last}}
                           </div>
-                        {% if session['name'] == owner %}
+                        {% if (session['name'] == owner or session['name'] == member) %}
                           <div>
-                            <button type="submit" class="btn btn-danger btn-xs pull-right" data-submit="Removing User...">Remove User</button>
+                            <button type="submit" name="submit" value="{{user.name}}" class="btn btn-danger btn-xs pull-right" data-submit="Removing User...">Remove User</button>
                           </div>
                         {% endif %}
                       </form>
@@ -180,7 +180,7 @@
 									<!-- <option value="" selected disabled>Please Select Allocation</option> -->
 								<!-- Populate List of Allocations that has been defined by User -->
   								{% for allocation in allocations %}
-  									{% if (allocation.owner == owner and session['name'] == owner and allocation.name not in project.allocations and allocation.state == "validated") %}
+  									{% if (allocation.owner == session['name'] and allocation.name not in project.allocations and allocation.state == "validated") %}
   								<option value="{{allocation.name}}" data-tokens="{{allocation.displayname}}" required>{{ allocation.displayname }}</option>
   									{% endif %}
   								{% endfor %}
