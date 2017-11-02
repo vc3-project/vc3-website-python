@@ -47,7 +47,7 @@
           <!-- also disabled ".selectpicker" above <option disabled>Please Select Allocation</option> -->
           {% for allocation in allocations %}
             {% if allocation.owner == session['name'] and allocation.state == "validated" %}
-          <option value="{{allocation.name}}">{{ allocation.name }}</option>
+          <option value="{{allocation.name}}">{{ allocation.displayname }}</option>
             {% endif %}
           {% endfor %}
         </select>

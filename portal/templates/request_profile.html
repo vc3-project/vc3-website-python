@@ -132,8 +132,10 @@
                   <h3 class="panel-title"><strong>Allocations</strong></h3>
                 </div>
                 <div class="panel-body disabled">
-                  {% for allocation in request.allocations %}
-                    <div title="View {{allocation}}"><row>{{allocation}}</row></div>
+                  {% for allocation in allocations %}
+                    {% if allocation.name in request.allocations %}
+                    <div title="View {{allocation}}"><row>{{allocation.displayname}}</row></div>
+                    {% endif %}
                   {% endfor %}
                 </div>
               </div>
@@ -176,13 +178,11 @@
                   Status Currently Unavailable
                   {% else %}
 
-                  Allocations on Virtual Cluster:
-                    {% for key, value in request.statusraw.values()[0].iteritems() %}
-                      <option>{{ key }}</option>
-                      {% for k, v in value.iteritems() %}
-                      <option>{{ k }}: {{v}}</option>
-                      {% endfor %}
+                  <label>{{request.cluster}}:</label>
+                    {% for key, value in request.statusinfo.values()[0].iteritems() %}
+                      <option>{{ key }}: {{ value }}</option>
                     {% endfor %}
+
                   {% endif %}
                 </div>
               </div>
