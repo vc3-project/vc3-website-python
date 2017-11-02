@@ -35,3 +35,18 @@ def allocation_validated(f):
         flash('Please be sure your allocation is validated in order to proceed.', 'warning')
         return redirect(url_for('list_allocations', next=request.url))
     return decorated_function
+
+
+def project_exists(f):
+    """Mark a route as requiring being within any validated project."""
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        vc3_client = get_vc3_client()
+        projects = vc3_client.listProjects()
+        for project in projects:
+            if (session['name'] == project.owner or
+                    session['name'] in project.members):
+                return f(*args, **kwargs)
+        flash('You must be within a project in order to proceed.', 'warning')
+        return redirect(url_for('list_projects', next=request.url))
+    return decorated_function

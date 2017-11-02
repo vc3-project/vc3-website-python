@@ -8,7 +8,7 @@ from flask import (flash, redirect, render_template, request,
 
 
 from portal import app, pages
-from portal.decorators import authenticated, allocation_validated
+from portal.decorators import authenticated, allocation_validated, project_exists
 from portal.utils import (load_portal_client, get_safe_redirect,
                           get_vc3_client, project_validated)
 
@@ -954,6 +954,7 @@ def list_requests():
 
 @app.route('/request/new', methods=['GET', 'POST'])
 @authenticated
+@project_exists
 def create_request():
     """
     Form to launch new Virtual Cluster
@@ -1012,19 +1013,24 @@ def view_request(name):
     nodesets = vc3_client.listNodesets()
     clusters = vc3_client.listClusters
     users = vc3_client.listUsers()
+    vc3_request = None
+    allocations = vc3_client.listAllocations()
 
     if request.method == 'GET':
-        for vc3_request in vc3_requests:
-            if vc3_request.name == name:
-                requestname = vc3_request.name
-                owner = vc3_request.owner
-                action = vc3_request.action
-                state = vc3_request.state
+        vc3_request = vc3_client.getRequest(requestname=name)
+        if vc3_request:
+            requestname = vc3_request.name
+            owner = vc3_request.owner
+            action = vc3_request.action
+            state = vc3_request.state
+            vc3allocations = vc3_request.allocations
 
-                return render_template('request_profile.html', name=requestname,
-                                       owner=owner, requests=vc3_requests,
-                                       clusters=clusters, nodesets=nodesets,
-                                       action=action, state=state, users=users)
+            return render_template('request_profile.html', name=requestname,
+                                   owner=owner, requests=vc3_requests,
+                                   clusters=clusters, nodesets=nodesets,
+                                   action=action, state=state, users=users,
+                                   vc3allocations=vc3allocations,
+                                   allocations=allocations)
         app.logger.error("Could not find VC when viewing: {0}".format(name))
         raise LookupError('virtual cluster')
 
