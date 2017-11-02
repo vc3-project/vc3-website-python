@@ -12,11 +12,7 @@
         <div class="card">
           <div class="header">
           	<h4 class="title">Virtual Cluster:
-              {% for request in requests %}
-                {% if request.name == name %}
-                  {{ request.name }}
-                {% endif %}
-              {% endfor %}
+              {{name}}
             </h4>
             <!-- <label for="clustername">Cluster Status:</label> -->
           {% if session['name'] == owner %}
@@ -27,6 +23,9 @@
                 Successfully Terminated
               </span>
             </h4>
+            <div class="delete_entity">
+							<a href="{{url_for('delete_virtualcluster', name=name)}}" class="btn btn-danger btn-sm">Delete Virtual Cluster</a>
+						</div>
               {% else %}
             <div class="progress" style="height:25px">
               <div class="progress-bar progress-bar-danger progress-bar-striped active" role="progressbar"

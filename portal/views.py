@@ -160,7 +160,7 @@ def show_profile_page():
 
         if profile:
 
-            session['name'] = profile.name
+            session['name'] = profile.identity_id
             session['displayname'] = profile.displayname
             session['first'] = profile.first
             session['last'] = profile.last
@@ -1055,6 +1055,26 @@ def view_request(name):
         flash('Could not find specified Virtual Cluster', 'warning')
         app.logger.error("Could not find VC when terminating: {0}".format(name))
         return redirect(url_for('list_requests'))
+
+
+@app.route('/request/delete/<name>', methods=['GET'])
+@authenticated
+def delete_virtualcluster(name):
+    """
+    Route for method to delete Virtual Cluster
+
+    :param name: name attribute of Virtual Cluster to delete
+    :return: Redirect to List Virtual Clusters page with VC deleted
+    """
+    vc3_client = get_vc3_client()
+
+    # Grab VC by name and delete entity
+
+    vc = vc3_client.getRequest(requestname=name)
+    vc3_client.deleteRequest(requestname=vc.name)
+    flash('Virtual Cluster has been successfully deleted', 'success')
+
+    return redirect(url_for('list_requests'))
 
 
 @app.route('/monitoring', methods=['GET'])
