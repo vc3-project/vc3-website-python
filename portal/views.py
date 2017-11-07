@@ -268,8 +268,10 @@ def authcallback():
         profile = None
 
         email = id_token.get('email', '')
-
-        if not (email.split("@")[-1].split(".")[-1] in ["edu", "gov"]):
+        # Restrict Email access to only .edu, .gov, and .org
+        # User must have a valid institutional affiliation
+        # Otherwise return to error page, explaining restricted access
+        if not (email.split("@")[-1].split(".")[-1] in ["edu", "gov", "org"]):
             return render_template('email_error.html')
 
         for user in userlist:
