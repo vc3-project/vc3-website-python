@@ -267,6 +267,11 @@ def authcallback():
         userlist = vc3_client.listUsers()
         profile = None
 
+        email = id_token.get('email', '')
+
+        if not (email.split("@")[-1].split(".")[-1] in ["edu", "gov"]):
+            return render_template('email_error.html')
+
         for user in userlist:
             if session['primary_identity'] == user.identity_id:
                 profile = user
