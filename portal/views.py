@@ -989,6 +989,7 @@ def create_request():
         translatename = "".join(inputname.split())
         vc3requestname = translatename.lower()
         environments = ["condor-glidein-password-env1"]
+        description = request.form['description']
         for selected_allocations in request.form.getlist('allocation'):
             allocations.append(selected_allocations)
 
@@ -997,7 +998,8 @@ def create_request():
                                               allocations=allocations,
                                               environments=environments,
                                               policy=policy,
-                                              expiration=expiration)
+                                              expiration=expiration,
+                                              description=description)
         vc3_client.storeRequest(newrequest)
 
         flash('Your Virtual Cluster has been successfully launched.', 'success')
@@ -1038,13 +1040,14 @@ def view_request(name):
             action = vc3_request.action
             state = vc3_request.state
             vc3allocations = vc3_request.allocations
+            description = vc3_request.description
 
             return render_template('request_profile.html', name=requestname,
                                    owner=owner, requests=vc3_requests,
                                    clusters=clusters, nodesets=nodesets,
                                    action=action, state=state, users=users,
                                    vc3allocations=vc3allocations,
-                                   allocations=allocations)
+                                   allocations=allocations, description=description)
         app.logger.error("Could not find VC when viewing: {0}".format(name))
         raise LookupError('virtual cluster')
 
@@ -1063,6 +1066,32 @@ def view_request(name):
         flash('Could not find specified Virtual Cluster', 'warning')
         app.logger.error("Could not find VC when terminating: {0}".format(name))
         return redirect(url_for('list_requests'))
+
+
+@app.route('/request/edit/<name>', methods=['GET', 'POST'])
+@authenticated
+def edit_request(name):
+    """
+    Route to edit specific Virtual Clusters
+
+    :param name: name attribute of Virtual Cluster
+    :return: Directs to detailed page view of Virtual Clusters with updated
+    associated attributes
+    """
+    vc3_client = get_vc3_client()
+    if request.method == 'GET':
+        vc3_request = vc3_client.getRequest(requestname=name)
+        return render_template('request_edit.html', request=vc3_request, name=name)
+
+    elif request.method == 'POST':
+        vc3_request = None
+        vc3_request = vc3_client.getRequest(requestname=name)
+        if vc3_request:
+            vc3_request.description = request.form['description']
+            # vc3_request.displayname = request.form['displayname']
+
+            vc3_client.storeRequest(vc3_request)
+        return redirect(url_for('view_request', name=name))
 
 
 @app.route('/request/delete/<name>', methods=['GET'])

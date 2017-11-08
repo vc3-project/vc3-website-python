@@ -14,7 +14,8 @@
           	<h4 class="title">Virtual Cluster:
               {{name}}
             </h4>
-            <!-- <label for="clustername">Cluster Status:</label> -->
+            <h5>Description: {{description}}</h5>
+
           {% if session['name'] == owner %}
             {% if action == "terminate" %}
               {% if state == "terminated" %}
@@ -65,6 +66,9 @@
               <button type="submit" class="btn btn-primary" data-submit="...Terminating Cluster" title="Terminate your Virtual Cluster">Terminate Cluster</button>
             </form>
             {% endif %}
+            <div class="">
+              <a href="{{url_for('edit_request', name=name)}}" class="btn btn-primary btn-sm">Update Virtual Cluster</a>
+            </div>
           {% endif %}
 						<hr />
           </div>
