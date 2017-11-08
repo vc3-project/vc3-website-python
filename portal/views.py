@@ -8,8 +8,9 @@ from flask import (flash, redirect, render_template, request,
 
 
 from portal import app, pages
-from portal.decorators import authenticated, allocation_validated, project_validated
-from portal.utils import (load_portal_client, get_safe_redirect, get_vc3_client)
+from portal.decorators import authenticated, allocation_validated
+from portal.utils import (load_portal_client, get_safe_redirect,
+                          get_vc3_client, project_validated)
 
 
 # Create a custom error handler for Exceptions
@@ -348,7 +349,6 @@ def list_projects():
 
 @app.route('/project/<name>', methods=['GET'])
 @authenticated
-@project_validated
 def view_project(name):
     """
     View Specific Project Profile View, with name passed in as argument
@@ -356,6 +356,11 @@ def view_project(name):
     :param name: name attribute of project
     :return: Project profile page specific to project name
     """
+    project_validation = project_validated(name=name)
+    if project_validation == False:
+        flash('You do not appear to be a member of the project you are trying'
+              'to view. Please contact owner to request membership.', 'warning')
+        return redirect(url_for('list_projects'))
 
     vc3_client = get_vc3_client()
     projects = vc3_client.listProjects()
@@ -632,11 +637,16 @@ def delete_cluster(name):
     """
     vc3_client = get_vc3_client()
 
+    # Grab nodeset associated with cluster template and delete entity
+
     nodeset = vc3_client.getNodeset(nodesetname=name)
     vc3_client.deleteNodeset(nodesetname=nodeset.name)
 
+    # Finally grab cluster template and delete entity
+
     cluster = vc3_client.getCluster(clustername=name)
     vc3_client.deleteCluster(clustername=cluster.name)
+    flash('Cluster Template has been successfully deleted', 'success')
 
     return redirect(url_for('list_clusters'))
 

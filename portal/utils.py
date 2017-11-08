@@ -1,4 +1,4 @@
-from flask import request
+from flask import redirect, request, session, url_for, flash
 from threading import Lock
 from ConfigParser import SafeConfigParser
 
@@ -74,6 +74,7 @@ def get_portal_tokens(
 
         return get_portal_tokens.access_tokens
 
+
 def get_vc3_client():
     """
     Return a VC3 client instance
@@ -93,3 +94,13 @@ def get_vc3_client():
 
 get_portal_tokens.lock = Lock()
 get_portal_tokens.access_tokens = None
+
+
+def project_validated(name):
+    vc3_client = get_vc3_client()
+    project = vc3_client.getProject(projectname=name)
+    if (session['name'] in project.members or
+            session['name'] == project.owner):
+        return True
+    else:
+        return False
