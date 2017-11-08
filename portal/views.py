@@ -517,20 +517,21 @@ def view_cluster(name):
     projects = vc3_client.listProjects()
     nodesets = vc3_client.listNodesets()
     users = vc3_client.listUsers()
+    cluster = None
 
     if request.method == 'GET':
-        for cluster in clusters:
-            if cluster.name == name:
-                cluster_name = cluster.name
-                owner = cluster.owner
-                state = cluster.state
-                description = cluster.description
+        cluster = vc3_client.getCluster(clustername=name)
+        if cluster:
+            cluster_name = cluster.name
+            owner = cluster.owner
+            state = cluster.state
+            description = cluster.description
 
-                return render_template('cluster_profile.html', name=cluster_name,
-                                       owner=owner, state=state,
-                                       nodesets=nodesets, description=description,
-                                       users=users, clusters=clusters,
-                                       projects=projects)
+            return render_template('cluster_profile.html', name=cluster_name,
+                                   owner=owner, state=state,
+                                   nodesets=nodesets, description=description,
+                                   users=users, clusters=clusters,
+                                   projects=projects)
         raise LookupError('cluster')
 
     elif request.method == 'POST':
