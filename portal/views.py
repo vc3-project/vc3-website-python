@@ -10,7 +10,7 @@ from flask import (flash, redirect, render_template, request,
 from portal import app, pages
 from portal.decorators import authenticated, allocation_validated, project_exists
 from portal.utils import (load_portal_client, get_safe_redirect,
-                          get_vc3_client, project_validated)
+                          get_vc3_client, project_validated, project_in_vc)
 
 
 # Create a custom error handler for Exceptions
@@ -279,7 +279,6 @@ def authcallback():
             session['email'] = profile.email
             session['institution'] = profile.organization
             session['primary_identity'] = profile.identity_id
-            session['name'] = profile.name
             session['displayname'] = profile.displayname
         else:
             return redirect(url_for('show_profile_page',
@@ -1008,6 +1007,13 @@ def view_request(name):
     :return: Directs to detailed page view of Virtual Clusters with
     associated attributes
     """
+    # Checks if user is member of project associated with Virtual Cluster
+    member_in_vc = project_in_vc(name=name)
+    if member_in_vc is False:
+        flash('You do not appear to be have access to view this Virtual Cluster'
+              'Please contact owner to request membership.', 'warning')
+        return redirect(url_for('list_requests'))
+
     vc3_client = get_vc3_client()
     vc3_requests = vc3_client.listRequests()
     nodesets = vc3_client.listNodesets()
