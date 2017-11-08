@@ -97,8 +97,17 @@ get_portal_tokens.access_tokens = None
 
 
 def project_validated(name):
+    """
+    Checks to see if user exists within specific project
+
+    :param name: name of project to be checked
+    :return: VC3 client instance on success
+    """
     vc3_client = get_vc3_client()
+    # Grab project by name
     project = vc3_client.getProject(projectname=name)
+
+    # Checks to see if user is in project
     if (session['name'] in project.members or
             session['name'] == project.owner):
         return True
