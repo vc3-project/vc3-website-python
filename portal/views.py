@@ -621,7 +621,7 @@ def edit_cluster(name):
     raise LookupError('cluster')
 
 
-@app.route('/cluster/deletecluster', methods=['POST'])
+@app.route('/cluster/delete/<name>', methods=['GET'])
 @authenticated
 def delete_cluster(name):
     """
@@ -631,12 +631,12 @@ def delete_cluster(name):
     :return: Redirect to List Cluster Template page with cluster template deleted
     """
     vc3_client = get_vc3_client()
-    clusters = vc3_client.listClusters()
 
-    for cluster in clusters:
-        if cluster.name == name:
-            clustername = cluster.name
-            vc3_client.deleteCluster(clustername=clustername)
+    nodeset = vc3_client.getNodeset(nodesetname=name)
+    vc3_client.deleteNodeset(nodesetname=nodeset.name)
+
+    cluster = vc3_client.getCluster(clustername=name)
+    vc3_client.deleteCluster(clustername=cluster.name)
 
     return redirect(url_for('list_clusters'))
 

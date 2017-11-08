@@ -2477,3 +2477,18 @@ ALLOCATION LIST PAGE
   /*margin:0 auto;*/
   /*color:#ffffff;*/
  }
+
+.delete_cluster .btn-danger {
+  border-color: : #FF4A55;
+  color: #FF4A55;
+}
+.delete_cluster .btn-danger:hover {
+  border-color: : #FF4A55;
+  background: #FF4A55;
+  color: white;
+}
+.delete_cluster .btn-danger:active {
+  border-color: : #FF4A55;
+  background: transparent;
+  color: white;
+}

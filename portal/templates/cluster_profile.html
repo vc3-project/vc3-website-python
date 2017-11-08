@@ -70,6 +70,11 @@
               </div>
 
   					</div>
+            {% if session['name'] == owner %}
+            <div class="delete_cluster">
+							<a href="{{url_for('delete_cluster', name=name)}}" class="btn btn-danger btn-sm">Delete Cluster</a>
+						</div>
+            {% endif %}
           </div><!-- /.content description -->
 
         </div>
