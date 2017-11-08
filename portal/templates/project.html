@@ -31,61 +31,65 @@
   										<button class="btn btn-primary btn-sm btn-filter"><span class="glyphicon glyphicon-filter"></span> Filter</button>
   									</div>
   								</div>
-  								<table class="table table-hover">
-  									<thead>
-  										<tr class="filters">
-  											<th><input type="text" class="form-control" placeholder="Name" disabled></th>
-  											<th><input type="text" class="form-control" placeholder="Members" disabled></th>
-  											<th><input type="text" class="form-control" placeholder="Allocations" disabled></th>
-                        <th><input type="text" class="form-control" placeholder="Description" disabled></th>
-  										</tr>
-  									</thead>
-  									<tbody data-link="row" class="rowlink">
-											{% for project in projects %}
-												{% if project.owner == session['name'] or session['name'] in project.members %}
-  										<tr>
-  											<td><a href="{{ url_for('view_project', name=project.name) }}" title="View Project">{{ project.name }}</a></td>
-  											<td>
-                          <div>
+                  <div class="table-responsive" style="overflow-x:auto;">
+                    <table class="display table table-hover" width="100%">
+    									<thead>
+    										<tr class="filters">
+    											<th><input type="text" class="form-control" placeholder="Name" disabled></th>
+    											<th><input type="text" class="form-control" placeholder="Members" disabled></th>
+    											<th><input type="text" class="form-control" placeholder="Allocations" disabled></th>
+                          <th><input type="text" class="form-control" placeholder="Description" disabled></th>
+    										</tr>
+    									</thead>
+    									<tbody data-link="row" class="rowlink">
+  											{% for project in projects %}
+  												{% if project.owner == session['name'] or session['name'] in project.members %}
+    										<tr>
+    											<td><a href="{{ url_for('view_project', name=project.name) }}" title="View Project">{{ project.name }}</a></td>
+    											<td>
+                            <div class="members">
                             {% for user in users %}
                               {% if user.name == project.owner %}
-                                <small><strong>{{user.first}} {{user.last}} (Owner) - {{user.email}}</strong></small>
+                              <small><strong>{{user.first}} {{user.last}} (Owner) - {{user.email}}</strong></small>
                               {% endif %}
                             {% endfor %}
-                          </div>
-                          {% for member in project.members %}
-                            {% for user in users %}
-                              {% if user.name == member %}
-                          <div><small>{{ user.first }} {{ user.last}} ({{ user.organization }})</small></div>
-                              {% endif %}
-                            {% endfor %}
-                          {% endfor %}
-                        </td>
-  											<td>
-                          {% if project.allocations == [] or project.allocations == None %}
-                            <div>No Current Allocations</div>
-                          {% else %}
-                            {% for allocation_name in project.allocations %}
-                              {% for allocation in allocations %}
-                                {% if allocation_name == allocation.name %}
-                              <div>{{ allocation.displayname }}</div>
+                            {% for member in project.members %}
+                              {% for user in users %}
+                                {% if user.name == member %}
+                              <div>
+                                <small>{{ user.first }} {{ user.last}} ({{ user.organization }})</small>
+                              </div>
                                 {% endif %}
                               {% endfor %}
                             {% endfor %}
+                            </div>
+                          </td>
+    											<td>
+                            {% if project.allocations == [] or project.allocations == None %}
+                              <div>No Current Allocations</div>
+                            {% else %}
+                              {% for allocation_name in project.allocations %}
+                                {% for allocation in allocations %}
+                                  {% if allocation_name == allocation.name %}
+                                <div>{{ allocation.displayname }}</div>
+                                  {% endif %}
+                                {% endfor %}
+                              {% endfor %}
+                            {% endif %}
+                          </td>
+                          <td>
+                            {% if project.description == None or project.description == "" %}
+                              Currently no description
+                            {% else %}
+                              <div id="allocation-description">{{project.description}}</div>
+                            {% endif %}
+                          </td>
+    										</tr>
                           {% endif %}
-                        </td>
-                        <td>
-                          {% if project.description == None or project.description == "" %}
-                            Currently no description
-                          {% else %}
-                            <div id="allocation-description">{{project.description}}</div>
-                          {% endif %}
-                        </td>
-  										</tr>
-                        {% endif %}
-  										{% endfor %}
-  									</tbody>
-  								</table>
+    										{% endfor %}
+    									</tbody>
+  								  </table>
+                  </div>
   							</div>
   						</div>
   					</div>

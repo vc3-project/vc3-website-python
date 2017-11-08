@@ -12,40 +12,91 @@
       <div class="col-md-12">
         <div class="card">
           <div class="header">
-          	<h4 class="title">Project:<a href="{{url_for('view_project', name=name)}}" > {{ name }}</a></h4>
+          	<h4 class="title">Project:<a href="{{url_for('view_project', name=name)}}"> {{ name }}</a></h4>
             <div class="">
-							<!-- <h5>Current project description</h5> -->
+							<h5>Description: {{description}}</h5>
 						</div>
 						<hr />
           </div>
 
     			<div class="content description">
-    				<label for="members">Project Members</label>
-    				<div class="list-group">
-              {% for user in users %}
-                {% if user.name == project.owner %}
-    					<div class="list-group-item active">{{ user.first }} {{ user.last }} (Owner)</div>
-                {% endif %}
-              {% endfor %}
-    					{% for member in members%}
-                {% for user in users %}
-                  {% if user.name == member %}
-    					<div href="#" class="list-group-item active" name="removeuser">{{ user.first }} {{ user.last }}
-    						{% if session['name'] == owner %}
-    						<!-- <button type="submit" name="btn" value="removeuser" class="btn btn-danger btn-xs pull-right" data-submit="Removing User...">Remove User</button> -->
-    						{% endif %}
-    					</div>
-                  {% endif %}
-                {% endfor %}
-    					{% endfor %}
-    				</div>
+
+            <div class="panel panel-primary filterable">
+            	<div class="panel-heading">
+            		<h3 class="panel-title">Project Members</h3>
+            		<div class="pull-right">
+            			<button class="btn btn-primary btn-sm btn-filter"><span class="glyphicon glyphicon-filter"></span> Filter</button>
+            		</div>
+            	</div>
+              <div class="table-responsive" style="overflow-x:auto;">
+                <table class="display table table-hover" width="100%">
+              		<thead>
+              			<tr class="filters">
+              				<th><input type="text" class="form-control" placeholder="Name" disabled></th>
+              				<th><input type="text" class="form-control" placeholder="Email" disabled></th>
+              				<th><input type="text" class="form-control" placeholder="Organization" disabled></th>
+              			</tr>
+              		</thead>
+              		<tbody data-link="row" class="rowlink">
+              		{% for user in users %}
+              			{% if user.name == project.owner %}
+              			<tr>
+              				<td>
+              					<div>{{user.first}} {{user.last}} (Owner)</div>
+              				</td>
+              				<td>
+              					<div>
+                          {{user.email}}
+                        </div>
+                      </td>
+              				<td>
+                        <div>
+                          {{ user.organization }}
+                        </div>
+                      </td>
+              			</tr>
+              			{% endif %}
+              		{% endfor %}
+
+              		{% for member in members %}
+              			{% for user in users %}
+              				{% if user.name == member %}
+              			<tr>
+              				<td>
+              					<div>
+                          {{user.first}} {{user.last}}
+                        </div>
+                        {% if session['name'] == owner %}
+                        <div>
+                          <button type="submit" name="btn" value="removeuser" class="btn btn-danger btn-xs pull-right" data-submit="Removing User...">Remove User</button>
+                        </div>
+                        {% endif %}
+              				</td>
+              				<td>
+              					<div>
+                          {{user.email}}
+                        </div>
+                      </td>
+              				<td>
+                        <div>
+                          {{ user.organization }}
+                        </div>
+                      </td>
+              			</tr>
+              				{% endif %}
+              			{% endfor %}
+              		{% endfor %}
+              	  </tbody>
+                </table>
+              </div>
+            </div>
 
 				    {% if session['name'] == owner %}
 						<form role="form" action="{{url_for('add_member_to_project', name=name)}}" method="POST">
 							<fieldset>
 					       <label for="newuser">Add New Users</label>
 					       <select class="form-control" multiple data-live-search="true" name="newuser" tabindex="2" id="form-resource-list" required>
-					         <option value="" selected disabled>Please Select User</option>
+					         <!-- <option value="" selected disabled>Please Select User</option> -->
 					         {% for user in users %}
                     {% if (user.name not in members) and (user.name != owner) %}
 					         <option value="{{user.name}}" data-tokens="{{user.first}} {{user.last}}" required>{{ user.first }} {{ user.last}}</option>
@@ -57,41 +108,65 @@
 						</form>
             {% endif %}
 
-						<span id="label"><h3>Allocations:</h3></span>
-						<div class="list-group">
-						{% for project in projects %}
-              {% if project.name == name %}
-                {% if project.allocations == [] or project.allocations == None %}
-                <div class="list-group-item active">
-                  No Current Allocations
-                </div>
-                {% else %}
-                  {% for allocation_name in project.allocations %}
-                    {% for allocation in allocations %}
-                      {% if allocation_name == allocation.name %}
-                        {% for user in users %}
-                          {% if allocation.owner == user.name %}
-                <div class="list-group-item active">
-                  {{ allocation.displayname }} ({{user.first}} {{user.last}})
-                </div>
-                          {% endif %}
-                        {% endfor %}
-                      {% endif %}
-                    {% endfor %}
-                  {% endfor %}
-                {% endif %}
-              {% endif %}
-						{% endfor %}
-						</div>
+            <div class="panel panel-primary filterable">
+            	<div class="panel-heading">
+            		<h3 class="panel-title">Allocations</h3>
+            		<div class="pull-right">
+            			<button class="btn btn-primary btn-sm btn-filter"><span class="glyphicon glyphicon-filter"></span> Filter</button>
+            		</div>
+            	</div>
+              <div class="table-responsive" style="overflow-x:auto;">
+                <table class="display table table-hover" width="100%">
+              		<thead>
+              			<tr class="filters">
+              				<th><input type="text" class="form-control" placeholder="Name" disabled></th>
+              				<th><input type="text" class="form-control" placeholder="Owner" disabled></th>
+              				<th><input type="text" class="form-control" placeholder="Organization" disabled></th>
+              			</tr>
+              		</thead>
+              		<tbody data-link="row" class="rowlink">
+              		{% for project in projects %}
+              			{% if project.name == name %}
+              				{% for allocation_name in project.allocations %}
+              					{% for allocation in allocations %}
+              						{% if allocation_name == allocation.name %}
+              							{% for user in users %}
+              								{% if allocation.owner == user.name %}
+              			<tr>
+              				<td>
+              					<div>{{allocation.displayname}}</div>
+              				</td>
+              				<td>
+              					<div>
+                          {{user.first}} {{user.last}}
+                          </div>
+                        </td>
+              				<td>
+                        <div>
+                          {{ user.organization }}
+                        </div>
+                      </td>
+              			</tr>
+              								{% endif %}
+              							{% endfor%}
+              						{% endif %}
+              					{% endfor %}
+              				{% endfor %}
+              			{% endif %}
+              		{% endfor %}
+              		</tbody>
+              	</table>
+              </div>
+            </div>
 
 						<form role="form" action="{{url_for('add_allocation_to_project', name=name)}}" method="POST">
 							<fieldset>
 								<label for="allocation">Select Allocation:</label>
 								<select class="form-control" multiple data-live-search="true" id="form-resource-list" name="allocation" tabindex="3" required>
-									<option value="" selected disabled>Please Select Allocation</option>
+									<!-- <option value="" selected disabled>Please Select Allocation</option> -->
 								<!-- Populate List of Allocations that has been defined by User -->
   								{% for allocation in allocations %}
-  									{% if allocation.owner == owner and session['name'] == owner and allocation.name not in project.allocations %}
+  									{% if (allocation.owner == owner and session['name'] == owner and allocation.name not in project.allocations and allocation.state == "validated") %}
   								<option value="{{allocation.name}}" data-tokens="{{allocation.displayname}}" required>{{ allocation.displayname }}</option>
   									{% endif %}
   								{% endfor %}
