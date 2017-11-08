@@ -592,7 +592,7 @@ def list_clusters():
                            projects=projects, nodesets=nodesets)
 
 
-@app.route('/cluster/<name>', methods=['GET', 'POST'])
+@app.route('/cluster/<name>', methods=['GET'])
 @authenticated
 @allocation_validated
 def view_cluster(name):
@@ -609,70 +609,22 @@ def view_cluster(name):
     users = vc3_client.listUsers()
     cluster = None
 
-    if request.method == 'GET':
-        cluster = vc3_client.getCluster(clustername=name)
-        if cluster:
-            cluster_name = cluster.name
-            owner = cluster.owner
-            state = cluster.state
-            description = cluster.description
+    cluster = vc3_client.getCluster(clustername=name)
+    if cluster:
+        cluster_name = cluster.name
+        owner = cluster.owner
+        state = cluster.state
+        description = cluster.description
 
-            return render_template('cluster_profile.html', name=cluster_name,
-                                   owner=owner, state=state,
-                                   nodesets=nodesets, description=description,
-                                   users=users, clusters=clusters,
-                                   projects=projects)
-        raise LookupError('cluster')
-
-    elif request.method == 'POST':
-        node_number = request.form['node_number']
-        app_type = request.form['app_type']
-        description = request.form['description']
-
-        if app_type == "htcondor":
-            environment = "condor-glidein-password-env1"
-        elif app_type == "workqueue":
-            environment = []
-        else:
-            app.logger.error("Got unsupported framework when viewing " +
-                             "cluster template: {0}".format(app_type))
-            raise ValueError('app_type not a recognized framework')
-
-        cluster_name = None
-        owner = None
-        app_role = None
-
-        for cluster in clusters:
-            if cluster.name == name:
-                cluster_name = cluster.name
-                owner = cluster.owner
-                app_role = "worker-nodes"
-                break
-        if cluster_name is None:
-            # could not find cluster, punt
-            LookupError('cluster')
-
-        vc3_client.deleteNodeset(nodesetname=name)
-        vc3_client.deleteCluster(clustername=name)
-        nodeset = vc3_client.defineNodeset(name=cluster_name, owner=owner,
-                                           node_number=node_number,
-                                           app_type=app_type, app_role=app_role,
-                                           environment=environment)
-        vc3_client.storeNodeset(nodeset)
-        newcluster = vc3_client.defineCluster(
-            name=cluster_name, owner=owner, description=description)
-        vc3_client.storeCluster(newcluster)
-        vc3_client.addNodesetToCluster(nodesetname=nodeset.name,
-                                       clustername=newcluster.name)
-
-        # return render_template('cluster_profile.html', name=cluster_name,
-        #                        owner=owner, clusters=clusters,
-        #                        projects=projects)
-        # flash('Your cluster template has been successfully updated.', 'success')
-        return redirect(url_for('view_cluster', name=name))
+        return render_template('cluster_profile.html', name=cluster_name,
+                               owner=owner, state=state,
+                               nodesets=nodesets, description=description,
+                               users=users, clusters=clusters,
+                               projects=projects)
+    raise LookupError('cluster')
 
 
-@app.route('/cluster/edit/<name>', methods=['GET'])
+@app.route('/cluster/edit/<name>', methods=['GET', 'POST'])
 @authenticated
 def edit_cluster(name):
     """
@@ -688,27 +640,61 @@ def edit_cluster(name):
     nodesets = vc3_client.listNodesets()
     frameworks = []
 
-    for cluster in clusters:
-        if cluster.name == name:
-            clustername = cluster.name
-            owner = cluster.owner
-            state = cluster.state
-            acl = cluster.acl
-            description = cluster.description
-    for nodeset in nodesets:
-        if nodeset.name == name:
-            node_number = nodeset.node_number
-            framework = nodeset.app_type
-            if nodeset.app_type not in frameworks:
-                frameworks.append(nodeset.app_type)
+    if request.method == 'GET':
+        for cluster in clusters:
+            if cluster.name == name:
+                clustername = cluster.name
+                owner = cluster.owner
+                state = cluster.state
+                acl = cluster.acl
+                description = cluster.description
+        for nodeset in nodesets:
+            if nodeset.name == name:
+                node_number = nodeset.node_number
+                framework = nodeset.app_type
+                if nodeset.app_type not in frameworks:
+                    frameworks.append(nodeset.app_type)
 
-            return render_template('cluster_edit.html', name=clustername,
-                                   owner=owner, nodesets=nodesets,
-                                   state=state, acl=acl, projects=projects,
-                                   frameworks=frameworks, node_number=node_number,
-                                   description=description, framework=framework)
-    app.logger.error("Could not find cluster when editing: {0}".format(name))
-    raise LookupError('cluster')
+                return render_template('cluster_edit.html', name=clustername,
+                                       owner=owner, nodesets=nodesets,
+                                       state=state, acl=acl, projects=projects,
+                                       frameworks=frameworks, node_number=node_number,
+                                       description=description, framework=framework)
+        app.logger.error("Could not find cluster when editing: {0}".format(name))
+        raise LookupError('cluster')
+
+    elif request.method == 'POST':
+        # Grab new framework from form
+        app_type = request.form['app_type']
+
+        cluster_name = None
+        # Call cluster and nodeset by name
+        cluster = vc3_client.getCluster(clustername=name)
+        nodeset = vc3_client.getNodeset(nodesetname=name)
+        # Assign new attribute to selected cluster
+        if cluster.name == name:
+            cluster_name = cluster.name
+            cluster.description = request.form['description']
+            nodeset.node_number = request.form['node_number']
+            nodeset.app_type = request.form['app_type']
+        if cluster_name is None:
+            # could not find cluster, punt
+            LookupError('cluster')
+
+        if app_type == "htcondor":
+            nodeset.environment = "condor-glidein-password-env1"
+        elif app_type == "workqueue":
+            nodeset.environment = []
+        else:
+            app.logger.error("Got unsupported framework when viewing " +
+                             "cluster template: {0}".format(app_type))
+            raise ValueError('app_type not a recognized framework')
+        # Store nodeset and cluster with new attributes into infoservice
+        vc3_client.storeNodeset(nodeset)
+        vc3_client.storeCluster(cluster)
+        # Redirect to updated cluster profile page
+        flash('Cluster has been successfully updated', 'success')
+        return redirect(url_for('view_cluster', name=name))
 
 
 @app.route('/cluster/delete/<name>', methods=['GET'])
@@ -852,7 +838,7 @@ def view_allocation(name):
                                        resources=resources)
 
 
-@app.route('/allocation/edit/<name>', methods=['GET'])
+@app.route('/allocation/edit/<name>', methods=['GET', 'POST'])
 @authenticated
 @allocation_validated
 def edit_allocation(name):
@@ -860,20 +846,35 @@ def edit_allocation(name):
     allocations = vc3_client.listAllocations()
     resources = vc3_client.listResources()
 
-    for allocation in allocations:
+    allocation = vc3_client.getAllocation(allocationname=name)
+
+    if request.method == 'GET':
         if allocation.name == name:
             allocationname = allocation.name
             owner = allocation.owner
             resource = allocation.resource
             accountname = allocation.accountname
             pubtoken = allocation.pubtoken
+            description = allocation.description
+            displayname = allocation.displayname
 
             return render_template('allocation_edit.html', name=allocationname,
                                    owner=owner, resources=resources,
                                    resource=resource, accountname=accountname,
-                                   pubtoken=pubtoken)
-    app.logger.error("Could not find allocation when editing: {0}".format(name))
-    raise LookupError('alliocation')
+                                   pubtoken=pubtoken, description=description,
+                                   displayname=displayname)
+        app.logger.error("Could not find allocation when editing: {0}".format(name))
+        raise LookupError('alliocation')
+
+    elif request.method == 'POST':
+        allocation = vc3_client.getAllocation(allocationname=name)
+        if allocation.name == name:
+            allocation.description = request.form['description']
+            allocation.displayname = request.form['displayname']
+
+        vc3_client.storeAllocation(allocation)
+        flash('Allocation successfully updated', 'success')
+        return redirect(url_for('view_allocation', name=name))
 
 
 @app.route('/allocation/delete/<name>', methods=['GET'])
