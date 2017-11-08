@@ -604,7 +604,7 @@ body > .navbar-collapse {
 
 .btn-danger {
   border-color: #FF4A55;
-  color: white; }
+  color: black; }
   .btn-danger:hover, .btn-danger:focus, .btn-danger:active, .btn-danger.active, .open > .btn-danger.dropdown-toggle {
     background-color: #FF4A55;
     color: white;
@@ -2293,7 +2293,7 @@ body > .navbar-collapse {
     .card .list-group .active {
       background-color: transparent;
       border-color: #434857;
-      font-weight: 600;
+      /*font-weight: 600;*/
       color: #FFF;
     }
     .card select {
@@ -2346,6 +2346,11 @@ RESOURCE PROFILE INDEX PAGE
 .filterable tbody tr {
   color: #595753;
 }
+.filterable tbody tr td .members {
+    /*width:250px;*/
+    max-height:100px;
+    overflow-y:auto;
+}
 .filterable .panel-heading {
   background-color: #fcc500;
   color: #111;
@@ -2355,6 +2360,20 @@ RESOURCE PROFILE INDEX PAGE
   color: #111;
   background-color: #fff;
   border-color: #fff;
+}
+.filterable .btn-danger {
+  border-color: #FF4A55;
+  color: black;
+}
+.filterable .btn-danger:hover {
+  border-color: #FF4A55;
+  background-color: #FF4A55;
+  color: white;
+}
+.filterable .btn-danger:active {
+  border-color: #FF4A55;
+  background-color: white;
+  color: black;
 }
 .filterable glyphicon {
   color: #111;
@@ -2458,3 +2477,18 @@ ALLOCATION LIST PAGE
   /*margin:0 auto;*/
   /*color:#ffffff;*/
  }
+
+.delete_entity .btn-danger {
+  border-color: : #FF4A55;
+  color: white;
+}
+.delete_entity .btn-danger:hover {
+  border-color: : #FF4A55;
+  background: #FF4A55;
+  color: white;
+}
+.delete_entity .btn-danger:active {
+  border-color: : #FF4A55;
+  background: transparent;
+  color: white;
+}

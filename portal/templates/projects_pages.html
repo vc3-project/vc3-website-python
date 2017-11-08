@@ -12,39 +12,101 @@
       <div class="col-md-12">
         <div class="card">
           <div class="header">
-          	<h4 class="title">Project:<a href="{{url_for('view_project', name=name)}}" > {{ name }}</a></h4>
+          	<h4 class="title">Project:<a href="{{url_for('view_project', name=name)}}"> {{ name }}</a></h4>
             <div class="">
-							<!-- <h5>Current project description</h5> -->
+							<h5>Description: {{description}}</h5>
 						</div>
+            {% if session['name'] == owner %}
+            <div class="delete_entity">
+							<a href="{{url_for('delete_project', name=name)}}" class="btn btn-danger btn-sm">Delete Project</a>
+						</div>
+            {% endif %}
 						<hr />
           </div>
 
     			<div class="content description">
-    				<label for="members">Project Members</label>
-    				<div class="list-group">
-    					<div class="list-group-item active">{{ session['first'] }} {{ session['last'] }} (Owner)</div>
-    					{% for member in members%}
-                {% for user in users %}
-                  {% if user.name == member %}
-    					<a href="#" class="list-group-item list-group-item-action" name="removeuser">{{ user.first }} {{ user.last }}
-    						{% if session['name'] == owner %}
-    						<!-- <button type="submit" name="btn" value="removeuser" class="btn btn-danger btn-xs pull-right" data-submit="Removing User...">Remove User</button> -->
-    						{% endif %}
-    					</a>
-                  {% endif %}
-                {% endfor %}
-    					{% endfor %}
-    				</div>
+
+            <div class="panel panel-primary filterable">
+            	<div class="panel-heading">
+            		<h3 class="panel-title">Project Members</h3>
+            		<div class="pull-right">
+            			<button class="btn btn-primary btn-sm btn-filter"><span class="glyphicon glyphicon-filter"></span> Filter</button>
+            		</div>
+            	</div>
+              <div class="table-responsive" style="overflow-x:auto;">
+                <table class="display table table-hover" width="100%">
+              		<thead>
+              			<tr class="filters">
+              				<th><input type="text" class="form-control" placeholder="Name" disabled></th>
+              				<th><input type="text" class="form-control" placeholder="Email" disabled></th>
+              				<th><input type="text" class="form-control" placeholder="Organization" disabled></th>
+              			</tr>
+              		</thead>
+              		<tbody data-link="row" class="rowlink">
+              		{% for user in users %}
+              			{% if user.name == project.owner %}
+              			<tr>
+              				<td>
+              					<div>{{user.first}} {{user.last}} (Owner)</div>
+              				</td>
+              				<td>
+              					<div>
+                          {{user.email}}
+                        </div>
+                      </td>
+              				<td>
+                        <div>
+                          {{ user.organization }}
+                        </div>
+                      </td>
+              			</tr>
+              			{% endif %}
+              		{% endfor %}
+
+              		{% for member in members %}
+              			{% for user in users %}
+              				{% if user.name == member %}
+              			<tr>
+              				<td>
+                        <form role="form" action="{{url_for('remove_member_from_project', name=name)}}" method="POST">
+                					<div>
+                            {{user.first}} {{user.last}}
+                          </div>
+                        {% if (session['name'] == owner or session['name'] == member) %}
+                          <div>
+                            <button type="submit" name="submit" value="{{user.name}}" class="btn btn-danger btn-xs pull-right" data-submit="Removing User...">Remove User</button>
+                          </div>
+                        {% endif %}
+                      </form>
+              				</td>
+              				<td>
+              					<div>
+                          {{user.email}}
+                        </div>
+                      </td>
+              				<td>
+                        <div>
+                          {{ user.organization }}
+                        </div>
+                      </td>
+              			</tr>
+              				{% endif %}
+              			{% endfor %}
+              		{% endfor %}
+              	  </tbody>
+                </table>
+              </div>
+            </div>
 
 				    {% if session['name'] == owner %}
 						<form role="form" action="{{url_for('add_member_to_project', name=name)}}" method="POST">
 							<fieldset>
 					       <label for="newuser">Add New Users</label>
-					       <select class="form-control" name="newuser" tabindex="2" id="form-resource-list" required>
-					         <option selected disabled>Please Select User</option>
+					       <select class="form-control" multiple data-live-search="true" name="newuser" tabindex="2" id="form-resource-list" required>
+					         <!-- <option value="" selected disabled>Please Select User</option> -->
 					         {% for user in users %}
                     {% if (user.name not in members) and (user.name != owner) %}
-					         <option value="{{user.name}}" required>{{ user.first }} {{ user.last}}</option>
+					         <option value="{{user.name}}" data-tokens="{{user.first}} {{user.last}}" required>{{ user.first }} {{ user.last}}</option>
                     {% endif %}
 					         {% endfor %}
 					       </select>
@@ -53,40 +115,75 @@
 						</form>
             {% endif %}
 
-						<span id="label"><h3>Allocations:</h3></span>
-						<div class="list-group">
-						{% for project in projects %}
-              {% if project.name == name %}
-                {% if project.allocations == [] or project.allocations == None %}
-                <a class="list-group-item list-group-item-action">
-                  No Current Allocations
-                </a>
-                {% else %}
-                  {% for allocation_name in project.allocations %}
-                    {% for allocation in allocations %}
-                      {% if allocation_name == allocation.name %}
-                <a href="{{ url_for('view_allocation', name=allocation.name) }}" class="list-group-item list-group-item-action">
-                  {{ allocation.displayname }}
-                </a>
-                      {% endif %}
-                    {% endfor %}
-                  {% endfor %}
-                {% endif %}
-              {% endif %}
-						{% endfor %}
-						</div>
+            <div class="panel panel-primary filterable">
+            	<div class="panel-heading">
+            		<h3 class="panel-title">Allocations</h3>
+            		<div class="pull-right">
+            			<button class="btn btn-primary btn-sm btn-filter"><span class="glyphicon glyphicon-filter"></span> Filter</button>
+            		</div>
+            	</div>
+              <div class="table-responsive" style="overflow-x:auto;">
+                <table class="display table table-hover" width="100%">
+              		<thead>
+              			<tr class="filters">
+              				<th><input type="text" class="form-control" placeholder="Name" disabled></th>
+              				<th><input type="text" class="form-control" placeholder="Owner" disabled></th>
+              				<th><input type="text" class="form-control" placeholder="Organization" disabled></th>
+              			</tr>
+              		</thead>
+              		<tbody data-link="row" class="rowlink">
+              		{% for project in projects %}
+              			{% if project.name == name %}
+              				{% for allocation_name in project.allocations %}
+              					{% for allocation in allocations %}
+              						{% if allocation_name == allocation.name %}
+              							{% for user in users %}
+              								{% if allocation.owner == user.name %}
+              			<tr>
+              				<td>
+              					<div>{{allocation.displayname}}</div>
+                        {% if (session['name'] == allocation.owner) %}
+                        <form role="form" action="{{url_for('remove_allocation_from_project', name=name)}}" method="POST">
+                          <div>
+                            <button type="submit" name="remove_allocation" value="{{allocation.name}}" class="btn btn-danger btn-xs pull-right" data-submit="Removing Allocation...">Remove Allocation</button>
+                          </div>
+                        </form>
+                        {% endif %}
+              				</td>
+              				<td>
+              					<div>
+                          {{user.first}} {{user.last}}
+                        </div>
+                      </td>
+              				<td>
+                        <div>
+                          {{ user.organization }}
+                        </div>
+                      </td>
+              			</tr>
+              								{% endif %}
+              							{% endfor%}
+              						{% endif %}
+              					{% endfor %}
+              				{% endfor %}
+              			{% endif %}
+              		{% endfor %}
+              		</tbody>
+              	</table>
+              </div>
+            </div>
 
 						<form role="form" action="{{url_for('add_allocation_to_project', name=name)}}" method="POST">
 							<fieldset>
 								<label for="allocation">Select Allocation:</label>
-								<select class="form-control" id="form-resource-list" name="allocation" tabindex="3" required>
-									<option selected disabled>Please Select Allocation</option>
+								<select class="form-control" multiple data-live-search="true" id="form-resource-list" name="allocation" tabindex="3" required>
+									<!-- <option value="" selected disabled>Please Select Allocation</option> -->
 								<!-- Populate List of Allocations that has been defined by User -->
-								{% for allocation in allocations %}
-									{% if allocation.owner == owner and session['name'] == owner %}
-										 <option value="{{allocation.name}}" required>{{ allocation.displayname }}</option>
-									{% endif %}
-								{% endfor %}
+  								{% for allocation in allocations %}
+  									{% if (allocation.owner == session['name'] and allocation.name not in project.allocations and allocation.state == "validated") %}
+  								<option value="{{allocation.name}}" data-tokens="{{allocation.displayname}}" required>{{ allocation.displayname }}</option>
+  									{% endif %}
+  								{% endfor %}
 								</select>
 							</fieldset>
 								<button type="submit" name="btn" value="addallocation" class="btn btn-primary" id="create-project" data-submit="...Sending">Add Allocation to Project</button>

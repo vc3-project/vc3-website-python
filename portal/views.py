@@ -8,8 +8,9 @@ from flask import (flash, redirect, render_template, request,
 
 
 from portal import app, pages
-from portal.decorators import authenticated
-from portal.utils import (load_portal_client, get_safe_redirect, get_vc3_client)
+from portal.decorators import authenticated, allocation_validated, project_exists
+from portal.utils import (load_portal_client, get_safe_redirect,
+                          get_vc3_client, project_validated, project_in_vc)
 
 
 # Create a custom error handler for Exceptions
@@ -148,8 +149,9 @@ def show_profile_page():
     """User profile information. Assocated with a Globus Auth identity."""
 
     vc3_client = get_vc3_client()
+    userlist = vc3_client.listUsers()
+
     if request.method == 'GET':
-        userlist = vc3_client.listUsers()
         profile = None
 
         for user in userlist:
@@ -158,7 +160,7 @@ def show_profile_page():
 
         if profile:
 
-            session['name'] = profile.name
+            session['name'] = profile.identity_id
             session['displayname'] = profile.displayname
             session['first'] = profile.first
             session['last'] = profile.last
@@ -166,7 +168,7 @@ def show_profile_page():
             session['institution'] = profile.organization
             session['primary_identity'] = profile.identity_id
         else:
-            if session['primary_identity'] not in ["c887eb90-d274-11e5-bf28-779c8998e810", "05e05adf-e9d4-487f-8771-b6b8a25e84d3", "c4686d14-d274-11e5-b866-0febeb7fd79e", "be58c8e2-fc13-11e5-82f7-f7141a8b0c16", "c456b77c-d274-11e5-b82c-23a245a48997", "f1f26455-cbd5-4933-986b-47c57ee20987", "aebe29b8-d274-11e5-ba4b-ffec0df955f2", "c444a294-d274-11e5-b7f1-e3782ed16687"]:
+            if session['primary_identity'] not in ["c887eb90-d274-11e5-bf28-779c8998e810", "05e05adf-e9d4-487f-8771-b6b8a25e84d3", "c4686d14-d274-11e5-b866-0febeb7fd79e", "be58c8e2-fc13-11e5-82f7-f7141a8b0c16", "c456b77c-d274-11e5-b82c-23a245a48997", "f1f26455-cbd5-4933-986b-47c57ee20987", "aebe29b8-d274-11e5-ba4b-ffec0df955f2", "c444a294-d274-11e5-b7f1-e3782ed16687", "9c1c1643-8726-414f-85dc-aca266099304"]:
                 next
             else:
                 flash('Please complete any missing profile fields before '
@@ -182,8 +184,12 @@ def show_profile_page():
         email = session['email'] = request.form['email']
         organization = session['institution'] = request.form['institution']
         identity_id = session['primary_identity']
-        name = identity_id
+        name = session['primary_identity']
         displayname = session['displayname'] = request.form['displayname']
+
+        for user in userlist:
+            if user.name == name:
+                vc3_client.deleteUser(username=name)
 
         newuser = vc3_client.defineUser(identity_id=identity_id,
                                         name=name,
@@ -261,6 +267,13 @@ def authcallback():
         userlist = vc3_client.listUsers()
         profile = None
 
+        email = id_token.get('email', '')
+        # Restrict Email access to only .edu, .gov, and .org
+        # User must have a valid institutional affiliation
+        # Otherwise return to error page, explaining restricted access
+        if not (email.split("@")[-1].split(".")[-1] in ["edu", "gov", "org"]):
+            return render_template('email_error.html')
+
         for user in userlist:
             if session['primary_identity'] == user.identity_id:
                 profile = user
@@ -273,7 +286,6 @@ def authcallback():
             session['email'] = profile.email
             session['institution'] = profile.organization
             session['primary_identity'] = profile.identity_id
-            session['name'] = profile.name
             session['displayname'] = profile.displayname
         else:
             return redirect(url_for('show_profile_page',
@@ -289,33 +301,40 @@ def authcallback():
 
 @app.route('/new', methods=['GET', 'POST'])
 @authenticated
+@allocation_validated
 def create_project():
+    """ Creating New Project Form """
     vc3_client = get_vc3_client()
     if request.method == 'GET':
         users = vc3_client.listUsers()
         allocations = vc3_client.listAllocations()
         owner = session['name']
+
         return render_template('project_new.html', owner=owner,
                                users=users, allocations=allocations)
 
     elif request.method == 'POST':
+        # Method to define and store projects
+        # along with associated members and allocations
+        # Initial members and allocations not required
         projects = vc3_client.listProjects()
         name = request.form['name']
         owner = session['name']
+        members = []
 
-        if request.form['members'] == "":
-            members = []
+        if request.form['description'] == "":
+            description = None
         else:
-            members = request.form['members'].split(",")
-        # description = request.form['description']
-        # organization = request.form['organization']
+            description = request.form['description']
 
         newproject = vc3_client.defineProject(name=name, owner=owner,
-                                              members=members)
+                                              members=members, description=description)
         vc3_client.storeProject(newproject)
-        if not (request.form['allocation'] == ""):
-            allocation = request.form['allocation']
-            vc3_client.addAllocationToProject(allocation=allocation,
+
+        for selected_members in request.form.getlist('members'):
+            vc3_client.addUserToProject(project=name, user=selected_members)
+        for selected_allocations in request.form.getlist('allocation'):
+            vc3_client.addAllocationToProject(allocation=selected_allocations,
                                               projectname=newproject.name)
         flash('Your project has been successfully created.', 'success')
 
@@ -325,6 +344,7 @@ def create_project():
 @app.route('/project', methods=['GET'])
 @authenticated
 def list_projects():
+    """ Project List View """
     vc3_client = get_vc3_client()
     projects = vc3_client.listProjects()
     users = vc3_client.listUsers()
@@ -336,21 +356,38 @@ def list_projects():
 @app.route('/project/<name>', methods=['GET'])
 @authenticated
 def view_project(name):
+    """
+    View Specific Project Profile View, with name passed in as argument
+
+    :param name: name attribute of project
+    :return: Project profile page specific to project name
+    """
+    project_validation = project_validated(name=name)
+    if project_validation == False:
+        flash('You do not appear to be a member of the project you are trying'
+              'to view. Please contact owner to request membership.', 'warning')
+        return redirect(url_for('list_projects'))
+
     vc3_client = get_vc3_client()
     projects = vc3_client.listProjects()
     allocations = vc3_client.listAllocations()
     users = vc3_client.listUsers()
+    project = None
 
-    for project in projects:
-        if project.name == name:
-            name = project.name
-            owner = project.owner
-            members = project.members
-            # description = project.description
-            # organization = project.organization
-            return render_template('projects_pages.html', name=name, owner=owner,
-                                   members=members, allocations=allocations,
-                                   projects=projects, users=users)
+    # Scanning list of projects and matching with name of project argument
+
+    project = vc3_client.getProject(projectname=name)
+    if project:
+        name = project.name
+        owner = project.owner
+        members = project.members
+        project = project
+        description = project.description
+        # organization = project.organization
+        return render_template('projects_pages.html', name=name, owner=owner,
+                               members=members, allocations=allocations,
+                               projects=projects, users=users, project=project,
+                               description=description)
     app.logger.error("Could not find project when viewing: {0}".format(name))
     raise LookupError('project')
 
@@ -358,6 +395,14 @@ def view_project(name):
 @app.route('/project/<name>/addmember', methods=['POST'])
 @authenticated
 def add_member_to_project(name):
+    """
+    Adding members to project from project profile page
+    Only owner of project may add members to project
+
+    :param name: name attribute of project
+    :return: Project profile page specific to project name
+    """
+
     vc3_client = get_vc3_client()
     projects = vc3_client.listProjects()
 
@@ -371,7 +416,8 @@ def add_member_to_project(name):
                 app.logger.error("Trying to add owner as member:" +
                                  "owner: {0} project:{1}".format(user, name))
                 return redirect(url_for('view_project', name=name))
-            vc3_client.addUserToProject(project=name, user=user)
+            for selected_members in request.form.getlist('newuser'):
+                vc3_client.addUserToProject(project=name, user=selected_members)
             flash('Successfully added member to project.', 'success')
             return redirect(url_for('view_project', name=name))
     app.logger.error("Could not find project when adding user: " +
@@ -380,19 +426,59 @@ def add_member_to_project(name):
     return redirect(url_for('view_project', name=name))
 
 
+@app.route('/project/<name>/removemember', methods=['POST'])
+@authenticated
+def remove_member_from_project(name):
+    """
+    Removing members from project
+    Only owner of project may remove members to project
+
+    :param name: name attribute of project
+    :return: Project profile page specific to project name
+    """
+
+    vc3_client = get_vc3_client()
+
+    # Grab project by name and user is user.name from submit button
+    project = vc3_client.getProject(projectname=name)
+    user = request.form['submit']
+
+    # List of user's allocations
+    allocations = vc3_client.listAllocations()
+    user_allocations = [a.name for a in allocations if user == a.owner]
+
+    # Remove allocation if user has allocation in project
+    for allocation in project.allocations:
+        if allocation in user_allocations:
+            vc3_client.removeAllocationFromProject(allocation=allocation, projectname=name)
+
+    # Finally remove user from project entirely
+    vc3_client.removeUserFromProject(user=user, project=project.name)
+
+    return redirect(url_for('view_project', name=name))
+
+
 @app.route('/project/<name>/addallocation', methods=['POST'])
 @authenticated
 def add_allocation_to_project(name):
+    """
+    Adding allocations to project from project profile page
+    Only owner/members of project may add their own allocations to project
+
+    :param name: name attribute of project to match
+    :return: Project page specific to project name, with new allocation added
+    """
     vc3_client = get_vc3_client()
     projects = vc3_client.listProjects()
 
-    new_allocation = request.form['allocation']
+    # new_allocation = request.form['allocation']
 
     for project in projects:
         if project.name == name:
             name = project.name
-            vc3_client.addAllocationToProject(allocation=new_allocation,
-                                              projectname=name)
+            for selected_allocations in request.form.getlist('allocation'):
+                vc3_client.addAllocationToProject(allocation=selected_allocations,
+                                                  projectname=name)
             flash('Successfully added allocation to project.', 'success')
             return redirect(url_for('view_project', name=name))
     app.logger.error("Could not find project when adding allocation: " +
@@ -401,9 +487,59 @@ def add_allocation_to_project(name):
     return redirect(url_for('view_project', name=name))
 
 
+@app.route('/project/<name>/removeallocation', methods=['POST'])
+@authenticated
+def remove_allocation_from_project(name):
+    """
+    Removing allocation from project
+    Only owner of project and/or owner of allocation may remove allocations
+    from said project
+
+    :param name: name attribute of project
+    :return: Project profile page specific to project name
+    """
+
+    vc3_client = get_vc3_client()
+    remove_allocation = request.form['remove_allocation']
+
+    vc3_client.removeAllocationFromProject(allocation=remove_allocation, projectname=name)
+    flash('You have successfully removed allocation from this project', 'success')
+
+    return redirect(url_for('view_project', name=name))
+
+
+@app.route('/project/delete/<name>', methods=['GET'])
+@authenticated
+def delete_project(name):
+    """
+    Route for method to delete project
+
+    :param name: name attribute of project to delete
+    :return: Redirect to List Project page with project deleted
+    """
+
+    project_validation = project_validated(name=name)
+    if project_validation == False:
+        flash('You do not have the authority to delete this project.', 'warning')
+        return redirect(url_for('list_projects'))
+
+    vc3_client = get_vc3_client()
+
+    # Grab project by name and delete entity
+
+    project = vc3_client.getProject(projectname=name)
+    vc3_client.deleteProject(projectname=project.name)
+    flash('Project has been successfully deleted', 'success')
+
+    return redirect(url_for('list_projects'))
+
+
 @app.route('/cluster/new', methods=['GET', 'POST'])
 @authenticated
+@allocation_validated
 def create_cluster():
+    """ Create New Cluster Template Form """
+
     vc3_client = get_vc3_client()
     clusters = vc3_client.listClusters()
     projects = vc3_client.listProjects()
@@ -414,6 +550,10 @@ def create_cluster():
                                projects=projects, nodesets=nodesets)
 
     elif request.method == 'POST':
+        # Assigning attribute variables by form input and presets
+        # Create and save new nodeset first, followed by new cluster
+        # and finally add said nodeset to the new cluster
+
         inputname = request.form['name']
         owner = session['name']
         node_number = request.form['node_number']
@@ -442,6 +582,7 @@ def create_cluster():
 @app.route('/cluster', methods=['GET'])
 @authenticated
 def list_clusters():
+    """ List Cluster Template View """
     vc3_client = get_vc3_client()
     clusters = vc3_client.listClusters()
     projects = vc3_client.listProjects()
@@ -451,110 +592,140 @@ def list_clusters():
                            projects=projects, nodesets=nodesets)
 
 
-@app.route('/cluster/<name>', methods=['GET', 'POST'])
+@app.route('/cluster/<name>', methods=['GET'])
 @authenticated
+@allocation_validated
 def view_cluster(name):
+    """
+    Specific page view, pertaining to Cluster Template
+
+    :param name: name attribute of cluster
+    :return: Cluster Template profile view specific to cluster name
+    """
     vc3_client = get_vc3_client()
     clusters = vc3_client.listClusters()
     projects = vc3_client.listProjects()
     nodesets = vc3_client.listNodesets()
     users = vc3_client.listUsers()
+    cluster = None
 
-    if request.method == 'GET':
-        for cluster in clusters:
-            if cluster.name == name:
-                cluster_name = cluster.name
-                owner = cluster.owner
-                state = cluster.state
-                description = cluster.description
+    cluster = vc3_client.getCluster(clustername=name)
+    if cluster:
+        cluster_name = cluster.name
+        owner = cluster.owner
+        state = cluster.state
+        description = cluster.description
 
-                return render_template('cluster_profile.html', name=cluster_name,
-                                       owner=owner, state=state,
-                                       nodesets=nodesets, description=description,
-                                       users=users, clusters=clusters,
-                                       projects=projects)
-        raise LookupError('cluster')
-
-    elif request.method == 'POST':
-        node_number = request.form['node_number']
-        app_type = request.form['app_type']
-        description = request.form['description']
-
-        if app_type == "htcondor":
-            environment = "condor-glidein-password-env1"
-        elif app_type == "workqueue":
-            environment = []
-        else:
-            app.logger.error("Got unsupported framework when viewing " +
-                             "cluster template: {0}".format(app_type))
-            raise ValueError('app_type not a recognized framework')
-
-        cluster_name = None
-        owner = None
-        app_role = None
-        for cluster in clusters:
-            if cluster.name == name:
-                cluster_name = cluster.name
-                owner = cluster.owner
-                app_role = "worker-nodes"
-                break
-        if cluster_name is None:
-            # could not find cluster, punt
-            LookupError('cluster')
-
-        nodeset = vc3_client.defineNodeset(name=cluster_name, owner=owner,
-                                           node_number=node_number,
-                                           app_type=app_type, app_role=app_role,
-                                           environment=environment)
-        vc3_client.storeNodeset(nodeset)
-        newcluster = vc3_client.defineCluster(
-            name=cluster_name, owner=owner, description=description)
-        vc3_client.storeCluster(newcluster)
-        vc3_client.addNodesetToCluster(nodesetname=nodeset.name,
-                                       clustername=newcluster.name)
-
-        # return render_template('cluster_profile.html', name=cluster_name,
-        #                        owner=owner, clusters=clusters,
-        #                        projects=projects)
-        # flash('Your cluster template has been successfully updated.', 'success')
-        return redirect(url_for('view_cluster', name=name))
+        return render_template('cluster_profile.html', name=cluster_name,
+                               owner=owner, state=state,
+                               nodesets=nodesets, description=description,
+                               users=users, clusters=clusters,
+                               projects=projects)
+    raise LookupError('cluster')
 
 
-@app.route('/cluster/edit/<name>', methods=['GET'])
+@app.route('/cluster/edit/<name>', methods=['GET', 'POST'])
 @authenticated
 def edit_cluster(name):
+    """
+    Edit Page for specific cluster templates
+    Only owner of cluster template may make edits to cluster template
+
+    :param name: name attribute of cluster template to match
+    :return: Edit Page with information pertaining to the cluster template
+    """
     vc3_client = get_vc3_client()
     clusters = vc3_client.listClusters()
     projects = vc3_client.listProjects()
     nodesets = vc3_client.listNodesets()
     frameworks = []
 
-    for cluster in clusters:
-        if cluster.name == name:
-            clustername = cluster.name
-            owner = cluster.owner
-            state = cluster.state
-            acl = cluster.acl
-            description = cluster.description
-    for nodeset in nodesets:
-        if nodeset.name == name:
-            node_number = nodeset.node_number
-            framework = nodeset.app_type
-            if nodeset.app_type not in frameworks:
-                frameworks.append(nodeset.app_type)
+    if request.method == 'GET':
+        for cluster in clusters:
+            if cluster.name == name:
+                clustername = cluster.name
+                owner = cluster.owner
+                state = cluster.state
+                acl = cluster.acl
+                description = cluster.description
+        for nodeset in nodesets:
+            if nodeset.name == name:
+                node_number = nodeset.node_number
+                framework = nodeset.app_type
+                if nodeset.app_type not in frameworks:
+                    frameworks.append(nodeset.app_type)
 
-            return render_template('cluster_edit.html', name=clustername,
-                                   owner=owner, nodesets=nodesets,
-                                   state=state, acl=acl, projects=projects,
-                                   frameworks=frameworks, node_number=node_number,
-                                   description=description, framework=framework)
-    app.logger.error("Could not find cluster when editing: {0}".format(name))
-    raise LookupError('cluster')
+                return render_template('cluster_edit.html', name=clustername,
+                                       owner=owner, nodesets=nodesets,
+                                       state=state, acl=acl, projects=projects,
+                                       frameworks=frameworks, node_number=node_number,
+                                       description=description, framework=framework)
+        app.logger.error("Could not find cluster when editing: {0}".format(name))
+        raise LookupError('cluster')
+
+    elif request.method == 'POST':
+        # Grab new framework from form
+        app_type = request.form['app_type']
+
+        cluster_name = None
+        # Call cluster and nodeset by name
+        cluster = vc3_client.getCluster(clustername=name)
+        nodeset = vc3_client.getNodeset(nodesetname=name)
+        # Assign new attribute to selected cluster
+        if cluster.name == name:
+            cluster_name = cluster.name
+            cluster.description = request.form['description']
+            nodeset.node_number = request.form['node_number']
+            nodeset.app_type = request.form['app_type']
+        if cluster_name is None:
+            # could not find cluster, punt
+            LookupError('cluster')
+
+        if app_type == "htcondor":
+            nodeset.environment = "condor-glidein-password-env1"
+        elif app_type == "workqueue":
+            nodeset.environment = []
+        else:
+            app.logger.error("Got unsupported framework when viewing " +
+                             "cluster template: {0}".format(app_type))
+            raise ValueError('app_type not a recognized framework')
+        # Store nodeset and cluster with new attributes into infoservice
+        vc3_client.storeNodeset(nodeset)
+        vc3_client.storeCluster(cluster)
+        # Redirect to updated cluster profile page
+        flash('Cluster has been successfully updated', 'success')
+        return redirect(url_for('view_cluster', name=name))
+
+
+@app.route('/cluster/delete/<name>', methods=['GET'])
+@authenticated
+def delete_cluster(name):
+    """
+    Route for method to delete cluster template
+
+    :param name: name attribute of cluster template to delete
+    :return: Redirect to List Cluster Template page with cluster template deleted
+    """
+    vc3_client = get_vc3_client()
+
+    # Grab nodeset associated with cluster template and delete entity
+
+    nodeset = vc3_client.getNodeset(nodesetname=name)
+    vc3_client.deleteNodeset(nodesetname=nodeset.name)
+
+    # Finally grab cluster template and delete entity
+
+    cluster = vc3_client.getCluster(clustername=name)
+    vc3_client.deleteCluster(clustername=cluster.name)
+    flash('Cluster Template has been successfully deleted', 'success')
+
+    return redirect(url_for('list_clusters'))
 
 
 @app.route('/allocation', methods=['GET'])
 @authenticated
 def list_allocations():
+    """ List Allocations Page """
     vc3_client = get_vc3_client()
     allocations = vc3_client.listAllocations()
     resources = vc3_client.listResources()
@@ -568,12 +739,17 @@ def list_allocations():
 @app.route('/allocation/new', methods=['GET', 'POST'])
 @authenticated
 def create_allocation():
+    """ New Alloation Creation Form """
     vc3_client = get_vc3_client()
     if request.method == 'GET':
         resources = vc3_client.listResources()
         return render_template('allocation_new.html', resources=resources)
 
     elif request.method == 'POST':
+        # Gathering and storing information from new allocation form
+        # into info-service
+        # Description from text input stored as string to avoid malicious input
+
         displayname = request.form['displayname']
         owner = session['name']
         resource = request.form['resource']
@@ -597,7 +773,14 @@ def create_allocation():
 
 @app.route('/allocation/<name>', methods=['GET', 'POST'])
 @authenticated
+# @allocation_validated
 def view_allocation(name):
+    """
+    Allocation Detailed Page View
+
+    :param name: name attribute of allocation
+    :return: Allocation detailed page with associated attributes
+    """
     vc3_client = get_vc3_client()
     allocations = vc3_client.listAllocations()
     resources = vc3_client.listResources()
@@ -630,6 +813,8 @@ def view_allocation(name):
         raise LookupError('allocation')
 
     elif request.method == 'POST':
+        # Iterate through allocations list in infoservice for allocation
+        # with the matching name argument and update with new form input
 
         for allocation in allocations:
             if allocation.name == name:
@@ -653,32 +838,76 @@ def view_allocation(name):
                                        resources=resources)
 
 
-@app.route('/allocation/edit/<name>', methods=['GET'])
+@app.route('/allocation/edit/<name>', methods=['GET', 'POST'])
 @authenticated
+@allocation_validated
 def edit_allocation(name):
     vc3_client = get_vc3_client()
     allocations = vc3_client.listAllocations()
     resources = vc3_client.listResources()
 
-    for allocation in allocations:
+    allocation = vc3_client.getAllocation(allocationname=name)
+
+    if request.method == 'GET':
         if allocation.name == name:
             allocationname = allocation.name
             owner = allocation.owner
             resource = allocation.resource
             accountname = allocation.accountname
             pubtoken = allocation.pubtoken
+            description = allocation.description
+            displayname = allocation.displayname
 
             return render_template('allocation_edit.html', name=allocationname,
                                    owner=owner, resources=resources,
                                    resource=resource, accountname=accountname,
-                                   pubtoken=pubtoken)
-    app.logger.error("Could not find allocation when editing: {0}".format(name))
-    raise LookupError('alliocation')
+                                   pubtoken=pubtoken, description=description,
+                                   displayname=displayname)
+        app.logger.error("Could not find allocation when editing: {0}".format(name))
+        raise LookupError('alliocation')
+
+    elif request.method == 'POST':
+        allocation = vc3_client.getAllocation(allocationname=name)
+        if allocation.name == name:
+            allocation.description = request.form['description']
+            allocation.displayname = request.form['displayname']
+
+        vc3_client.storeAllocation(allocation)
+        flash('Allocation successfully updated', 'success')
+        return redirect(url_for('view_allocation', name=name))
+
+
+@app.route('/allocation/delete/<name>', methods=['GET'])
+@authenticated
+def delete_allocation(name):
+    """
+    Route for method to delete allocation
+
+    :param name: name attribute of allocation to delete
+    :return: Redirect to List Allocation page with Allocation deleted
+    """
+    vc3_client = get_vc3_client()
+    projects = vc3_client.listProjects()
+
+    # Grab allocation by name
+    allocation = vc3_client.getAllocation(allocationname=name)
+    # Scan through and remove allocations from any projects
+    for project in projects:
+        if allocation.name in project.allocations:
+            vc3_client.removeAllocationFromProject(
+                allocation=allocation.name, projectname=project.name)
+    # Finally delete allocation entity
+    vc3_client.deleteAllocation(allocationname=allocation.name)
+
+    flash('Allocation has been successfully removed from any projects and deleted', 'success')
+
+    return redirect(url_for('list_allocations'))
 
 
 @app.route('/resource', methods=['GET'])
 @authenticated
 def list_resources():
+    """ Route for HPC and Resources List View """
     vc3_client = get_vc3_client()
     resources = vc3_client.listResources()
 
@@ -688,6 +917,12 @@ def list_resources():
 @app.route('/resource/<name>', methods=['GET'])
 @authenticated
 def view_resource(name):
+    """
+    Route to view specific Resource profiles
+
+    :param name: name attribute of Resource to view
+    :return: Directs to detailed profile view of said Resource
+    """
     vc3_client = get_vc3_client()
     resources = vc3_client.listResources()
 
@@ -714,6 +949,7 @@ def view_resource(name):
 @app.route('/request', methods=['GET'])
 @authenticated
 def list_requests():
+    """ List View of Virtual Clusters """
     vc3_client = get_vc3_client()
     vc3_requests = vc3_client.listRequests()
     nodesets = vc3_client.listNodesets()
@@ -725,7 +961,13 @@ def list_requests():
 
 @app.route('/request/new', methods=['GET', 'POST'])
 @authenticated
+@project_exists
 def create_request():
+    """
+    Form to launch new Virtual Cluster
+
+    Users must have both, a validated allocation and cluster template to launch
+    """
     vc3_client = get_vc3_client()
     if request.method == 'GET':
         allocations = vc3_client.listAllocations()
@@ -734,8 +976,11 @@ def create_request():
                                clusters=clusters)
 
     elif request.method == 'POST':
+        # Define and store new Virtual Clusters within infoservice
+        # Policies currently default to "static-balanced"
+        # Environments currently default to "condor-glidein-password-env1"
+        # Return redirects to Virtual Clusters List View after creation
         allocations = []
-        # environments = []
         inputname = request.form['name']
         owner = session['name']
         expiration = None
@@ -744,6 +989,7 @@ def create_request():
         translatename = "".join(inputname.split())
         vc3requestname = translatename.lower()
         environments = ["condor-glidein-password-env1"]
+        description = request.form['description']
         for selected_allocations in request.form.getlist('allocation'):
             allocations.append(selected_allocations)
 
@@ -752,7 +998,8 @@ def create_request():
                                               allocations=allocations,
                                               environments=environments,
                                               policy=policy,
-                                              expiration=expiration)
+                                              expiration=expiration,
+                                              description=description)
         vc3_client.storeRequest(newrequest)
 
         flash('Your Virtual Cluster has been successfully launched.', 'success')
@@ -763,28 +1010,50 @@ def create_request():
 @app.route('/request/<name>', methods=['GET', 'POST'])
 @authenticated
 def view_request(name):
+    """
+    Route for specific detailed page view of Virtual Clusters
+
+    :param name: name attribute of Virtual Cluster
+    :return: Directs to detailed page view of Virtual Clusters with
+    associated attributes
+    """
+    # Checks if user is member of project associated with Virtual Cluster
+    member_in_vc = project_in_vc(name=name)
+    if member_in_vc is False:
+        flash('You do not appear to be have access to view this Virtual Cluster'
+              'Please contact owner to request membership.', 'warning')
+        return redirect(url_for('list_requests'))
+
     vc3_client = get_vc3_client()
     vc3_requests = vc3_client.listRequests()
     nodesets = vc3_client.listNodesets()
     clusters = vc3_client.listClusters
     users = vc3_client.listUsers()
+    vc3_request = None
+    allocations = vc3_client.listAllocations()
 
     if request.method == 'GET':
-        for vc3_request in vc3_requests:
-            if vc3_request.name == name:
-                requestname = vc3_request.name
-                owner = vc3_request.owner
-                action = vc3_request.action
-                state = vc3_request.state
+        vc3_request = vc3_client.getRequest(requestname=name)
+        if vc3_request:
+            requestname = vc3_request.name
+            owner = vc3_request.owner
+            action = vc3_request.action
+            state = vc3_request.state
+            vc3allocations = vc3_request.allocations
+            description = vc3_request.description
 
-                return render_template('request_profile.html', name=requestname,
-                                       owner=owner, requests=vc3_requests,
-                                       clusters=clusters, nodesets=nodesets,
-                                       action=action, state=state, users=users)
+            return render_template('request_profile.html', name=requestname,
+                                   owner=owner, requests=vc3_requests,
+                                   clusters=clusters, nodesets=nodesets,
+                                   action=action, state=state, users=users,
+                                   vc3allocations=vc3allocations,
+                                   allocations=allocations, description=description)
         app.logger.error("Could not find VC when viewing: {0}".format(name))
         raise LookupError('virtual cluster')
 
     elif request.method == 'POST':
+        # Method to terminate running a specific Virtual Cluster
+        # based on name argument that is passed through
         for vc3_request in vc3_requests:
             if vc3_request.name == name:
                 requestname = vc3_request.name
@@ -797,6 +1066,52 @@ def view_request(name):
         flash('Could not find specified Virtual Cluster', 'warning')
         app.logger.error("Could not find VC when terminating: {0}".format(name))
         return redirect(url_for('list_requests'))
+
+
+@app.route('/request/edit/<name>', methods=['GET', 'POST'])
+@authenticated
+def edit_request(name):
+    """
+    Route to edit specific Virtual Clusters
+
+    :param name: name attribute of Virtual Cluster
+    :return: Directs to detailed page view of Virtual Clusters with updated
+    associated attributes
+    """
+    vc3_client = get_vc3_client()
+    if request.method == 'GET':
+        vc3_request = vc3_client.getRequest(requestname=name)
+        return render_template('request_edit.html', request=vc3_request, name=name)
+
+    elif request.method == 'POST':
+        vc3_request = None
+        vc3_request = vc3_client.getRequest(requestname=name)
+        if vc3_request:
+            vc3_request.description = request.form['description']
+            # vc3_request.displayname = request.form['displayname']
+
+            vc3_client.storeRequest(vc3_request)
+        return redirect(url_for('view_request', name=name))
+
+
+@app.route('/request/delete/<name>', methods=['GET'])
+@authenticated
+def delete_virtualcluster(name):
+    """
+    Route for method to delete Virtual Cluster
+
+    :param name: name attribute of Virtual Cluster to delete
+    :return: Redirect to List Virtual Clusters page with VC deleted
+    """
+    vc3_client = get_vc3_client()
+
+    # Grab VC by name and delete entity
+
+    vc = vc3_client.getRequest(requestname=name)
+    vc3_client.deleteRequest(requestname=vc.name)
+    flash('Virtual Cluster has been successfully deleted', 'success')
+
+    return redirect(url_for('list_requests'))
 
 
 @app.route('/monitoring', methods=['GET'])

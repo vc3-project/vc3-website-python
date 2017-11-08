@@ -561,11 +561,11 @@ $(".btn").on("click", function() {
 
 // Flash Message fade out
 
-$(function() {
-   $('#flash').delay(500).fadeIn('normal', function() {
-      $(this).delay(2500).fadeOut();
-   });
-});
+// $(function() {
+//    $('#flash').delay(500).fadeIn('normal', function() {
+//       $(this).delay(2500).fadeOut();
+//    });
+// });
 
 // Auto-selects options within edit forms based on select ID and option value
 // where a = 'select-id-string'  and b = 'option value string'

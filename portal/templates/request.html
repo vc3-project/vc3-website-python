@@ -45,7 +45,6 @@
     									<tbody data-link="row" class="rowlink">
                     {% if session['primary_identity'] == "05e05adf-e9d4-487f-8771-b6b8a25e84d3" %}
                       {% for request in requests %}
-                        <!-- if request.owner == session['name'] -->
     										<tr>
     											<td>
                             <a href="{{ url_for('view_request', name=request.name) }}"
@@ -91,26 +90,19 @@
                           </td>
                         {% endif %}
 
-                        {% if request.statusraw['MYSITE-hostname-sysadminname'] == {} %}
+                        <td>
+                          <div>{{request.cluster}}</div>
+                        </td>
+
+                        {% if request.statusraw['VC3-static'] == {} %}
                           <td>
-                            <div>Cluster Template Name</div>
-                          </td>
-                          <td>
-                            <small class="label label-warning">Status Currently Initializing</small>
+                            <small class="label label-warning">Status currently pending</small>
                           </td>
                         {% elif request.statusraw == None %}
                           <td>
-                            <div>Cluster Template Name</div>
-                          </td>
-                          <td>
-                            <small class="label label-warning">Status Currently Initializing</small>
+                            <small class="label label-warning">Status currently pending</small>
                           </td>
                         {% else %}
-                          <td>
-                          {% for key, value in request.statusinfo.iteritems() %}
-                            <div>{{key}}</div>
-                          {% endfor %}
-                          </td>
                           <td>
                           {% for key, value in request.statusinfo.iteritems() %}
                             {% for k, v in value.iteritems() %}
@@ -205,26 +197,19 @@
                           </td>
                         {% endif %}
 
-                        {% if request.statusraw['MYSITE-hostname-sysadminname'] == {} %}
-                          <td>
-                            <div>Cluster Template Name</div>
-                          </td>
+                        <td>
+                          <div>{{request.cluster}}</div>
+                        </td>
+
+                        {% if request.statusraw['VC3-static'] == {} %}
                           <td>
                             <small class="label label-warning">Status Currently Initializing</small>
                           </td>
                         {% elif request.statusraw == None %}
                           <td>
-                            <div>Cluster Template Name</div>
-                          </td>
-                          <td>
                             <small class="label label-warning">Status Currently Initializing</small>
                           </td>
                         {% else %}
-                          <td>
-                          {% for key, value in request.statusinfo.iteritems() %}
-                            <div>{{key}}</div>
-                          {% endfor %}
-                          </td>
                           <td>
                           {% for key, value in request.statusinfo.iteritems() %}
                             {% for k, v in value.iteritems() %}

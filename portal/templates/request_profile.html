@@ -12,13 +12,10 @@
         <div class="card">
           <div class="header">
           	<h4 class="title">Virtual Cluster:
-              {% for request in requests %}
-                {% if request.name == name %}
-                  {{ request.name }}
-                {% endif %}
-              {% endfor %}
+              {{name}}
             </h4>
-            <!-- <label for="clustername">Cluster Status:</label> -->
+            <h5>Description: {{description}}</h5>
+
           {% if session['name'] == owner %}
             {% if action == "terminate" %}
               {% if state == "terminated" %}
@@ -27,6 +24,9 @@
                 Successfully Terminated
               </span>
             </h4>
+            <div class="delete_entity">
+							<a href="{{url_for('delete_virtualcluster', name=name)}}" class="btn btn-danger btn-sm">Delete Virtual Cluster</a>
+						</div>
               {% else %}
             <div class="progress" style="height:25px">
               <div class="progress-bar progress-bar-danger progress-bar-striped active" role="progressbar"
@@ -45,6 +45,9 @@
             <form action="{{url_for('view_request', name=name)}}" method="POST">
               <button type="submit" class="btn btn-primary" data-submit="...Terminating Cluster" title="Terminate your Virtual Cluster">Terminate Cluster</button>
             </form>
+            <div class="">
+              <a href="{{url_for('edit_request', name=name)}}" class="btn btn-primary btn-sm">Update Virtual Cluster</a>
+            </div>
             {% elif state == "pending"%}
             <div class="progress" style="height:25px">
               <div class="progress-bar progress-bar-warning progress-bar-striped active" role="progressbar"
@@ -55,16 +58,25 @@
             <form action="{{url_for('view_request', name=name)}}" method="POST">
               <button type="submit" class="btn btn-primary" data-submit="...Terminating Cluster" title="Terminate your Virtual Cluster">Terminate Cluster</button>
             </form>
+            <div class="">
+              <a href="{{url_for('edit_request', name=name)}}" class="btn btn-primary btn-sm">Update Virtual Cluster</a>
+            </div>
             {% elif state == "new" and action == "new" %}
             <h4><span class="label label-info" style="color:white">New Cluster</span></h4>
             <form action="{{url_for('view_request', name=name)}}" method="POST">
               <button type="submit" class="btn btn-primary" data-submit="...Terminating Cluster" title="Terminate your Virtual Cluster">Terminate Cluster</button>
             </form>
+            <div class="">
+              <a href="{{url_for('edit_request', name=name)}}" class="btn btn-primary btn-sm">Update Virtual Cluster</a>
+            </div>
             {% else %}
             <h4><span class="label label-success" style="color:white">Successfully Running</span></h4>
             <form action="{{url_for('view_request', name=name)}}" method="POST">
               <button type="submit" class="btn btn-primary" data-submit="...Terminating Cluster" title="Terminate your Virtual Cluster">Terminate Cluster</button>
             </form>
+            <div class="">
+              <a href="{{url_for('edit_request', name=name)}}" class="btn btn-primary btn-sm">Update Virtual Cluster</a>
+            </div>
             {% endif %}
           {% endif %}
 						<hr />
@@ -75,6 +87,26 @@
 
               {% for request in requests %}
 						    {% if request.name == name %}
+              <div class="panel panel-info resource-profile" style="margin: 1em;">
+                <div class="panel-heading">
+                  <h3 class="panel-title"><strong>Owner</strong></h3>
+                </div>
+                <div class="panel-body disabled">
+                {% for user in users %}
+                  {% if user.name == owner %}
+                    {{user.first }} {{user.last}}
+                  {% endif %}
+                {% endfor %}
+                </div>
+              </div>
+              <div class="panel panel-info resource-profile" style="margin: 1em;">
+                <div class="panel-heading">
+                  <h3 class="panel-title"><strong>Cluster Template</strong></h3>
+                </div>
+                <div class="panel-body disabled">
+                  {{request.cluster}}
+                </div>
+              </div>
               <div class="panel panel-info resource-profile" style="margin: 1em;">
                 <div class="panel-heading">
                   <h3 class="panel-title"><strong>State</strong></h3>
@@ -89,18 +121,6 @@
                 </div>
                 <div class="panel-body disabled">
                   {{request.state_reason}}
-                </div>
-              </div>
-              <div class="panel panel-info resource-profile" style="margin: 1em;">
-                <div class="panel-heading">
-                  <h3 class="panel-title"><strong>Owner</strong></h3>
-                </div>
-                <div class="panel-body disabled">
-                {% for user in users %}
-                  {% if user.name == owner %}
-                    {{user.first }} {{user.last}}
-                  {% endif %}
-                {% endfor %}
                 </div>
               </div>
               <div class="panel panel-info resource-profile" style="margin: 1em;">
@@ -123,9 +143,11 @@
                 <div class="panel-heading">
                   <h3 class="panel-title"><strong>Allocations</strong></h3>
                 </div>
-                <div class="panel-body">
-                  {% for allocation in request.allocations %}
-                    <a href="{{ url_for('view_allocation', name=allocation) }}" title="View {{allocation}}"><option>{{allocation}}</option></a>
+                <div class="panel-body disabled">
+                  {% for allocation in allocations %}
+                    {% if allocation.name in request.allocations %}
+                    <div title="View {{allocation}}"><row>{{allocation.displayname}}</row></div>
+                    {% endif %}
                   {% endfor %}
                 </div>
               </div>
@@ -161,19 +183,18 @@
                   <h3 class="panel-title"><strong>Status</strong></h3>
                 </div>
                 <div class="panel-body disabled">
-                  {% if request.statusraw['MYSITE-hostname-sysadminname'] == {} %}
+                  <!-- MYSITE-hostname-sysadminname -->
+                  {% if request.statusraw['VC3-static'] == {} %}
                   Status Currently Unavailable
                   {% elif request.statusraw == None %}
                   Status Currently Unavailable
                   {% else %}
 
-                  Allocations on Virtual Cluster:
-                    {% for key, value in request.statusraw.values()[0].values()[0].iteritems() %}
-                      <option>{{ key }}</option>
-                      {% for k, v in value.iteritems() %}
-                      <option>{{ k }}: {{v}}</option>
-                      {% endfor %}
+                  <label>{{request.cluster}}:</label>
+                    {% for key, value in request.statusinfo.values()[0].iteritems() %}
+                      <option>{{ key }}: {{ value }}</option>
                     {% endfor %}
+
                   {% endif %}
                 </div>
               </div>

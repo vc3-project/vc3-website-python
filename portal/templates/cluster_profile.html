@@ -13,9 +13,11 @@
           <div class="header">
           	<h4 class="title">Cluster: {{name}}</h4>
             <h5>Description: {{description}}</h5>
+            {% if session['name'] == owner %}
             <div class="">
 							<a href="{{url_for('edit_cluster', name=name)}}" class="btn btn-primary btn-sm">Update Cluster</a>
 						</div>
+            {% endif %}
 						<hr />
           </div>
 
@@ -68,6 +70,11 @@
               </div>
 
   					</div>
+            {% if session['name'] == owner %}
+            <div class="delete_entity">
+							<a href="{{url_for('delete_cluster', name=name)}}" class="btn btn-danger btn-sm">Delete Cluster</a>
+						</div>
+            {% endif %}
           </div><!-- /.content description -->
 
         </div>

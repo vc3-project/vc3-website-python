@@ -1,4 +1,4 @@
-from flask import request
+from flask import redirect, request, session, url_for, flash
 from threading import Lock
 from ConfigParser import SafeConfigParser
 
@@ -74,6 +74,7 @@ def get_portal_tokens(
 
         return get_portal_tokens.access_tokens
 
+
 def get_vc3_client():
     """
     Return a VC3 client instance
@@ -93,3 +94,45 @@ def get_vc3_client():
 
 get_portal_tokens.lock = Lock()
 get_portal_tokens.access_tokens = None
+
+
+def project_validated(name):
+    """
+    Checks to see if user exists within specific project
+
+    :param name: name of project to be checked
+    :return: True if user exists in project or False otherwise
+    """
+    vc3_client = get_vc3_client()
+    # Grab project by name
+    project = vc3_client.getProject(projectname=name)
+
+    # Checks to see if user is in project
+    if (session['name'] in project.members or
+            session['name'] == project.owner):
+        return True
+    else:
+        return False
+
+
+def project_in_vc(name):
+    """
+    Checks to see if user exists within specific project associated with VC
+
+    :param name: name of VC to be checked
+    :return: True if user exists in project or False otherwise
+    """
+    vc3_client = get_vc3_client()
+    projects = vc3_client.listProjects()
+    vc = vc3_client.getRequest(requestname=name)
+    vc_owner_projects = []
+
+    for project in projects:
+        if vc.owner == project.owner:
+            vc_owner_projects.append(project)
+
+    for p in vc_owner_projects:
+        if (session['name'] in p.members or session['name'] == p.owner):
+            return True
+        else:
+            return False
