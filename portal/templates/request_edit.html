@@ -1,0 +1,47 @@
+{%extends "loginbase.html"%}
+
+{%block title%}Edit Virtual Cluster{%endblock%}
+
+{%block body%}
+
+<div class="col-md-8 col-sm-12">
+<section id="new_project">
+  <div class="container new-project">
+    <form role="form" id="new-project-form" action="{{url_for('edit_request', name=name)}}" method="POST">
+
+
+      <h2>Edit Virtual Cluster: {{request.name}}</h2>
+      <h4><label><span id="asterik">*</span> = indicates required</label></h4>
+      <!-- <h4>An allocation is an allotted amount of CPU hours or service units (SU) of computing time on a specific resource</h4> -->
+
+      <!-- <fieldset>
+        <label for="name">Virtual Cluster Name <span id="asterik">*</span></label>
+        <input
+          placeholder="Your Virtual Cluster name"
+          name="name"
+          type="text"
+          tabindex="1"
+          required
+          autofocus
+          value="{{request.displayname}}">
+      </fieldset> -->
+      <fieldset>
+        <label for="description">Description</label>
+        <textarea
+          placeholder="Brief 144 Character Description..."
+          name="description"
+          tabindex="2"
+          autofocus
+          maxlength="144"
+          value="{{request.description}}"
+          >{{request.description}}</textarea>
+      </fieldset>
+      <fieldset>
+        <button type="submit" id="create-project" data-submit="...Sending" style="margin-top:25px">Update Cluster</button>
+      </fieldset>
+    </form>
+  </div> <!-- project container -->
+</section>
+</div>
+
+{%endblock%}
