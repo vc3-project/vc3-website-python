@@ -9,9 +9,10 @@ Create a new project
 <div class="col-md-8 col-sm-12">
   <section id="new_project">
     <div class="container new-project">
+
       <form role="form" id="new-project-form" action="{{url_for('create_project')}}" method="POST">
 
-        <h2>Create a New Project</h2>
+        <h2>Create a New Project {{validation}}</h2>
         <h4>A project connects your allocations to your team members</h4>
         <h4><label><span id="asterik">*</span> = indicates required</label></h4>
 
@@ -30,7 +31,7 @@ Create a new project
           <label for="members">Project Members</label>
             <!-- owner: {{ owner }} -->
           <select class="form-control" multiple name="members" tabindex="2" id="form-resource-list">
-            <option value="" selected>Add User to Project</option>
+            <option value="" selected disabled>Add User to Project</option>
             {% for user in users %}
               {% if (user.name not in members) and (user.name != owner) %}
             <option value="{{user.name}}">{{ user.first }} {{user.last}}</option>
@@ -41,7 +42,7 @@ Create a new project
         <fieldset>
           <label for="allocation">Select Allocation:</label>
           <select class="form-control" multiple id="form-resource-list" name="allocation" tabindex="3">
-            <option value="" selected>Add Allocation to Project</option>
+            <option value="" selected disabled>Add Allocation to Project</option>
           <!-- Populate List of Allocations that has been defined by User -->
           {% for allocation in allocations %}
             {% if allocation.owner == owner and session['name'] == owner %}

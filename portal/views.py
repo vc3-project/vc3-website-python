@@ -8,7 +8,7 @@ from flask import (flash, redirect, render_template, request,
 
 
 from portal import app, pages
-from portal.decorators import authenticated
+from portal.decorators import authenticated, allocation_validated, project_validated
 from portal.utils import (load_portal_client, get_safe_redirect, get_vc3_client)
 
 
@@ -166,7 +166,7 @@ def show_profile_page():
             session['institution'] = profile.organization
             session['primary_identity'] = profile.identity_id
         else:
-            if session['primary_identity'] not in ["c887eb90-d274-11e5-bf28-779c8998e810", "05e05adf-e9d4-487f-8771-b6b8a25e84d3", "c4686d14-d274-11e5-b866-0febeb7fd79e", "be58c8e2-fc13-11e5-82f7-f7141a8b0c16", "c456b77c-d274-11e5-b82c-23a245a48997", "f1f26455-cbd5-4933-986b-47c57ee20987", "aebe29b8-d274-11e5-ba4b-ffec0df955f2", "c444a294-d274-11e5-b7f1-e3782ed16687"]:
+            if session['primary_identity'] not in ["c887eb90-d274-11e5-bf28-779c8998e810", "05e05adf-e9d4-487f-8771-b6b8a25e84d3", "c4686d14-d274-11e5-b866-0febeb7fd79e", "be58c8e2-fc13-11e5-82f7-f7141a8b0c16", "c456b77c-d274-11e5-b82c-23a245a48997", "f1f26455-cbd5-4933-986b-47c57ee20987", "aebe29b8-d274-11e5-ba4b-ffec0df955f2", "c444a294-d274-11e5-b7f1-e3782ed16687", "9c1c1643-8726-414f-85dc-aca266099304"]:
                 next
             else:
                 flash('Please complete any missing profile fields before '
@@ -182,7 +182,7 @@ def show_profile_page():
         email = session['email'] = request.form['email']
         organization = session['institution'] = request.form['institution']
         identity_id = session['primary_identity']
-        name = identity_id
+        name = session['primary_identity']
         displayname = session['displayname'] = request.form['displayname']
 
         newuser = vc3_client.defineUser(identity_id=identity_id,
@@ -289,16 +289,22 @@ def authcallback():
 
 @app.route('/new', methods=['GET', 'POST'])
 @authenticated
+@allocation_validated
 def create_project():
+    """ Creating New Project Form """
     vc3_client = get_vc3_client()
     if request.method == 'GET':
         users = vc3_client.listUsers()
         allocations = vc3_client.listAllocations()
         owner = session['name']
+
         return render_template('project_new.html', owner=owner,
                                users=users, allocations=allocations)
 
     elif request.method == 'POST':
+        # Method to define and store projects
+        # along with associated members and allocations
+        # Initial members and allocations not required
         projects = vc3_client.listProjects()
         name = request.form['name']
         owner = session['name']
@@ -317,6 +323,9 @@ def create_project():
         newproject = vc3_client.defineProject(name=name, owner=owner,
                                               members=members, description=description)
         vc3_client.storeProject(newproject)
+        if not (request.form['members'] == ""):
+            for selected_members in request.form.getlist('members'):
+                vc3_client.addUserToProject(project=name, user=selected_members)
         if not (request.form['allocation'] == ""):
             for selected_allocations in request.form.getlist('allocation'):
                 vc3_client.addAllocationToProject(allocation=selected_allocations,
@@ -329,6 +338,7 @@ def create_project():
 @app.route('/project', methods=['GET'])
 @authenticated
 def list_projects():
+    """ Project List View """
     vc3_client = get_vc3_client()
     projects = vc3_client.listProjects()
     users = vc3_client.listUsers()
@@ -339,11 +349,21 @@ def list_projects():
 
 @app.route('/project/<name>', methods=['GET'])
 @authenticated
+@project_validated
 def view_project(name):
+    """
+    View Specific Project Profile View, with name passed in as argument
+
+    :param name: name attribute of project
+    :return: Project profile page specific to project name
+    """
+
     vc3_client = get_vc3_client()
     projects = vc3_client.listProjects()
     allocations = vc3_client.listAllocations()
     users = vc3_client.listUsers()
+
+    # Scanning list of projects and matching with name of project argument
 
     for project in projects:
         if project.name == name:
@@ -363,6 +383,14 @@ def view_project(name):
 @app.route('/project/<name>/addmember', methods=['POST'])
 @authenticated
 def add_member_to_project(name):
+    """
+    Adding members to project from project profile page
+    Only owner of project may add members to project
+
+    :param name: name attribute of project
+    :return: Project profile page specific to project name
+    """
+
     vc3_client = get_vc3_client()
     projects = vc3_client.listProjects()
 
@@ -376,7 +404,9 @@ def add_member_to_project(name):
                 app.logger.error("Trying to add owner as member:" +
                                  "owner: {0} project:{1}".format(user, name))
                 return redirect(url_for('view_project', name=name))
-            vc3_client.addUserToProject(project=name, user=user)
+            if not (request.form['newuser'] == ""):
+                for selected_members in request.form.getlist('newuser'):
+                    vc3_client.addUserToProject(project=name, user=selected_members)
             flash('Successfully added member to project.', 'success')
             return redirect(url_for('view_project', name=name))
     app.logger.error("Could not find project when adding user: " +
@@ -388,6 +418,13 @@ def add_member_to_project(name):
 @app.route('/project/<name>/addallocation', methods=['POST'])
 @authenticated
 def add_allocation_to_project(name):
+    """
+    Adding allocations to project from project profile page
+    Only owner/members of project may add their own allocations to project
+
+    :param name: name attribute of project to match
+    :return: Project page specific to project name, with new allocation added
+    """
     vc3_client = get_vc3_client()
     projects = vc3_client.listProjects()
 
@@ -408,7 +445,10 @@ def add_allocation_to_project(name):
 
 @app.route('/cluster/new', methods=['GET', 'POST'])
 @authenticated
+@allocation_validated
 def create_cluster():
+    """ Create New Cluster Template Form """
+
     vc3_client = get_vc3_client()
     clusters = vc3_client.listClusters()
     projects = vc3_client.listProjects()
@@ -419,6 +459,10 @@ def create_cluster():
                                projects=projects, nodesets=nodesets)
 
     elif request.method == 'POST':
+        # Assigning attribute variables by form input and presets
+        # Create and save new nodeset first, followed by new cluster
+        # and finally add said nodeset to the new cluster
+
         inputname = request.form['name']
         owner = session['name']
         node_number = request.form['node_number']
@@ -447,6 +491,7 @@ def create_cluster():
 @app.route('/cluster', methods=['GET'])
 @authenticated
 def list_clusters():
+    """ List Cluster Template View """
     vc3_client = get_vc3_client()
     clusters = vc3_client.listClusters()
     projects = vc3_client.listProjects()
@@ -459,6 +504,12 @@ def list_clusters():
 @app.route('/cluster/<name>', methods=['GET', 'POST'])
 @authenticated
 def view_cluster(name):
+    """
+    Specific page view, pertaining to Cluster Template
+
+    :param name: name attribute of cluster
+    :return: Cluster Template profile view specific to cluster name
+    """
     vc3_client = get_vc3_client()
     clusters = vc3_client.listClusters()
     projects = vc3_client.listProjects()
@@ -528,6 +579,13 @@ def view_cluster(name):
 @app.route('/cluster/edit/<name>', methods=['GET'])
 @authenticated
 def edit_cluster(name):
+    """
+    Edit Page for specific cluster templates
+    Only owner of cluster template may make edits to cluster template
+
+    :param name: name attribute of cluster template to match
+    :return: Edit Page with information pertaining to the cluster template
+    """
     vc3_client = get_vc3_client()
     clusters = vc3_client.listClusters()
     projects = vc3_client.listProjects()
@@ -557,9 +615,30 @@ def edit_cluster(name):
     raise LookupError('cluster')
 
 
+@app.route('/cluster/deletecluster', methods=['POST'])
+@authenticated
+def delete_cluster(name):
+    """
+    Route for method to delete cluster template
+
+    :param name: name attribute of cluster template to delete
+    :return: Redirect to List Cluster Template page with cluster template deleted
+    """
+    vc3_client = get_vc3_client()
+    clusters = vc3_client.listClusters()
+
+    for cluster in clusters:
+        if cluster.name == name:
+            clustername = cluster.name
+            vc3_client.deleteCluster(clustername=clustername)
+
+    return redirect(url_for('list_clusters'))
+
+
 @app.route('/allocation', methods=['GET'])
 @authenticated
 def list_allocations():
+    """ List Allocations Page """
     vc3_client = get_vc3_client()
     allocations = vc3_client.listAllocations()
     resources = vc3_client.listResources()
@@ -573,12 +652,17 @@ def list_allocations():
 @app.route('/allocation/new', methods=['GET', 'POST'])
 @authenticated
 def create_allocation():
+    """ New Alloation Creation Form """
     vc3_client = get_vc3_client()
     if request.method == 'GET':
         resources = vc3_client.listResources()
         return render_template('allocation_new.html', resources=resources)
 
     elif request.method == 'POST':
+        # Gathering and storing information from new allocation form
+        # into info-service
+        # Description from text input stored as string to avoid malicious input
+
         displayname = request.form['displayname']
         owner = session['name']
         resource = request.form['resource']
@@ -602,7 +686,14 @@ def create_allocation():
 
 @app.route('/allocation/<name>', methods=['GET', 'POST'])
 @authenticated
+@allocation_validated
 def view_allocation(name):
+    """
+    Allocation Detailed Page View
+
+    :param name: name attribute of allocation
+    :return: Allocation detailed page with associated attributes
+    """
     vc3_client = get_vc3_client()
     allocations = vc3_client.listAllocations()
     resources = vc3_client.listResources()
@@ -635,6 +726,8 @@ def view_allocation(name):
         raise LookupError('allocation')
 
     elif request.method == 'POST':
+        # Iterate through allocations list in infoservice for allocation
+        # with the matching name argument and update with new form input
 
         for allocation in allocations:
             if allocation.name == name:
@@ -660,6 +753,7 @@ def view_allocation(name):
 
 @app.route('/allocation/edit/<name>', methods=['GET'])
 @authenticated
+@allocation_validated
 def edit_allocation(name):
     vc3_client = get_vc3_client()
     allocations = vc3_client.listAllocations()
@@ -684,6 +778,7 @@ def edit_allocation(name):
 @app.route('/resource', methods=['GET'])
 @authenticated
 def list_resources():
+    """ Route for HPC and Resources List View """
     vc3_client = get_vc3_client()
     resources = vc3_client.listResources()
 
@@ -693,6 +788,12 @@ def list_resources():
 @app.route('/resource/<name>', methods=['GET'])
 @authenticated
 def view_resource(name):
+    """
+    Route to view specific Resource profiles
+
+    :param name: name attribute of Resource to view
+    :return: Directs to detailed profile view of said Resource
+    """
     vc3_client = get_vc3_client()
     resources = vc3_client.listResources()
 
@@ -719,6 +820,7 @@ def view_resource(name):
 @app.route('/request', methods=['GET'])
 @authenticated
 def list_requests():
+    """ List View of Virtual Clusters """
     vc3_client = get_vc3_client()
     vc3_requests = vc3_client.listRequests()
     nodesets = vc3_client.listNodesets()
@@ -731,6 +833,11 @@ def list_requests():
 @app.route('/request/new', methods=['GET', 'POST'])
 @authenticated
 def create_request():
+    """
+    Form to launch new Virtual Cluster
+
+    Users must have both, a validated allocation and cluster template to launch
+    """
     vc3_client = get_vc3_client()
     if request.method == 'GET':
         allocations = vc3_client.listAllocations()
@@ -739,8 +846,11 @@ def create_request():
                                clusters=clusters)
 
     elif request.method == 'POST':
+        # Define and store new Virtual Clusters within infoservice
+        # Policies currently default to "static-balanced"
+        # Environments currently default to "condor-glidein-password-env1"
+        # Return redirects to Virtual Clusters List View after creation
         allocations = []
-        # environments = []
         inputname = request.form['name']
         owner = session['name']
         expiration = None
@@ -768,6 +878,13 @@ def create_request():
 @app.route('/request/<name>', methods=['GET', 'POST'])
 @authenticated
 def view_request(name):
+    """
+    Route for specific detailed page view of Virtual Clusters
+
+    :param name: name attribute of Virtual Cluster
+    :return: Directs to detailed page view of Virtual Clusters with
+    associated attributes
+    """
     vc3_client = get_vc3_client()
     vc3_requests = vc3_client.listRequests()
     nodesets = vc3_client.listNodesets()
@@ -790,6 +907,8 @@ def view_request(name):
         raise LookupError('virtual cluster')
 
     elif request.method == 'POST':
+        # Method to terminate running a specific Virtual Cluster
+        # based on name argument that is passed through
         for vc3_request in vc3_requests:
             if vc3_request.name == name:
                 requestname = vc3_request.name
