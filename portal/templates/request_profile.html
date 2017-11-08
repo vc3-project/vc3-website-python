@@ -45,6 +45,9 @@
             <form action="{{url_for('view_request', name=name)}}" method="POST">
               <button type="submit" class="btn btn-primary" data-submit="...Terminating Cluster" title="Terminate your Virtual Cluster">Terminate Cluster</button>
             </form>
+            <div class="">
+              <a href="{{url_for('edit_request', name=name)}}" class="btn btn-primary btn-sm">Update Virtual Cluster</a>
+            </div>
             {% elif state == "pending"%}
             <div class="progress" style="height:25px">
               <div class="progress-bar progress-bar-warning progress-bar-striped active" role="progressbar"
@@ -55,20 +58,26 @@
             <form action="{{url_for('view_request', name=name)}}" method="POST">
               <button type="submit" class="btn btn-primary" data-submit="...Terminating Cluster" title="Terminate your Virtual Cluster">Terminate Cluster</button>
             </form>
+            <div class="">
+              <a href="{{url_for('edit_request', name=name)}}" class="btn btn-primary btn-sm">Update Virtual Cluster</a>
+            </div>
             {% elif state == "new" and action == "new" %}
             <h4><span class="label label-info" style="color:white">New Cluster</span></h4>
             <form action="{{url_for('view_request', name=name)}}" method="POST">
               <button type="submit" class="btn btn-primary" data-submit="...Terminating Cluster" title="Terminate your Virtual Cluster">Terminate Cluster</button>
             </form>
+            <div class="">
+              <a href="{{url_for('edit_request', name=name)}}" class="btn btn-primary btn-sm">Update Virtual Cluster</a>
+            </div>
             {% else %}
             <h4><span class="label label-success" style="color:white">Successfully Running</span></h4>
             <form action="{{url_for('view_request', name=name)}}" method="POST">
               <button type="submit" class="btn btn-primary" data-submit="...Terminating Cluster" title="Terminate your Virtual Cluster">Terminate Cluster</button>
             </form>
-            {% endif %}
             <div class="">
               <a href="{{url_for('edit_request', name=name)}}" class="btn btn-primary btn-sm">Update Virtual Cluster</a>
             </div>
+            {% endif %}
           {% endif %}
 						<hr />
           </div>
