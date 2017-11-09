@@ -13,13 +13,15 @@
         <div class="card">
           <div class="header">
           	<h4 class="title">Project:<a href="{{url_for('view_project', name=name)}}"> {{ name }}</a></h4>
-            <div class="">
+            <div class="pull-left">
 							<h5>Description: {{description}}</h5>
 						</div>
             {% if session['name'] == owner %}
-            <div class="delete_entity">
-							<a href="{{url_for('delete_project', name=name)}}" class="btn btn-danger btn-sm">Delete Project</a>
-						</div>
+            <row class="container">
+              <div class="delete_entity pull-right">
+  							<a href="{{url_for('delete_project', name=name)}}" class="btn btn-danger btn-sm">Delete Project</a>
+  						</div>
+            </row>
             {% endif %}
 						<hr />
           </div>
@@ -99,19 +101,19 @@
             </div>
 
 				    {% if session['name'] == owner %}
-						<form role="form" action="{{url_for('add_member_to_project', name=name)}}" method="POST">
+						<form role="form" action="{{url_for('add_member_to_project', name=name)}}" method="POST" id="multiselect">
 							<fieldset>
 					       <label for="newuser">Add New Users</label>
-					       <select class="form-control" multiple data-live-search="true" name="newuser" tabindex="2" id="form-resource-list" required>
+					       <select class="form-control selectpicker" multiple data-live-search="true" name="newuser" tabindex="1" id="form-resource-list" required>
 					         <!-- <option value="" selected disabled>Please Select User</option> -->
 					         {% for user in users %}
                     {% if (user.name not in members) and (user.name != owner) %}
-					         <option value="{{user.name}}" data-tokens="{{user.first}} {{user.last}}" required>{{ user.first }} {{ user.last}}</option>
+					         <option value="{{user.name}}" data-tokens="{{user.first}} {{user.last}} {{user.organization}}" required>{{ user.first }} {{ user.last}} - <p id="organization">{{user.organization}}</p></option>
                     {% endif %}
 					         {% endfor %}
 					       </select>
 					     </fieldset>
-					     <button type="submit" name="btn" value="adduser" class="btn btn-primary" id="create-project" data-submit="...Sending">Add User</button>
+					     <button type="submit" name="btn" value="adduser" class="btn btn-primary" id="create-project" tabindex="2" data-submit="...Sending">Add User</button>
 						</form>
             {% endif %}
 
@@ -173,20 +175,20 @@
               </div>
             </div>
 
-						<form role="form" action="{{url_for('add_allocation_to_project', name=name)}}" method="POST">
+						<form role="form" action="{{url_for('add_allocation_to_project', name=name)}}" method="POST" id="multiselect">
 							<fieldset>
 								<label for="allocation">Select Allocation:</label>
-								<select class="form-control" multiple data-live-search="true" id="form-resource-list" name="allocation" tabindex="3" required>
+								<select class="form-control selectpicker" multiple data-live-search="true" id="form-resource-list" name="allocation" tabindex="1" required>
 									<!-- <option value="" selected disabled>Please Select Allocation</option> -->
 								<!-- Populate List of Allocations that has been defined by User -->
   								{% for allocation in allocations %}
   									{% if (allocation.owner == session['name'] and allocation.name not in project.allocations and allocation.state == "validated") %}
-  								<option value="{{allocation.name}}" data-tokens="{{allocation.displayname}}" required>{{ allocation.displayname }}</option>
+  								<option value="{{allocation.name}}" data-tokens="{{allocation.displayname}} {{allocation.resource}}" required>{{ allocation.displayname }} ({{allocation.resource}})</option>
   									{% endif %}
   								{% endfor %}
 								</select>
 							</fieldset>
-								<button type="submit" name="btn" value="addallocation" class="btn btn-primary" id="create-project" data-submit="...Sending">Add Allocation to Project</button>
+								<button type="submit" name="btn" value="addallocation" class="btn btn-primary" id="create-project" tabindex="2" data-submit="...Sending">Add Allocation to Project</button>
 						</form>
           </div><!-- /.content description -->
 
