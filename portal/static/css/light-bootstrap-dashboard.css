@@ -451,7 +451,10 @@ body > .navbar-collapse {
   min-height: 100%; }
   .main-panel > .content {
     padding: 30px 15px;
-    min-height: calc(100% - 123px); }
+    min-height: calc(100% - 123px);
+    min-width: 400px;
+    max-width: 70%;
+   }
   .main-panel > .footer {
     border-top: 1px solid #e7e7e7; }
   .main-panel .navbar {
@@ -2038,7 +2041,7 @@ body > .navbar-collapse {
     fieldset {
       border: medium none !important;
       margin: 0 0 10px;
-      min-width: 100%;
+      /*min-width: 100%;*/
       padding: 0;
       width: 100%;
     }
@@ -2166,12 +2169,19 @@ body > .navbar-collapse {
       font-weight: 400;
     }
 
-    fieldset {
+    #multiselect fieldset {
       border: medium none !important;
       margin: 0 0 10px;
-      min-width: 100%;
+      /*min-width: 100%;*/
       padding: 0;
-      width: 100%;
+      width: 30%;
+    }
+
+    #multiselect fieldset span{
+      color: #111;
+    }
+    #multiselect fieldset p{
+      color: #fcc500;
     }
 
     #new-allocation-form input[type="text"],
