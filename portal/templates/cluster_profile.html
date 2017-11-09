@@ -11,12 +11,19 @@
       <div class="col-md-12">
         <div class="card">
           <div class="header">
-          	<h4 class="title">Cluster: {{name}}</h4>
-            <h5>Description: {{description}}</h5>
+          	<h4 class="title row">Cluster: {{name}}</h4>
+            <div class="row">
+              <h5>Description: {{description}}</h5>
+            </div>
             {% if session['name'] == owner %}
-            <div class="">
-							<a href="{{url_for('edit_cluster', name=name)}}" class="btn btn-primary btn-sm">Update Cluster</a>
-						</div>
+            <div class="container row">
+              <div class="pull-left col-sm-12 col-md-6">
+							  <a href="{{url_for('edit_cluster', name=name)}}" class="btn btn-primary btn-sm">Update Cluster</a>
+						  </div>
+              <div class="delete_entity col-sm-12 col-md-6">
+  							<a href="{{url_for('delete_cluster', name=name)}}" class="btn btn-danger btn-sm">Delete Cluster</a>
+  						</div>
+            </div>
             {% endif %}
 						<hr />
           </div>
@@ -70,11 +77,6 @@
               </div>
 
   					</div>
-            {% if session['name'] == owner %}
-            <div class="delete_entity">
-							<a href="{{url_for('delete_cluster', name=name)}}" class="btn btn-danger btn-sm">Delete Cluster</a>
-						</div>
-            {% endif %}
           </div><!-- /.content description -->
 
         </div>
