@@ -120,7 +120,7 @@
                           {% for nodeset in nodesets %}
                             {% if nodeset.name == request.cluster %}
                             <div class="row">
-                              <small class="pull-right" id="node-status">Total Requested: <span class="label label-info" style="color:white">{{nodeset.node_number}}</span></small>
+                              <small class="pull-right" id="node-status">Total: <span class="label label-info" style="color:white">{{nodeset.node_number}}</span></small>
                             </div>
                             {% endif %}
                           {% endfor %}
@@ -227,7 +227,7 @@
                           {% for nodeset in nodesets %}
                             {% if nodeset.name == request.cluster %}
                             <div class="row">
-                              <small class="pull-right" id="node-status">Total Requested: <span class="label label-info" style="color:white">{{nodeset.node_number}}</span></small>
+                              <small class="pull-right" id="node-status">Total: <span class="label label-info" style="color:white">{{nodeset.node_number}}</span></small>
                             </div>
                             {% endif %}
                           {% endfor %}

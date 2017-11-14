@@ -583,3 +583,45 @@ function autoSelect(a,b) {
 // });
 // }
 // }); //// End of Wait till page is loaded
+
+
+// Character Count Function
+
+$(function(){
+$("#form-textarea").characterCounter({
+  exceeded: false,
+  renderTotal: false,
+  increaseCounting: false,
+
+  // characters limit
+  limit: 144,
+
+  // allow one or more counters to be specified by a jQuery selector
+  counterSelector: false,
+
+  // the element you wish to wrap your counter in.
+  counterWrapper: 'span',
+
+  // the CSS class to apply to your counter.
+  counterCssClass: 'help-block',
+
+  // the format of your counter text where '%1' will be replaced with the
+  // remaining character count.
+  counterFormat: 'Characters Remaining: %1',
+
+  // the CSS class to apply when your limit has been exceeded.
+  counterExceededCssClass: 'exceeded',
+
+  // this function is called when the limit is breached
+  onExceed: function(count) {},
+
+  // this function is called when the limit, having previously been exceeded
+  // is now deceeded
+  onDeceed: function(count) {},
+
+  // key value pairs of custom options to be added to the counter such as class
+  // data attributes etc.
+  customFields: {}
+
+  });
+});
