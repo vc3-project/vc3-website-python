@@ -57,11 +57,13 @@
         <textarea
           placeholder="Brief 144 Character Description..."
           name="description"
+          id="form-textarea"
           tabindex="4"
           autofocus
           maxlength="144"
           value="{{request.description}}"
           ></textarea>
+        <span class="help-block exceeded"></span>
       </fieldset>
       <fieldset>
         <button type="submit" id="create-project" tabindex="5" data-submit="...Sending" style="margin-top:25px">Launch Cluster</button>

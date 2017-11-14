@@ -565,10 +565,15 @@ def create_cluster():
         description_input = request.form['description']
         description = str(description_input)
 
-        nodeset = vc3_client.defineNodeset(name=name, owner=owner,
-                                           node_number=node_number, app_type=app_type,
-                                           app_role=app_role, environment=environment)
-        vc3_client.storeNodeset(nodeset)
+        try:
+            nodeset = vc3_client.defineNodeset(name=name, owner=owner,
+                                               node_number=node_number, app_type=app_type,
+                                               app_role=app_role, environment=environment)
+            vc3_client.storeNodeset(nodeset)
+        except:
+            flash('A cluster template with that name already exists.')
+            return redirect(url_for('create_cluster'))
+
         newcluster = vc3_client.defineCluster(
             name=name, owner=owner, nodesets=[], description=description)
         vc3_client.storeCluster(newcluster)
