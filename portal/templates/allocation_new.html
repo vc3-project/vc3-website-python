@@ -3,6 +3,8 @@
 {%block title%}Register Allocations{%endblock%}
 
 {%block body%}
+{%include 'messages.html'%}
+
 <div class="col-md-8 col-sm-12">
 <section id="new_project">
   <div class="container new-project">
@@ -27,7 +29,7 @@
           tabindex="1"
           autofocus
           required
-          value="{{request.displayname}}"
+          value="{{displayname}}"
           >
       </fieldset>
       <fieldset>
@@ -47,11 +49,11 @@
           type="text"
           tabindex="3"
           autofocus
-          value="{{request.accountname}}"
+          value="{{accountname}}"
           required>
       </fieldset>
       <fieldset>
-        <label for="description">Description</label>
+        <label for="description">Description (optional)</label>
         <textarea
           placeholder="Brief 144 Character Description..."
           name="description"
@@ -60,7 +62,7 @@
           autofocus
           maxlength="144"
           value="{{request.description}}"
-          ></textarea>
+          >{{description}}</textarea>
         <span class="help-block exceeded"></span>
       </fieldset>
       <fieldset>
@@ -70,4 +72,5 @@
   </div> <!-- project container -->
 </section>
 </div>
+
 {%endblock%}
