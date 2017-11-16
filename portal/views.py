@@ -305,9 +305,9 @@ def authcallback():
 def create_project():
     """ Creating New Project Form """
     vc3_client = get_vc3_client()
+    users = vc3_client.listUsers()
+    allocations = vc3_client.listAllocations()
     if request.method == 'GET':
-        users = vc3_client.listUsers()
-        allocations = vc3_client.listAllocations()
         owner = session['name']
 
         return render_template('project_new.html', owner=owner,
@@ -327,9 +327,18 @@ def create_project():
         else:
             description = request.form['description']
 
-        newproject = vc3_client.defineProject(name=name, owner=owner,
-                                              members=members, description=description)
-        vc3_client.storeProject(newproject)
+        try:
+            newproject = vc3_client.defineProject(name=name, owner=owner,
+                                                  members=members,
+                                                  description=description)
+            vc3_client.storeProject(newproject)
+        except:
+            description = request.form['description']
+            flash('You have already created a project with that name, please '
+                  'choose another project name', 'warning')
+            return render_template('project_new.html', owner=owner,
+                                   users=users, allocations=allocations,
+                                   description=description)
 
         for selected_members in request.form.getlist('members'):
             vc3_client.addUserToProject(project=name, user=selected_members)
