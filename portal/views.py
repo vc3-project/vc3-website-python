@@ -772,11 +772,19 @@ def create_allocation():
         description_input = request.form['description']
         description = str(description_input)
         # url = request.form['url']
-
-        newallocation = vc3_client.defineAllocation(
-            name=name, owner=owner, resource=resource, accountname=accountname,
-            displayname=displayname, description=description)
-        vc3_client.storeAllocation(newallocation)
+        try:
+            newallocation = vc3_client.defineAllocation(
+                name=name, owner=owner, resource=resource, accountname=accountname,
+                displayname=displayname, description=description)
+            vc3_client.storeAllocation(newallocation)
+        except:
+            displayname = request.form['displayname']
+            accountname = request.form['accountname']
+            description_input = request.form['description']
+            description = str(description_input)
+            flash('You have already registered an allocation on that resource.', 'warning')
+            return render_template('allocation_new.html', displayname=displayname,
+                                   accountname=accountname, description=description)
 
         flash('Configuring your allocation, when complete, please view your '
               'allocation to complete the setup.', 'warning')
