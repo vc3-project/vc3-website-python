@@ -571,8 +571,16 @@ def create_cluster():
                                                app_role=app_role, environment=environment)
             vc3_client.storeNodeset(nodeset)
         except:
-            flash('A cluster template with that name already exists.')
-            return redirect(url_for('create_cluster'))
+            node_number = request.form['node_number']
+            app_type = request.form['app_type']
+            description_input = request.form['description']
+            description = str(description_input)
+            framework = app_type
+            flash('A cluster template with that name already exists.', 'warning')
+            return render_template('cluster_new.html', clusters=clusters,
+                                   projects=projects, nodesets=nodesets,
+                                   description=description, node_number=node_number,
+                                   framework=framework)
 
         newcluster = vc3_client.defineCluster(
             name=name, owner=owner, nodesets=[], description=description)

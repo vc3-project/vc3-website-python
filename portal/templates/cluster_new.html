@@ -3,6 +3,7 @@
 {%block title%}New Cluster Templates{%endblock%}
 
 {%block body%}
+{%include 'messages.html'%}
 
 <div class="col-md-8 col-sm-12">
 <section id="new_project">
@@ -32,7 +33,7 @@
       </fieldset>
       <fieldset>
         <label for="app_type">Cluster Framework <span id="asterik">*</span></label>
-        <select class="form-control" name="app_type" tabindex="2" id="form-resource-list" required>
+        <select class="form-control" name="app_type" tabindex="2" id="form-framework-list" required>
           <option value="" selected disabled>Please Select Framework</option>
           <option value="htcondor">HTCondor</option>
           <option value="workqueue">WorkQueue</option>
@@ -57,7 +58,7 @@
           tabindex="3"
           required
           autofocus
-          value="{{request.node_number}}">
+          value="{{node_number}}">
       </fieldset>
       <fieldset>
         <label for="description">Description (optional)</label>
@@ -69,14 +70,30 @@
           autofocus
           maxlength="144"
           value="{{request.description}}"
-          ></textarea>
+          >{{description}}</textarea>
         <span class="help-block exceeded"></span>
       </fieldset>
       <fieldset>
-        <button type="submit" id="create-project" tabindex="5" data-submit="...Sending">Define Template</button>
+        <button type="submit" id="create-project" tabindex="5" data-submit="...Sending">Define Cluster Template</button>
+      </fieldset>
+      <fieldset>
+        <a href="{{url_for('list_clusters')}}" class="btn btn-primary btn-sm" title="Cancel">Cancel </a>
       </fieldset>
     </form>
   </div> <!-- project container -->
 </section>
 </div>
+
+
+<script>
+
+
+window.onload = autoSelect('form-framework-list', '{{framework}}');
+
+function autoSelect(a,b) {
+  var selector = document.getElementById(a);
+  selector.value = b
+}
+
+</script>
 {%endblock%}
