@@ -1,10 +1,9 @@
 {%extends "loginbase.html"%}
 
-{%block title%}
-Create a new project
-{%endblock%}
+{%block title%}Create a new project{%endblock%}
 
 {%block body%}
+{%include 'messages.html'%}
 
 <div class="col-md-8 col-sm-12">
   <section id="new_project">
@@ -61,11 +60,14 @@ Create a new project
             autofocus
             maxlength="144"
             value="{{request.description}}"
-            ></textarea>
+            >{{description}}</textarea>
           <span class="help-block exceeded"></span>
         </fieldset>
         <fieldset>
           <button type="submit" tabindex="5" id="create-project" data-submit="...Sending">Create Project</button>
+        </fieldset>
+        <fieldset>
+          <a href="{{url_for('list_projects')}}" class="btn btn-primary btn-sm" tabindex="6" title="Cancel">Cancel</a>
         </fieldset>
 
       </form>
