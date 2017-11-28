@@ -753,9 +753,14 @@ def list_allocations():
     resources = vc3_client.listResources()
     projects = vc3_client.listProjects()
     users = vc3_client.listUsers()
+    allocationList = []
+
+    for allocation in allocations:
+        allocationList.append(str(allocation.name))
 
     return render_template('allocation.html', allocations=allocations,
-                           resources=resources, users=users, projects=projects)
+                           resources=resources, users=users, projects=projects,
+                           allocationlist=allocationList)
 
 
 @app.route('/allocation/new', methods=['GET', 'POST'])

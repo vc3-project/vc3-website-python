@@ -53,21 +53,18 @@
       										<td id="allocationstates">
                             <font color="green">
                               <i class="fa fa-check-circle-o" style="color:green"></i>
-                              {{ allocation.state }}
                             </font>
                           </td>
                             {% elif allocation.state == "terminated" %}
                           <td id="allocationstates">
                             <font color="red">
                               <i class="fa fa-exclamation-circle" style="color:red"></i>
-                              {{ allocation.state }}
                             </font>
                           </td>
                             {% else %}
                           <td id="allocationstates">
                             <font color="orange">
                               <i class="fa fa-spinner fa-spin" style="color:orange"></i>
-                              {{ allocation.state }}
                             </font>
                           </td>
                             {% endif %}
@@ -92,11 +89,15 @@
     										{% endfor %}
     									</tbody>
     								</table>
-                  </div>
-  							</div>
+                  </div><!-- /.table-responsive -->
+  							</div><!-- /.panel filterable -->
 
-  						</div>
-  					</div>
+  						</div><!-- /.card-block -->
+  					</div><!-- /.card -->
+
+            <div id="ajaxTesting">
+              <h5 id="test"></h5>
+            </div>
 
           </div><!-- /.content description -->
 
@@ -106,5 +107,42 @@
 
   </div>
 </div>
+
+<script>
+
+var name = '{{allocationlist[-1]|safe}}';
+
+window.onload = function(){
+  get_states(name);
+  setInterval( function(){
+    get_states(name);
+  }, 5000);
+}
+
+function get_states(name){
+  $.ajax({
+    url: "/rest/allocation/" + name,
+    type: "get",
+    dataType: 'json',
+    success: function(data){
+      $('#allocationstates').html(data.state);
+      $('#test').html(data.state);
+      if($('#test').length != 0){
+        $('#test').css('color', 'red');
+      }
+    },
+    error: function(xhr){
+      //Do Something to handle error
+    }
+  });
+}
+
+// $(document).ajaxComplete(function(){
+//   if($('#test').length != 0){
+//     $('#test').css('color', 'red');
+//   }
+// });
+
+</script>
 
 {%endblock%}
