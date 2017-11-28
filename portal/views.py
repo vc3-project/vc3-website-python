@@ -568,7 +568,6 @@ def create_cluster():
         node_number = request.form['node_number']
         app_type = request.form['app_type']
         app_role = "worker-nodes"
-        environment = "condor-glidein-password-env1"
         translatename = "".join(inputname.split())
         name = translatename.lower()
         description_input = request.form['description']
@@ -577,7 +576,7 @@ def create_cluster():
         try:
             nodeset = vc3_client.defineNodeset(name=name, owner=owner,
                                                node_number=node_number, app_type=app_type,
-                                               app_role=app_role, environment=environment)
+                                               app_role=app_role, environment=None)
             vc3_client.storeNodeset(nodeset)
         except:
             node_number = request.form['node_number']
@@ -687,7 +686,7 @@ def edit_cluster(name):
 
     elif request.method == 'POST':
         # Grab new framework from form
-        app_type = request.form['app_type']
+        # app_type = request.form['app_type']
 
         cluster_name = None
         # Call cluster and nodeset by name
@@ -703,14 +702,14 @@ def edit_cluster(name):
             # could not find cluster, punt
             LookupError('cluster')
 
-        if app_type == "htcondor":
-            nodeset.environment = "condor-glidein-password-env1"
-        elif app_type == "workqueue":
-            nodeset.environment = []
-        else:
-            app.logger.error("Got unsupported framework when viewing " +
-                             "cluster template: {0}".format(app_type))
-            raise ValueError('app_type not a recognized framework')
+        # if app_type == "htcondor":
+        #     nodeset.environment = "condor-glidein-password-env1"
+        # elif app_type == "workqueue":
+        #     nodeset.environment = []
+        # else:
+        #     app.logger.error("Got unsupported framework when viewing " +
+        #                      "cluster template: {0}".format(app_type))
+        #     raise ValueError('app_type not a recognized framework')
         # Store nodeset and cluster with new attributes into infoservice
         vc3_client.storeNodeset(nodeset)
         vc3_client.storeCluster(cluster)
@@ -1023,7 +1022,7 @@ def create_request():
         policy = "static-balanced"
         translatename = "".join(inputname.split())
         vc3requestname = translatename.lower()
-        environments = ["condor-glidein-password-env1"]
+        environments = []
         description = request.form['description']
         for selected_allocations in request.form.getlist('allocation'):
             allocations.append(selected_allocations)
@@ -1031,9 +1030,9 @@ def create_request():
         newrequest = vc3_client.defineRequest(name=vc3requestname,
                                               owner=owner, cluster=cluster,
                                               allocations=allocations,
-                                              environments=environments,
                                               policy=policy,
                                               expiration=expiration,
+                                              environments=environments,
                                               description=description)
         vc3_client.storeRequest(newrequest)
 
