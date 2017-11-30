@@ -153,6 +153,7 @@ def show_profile_page():
 
     if request.method == 'GET':
         profile = None
+        sshpubstring = None
 
         for user in userlist:
             if session['primary_identity'] == user.identity_id:
@@ -160,13 +161,15 @@ def show_profile_page():
 
         if profile:
 
-            session['name'] = profile.identity_id
+            session['name'] = profile.name
             session['displayname'] = profile.displayname
             session['first'] = profile.first
             session['last'] = profile.last
             session['email'] = profile.email
             session['institution'] = profile.organization
             session['primary_identity'] = profile.identity_id
+            if profile.sshpubstring is not None:
+                sshpubstring = profile.sshpubstring
         else:
             if session['primary_identity'] not in ["c887eb90-d274-11e5-bf28-779c8998e810", "05e05adf-e9d4-487f-8771-b6b8a25e84d3", "c4686d14-d274-11e5-b866-0febeb7fd79e", "be58c8e2-fc13-11e5-82f7-f7141a8b0c16", "c456b77c-d274-11e5-b82c-23a245a48997", "f1f26455-cbd5-4933-986b-47c57ee20987", "aebe29b8-d274-11e5-ba4b-ffec0df955f2", "c444a294-d274-11e5-b7f1-e3782ed16687", "9c1c1643-8726-414f-85dc-aca266099304"]:
                 next
@@ -177,29 +180,40 @@ def show_profile_page():
         if request.args.get('next'):
             session['next'] = get_safe_redirect()
 
-        return render_template('profile.html', userlist=userlist)
+        return render_template('profile.html', userlist=userlist, profile=profile)
     elif request.method == 'POST':
         first = session['first'] = request.form['first']
         last = session['last'] = request.form['last']
         email = session['email'] = request.form['email']
         organization = session['institution'] = request.form['institution']
         identity_id = session['primary_identity']
-        name = session['primary_identity']
-        displayname = session['displayname'] = request.form['displayname']
+        # UNIX naming convention: no whitespace, lowercase, limit length to 14
+        inputname = session['name'] = request.form['name']
+        translatename = "".join(inputname.split())
+        name = translatename.lower()
 
-        for user in userlist:
-            if user.name == name:
-                vc3_client.deleteUser(username=name)
+        displayname = session['displayname'] = first + ' ' + last
+        sshpubstring_input = request.form['sshpubstring']
+        sshpubstring = str(sshpubstring_input)
 
-        newuser = vc3_client.defineUser(identity_id=identity_id,
-                                        name=name,
-                                        first=first,
-                                        last=last,
-                                        email=email,
-                                        organization=organization,
-                                        displayname=displayname)
+        # for user in userlist:
+        #     if user.name == name:
+        #         vc3_client.deleteUser(username=name)
+        try:
+            newuser = vc3_client.defineUser(identity_id=identity_id,
+                                            name=name,
+                                            first=first,
+                                            last=last,
+                                            email=email,
+                                            organization=organization,
+                                            displayname=displayname,
+                                            sshpubstring=sshpubstring)
 
-        vc3_client.storeUser(newuser)
+            vc3_client.storeUser(newuser)
+        except:
+            flash('That username has already been chosen please choose another'
+                  ' username', 'warning')
+            return render_template('profile.html')
 
         flash('Thank you. Your profile has been successfully updated. '
               'You may now register an allocation.', 'success')
@@ -286,7 +300,7 @@ def authcallback():
             session['email'] = profile.email
             session['institution'] = profile.organization
             session['primary_identity'] = profile.identity_id
-            session['displayname'] = profile.displayname
+            # session['displayname'] = profile.displayname
         else:
             return redirect(url_for('show_profile_page',
                                     next=url_for('show_profile_page')))
@@ -1006,8 +1020,9 @@ def create_request():
     if request.method == 'GET':
         allocations = vc3_client.listAllocations()
         clusters = vc3_client.listClusters()
+        projects = vc3_client.listProjects()
         return render_template('request_new.html', allocations=allocations,
-                               clusters=clusters)
+                               clusters=clusters, projects=projects)
 
     elif request.method == 'POST':
         # Define and store new Virtual Clusters within infoservice
@@ -1019,6 +1034,7 @@ def create_request():
         owner = session['name']
         expiration = None
         cluster = request.form['cluster']
+        project = request.form['project']
         policy = "static-balanced"
         translatename = "".join(inputname.split())
         vc3requestname = translatename.lower()
@@ -1029,6 +1045,7 @@ def create_request():
 
         newrequest = vc3_client.defineRequest(name=vc3requestname,
                                               owner=owner, cluster=cluster,
+                                              project=project,
                                               allocations=allocations,
                                               policy=policy,
                                               expiration=expiration,
@@ -1075,12 +1092,13 @@ def view_request(name):
             state = vc3_request.state
             vc3allocations = vc3_request.allocations
             description = vc3_request.description
+            project = vc3_request.project
 
             return render_template('request_profile.html', name=requestname,
                                    owner=owner, requests=vc3_requests,
                                    clusters=clusters, nodesets=nodesets,
                                    action=action, state=state, users=users,
-                                   vc3allocations=vc3allocations,
+                                   vc3allocations=vc3allocations, project=project,
                                    allocations=allocations, description=description)
         app.logger.error("Could not find VC when viewing: {0}".format(name))
         raise LookupError('virtual cluster')

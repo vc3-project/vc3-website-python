@@ -42,8 +42,19 @@
         </select>
       </fieldset>
       <fieldset>
+        <label for="project">Project <span id="asterik">*</span></label>
+        <select class="form-control" name="project" tabindex="3" id="form-resource-list" required>
+          <option value="" selected disabled>Please Select Project</option>
+          {% for project in projects %}
+            {% if project.owner == session['name'] %}
+          <option value="{{project.name}}">{{ project.name }}</option>
+            {% endif %}
+          {% endfor %}
+        </select>
+      </fieldset>
+      <fieldset>
         <label for="allocation">Allocations (ctrl/cmd to select multiple) <span id="asterik">*</span></label>
-        <select class="form-control" multiple name="allocation" tabindex="3" id="allocation" required>
+        <select class="form-control" multiple name="allocation" tabindex="4" id="allocation" required>
           <!-- also disabled ".selectpicker" above <option disabled>Please Select Allocation</option> -->
           {% for allocation in allocations %}
             {% if allocation.owner == session['name'] and allocation.state == "validated" %}
@@ -58,7 +69,7 @@
           placeholder="Brief 144 Character Description..."
           name="description"
           id="form-textarea"
-          tabindex="4"
+          tabindex="5"
           autofocus
           maxlength="144"
           value="{{request.description}}"
@@ -66,10 +77,10 @@
         <span class="help-block exceeded"></span>
       </fieldset>
       <fieldset>
-        <button type="submit" id="create-project" tabindex="5" data-submit="...Sending" style="margin-top:25px">Launch Cluster</button>
+        <button type="submit" id="create-project" tabindex="6" data-submit="...Sending" style="margin-top:25px">Launch Cluster</button>
       </fieldset>
       <fieldset>
-        <a href="{{url_for('list_requests')}}" class="btn btn-primary btn-sm" tabindex="6" title="Cancel">Cancel </a>
+        <a href="{{url_for('list_requests')}}" class="btn btn-primary btn-sm" tabindex="7" title="Cancel">Cancel </a>
       </fieldset>
     </form>
   </div> <!-- project container -->
