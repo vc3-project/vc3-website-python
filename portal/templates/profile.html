@@ -162,7 +162,7 @@
         								class="form-control"
         								required="required"
         								tabindex="3"
-        								value="{{profile.last}}"
+        								value="{{session['last']}}"
         							>
         						</div>
 
@@ -176,7 +176,7 @@
         								placeholder="me@example.com"
         								required="required"
         								tabindex="4"
-        								value="{{profile.email}}"
+        								value="{{session['email']}}"
         							>
         						</div>
 
@@ -190,7 +190,7 @@
                         placeholder="Institution Name"
                         required="required"
                         tabindex="5"
-                        value="{{profile.organization}}"
+                        value="{{session['institution']}}"
                       >
                     </div>
 
