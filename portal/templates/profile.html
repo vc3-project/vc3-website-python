@@ -15,8 +15,10 @@
           {% if session['primary_identity'] not in ["c887eb90-d274-11e5-bf28-779c8998e810", "05e05adf-e9d4-487f-8771-b6b8a25e84d3", "c4686d14-d274-11e5-b866-0febeb7fd79e", "be58c8e2-fc13-11e5-82f7-f7141a8b0c16", "c456b77c-d274-11e5-b82c-23a245a48997", "f1f26455-cbd5-4933-986b-47c57ee20987", "aebe29b8-d274-11e5-ba4b-ffec0df955f2", "c444a294-d274-11e5-b7f1-e3782ed16687", "9c1c1643-8726-414f-85dc-aca266099304"] %}
               <h2 class="title">Thanks for your interest in VC3!</h2>
           {% else %}
-            <h2 class="title">Profile: <span style="color:white">{{session['displayname']}} - {{session['name']}}</span></h2>
-            <label><span id="asterik">*</span> <small style="color:white">= indicates required</small></label>
+            <h2 class="title">
+              Profile: <span style="color:white">{{profile.displayname}}</span>
+            </h2>
+            <label><span id="asterik">*</span> <small style="color:white">= indicates required field</small></label>
           {% endif %}
 						<hr/>
           </div>
@@ -29,21 +31,99 @@
                   to get more information or access to the system.</h5>
 
               {% elif session.get('is_authenticated') %}
+
               <div class="row">
-        				<!-- <div class="col-sm-6 col-md-6 col-lg-3">
+        				<div class="col-sm-6 col-md-6 col-lg-3">
         					<div class="thumbnail">
         						<img src="https://image.ibb.co/hEdfV5/blank_profile_picture_973461_960_720.png" alt="">
         						<div class="caption description">
-        							<h5>Name:</h5><p>{{session['first']}} {{session['last']}}</p>
-        							<h5>Institution:</h5> <p>{{session['institution']}}</p>
-        							<h5>Email: <a href="mailto:{{session['email']}}">{{session['email']}}</a></h5>
+                      <h5 style="color:#ffc500">VC3 Username: <span style="color:white">{{profile.name}}</span></h5>
+        							<h5 style="color:#ffc500">Name: <span style="color:white">{{profile.displayname}}</span></h5>
+        							<h5 style="color:#ffc500">Institution: <span style="color:white">{{profile.organization}}</span></h5>
+        							<h5 style="color:#ffc500">Email: <a href="mailto:{{session['email']}}">{{profile.email}}</a></h5>
         						</div>
         					</div>
-        				</div> -->
-
+        				</div>
         				<div class="col-md-6">
-        					<form role="form" action="{{url_for('show_profile_page')}}" method="POST">
 
+                {% if profile.name %}
+                  <form role="form" action="{{url_for('edit_profile', name=name)}}" method="POST">
+
+                    <div class="form-group">
+                      <label for="first">First Name <span id="asterik">*</span></label>
+                      <input
+                        type="text"
+                        id="first"
+                        name="first"
+                        placeholder="First Name"
+                        class="form-control"
+                        required="required"
+                        tabindex="1"
+                        value="{{profile.first}}"
+                      >
+                    </div>
+
+                    <div class="form-group">
+                      <label for="last">Last Name <span id="asterik">*</span></label>
+                      <input
+                        type="text"
+                        id="last"
+                        name="last"
+                        placeholder="Last Name"
+                        class="form-control"
+                        required="required"
+                        tabindex="2"
+                        value="{{profile.last}}"
+                      >
+                    </div>
+
+                    <div class="form-group">
+                      <label for="email">Email <span id="asterik">*</span></label>
+                      <input
+                        type="email"
+                        id="email"
+                        name="email"
+                        class="form-control"
+                        placeholder="me@example.com"
+                        required="required"
+                        tabindex="3"
+                        value="{{profile.email}}"
+                      >
+                    </div>
+
+                    <div class="form-group">
+                      <label for="institution">Institution <span id="asterik">*</span></label>
+                      <input
+                        type="text"
+                        class="form-control"
+                        id="institution"
+                        name="institution"
+                        placeholder="Institution Name"
+                        required="required"
+                        tabindex="4"
+                        value="{{profile.organization}}"
+                      >
+                    </div>
+
+                    <div class="form-group">
+                      <label for="sshpubstring">SSH Public Key <span id="asterik">*</span></label>
+                      <textarea
+                        placeholder="Please enter your SSH Public Key here..."
+                        name="sshpubstring"
+                        required
+                        tabindex="5"
+                        autofocus
+                        value=""
+                        >{{profile.sshpubstring}}</textarea>
+                    </div>
+
+                    <div class="form-group">
+                      <button type="submit" tabindex="6" class="btn btn-primary">Update Profile</button>
+                    </div>
+                  </form>
+
+                {% else %}
+                  <form role="form" action="{{url_for('show_profile_page')}}" method="POST">
                     <div class="form-group">
         							<label for="name">User Name <span id="asterik">*</span></label>
         							<input
@@ -68,7 +148,7 @@
         								class="form-control"
         								required="required"
         								tabindex="2"
-        								value="{{session['first']}}"
+        								value="{{profile.first}}"
         							>
         					  </div>
 
@@ -101,7 +181,7 @@
         						</div>
 
                     <div class="form-group">
-                      <label for="institution">Institution/Department <span id="asterik">*</span></label>
+                      <label for="institution">Institution <span id="asterik">*</span></label>
                       <input
                         type="text"
                         class="form-control"
@@ -127,114 +207,15 @@
                     </div>
 
         					  <div class="form-group">
-                      <button type="submit" tabindex="7" class="btn btn-primary">Update Profile</button>
+                      <button type="submit" tabindex="7" class="btn btn-primary">Save Profile</button>
         					  </div>
-        				  </form>
+                  </form>
+                {% endif %}
         				</div>
         			</div> <!-- row -->
-
-              {% else %}
-
-              <div class="row">
-
-                <div class="col-md-6">
-                  <form role="form" action="{{url_for('show_profile_page')}}" method="POST">
-
-                    <div class="form-group">
-        							<label for="name">User Name <span id="asterik">*</span></label>
-        							<input
-        								type="text"
-        								id="name"
-        								name="name"
-                        placeholder="Choose User Name..."
-        								class="form-control tour-step tour-step-three"
-        								required="required"
-                        maxlength="14"
-        								tabindex="1"
-        								value="{{profile.name}}"
-        							>
-        					  </div>
-
-                    <div class="form-group">
-        							<label for="first">First Name <span id="asterik">*</span></label>
-        							<input
-        								type="text"
-        								id="first"
-        								name="first"
-                        placeholder="First Name"
-        								class="form-control"
-        								required="required"
-        								tabindex="2"
-        								value="{{session['first']}}"
-        							>
-        					  </div>
-
-                    <div class="form-group">
-        							<label for="last">Last Name <span id="asterik">*</span></label>
-        							<input
-        								type="text"
-        								id="last"
-        								name="last"
-                        placeholder="Last Name"
-        								class="form-control"
-        								required="required"
-        								tabindex="3"
-        								value="{{session['last']}}"
-        							>
-        						</div>
-
-        						<div class="form-group">
-        							<label for="email">Email <span id="asterik">*</span></label>
-        							<input
-        								type="email"
-        								id="email"
-        								name="email"
-        								class="form-control"
-        								placeholder="me@example.com"
-        								required="required"
-        								tabindex="4"
-        								value="{{session['email']}}"
-        							>
-        						</div>
-
-                    <div class="form-group">
-                      <label for="institution">Institution/Department <span id="asterik">*</span></label>
-                      <input
-                        type="text"
-                        class="form-control"
-                        id="institution"
-                        name="institution"
-                        placeholder="Institution Name"
-                        required="required"
-                        tabindex="5"
-                        value="{{session['institution']}}"
-                      >
-                    </div>
-
-                    <div class="form-group">
-                      <label for="sshpubstring">SSH Public Key <span id="asterik">*</span></label>
-                      <textarea
-                        placeholder="Please enter your SSH Public Key here..."
-                        name="sshpubstring"
-                        required
-                        tabindex="6"
-                        autofocus
-                        value=""
-                        >{{profile.sshpubstring}}</textarea>
-                    </div>
-
-                    <div class="form-group">
-                      <button type="submit" class="btn btn-primary" tabindex="7" title="Update Profile">Update</button>
-                    </div>
-                  </form>
-                </div>
-
-              </div> <!-- row -->
               {% endif %}
-  					  </div>
             </div><!-- /.card-block -->
-
-          </div>
+          </div><!-- /.card description-->
         </div>
   		</div>
     </div>
