@@ -41,9 +41,10 @@
           {% endfor %}
         </select>
       </fieldset>
+
       <fieldset>
         <label for="project">Project <span id="asterik">*</span></label>
-        <select class="form-control" name="project" tabindex="3" id="form-resource-list" required>
+        <select class="form-control" name="project" tabindex="3" id="project" required>
           <option value="" selected disabled>Please Select Project</option>
           {% for project in projects %}
             {% if project.owner == session['name'] %}
@@ -52,6 +53,7 @@
           {% endfor %}
         </select>
       </fieldset>
+
       <fieldset>
         <label for="allocation">Allocations (ctrl/cmd to select multiple) <span id="asterik">*</span></label>
         <select class="form-control" multiple name="allocation" tabindex="4" id="allocation" required>
@@ -61,8 +63,10 @@
           <option value="{{allocation.name}}">{{ allocation.displayname }}</option>
             {% endif %}
           {% endfor %}
+
         </select>
       </fieldset>
+
       <fieldset>
         <label for="description">Description</label>
         <textarea
@@ -86,5 +90,29 @@
   </div> <!-- project container -->
 </section>
 </div>
+
+<script>
+
+populateSelect();
+
+$(function() {
+
+      $('#project').change(function(){
+        populateSelect();
+    });
+
+});
+
+
+function populateSelect(){
+    project=$('#project').val();
+    $('#allocation').html('');
+
+       eval(project).forEach(function(t) {
+            $('#allocation').append('<option>'+t+'</option>');
+        });
+    }
+
+</script>
 
 {%endblock%}

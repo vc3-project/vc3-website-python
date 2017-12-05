@@ -186,10 +186,16 @@
                   {% for nodeset in nodesets %}
                     {% if nodeset.name == request.cluster %}
                       {% if nodeset.app_type == "htcondor" %}
-                        <option>condor-dev.virtualclusters.org</option>
+                        <div>condor-dev.virtualclusters.org</div>
+                        {% if request.headnode['ip'] == None %}
+                        <div>IP: Not available yet</div>
+                        {% else %}
+                        <div>IP: {{request.headnode['ip']}}</div>
+                        {% endif %}
                       {% elif nodeset.app_type == "workqueue" %}
-                        <option>condor-dev.virtualclusters.org</option>
-                        <option>WQ Project Name: {{ request.name }}</option>
+                        <div>condor-dev.virtualclusters.org</div>
+                        <div>WQ Project Name: {{ request.name }}</div>
+
                       {% endif %}
                     {% endif %}
                   {% endfor %}

@@ -94,7 +94,7 @@
                           <div>{{request.cluster}}</div>
                         </td>
 
-                        {% if request.statusraw['VC3-static'] == {} %}
+                        {% if (request.statusraw['VC3-static'] == {}) %}
                           <td>
                             <small class="label label-warning">Status currently pending</small>
                           </td>
@@ -108,11 +108,19 @@
                             {% for k, v in value.iteritems() %}
                               {% if k == "idle" %}
                               <div class="row">
-                                <small class="pull-right" id="node-status">queued: <span class="label label-warning" style="color:white">{{v}}</span></small>
+                                <small class="pull-right" id="node-status">queued:
+                                  <span class="label label-warning" style="color:white">
+                                    {{v}}
+                                  </span>
+                                </small>
                               </div>
                               {% elif k == "running" %}
                               <div class="row">
-                                <small class="pull-right" id="node-status">{{ k }}: <span class="label label-success" style="color:white">{{v}}</span></small>
+                                <small class="pull-right" id="node-status">{{ k }}:
+                                  <span class="label label-success" style="color:white">
+                                    {{v}}
+                                  </span>
+                                </small>
                               </div>
                               {% endif %}
                             {% endfor %}
@@ -120,7 +128,12 @@
                           {% for nodeset in nodesets %}
                             {% if nodeset.name == request.cluster %}
                             <div class="row">
-                              <small class="pull-right" id="node-status">Total: <span class="label label-info" style="color:white">{{nodeset.node_number}}</span></small>
+                              <small class="pull-right" id="node-status">
+                                Prescribed:
+                                <span class="label label-info" style="color:white">
+                                  {{nodeset.node_number}}
+                                </span>
+                              </small>
                             </div>
                             {% endif %}
                           {% endfor %}
@@ -227,7 +240,7 @@
                           {% for nodeset in nodesets %}
                             {% if nodeset.name == request.cluster %}
                             <div class="row">
-                              <small class="pull-right" id="node-status">Total: <span class="label label-info" style="color:white">{{nodeset.node_number}}</span></small>
+                              <small class="pull-right" id="node-status">Prescribed: <span class="label label-info" style="color:white">{{nodeset.node_number}}</span></small>
                             </div>
                             {% endif %}
                           {% endfor %}
