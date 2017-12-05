@@ -154,6 +154,7 @@ def show_profile_page():
     if request.method == 'GET':
         profile = None
         sshpubstring = None
+        name = None
 
         for user in userlist:
             if session['primary_identity'] == user.identity_id:
@@ -161,7 +162,7 @@ def show_profile_page():
 
         if profile:
 
-            session['name'] = profile.name
+            name = session['name'] = profile.name
             session['displayname'] = profile.displayname
             session['first'] = profile.first
             session['last'] = profile.last
@@ -180,25 +181,22 @@ def show_profile_page():
         if request.args.get('next'):
             session['next'] = get_safe_redirect()
 
-        return render_template('profile.html', userlist=userlist, profile=profile)
+        return render_template('profile.html', userlist=userlist, profile=profile, name=name)
     elif request.method == 'POST':
-        first = session['first'] = request.form['first']
-        last = session['last'] = request.form['last']
-        email = session['email'] = request.form['email']
-        organization = session['institution'] = request.form['institution']
+        first = request.form['first']
+        last = request.form['last']
+        email = request.form['email']
+        organization = request.form['institution']
         identity_id = session['primary_identity']
-        # UNIX naming convention: no whitespace, lowercase, limit length to 14
-        inputname = session['name'] = request.form['name']
-        translatename = "".join(inputname.split())
-        name = translatename.lower()
-
-        displayname = session['displayname'] = first + ' ' + last
+        displayname = first + ' ' + last
         sshpubstring_input = request.form['sshpubstring']
         sshpubstring = str(sshpubstring_input)
 
-        # for user in userlist:
-        #     if user.name == name:
-        #         vc3_client.deleteUser(username=name)
+        # UNIX naming convention: no whitespace, lowercase, limit length to 14
+        inputname = request.form['name']
+        translatename = "".join(inputname.split())
+        name = translatename.lower()
+
         try:
             newuser = vc3_client.defineUser(identity_id=identity_id,
                                             name=name,
@@ -227,10 +225,36 @@ def show_profile_page():
         return redirect(redirect_to)
 
 
-@app.route('/profile/edit', methods=['GET'])
+@app.route('/profile/edit/<name>', methods=['POST'])
 @authenticated
-def edit_profile():
-    return render_template('profile_edit.html')
+def edit_profile(name):
+    vc3_client = get_vc3_client()
+
+    profile = None
+    # Call user by name
+    profile = vc3_client.getUser(username=name)
+    # Assign new attribute to selected user
+    if profile.name == name:
+        profile.first = request.form['first']
+        profile.last = request.form['last']
+        profile.email = request.form['email']
+        profile.organization = request.form['institution']
+
+        displayname = (request.form['first'] + ' ' + request.form['last'])
+        profile.displayname = displayname
+
+        sshpubstring_input = request.form['sshpubstring']
+        profile.sshpubstring = str(sshpubstring_input)
+
+    if profile is None:
+        # could not find user, punt
+        LookupError('user')
+
+    # Store user new attributes into infoservice
+    vc3_client.storeUser(profile)
+    # Redirect to updated  profile page
+    flash('Your profile has been successfully updated', 'success')
+    return redirect(url_for('show_profile_page'))
 
 
 @app.route('/authcallback', methods=['GET'])
@@ -300,7 +324,7 @@ def authcallback():
             session['email'] = profile.email
             session['institution'] = profile.organization
             session['primary_identity'] = profile.identity_id
-            # session['displayname'] = profile.displayname
+            session['displayname'] = profile.displayname
         else:
             return redirect(url_for('show_profile_page',
                                     next=url_for('show_profile_page')))
@@ -386,7 +410,7 @@ def view_project(name):
     :return: Project profile page specific to project name
     """
     project_validation = project_validated(name=name)
-    if project_validation == False:
+    if project_validation is False:
         flash('You do not appear to be a member of the project you are trying'
               'to view. Please contact owner to request membership.', 'warning')
         return redirect(url_for('list_projects'))
