@@ -8,6 +8,7 @@
 <div class="content">
   <div class="container-fluid">
     <div class="row">
+
       <div class="col-md-12">
         <div class="card">
 
@@ -212,12 +213,89 @@
                   </form>
                 {% endif %}
         				</div>
+
+                <div class="col-md-6">
+                  <h2 class="title">
+                    <small style="color:#ffc500">Generating SSH and Access</small>
+                  </h2>
+                  <div class="content description">
+          					<div class="card-block">
+                      <p>Do you already have an SSH Public Key?</p>
+                      <ol>
+                        <li>To find out, open your terminal and type:  <kbd>ls ~/.ssh</kbd></li>
+                        <li>If there is a <kbd>.pub</kbd> extension, such as <kbd>id_rsa.pub</kbd>, that is your SSH Public Key.</li>
+                        <li>Type:  <kbd>cat ~/.ssh/id_rsa.pub</kbd> in order to see your key</li>
+                      </ol>
+                      <p>If not:</p>
+                      <ol>
+                        <li>In a terminal, type:
+                          <div>
+                            <kbd>ssh-keygen -t rsa</kbd>
+                          </div>
+                        </li>
+                        <li>Hit enter for the default location, and enter a new
+                          password
+                        </li>
+                        <li>In order to see your key type:
+                          <div>
+                            <kbd>cat ~/.ssh/id_rsa.pub</kbd>
+                          </div>
+                        </li>
+                        <li>Use your mouse to select everything that is printed
+                          to the screen, the format should look like:
+                          <div>
+                            <kbd>ssh-rsa AAAAB3N....M7Q== yourusername@yourmachine</kbd>
+                          </div>
+                        </li>
+                        <li>Copy the selection to the clipboard</li>
+                        <li>Paste the contents of the clipboard in the
+                          corresponding box on your VC3 Profile
+                        </li>
+                      </ol>
+                      <p>To access your node:</p>
+                      <ol>
+                        <li>In a terminal, type:
+                          <div>
+                            <kbd>ssh -i ~/.ssh/id_rsa yourvc3username@IPofTheHeadNode</kbd>
+                          </div>
+                        </li>
+                        <li>Members of your project can login using their SSH-Keys and VC3-Usernames</li>
+                      </ol>
+                      <p>Once an SSH-Key appears (you will only need to do this once per allocation):</p>
+                      <ol>
+                        <li>In a terminal, type:
+                          <div>
+                            <kbd>ssh allocation.accountname@resource.accesshost</kbd>
+                          </div>
+                        </li>
+                        <li>
+                          Enter your password for <kbd>resource.accesshost</kbd> for access
+                        </li>
+                        <li>
+                          Next you will need to replace <em>PUT-THE-ALLOCATION-SSH-KEY-HERE</em> with the actual allocation key (note that it needs to be quoted), type:
+                          <div>
+                            <kbd>echo 'PUT-THE-ALLOCATION-SSH-KEY-HERE' >> ~/.ssh/authorized_keys<kbd>
+                          </div>
+                        </li>
+                        <li>
+                          Finally, type:
+                          <div>
+                            <kbd>chmod 633 ~/.ssh/authorized_keys<kbd>
+                          </div>
+                        </li>
+                      </ol>
+
+                    </div>
+                  </div>
+                </div>
+
         			</div> <!-- row -->
               {% endif %}
             </div><!-- /.card-block -->
           </div><!-- /.card description-->
-        </div>
-  		</div>
+        </div><!-- /.card -->
+  		</div><!-- /.col-md-6 -->
+
     </div>
   </div>
 </div>
