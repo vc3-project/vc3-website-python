@@ -141,22 +141,13 @@
                         {% endif %}
 
                           <td>
-                        {% for nodeset in nodesets %}
-                          {% if nodeset.name == request.cluster %}
-                            {% if nodeset.app_type == "htcondor" %}
-                              <div class="row">
-                                <small>condor-dev.virtualclusters.org</small>
-                              </div>
-                            {% elif nodeset.app_type == "workqueue" %}
-                              <div class="row">
-                                <small>condor-dev.virtualclusters.org</small>
-                              </div>
-                              <div class="row">
-                                <small>WQ Project Name: {{ request.name }}</small>
-                              </div>
-                            {% endif %}
-                          {% endif %}
-                        {% endfor %}
+                            <div class="row">
+                              {% if request.headnode['ip'] %}
+                              <small>{{request.headnode['ip']}}</small>
+                              {% else %}
+                              <small>IP Not yet available</small>
+                              {% endif %}
+                            </div>
                           </td>
     										</tr>
                         <!-- endif  -->
@@ -248,26 +239,18 @@
                         {% endif %}
 
                           <td>
-                        {% for nodeset in nodesets %}
-                          {% if nodeset.name == request.cluster %}
-                            {% if nodeset.app_type == "htcondor" %}
-                              <div class="row">
-                                <small>condor-dev.virtualclusters.org</small>
-                              </div>
-                            {% elif nodeset.app_type == "workqueue" %}
-                              <div class="row">
-                                <small>condor-dev.virtualclusters.org</small>
-                              </div>
-                              <div class="row">
-                                <small>WQ Project Name: {{ request.name }}</small>
-                              </div>
-                            {% endif %}
-                          {% endif %}
-                        {% endfor %}
+                            <div class="row">
+                              {% if request.headnode['ip'] %}
+                              <small>{{request.headnode['ip']}}</small>
+                              {% else %}
+                              <small>IP Not yet available</small>
+                              {% endif %}
+                            </div>
                           </td>
     										</tr>
                         {% endif %}
                       {% endfor %}
+
                     {% endif %}
     									</tbody>
     								</table>

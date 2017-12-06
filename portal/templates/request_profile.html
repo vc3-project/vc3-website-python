@@ -29,16 +29,14 @@
 						</div>
               {% else %}
             <div class="progress" style="height:25px">
-              <div class="progress-bar progress-bar-danger progress-bar-striped active" role="progressbar"
-              aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width:100%">
+              <div class="progress-bar progress-bar-danger progress-bar-striped active" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width:100%">
                 <strong style="font-size:20px">Terminating...</strong>
               </div>
             </div>
               {% endif %}
             {% elif state == "growing" %}
             <div class="progress" style="height:25px">
-              <div class="progress-bar progress-bar-warning progress-bar-striped active" role="progressbar"
-              aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width:100%">
+              <div class="progress-bar progress-bar-warning progress-bar-striped active" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width:100%">
                 <strong style="font-size:20px">Growing...</strong>
               </div>
             </div>
@@ -50,8 +48,7 @@
             </div>
             {% elif state == "pending"%}
             <div class="progress" style="height:25px">
-              <div class="progress-bar progress-bar-warning progress-bar-striped active" role="progressbar"
-              aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width:100%">
+              <div class="progress-bar progress-bar-warning progress-bar-striped active" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width:100%">
                 <strong style="font-size:20px">Pending...</strong>
               </div>
             </div>
@@ -80,7 +77,7 @@
             {% endif %}
           {% endif %}
 						<hr />
-          </div>
+          </div><!-- ./header -->
 
           <div class="content description">
   					<div class="card-block">
@@ -161,7 +158,9 @@
                 <div class="panel-body disabled">
                   {% for allocation in allocations %}
                     {% if allocation.name in request.allocations %}
-                    <div title="View {{allocation}}"><row>{{allocation.displayname}}</row></div>
+                    <div title="View {{allocation}}">
+                      <row>{{allocation.displayname}}</row>
+                    </div>
                     {% endif %}
                   {% endfor %}
                 </div>
@@ -171,10 +170,13 @@
                 <div class="panel-heading">
                   <h3 class="panel-title"><strong>Environments</strong></h3>
                 </div>
+
                 <div class="panel-body disabled">
-                  {% for environment in request.environments %}
-                    <option>{{environment}}</option>
-                  {% endfor %}
+                  {% if request.environments == [] %}
+                    <div>No environment yet</div>
+                  {% else %}
+                    <div>{{request.environments}}</div>
+                  {% endif %}
                 </div>
               </div>
 
@@ -182,23 +184,13 @@
                 <div class="panel-heading">
                   <h3 class="panel-title"><strong>Head Node</strong></h3>
                 </div>
-                <div class="panel-body disabled">
-                  {% for nodeset in nodesets %}
-                    {% if nodeset.name == request.cluster %}
-                      {% if nodeset.app_type == "htcondor" %}
-                        <div>condor-dev.virtualclusters.org</div>
-                        {% if request.headnode['ip'] == None %}
-                        <div>IP: Not available yet</div>
-                        {% else %}
-                        <div>IP: {{request.headnode['ip']}}</div>
-                        {% endif %}
-                      {% elif nodeset.app_type == "workqueue" %}
-                        <div>condor-dev.virtualclusters.org</div>
-                        <div>WQ Project Name: {{ request.name }}</div>
 
-                      {% endif %}
-                    {% endif %}
-                  {% endfor %}
+                <div class="panel-body disabled">
+                  {% if request.headnode['ip'] %}
+                  <div>IP: {{request.headnode['ip']}}</div>
+                  {% else %}
+                  <div>IP not available yet</div>
+                  {% endif %}
                 </div>
               </div>
 
@@ -224,16 +216,15 @@
               </div>
                 {% endif %}
               {% endfor %}
-              </div>
-            </div>
+            </div><!-- /.card-block -->
+          </div><!-- /.content description-->
 
-          </div><!-- /.content description -->
+        </div><!-- /.card -->
 
-        </div>
       </div>
-		</div>
+    </div><!-- /.row -->
+	</div><!-- /.container-fluid -->
 
-  </div>
-</div>
+</div><!-- /.content -->
 
 {%endblock%}
