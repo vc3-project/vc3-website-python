@@ -49,25 +49,9 @@
     											<td>
                             <a href="{{ url_for('view_allocation', name=allocation.name) }}" title="View Allocation">{{ allocation.displayname }}</a>
                           </td>
-                            {% if allocation.state == "validated" %}
-      										<td id="allocationstates">
-                            <font color="green">
-                              <i class="fa fa-check-circle-o" style="color:green"></i>
-                            </font>
-                          </td>
-                            {% elif allocation.state == "terminated" %}
-                          <td id="allocationstates">
-                            <font color="red">
-                              <i class="fa fa-exclamation-circle" style="color:red"></i>
-                            </font>
-                          </td>
-                            {% else %}
-                          <td id="allocationstates">
-                            <font color="orange">
-                              <i class="fa fa-spinner fa-spin" style="color:orange"></i>
-                            </font>
-                          </td>
-                            {% endif %}
+
+      										<td id="allocationstates"></td>
+
     											<td>
                             <a href="{{ url_for('view_resource', name=allocation.resource) }}">
                             {% for resource in resources %}
