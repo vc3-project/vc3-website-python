@@ -2502,3 +2502,7 @@ ALLOCATION LIST PAGE
   background: transparent;
   color: white;
 }
+
+.progress-bar {
+  line-height: 22px;
+}
