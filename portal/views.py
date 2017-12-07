@@ -1117,13 +1117,18 @@ def view_request(name):
             vc3allocations = vc3_request.allocations
             description = vc3_request.description
             project = vc3_request.project
+            headnode = vc3_request.headnode
+        for user in users:
+            if user.name == owner:
+                profile = user
 
             return render_template('request_profile.html', name=requestname,
                                    owner=owner, requests=vc3_requests,
                                    clusters=clusters, nodesets=nodesets,
                                    action=action, state=state, users=users,
                                    vc3allocations=vc3allocations, project=project,
-                                   allocations=allocations, description=description)
+                                   allocations=allocations, description=description,
+                                   headnode=headnode, profile=profile)
         app.logger.error("Could not find VC when viewing: {0}".format(name))
         raise LookupError('virtual cluster')
 

@@ -219,7 +219,7 @@
                 <div class="col-md-6">
 
                   <h2 class="title">
-                    <small style="color:#ffc500">Generating SSH and Access:</small>
+                    <small style="color:#ffc500">Generating SSH Public Key:</small>
                   </h2>
 
                   <div id="accordion" role="tablist" aria-multiselectable="true">
@@ -276,64 +276,6 @@
                             <li>Copy the selection to the clipboard</li>
                             <li>Paste the contents of the clipboard in the
                               corresponding box on your VC3 Profile
-                            </li>
-                          </ol>
-                        </div>
-                      </div>
-                    </div>
-
-                    <div class="card panel panel-info resource-profile" style="margin: 1em;">
-                      <div class="card-header panel-title" role="tab" id="headingThree" style="margin: 1em">
-                        <h5 class="mb-0">
-                          <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-                            To access your node:
-                          </a>
-                        </h5>
-                      </div>
-                      <div id="collapseThree" class="collapse" role="tabpanel" aria-labelledby="headingThree">
-                        <div class="card-block panel-body disabled" style="font-size: 16px">
-                          <ol>
-                            <li>In a terminal, type:
-                              <div>
-                                <kbd>ssh -i ~/.ssh/id_rsa yourvc3username@IPofTheHeadNode</kbd>
-                              </div>
-                            </li>
-                            <li>Members of your project can login using their SSH-Keys and VC3-Usernames</li>
-                          </ol>
-                        </div>
-                      </div>
-                    </div>
-
-                    <div class="card panel panel-info resource-profile" style="margin: 1em;">
-                      <div class="card-header panel-title" role="tab" id="headingFour" style="margin: 1em">
-                        <h5 class="mb-0">
-                          <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
-                            Once an SSH-Key appears (you will only need to do this once per allocation):
-                          </a>
-                        </h5>
-                      </div>
-                      <div id="collapseFour" class="collapse" role="tabpanel" aria-labelledby="headingFour">
-                        <div class="card-block panel-body disabled" style="font-size: 16px">
-                          <ol>
-                            <li>In a terminal, type:
-                              <div>
-                                <kbd>ssh allocation.accountname @resource.accesshost</kbd>
-                              </div>
-                            </li>
-                            <li>
-                              Enter your password for <kbd>resource.accesshost</kbd> for access
-                            </li>
-                            <li>
-                              Next you will need to replace <em>PUT-THE-ALLOCATION-SSH-KEY-HERE</em> with the actual allocation key (note that it needs to be quoted), type:
-                              <div>
-                                <kbd>echo 'PUT-THE-ALLOCATION-SSH-KEY-HERE' >> ~/.ssh/authorized_keys<kbd>
-                              </div>
-                            </li>
-                            <li>
-                              Finally, type:
-                              <div>
-                                <kbd>chmod 633 ~/.ssh/authorized_keys<kbd>
-                              </div>
                             </li>
                           </ol>
                         </div>
