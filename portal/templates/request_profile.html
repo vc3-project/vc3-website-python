@@ -15,9 +15,11 @@
               {{name}}
             </h4>
             <h5>Description: {{description}}</h5>
+            <a href="{{url_for('edit_request', name=name)}}" class="btn btn-primary btn-xs">Update Description</a>
 
-          {% if session['name'] == owner %}
+          {% if profile.name == owner %}
             {% if action == "terminate" %}
+
               {% if state == "terminated" %}
             <h4>
               <span class="label label-danger" style="color:white">
@@ -28,14 +30,15 @@
 							<a href="{{url_for('delete_virtualcluster', name=name)}}" class="btn btn-danger btn-sm">Delete Virtual Cluster</a>
 						</div>
               {% else %}
-            <div class="progress" style="height:25px">
+            <div class="progress" style="height:25px; margin-top:20px;">
               <div class="progress-bar progress-bar-danger progress-bar-striped active" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width:100%">
                 <strong style="font-size:20px">Terminating...</strong>
               </div>
             </div>
               {% endif %}
+
             {% elif state == "growing" %}
-            <div class="progress" style="height:25px">
+            <div class="progress" style="height:25px; margin-top:20px;">
               <div class="progress-bar progress-bar-warning progress-bar-striped active" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width:100%">
                 <strong style="font-size:20px">Growing...</strong>
               </div>
@@ -43,11 +46,8 @@
             <form action="{{url_for('view_request', name=name)}}" method="POST">
               <button type="submit" class="btn btn-primary" data-submit="...Terminating Cluster" title="Terminate your Virtual Cluster">Terminate Cluster</button>
             </form>
-            <div class="">
-              <a href="{{url_for('edit_request', name=name)}}" class="btn btn-primary btn-sm">Update Virtual Cluster</a>
-            </div>
             {% elif state == "pending"%}
-            <div class="progress" style="height:25px">
+            <div class="progress" style="height:25px; margin-top:20px;">
               <div class="progress-bar progress-bar-warning progress-bar-striped active" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width:100%">
                 <strong style="font-size:20px">Pending...</strong>
               </div>
@@ -55,25 +55,16 @@
             <form action="{{url_for('view_request', name=name)}}" method="POST">
               <button type="submit" class="btn btn-primary" data-submit="...Terminating Cluster" title="Terminate your Virtual Cluster">Terminate Cluster</button>
             </form>
-            <div class="">
-              <a href="{{url_for('edit_request', name=name)}}" class="btn btn-primary btn-sm">Update Virtual Cluster</a>
-            </div>
             {% elif state == "new" and action == "new" %}
             <h4><span class="label label-info" style="color:white">New Cluster</span></h4>
             <form action="{{url_for('view_request', name=name)}}" method="POST">
               <button type="submit" class="btn btn-primary" data-submit="...Terminating Cluster" title="Terminate your Virtual Cluster">Terminate Cluster</button>
             </form>
-            <div class="">
-              <a href="{{url_for('edit_request', name=name)}}" class="btn btn-primary btn-sm">Update Virtual Cluster</a>
-            </div>
             {% else %}
             <h4><span class="label label-success" style="color:white">Successfully Running</span></h4>
             <form action="{{url_for('view_request', name=name)}}" method="POST">
               <button type="submit" class="btn btn-primary" data-submit="...Terminating Cluster" title="Terminate your Virtual Cluster">Terminate Cluster</button>
             </form>
-            <div class="">
-              <a href="{{url_for('edit_request', name=name)}}" class="btn btn-primary btn-sm">Update Virtual Cluster</a>
-            </div>
             {% endif %}
           {% endif %}
 						<hr />
@@ -103,6 +94,29 @@
                   </div>
                   <div class="panel-body disabled">
                     {{request.project}}
+                  </div>
+                </div>
+
+                <div class="panel panel-info resource-profile" style="margin: 1em;">
+                  <div class="panel-heading">
+                    <h3 class="panel-title"><strong>Your VC3 Username</strong></h3>
+                  </div>
+                  <div class="panel-body disabled">
+                    {{profile.name}}
+                  </div>
+                </div>
+
+                <div class="panel panel-info resource-profile" style="margin: 1em;">
+                  <div class="panel-heading">
+                    <h3 class="panel-title"><strong>Head Node IP</strong></h3>
+                  </div>
+
+                  <div class="panel-body disabled">
+                    {% if request.headnode['ip'] %}
+                    <div>{{request.headnode['ip']}}</div>
+                    {% else %}
+                    <div>IP not available yet</div>
+                    {% endif %}
                   </div>
                 </div>
 
@@ -182,20 +196,6 @@
 
                 <div class="panel panel-info resource-profile" style="margin: 1em;">
                   <div class="panel-heading">
-                    <h3 class="panel-title"><strong>Head Node</strong></h3>
-                  </div>
-
-                  <div class="panel-body disabled">
-                    {% if request.headnode['ip'] %}
-                    <div>IP: {{request.headnode['ip']}}</div>
-                    {% else %}
-                    <div>IP not available yet</div>
-                    {% endif %}
-                  </div>
-                </div>
-
-                <div class="panel panel-info resource-profile" style="margin: 1em;">
-                  <div class="panel-heading">
                     <h3 class="panel-title"><strong>Status</strong></h3>
                   </div>
                   <div class="panel-body disabled">
@@ -221,7 +221,7 @@
               <div class="col-md-6">
 
                 <h2 class="title">
-                  <small style="color:#ffc500">Node Access:</small>
+                  <small style="color:#ffc500">Node Access</small>
                 </h2>
                 <div id="accordion" role="tablist" aria-multiselectable="true">
 
@@ -229,7 +229,7 @@
                     <div class="card-header panel-title" role="tab" id="headingOne" style="margin: 1em">
                       <h5 class="mb-0">
                         <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
-                          To access your node:
+                          To access your node... <i class="fa fa-info-circle" aria-hidden="true"></i>
                         </a>
                       </h5>
                     </div>
@@ -238,7 +238,9 @@
                         <ol>
                           <li>In a terminal, type:
                             <div>
-                              <kbd>ssh -i ~/.ssh/id_rsa {{profile.name}}@{{headnode['ip']}}</kbd>
+                              <kbd>
+                                ssh -i ~/.ssh/id_rsa yourvc3username@HeadNodeIP
+                              </kbd>
                             </div>
                           </li>
                           <li>Members of your project can login using their SSH-Keys and VC3-Usernames</li>

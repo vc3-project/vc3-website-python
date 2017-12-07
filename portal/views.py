@@ -837,7 +837,7 @@ def create_allocation():
             return render_template('allocation_new.html', displayname=displayname,
                                    accountname=accountname, description=description)
 
-        flash('Configuring your allocation, when complete, please view your '
+        flash('Configuring your allocation, when validated, please view your '
               'allocation to complete the setup.', 'warning')
 
         return redirect(url_for('list_allocations'))
@@ -873,6 +873,9 @@ def view_allocation(name):
                     pubtoken = 'None'
                 else:
                     pubtoken = base64.b64decode(encodedpubtoken)
+                for resource in resources:
+                    if resource.name == allocation.resource:
+                        accesshost = resource.accesshost
 
                 return render_template('allocation_profile.html',
                                        name=allocationname,
@@ -880,7 +883,8 @@ def view_allocation(name):
                                        accountname=accountname,
                                        pubtoken=pubtoken, state=state,
                                        resources=resources, displayname=displayname,
-                                       description=description, users=users)
+                                       description=description, users=users,
+                                       accesshost=accesshost)
         app.logger.error("Could not find allocation when viewing: {0}".format(name))
         raise LookupError('allocation')
 
@@ -1118,9 +1122,9 @@ def view_request(name):
             description = vc3_request.description
             project = vc3_request.project
             headnode = vc3_request.headnode
-        for user in users:
-            if user.name == owner:
-                profile = user
+            for user in users:
+                if user.name == owner:
+                    profile = user
 
             return render_template('request_profile.html', name=requestname,
                                    owner=owner, requests=vc3_requests,

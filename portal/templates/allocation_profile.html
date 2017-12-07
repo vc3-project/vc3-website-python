@@ -111,7 +111,7 @@
                     <div class="card-header panel-title" role="tab" id="headingOne" style="margin: 1em">
                       <h5 class="mb-0">
                         <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
-                          Once an SSH-Key appears (you will only need to do this once per allocation):
+                          Once your SSH Public Key appears... <i class="fa fa-info-circle" aria-hidden="true"></i>
                         </a>
                       </h5>
                     </div>
@@ -120,11 +120,11 @@
                         <ol>
                           <li>In a terminal, type:
                             <div>
-                              <kbd>ssh {{name}}</kbd>
+                              <kbd>ssh {{name}}@{{accesshost}}</kbd>
                             </div>
                           </li>
                           <li>
-                            Enter your password for <kbd>{{resource}}</kbd> for access
+                            Enter your password for <kbd>{{accesshost}}</kbd> for access
                           </li>
                           <li>
                             Next you will need to replace <kbd>PUT-THE-ALLOCATION-SSH-KEY-HERE</kbd> with the actual allocation key (note that it needs to be quoted), type:
@@ -137,6 +137,9 @@
                             <div>
                               <kbd>chmod 633 ~/.ssh/authorized_keys<kbd>
                             </div>
+                          </li>
+                          <li>
+                            You will only need to do this once per allocation.
                           </li>
                         </ol>
                       </div>
