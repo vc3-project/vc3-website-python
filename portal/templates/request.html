@@ -282,41 +282,4 @@
   </div>
 </div>
 
-
-<script>
-
-var name = '{{allocationlist[-1]|safe}}';
-
-window.onload = function(){
-  get_states(name);
-  setInterval( function(){
-    get_states(name);
-  }, 5000);
-}
-
-function get_states(name){
-  $.ajax({
-    url: "/rest/virtual_cluster/" + name,
-    type: "get",
-    dataType: 'json',
-    success: function(data){
-      $('#requeststates').html(data.state);
-      $('#test').html(data.state);
-      if($('#test').length != 0){
-        $('#test').css('color', 'red');
-      }
-    },
-    error: function(xhr){
-      //Do Something to handle error
-    }
-  });
-}
-
-// $(document).ajaxComplete(function(){
-//   if($('#test').length != 0){
-//     $('#test').css('color', 'red');
-//   }
-// });
-
-</script>
 {%endblock%}
