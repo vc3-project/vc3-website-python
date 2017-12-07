@@ -15,66 +15,75 @@
               {{name}}
             </h4>
             <h5>Description: {{description}}</h5>
-            <a href="{{url_for('edit_request', name=name)}}" class="btn btn-primary btn-xs">Update Description</a>
 
-          {% if profile.name == owner %}
-            {% if action == "terminate" %}
-
-              {% if state == "terminated" %}
-            <h4>
-              <span class="label label-danger" style="color:white">
-                Successfully Terminated
-              </span>
-            </h4>
-            <div class="delete_entity">
-							<a href="{{url_for('delete_virtualcluster', name=name)}}" class="btn btn-danger btn-sm">Delete Virtual Cluster</a>
-						</div>
-              {% else %}
-            <div class="progress" style="height:25px; margin-top:20px;">
-              <div class="progress-bar progress-bar-danger progress-bar-striped active" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width:100%">
-                <strong style="font-size:20px">Terminating...</strong>
-              </div>
-            </div>
+            <div class="container row">
+              <div class="pull-left col-sm-12 col-md-6">
+                <a href="{{url_for('edit_request', name=name)}}" class="btn btn-primary btn-xs">Update Description</a>
+  						</div>
+              <div class="delete_entity col-sm-12 col-md-6">
+              {% if profile.name == owner %}
+                {% if state == "terminating" %}
+                {% elif state == "terminated" %}
+                <div class="delete_entity">
+    							<a href="{{url_for('delete_virtualcluster', name=name)}}" class="btn btn-danger btn-xs">Delete Virtual Cluster</a>
+        				</div>
+                {% elif state != "new" %}
+                <form action="{{url_for('view_request', name=name)}}" method="POST">
+                  <button type="submit" class="btn btn-danger btn-xs" data-submit="...Terminating Cluster" title="Terminate your Virtual Cluster">Terminate Cluster</button>
+                </form>
+                {% endif %}
               {% endif %}
+  						</div>
+            </div><!-- /.row -->
 
-            {% elif state == "growing" %}
-            <div class="progress" style="height:25px; margin-top:20px;">
-              <div class="progress-bar progress-bar-warning progress-bar-striped active" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width:100%">
-                <strong style="font-size:20px">Growing...</strong>
+            <div class="row">
+              <label for="statusbar" style="margin-top:20px;">State of Virtual Cluster</label>
+              <div name="statusbar" id="statusbar">
+                {% if state == "terminated" %}
+                <h4>
+                  <span class="label label-danger" style="color:white">
+                    Successfully Terminated
+                  </span>
+                </h4>
+                  {% elif state == "terminating" %}
+                <div class="progress" style="height:25px;">
+                  <div class="progress-bar progress-bar-danger progress-bar-striped active" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width:100%">
+                    <strong style="font-size:20px">Terminating...</strong>
+                  </div>
+                </div>
+                <h5>State Reason: {{vc3_request.state_reason}}</h5>
+                {% elif state == "validated" %}
+                <div class="progress" style="height:25px;">
+                  <div class="progress-bar progress-bar-warning progress-bar-striped active" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width:100%">
+                    <strong style="font-size:20px">Validated</strong>
+                  </div>
+                </div>
+                <h5>State Reason: {{vc3_request.state_reason}}</h5>
+                {% elif state == "pending"%}
+                <div class="progress" style="height:25px;">
+                  <div class="progress-bar progress-bar-warning progress-bar-striped active" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width:100%">
+                    <strong style="font-size:20px">Pending...</strong>
+                  </div>
+                </div>
+                <h5>State Reason: {{vc3_request.state_reason}}</h5>
+                {% elif state == "running" %}
+                <div class="progress" style="height:25px;">
+                  <div class="progress-bar progress-bar-success progress-bar-striped active" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width:100%">
+                    <strong style="font-size:20px">Running</strong>
+                  </div>
+                </div>
+                <h5>State Reason: {{vc3_request.state_reason}}</h5>
+                {% elif state == "new" %}
+                <h4><span class="label label-info" style="color:white">New Cluster Starting up...</span></h4>
+                {% endif %}
               </div>
             </div>
-            <form action="{{url_for('view_request', name=name)}}" method="POST">
-              <button type="submit" class="btn btn-primary" data-submit="...Terminating Cluster" title="Terminate your Virtual Cluster">Terminate Cluster</button>
-            </form>
-            {% elif state == "pending"%}
-            <div class="progress" style="height:25px; margin-top:20px;">
-              <div class="progress-bar progress-bar-warning progress-bar-striped active" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width:100%">
-                <strong style="font-size:20px">Pending...</strong>
-              </div>
-            </div>
-            <form action="{{url_for('view_request', name=name)}}" method="POST">
-              <button type="submit" class="btn btn-primary" data-submit="...Terminating Cluster" title="Terminate your Virtual Cluster">Terminate Cluster</button>
-            </form>
-            {% elif state == "new" and action == "new" %}
-            <h4><span class="label label-info" style="color:white">New Cluster</span></h4>
-            <form action="{{url_for('view_request', name=name)}}" method="POST">
-              <button type="submit" class="btn btn-primary" data-submit="...Terminating Cluster" title="Terminate your Virtual Cluster">Terminate Cluster</button>
-            </form>
-            {% else %}
-            <h4><span class="label label-success" style="color:white">Successfully Running</span></h4>
-            <form action="{{url_for('view_request', name=name)}}" method="POST">
-              <button type="submit" class="btn btn-primary" data-submit="...Terminating Cluster" title="Terminate your Virtual Cluster">Terminate Cluster</button>
-            </form>
-            {% endif %}
-          {% endif %}
 						<hr />
           </div><!-- ./header -->
 
           <div class="content description">
   					<div class="card-block">
               <div class="col-md-6">
-                {% for request in requests %}
-  						    {% if request.name == name %}
                 <div class="panel panel-info resource-profile" style="margin: 1em;">
                   <div class="panel-heading">
                     <h3 class="panel-title"><strong>Owner</strong></h3>
@@ -93,7 +102,7 @@
                     <h3 class="panel-title"><strong>Project</strong></h3>
                   </div>
                   <div class="panel-body disabled">
-                    {{request.project}}
+                    {{vc3_request.project}}
                   </div>
                 </div>
 
@@ -112,8 +121,8 @@
                   </div>
 
                   <div class="panel-body disabled">
-                    {% if request.headnode['ip'] %}
-                    <div>{{request.headnode['ip']}}</div>
+                    {% if vc3_request.headnode['ip'] %}
+                    <div>{{vc3_request.headnode['ip']}}</div>
                     {% else %}
                     <div>IP not available yet</div>
                     {% endif %}
@@ -125,25 +134,7 @@
                     <h3 class="panel-title"><strong>Cluster Template</strong></h3>
                   </div>
                   <div class="panel-body disabled">
-                    {{request.cluster}}
-                  </div>
-                </div>
-
-                <div class="panel panel-info resource-profile" style="margin: 1em;">
-                  <div class="panel-heading">
-                    <h3 class="panel-title"><strong>State</strong></h3>
-                  </div>
-                  <div class="panel-body disabled">
-                    {{request.state}}
-                  </div>
-                </div>
-
-                <div class="panel panel-info resource-profile" style="margin: 1em;">
-                  <div class="panel-heading">
-                    <h3 class="panel-title"><strong>State Reason</strong></h3>
-                  </div>
-                  <div class="panel-body disabled">
-                    {{request.state_reason}}
+                    {{vc3_request.cluster}}
                   </div>
                 </div>
 
@@ -152,7 +143,7 @@
                     <h3 class="panel-title"><strong>Expiration</strong></h3>
                   </div>
                   <div class="panel-body disabled">
-                    {{request.expiration}}
+                    {{vc3_request.expiration}}
                   </div>
                 </div>
 
@@ -161,7 +152,7 @@
                     <h3 class="panel-title"><strong>Policy</strong></h3>
                   </div>
                   <div class="panel-body disabled">
-                    {{request.policy}}
+                    {{vc3_request.policy}}
                   </div>
                 </div>
 
@@ -171,7 +162,7 @@
                   </div>
                   <div class="panel-body disabled">
                     {% for allocation in allocations %}
-                      {% if allocation.name in request.allocations %}
+                      {% if allocation.name in vc3_request.allocations %}
                       <div title="View {{allocation}}">
                         <row>{{allocation.displayname}}</row>
                       </div>
@@ -186,10 +177,10 @@
                   </div>
 
                   <div class="panel-body disabled">
-                    {% if request.environments == [] %}
+                    {% if vc3_request.environments == [] %}
                       <div>No environment yet</div>
                     {% else %}
-                      <div>{{request.environments}}</div>
+                      <div>{{vc3_request.environments}}</div>
                     {% endif %}
                   </div>
                 </div>
@@ -200,22 +191,20 @@
                   </div>
                   <div class="panel-body disabled">
                     <!-- MYSITE-hostname-sysadminname -->
-                    {% if request.statusraw['VC3-static'] == {} %}
+                    {% if vc3_request.statusraw['VC3-static'] == {} %}
                     Status Currently Unavailable
-                    {% elif request.statusraw == None %}
+                    {% elif vc3_request.statusraw == None %}
                     Status Currently Unavailable
                     {% else %}
 
-                    <label>{{request.cluster}}:</label>
-                      {% for key, value in request.statusinfo.values()[0].iteritems() %}
+                    <label>{{vc3_request.cluster}}:</label>
+                      {% for key, value in vc3_request.statusinfo.values()[0].iteritems() %}
                         <option>{{ key }}: {{ value }}</option>
                       {% endfor %}
 
                     {% endif %}
                   </div>
                 </div>
-                  {% endif %}
-                {% endfor %}
               </div><!-- /.col-md-6-->
 
               <div class="col-md-6">
