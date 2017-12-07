@@ -625,3 +625,8 @@ $("#form-textarea").characterCounter({
 
   });
 });
+
+
+$(document).ready(function(){
+    $('[data-toggle="popover"]').popover();
+});
