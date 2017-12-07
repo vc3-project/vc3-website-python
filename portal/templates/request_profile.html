@@ -81,147 +81,181 @@
 
           <div class="content description">
   					<div class="card-block">
-
-              {% for request in requests %}
-						    {% if request.name == name %}
-              <div class="panel panel-info resource-profile" style="margin: 1em;">
-                <div class="panel-heading">
-                  <h3 class="panel-title"><strong>Owner</strong></h3>
-                </div>
-                <div class="panel-body disabled">
-                {% for user in users %}
-                  {% if user.name == owner %}
-                    {{user.first }} {{user.last}}
-                  {% endif %}
-                {% endfor %}
-                </div>
-              </div>
-
-              <div class="panel panel-info resource-profile" style="margin: 1em;">
-                <div class="panel-heading">
-                  <h3 class="panel-title"><strong>Project</strong></h3>
-                </div>
-                <div class="panel-body disabled">
-                  {{request.project}}
-                </div>
-              </div>
-
-              <div class="panel panel-info resource-profile" style="margin: 1em;">
-                <div class="panel-heading">
-                  <h3 class="panel-title"><strong>Cluster Template</strong></h3>
-                </div>
-                <div class="panel-body disabled">
-                  {{request.cluster}}
-                </div>
-              </div>
-
-              <div class="panel panel-info resource-profile" style="margin: 1em;">
-                <div class="panel-heading">
-                  <h3 class="panel-title"><strong>State</strong></h3>
-                </div>
-                <div class="panel-body disabled">
-                  {{request.state}}
-                </div>
-              </div>
-
-              <div class="panel panel-info resource-profile" style="margin: 1em;">
-                <div class="panel-heading">
-                  <h3 class="panel-title"><strong>State Reason</strong></h3>
-                </div>
-                <div class="panel-body disabled">
-                  {{request.state_reason}}
-                </div>
-              </div>
-
-              <div class="panel panel-info resource-profile" style="margin: 1em;">
-                <div class="panel-heading">
-                  <h3 class="panel-title"><strong>Expiration</strong></h3>
-                </div>
-                <div class="panel-body disabled">
-                  {{request.expiration}}
-                </div>
-              </div>
-
-              <div class="panel panel-info resource-profile" style="margin: 1em;">
-                <div class="panel-heading">
-                  <h3 class="panel-title"><strong>Policy</strong></h3>
-                </div>
-                <div class="panel-body disabled">
-                  {{request.policy}}
-                </div>
-              </div>
-
-              <div class="panel panel-info resource-profile" style="margin: 1em;">
-                <div class="panel-heading">
-                  <h3 class="panel-title"><strong>Allocations</strong></h3>
-                </div>
-                <div class="panel-body disabled">
-                  {% for allocation in allocations %}
-                    {% if allocation.name in request.allocations %}
-                    <div title="View {{allocation}}">
-                      <row>{{allocation.displayname}}</row>
-                    </div>
+              <div class="col-md-6">
+                {% for request in requests %}
+  						    {% if request.name == name %}
+                <div class="panel panel-info resource-profile" style="margin: 1em;">
+                  <div class="panel-heading">
+                    <h3 class="panel-title"><strong>Owner</strong></h3>
+                  </div>
+                  <div class="panel-body disabled">
+                  {% for user in users %}
+                    {% if user.name == owner %}
+                      {{user.first }} {{user.last}}
                     {% endif %}
                   {% endfor %}
-                </div>
-              </div>
-
-              <div class="panel panel-info resource-profile" style="margin: 1em;">
-                <div class="panel-heading">
-                  <h3 class="panel-title"><strong>Environments</strong></h3>
+                  </div>
                 </div>
 
-                <div class="panel-body disabled">
-                  {% if request.environments == [] %}
-                    <div>No environment yet</div>
-                  {% else %}
-                    <div>{{request.environments}}</div>
-                  {% endif %}
-                </div>
-              </div>
-
-              <div class="panel panel-info resource-profile" style="margin: 1em;">
-                <div class="panel-heading">
-                  <h3 class="panel-title"><strong>Head Node</strong></h3>
+                <div class="panel panel-info resource-profile" style="margin: 1em;">
+                  <div class="panel-heading">
+                    <h3 class="panel-title"><strong>Project</strong></h3>
+                  </div>
+                  <div class="panel-body disabled">
+                    {{request.project}}
+                  </div>
                 </div>
 
-                <div class="panel-body disabled">
-                  {% if request.headnode['ip'] %}
-                  <div>IP: {{request.headnode['ip']}}</div>
-                  {% else %}
-                  <div>IP not available yet</div>
-                  {% endif %}
+                <div class="panel panel-info resource-profile" style="margin: 1em;">
+                  <div class="panel-heading">
+                    <h3 class="panel-title"><strong>Cluster Template</strong></h3>
+                  </div>
+                  <div class="panel-body disabled">
+                    {{request.cluster}}
+                  </div>
                 </div>
-              </div>
 
-              <div class="panel panel-info resource-profile" style="margin: 1em;">
-                <div class="panel-heading">
-                  <h3 class="panel-title"><strong>Status</strong></h3>
+                <div class="panel panel-info resource-profile" style="margin: 1em;">
+                  <div class="panel-heading">
+                    <h3 class="panel-title"><strong>State</strong></h3>
+                  </div>
+                  <div class="panel-body disabled">
+                    {{request.state}}
+                  </div>
                 </div>
-                <div class="panel-body disabled">
-                  <!-- MYSITE-hostname-sysadminname -->
-                  {% if request.statusraw['VC3-static'] == {} %}
-                  Status Currently Unavailable
-                  {% elif request.statusraw == None %}
-                  Status Currently Unavailable
-                  {% else %}
 
-                  <label>{{request.cluster}}:</label>
-                    {% for key, value in request.statusinfo.values()[0].iteritems() %}
-                      <option>{{ key }}: {{ value }}</option>
+                <div class="panel panel-info resource-profile" style="margin: 1em;">
+                  <div class="panel-heading">
+                    <h3 class="panel-title"><strong>State Reason</strong></h3>
+                  </div>
+                  <div class="panel-body disabled">
+                    {{request.state_reason}}
+                  </div>
+                </div>
+
+                <div class="panel panel-info resource-profile" style="margin: 1em;">
+                  <div class="panel-heading">
+                    <h3 class="panel-title"><strong>Expiration</strong></h3>
+                  </div>
+                  <div class="panel-body disabled">
+                    {{request.expiration}}
+                  </div>
+                </div>
+
+                <div class="panel panel-info resource-profile" style="margin: 1em;">
+                  <div class="panel-heading">
+                    <h3 class="panel-title"><strong>Policy</strong></h3>
+                  </div>
+                  <div class="panel-body disabled">
+                    {{request.policy}}
+                  </div>
+                </div>
+
+                <div class="panel panel-info resource-profile" style="margin: 1em;">
+                  <div class="panel-heading">
+                    <h3 class="panel-title"><strong>Allocations</strong></h3>
+                  </div>
+                  <div class="panel-body disabled">
+                    {% for allocation in allocations %}
+                      {% if allocation.name in request.allocations %}
+                      <div title="View {{allocation}}">
+                        <row>{{allocation.displayname}}</row>
+                      </div>
+                      {% endif %}
                     {% endfor %}
-
-                  {% endif %}
+                  </div>
                 </div>
-              </div>
-                {% endif %}
-              {% endfor %}
+
+                <div class="panel panel-info resource-profile" style="margin: 1em;">
+                  <div class="panel-heading">
+                    <h3 class="panel-title"><strong>Environments</strong></h3>
+                  </div>
+
+                  <div class="panel-body disabled">
+                    {% if request.environments == [] %}
+                      <div>No environment yet</div>
+                    {% else %}
+                      <div>{{request.environments}}</div>
+                    {% endif %}
+                  </div>
+                </div>
+
+                <div class="panel panel-info resource-profile" style="margin: 1em;">
+                  <div class="panel-heading">
+                    <h3 class="panel-title"><strong>Head Node</strong></h3>
+                  </div>
+
+                  <div class="panel-body disabled">
+                    {% if request.headnode['ip'] %}
+                    <div>IP: {{request.headnode['ip']}}</div>
+                    {% else %}
+                    <div>IP not available yet</div>
+                    {% endif %}
+                  </div>
+                </div>
+
+                <div class="panel panel-info resource-profile" style="margin: 1em;">
+                  <div class="panel-heading">
+                    <h3 class="panel-title"><strong>Status</strong></h3>
+                  </div>
+                  <div class="panel-body disabled">
+                    <!-- MYSITE-hostname-sysadminname -->
+                    {% if request.statusraw['VC3-static'] == {} %}
+                    Status Currently Unavailable
+                    {% elif request.statusraw == None %}
+                    Status Currently Unavailable
+                    {% else %}
+
+                    <label>{{request.cluster}}:</label>
+                      {% for key, value in request.statusinfo.values()[0].iteritems() %}
+                        <option>{{ key }}: {{ value }}</option>
+                      {% endfor %}
+
+                    {% endif %}
+                  </div>
+                </div>
+                  {% endif %}
+                {% endfor %}
+              </div><!-- /.col-md-6-->
+
+              <div class="col-md-6">
+
+                <h2 class="title">
+                  <small style="color:#ffc500">Node Access:</small>
+                </h2>
+                <div id="accordion" role="tablist" aria-multiselectable="true">
+
+                  <div class="card panel panel-info resource-profile" style="margin: 1em;">
+                    <div class="card-header panel-title" role="tab" id="headingOne" style="margin: 1em">
+                      <h5 class="mb-0">
+                        <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+                          To access your node:
+                        </a>
+                      </h5>
+                    </div>
+                    <div id="collapseOne" class="collapse" role="tabpanel" aria-labelledby="headingOne">
+                      <div class="card-block panel-body disabled" style="font-size: 16px">
+                        <ol>
+                          <li>In a terminal, type:
+                            <div>
+                              <kbd>ssh -i ~/.ssh/id_rsa {{profile.name}}@{{headnode['ip']}}</kbd>
+                            </div>
+                          </li>
+                          <li>Members of your project can login using their SSH-Keys and VC3-Usernames</li>
+                        </ol>
+                      </div>
+                    </div>
+                  </div>
+
+                </div><!-- /.accordion-->
+              </div><!-- /.col-md-6 -->
+
             </div><!-- /.card-block -->
           </div><!-- /.content description-->
 
         </div><!-- /.card -->
 
-      </div>
+      </div><!-- /.col-md-12 -->
     </div><!-- /.row -->
 	</div><!-- /.container-fluid -->
 
