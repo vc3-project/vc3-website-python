@@ -103,7 +103,7 @@
 				    {% if session['name'] == owner %}
 						<form role="form" action="{{url_for('add_member_to_project', name=name)}}" method="POST" id="multiselect">
 							<fieldset>
-					       <label for="newuser">Add New Users</label>
+					       <label for="newuser">Select New Users</label>
 					       <select class="form-control selectpicker" multiple data-live-search="true" name="newuser" tabindex="1" id="form-resource-list" required>
 					         <!-- <option value="" selected disabled>Please Select User</option> -->
 					         {% for user in users %}
@@ -147,7 +147,7 @@
                         {% if (session['name'] == allocation.owner) %}
                         <form role="form" action="{{url_for('remove_allocation_from_project', name=name)}}" method="POST">
                           <div>
-                            <button type="submit" name="remove_allocation" value="{{allocation.name}}" class="btn btn-danger btn-xs pull-right" data-submit="Removing Allocation...">Remove Allocation</button>
+                            <button type="submit" name="remove_allocation" value="{{allocation.name}}" class="btn btn-danger btn-xs" data-submit="Removing Allocation...">Remove Allocation</button>
                           </div>
                         </form>
                         {% endif %}
