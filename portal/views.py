@@ -873,9 +873,9 @@ def view_allocation(name):
                     pubtoken = 'None'
                 else:
                     pubtoken = base64.b64decode(encodedpubtoken)
-                for resource in resources:
-                    if resource.name == allocation.resource:
-                        accesshost = resource.accesshost
+                for r in resources:
+                    if r.name == allocation.resource:
+                        accesshost = r.accesshost
 
                 return render_template('allocation_profile.html',
                                        name=allocationname,
