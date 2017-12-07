@@ -248,7 +248,14 @@
                           <td>
                             <div class="row">
                               {% if request.headnode['ip'] %}
-                              <small>{{request.headnode['ip']}}</small>
+                              <a href="#"
+                              data-toggle="popover"
+                              title="To access your node via terminal"
+                              data-content="Type: ssh -i ~/.ssh/id_rsa {{session['name']}}@{{request.headnode['ip']}}"
+                              data-placement="top"
+                              data-trigger="focus">
+                                {{request.headnode['ip']}}
+                              </a>
                               {% else %}
                               <small>IP Not yet available</small>
                               {% endif %}
@@ -275,4 +282,41 @@
   </div>
 </div>
 
+
+<script>
+
+var name = '{{allocationlist[-1]|safe}}';
+
+window.onload = function(){
+  get_states(name);
+  setInterval( function(){
+    get_states(name);
+  }, 5000);
+}
+
+function get_states(name){
+  $.ajax({
+    url: "/rest/virtual_cluster/" + name,
+    type: "get",
+    dataType: 'json',
+    success: function(data){
+      $('#requeststates').html(data.state);
+      $('#test').html(data.state);
+      if($('#test').length != 0){
+        $('#test').css('color', 'red');
+      }
+    },
+    error: function(xhr){
+      //Do Something to handle error
+    }
+  });
+}
+
+// $(document).ajaxComplete(function(){
+//   if($('#test').length != 0){
+//     $('#test').css('color', 'red');
+//   }
+// });
+
+</script>
 {%endblock%}

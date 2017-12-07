@@ -626,7 +626,7 @@ $("#form-textarea").characterCounter({
   });
 });
 
-
+// Allow call to Popover on all data-toogle="popover"
 $(document).ready(function(){
     $('[data-toggle="popover"]').popover();
 });
