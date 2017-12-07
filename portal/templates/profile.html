@@ -126,7 +126,7 @@
                 {% else %}
                   <form role="form" action="{{url_for('show_profile_page')}}" method="POST">
                     <div class="form-group">
-        							<label for="name">User Name <span id="asterik">*</span> <small>(only letters and numbers)</small></label>
+        							<label for="name">User Name <span id="asterik">*</span> <small>(only letters and numbers, no whitespaces)</small></label>
         							<input
         								type="text"
                         pattern="[A-Za-z\d]*"
@@ -137,7 +137,7 @@
         								class="form-control tour-step tour-step-three"
         								required="required"
         								tabindex="1"
-        								value="{{session['name']}}"
+        								value="{{profile.name}}"
         							>
         					  </div>
 
