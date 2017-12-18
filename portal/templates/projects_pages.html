@@ -104,7 +104,7 @@
 						<form role="form" action="{{url_for('add_member_to_project', name=name)}}" method="POST" id="multiselect">
 							<fieldset>
 					       <label for="newuser">Select New Users</label>
-					       <select class="form-control selectpicker" multiple data-live-search="true" name="newuser" tabindex="1" id="form-resource-list" required>
+					       <select class="form-control selectpicker" multiple data-live-search="true" data-actions-box="true" data-header="Select Users" name="newuser" tabindex="1" id="form-resource-list" required>
 					         <!-- <option value="" selected disabled>Please Select User</option> -->
 					         {% for user in users %}
                     {% if (user.name not in members) and (user.name != owner) %}
@@ -178,7 +178,7 @@
 						<form role="form" action="{{url_for('add_allocation_to_project', name=name)}}" method="POST" id="multiselect">
 							<fieldset>
 								<label for="allocation">Select Allocation:</label>
-								<select class="form-control selectpicker" multiple data-live-search="true" id="form-resource-list" name="allocation" tabindex="1" required>
+								<select class="form-control selectpicker" multiple data-live-search="true" data-actions-box="true" data-header="Select Allocations" id="form-resource-list" name="allocation" tabindex="1" required>
 									<!-- <option value="" selected disabled>Please Select Allocation</option> -->
 								<!-- Populate List of Allocations that has been defined by User -->
   								{% for allocation in allocations %}

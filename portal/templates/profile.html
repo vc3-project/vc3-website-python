@@ -1,6 +1,6 @@
 {%extends "loginbase.html"%}
 
-{%block title%}User Profile: {{ session['displayname'] }}{%endblock%}
+{%block title%}User: {{profile.name}} ({{ session['displayname'] }}){%endblock%}
 
 {%block body%}
 {%include 'messages.html'%}
@@ -17,9 +17,18 @@
               <h2 class="title">Thanks for your interest in VC3!</h2>
           {% else %}
             <h2 class="title">
-              Profile: <span style="color:white">{{profile.displayname}}</span>
+              <div class="row">
+                Profile: <span style="color:black">{{profile.displayname}}</span>
+              </div>
+            {% if profile.name %}
+              <div class="row">
+                <small>
+                  Username: <span style="color:black">{{profile.name}}</span>
+                </small>
+              </div>
+            {% endif %}
             </h2>
-            <label><span id="asterik">*</span> <small style="color:white">= indicates required field</small></label>
+            <label><span id="asterik">*</span> <small style="color:black">= indicates required field</small></label>
           {% endif %}
 						<hr/>
           </div>
@@ -113,7 +122,7 @@
                         name="sshpubstring"
                         required
                         tabindex="5"
-                        style="background-color:white; color:black; border-radius:4px;"
+                        style="background-color:white; color:black; border-radius:4px; border-color:lightgrey;"
                         value=""
                         >{{profile.sshpubstring}}</textarea>
                     </div>
@@ -219,7 +228,7 @@
                 <div class="col-md-6">
 
                   <h2 class="title">
-                    <small style="color:#ffc500">Generating SSH Public Key:</small>
+                    <small>Generating SSH Public Key:</small>
                   </h2>
 
                   <div id="accordion" role="tablist" aria-multiselectable="true">

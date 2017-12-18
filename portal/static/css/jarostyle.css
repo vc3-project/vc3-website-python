@@ -95,8 +95,9 @@ h1, h2, h3, h4, h5, h6 {
 
 #hero {
   background-image: url('https://s.hswstatic.com/gif/disruptive-technologies-10-orig.jpg');
-  /*background-image: url('https://rcc.uchicago.edu/sites/rcc.uchicago.edu/files/styles/slideshow-image/public/uploads/images/slideshows/20140430_RCC_8978.jpg?itok=BmRuJ-wq');*/
-  box-shadow: inset 0 0 0 1000px rgba(0,0,0,0.3);
+  /* background-image: url('http://rcc.lib.uchicago.edu/images/1-DSCN0050.JPG'); */
+  /* background-image: url('https://rcc.uchicago.edu/sites/rcc.uchicago.edu/files/styles/slideshow-image/public/uploads/images/slideshows/Midway2_06.jpg?itok=kFMdcqYA'); */
+  box-shadow: inset 0 0 0 1000px rgba(0,0,0,0.1);
   background-position: center center;
   background-repeat: no-repeat;
   background-attachment: fixed;
@@ -203,7 +204,10 @@ h1, h2, h3, h4, h5, h6 {
 --------------------------------------------------------------*/
 
 #header {
-  background: #111;
+  /* dark theme
+  background: #111; */
+  /* light theme */
+  background-color: #24292e;
   padding: 20px 0;
   height: 90px;
 }
@@ -245,7 +249,10 @@ h1, h2, h3, h4, h5, h6 {
 }*/
 
 .navbar-collapse {
-  background: #111;
+  /* dark theme
+  background: #111; */
+  /* light theme */
+  background-color: #24292e;
 }
 
 .navbar-brand{
@@ -254,7 +261,10 @@ h1, h2, h3, h4, h5, h6 {
   margin-right: -60px;
 }
 .navbar-default .navbar-nav li a{
-  color: #b3b3b3;
+  /* dark theme
+  color: #b3b3b3; */
+  /* light theme */
+  color: white;
 }
 #header #title {
   font-size: 24px;
@@ -823,7 +833,10 @@ body.mobile-nav-active #mobile-nav-toggle {
 # Footer
 --------------------------------------------------------------*/
 #footer {
-  background: #111;
+  /* dark theme
+  background: #111; */
+  /* light theme */
+  background-color: #24292e;
   padding: 30px 0;
   /*color: #fff;*/
 }
@@ -833,7 +846,10 @@ body.mobile-nav-active #mobile-nav-toggle {
 }
 
 #footer a {
+  /* dark theme
   color: #b3b3b3;
+  light theme */
+  color: white;
 }
 #footer a:hover {
   color: #ffc500;
@@ -846,7 +862,10 @@ body.mobile-nav-active #mobile-nav-toggle {
   padding-top: 10px;
   text-align: center;
   font-size: 13px;
-  color: #ccc;
+  /* dark theme */
+  /* color: #ccc; */
+  /* light theme */
+  color: white;
 }
 #footer .btn-services {
   background: #03C4EB;
@@ -1149,6 +1168,7 @@ fieldset {
 
 .copyright {
   text-align: center;
+  color: white;
 }
 
 #new-project-form input:focus,

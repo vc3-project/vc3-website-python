@@ -61,6 +61,7 @@
                             {% endfor %}
                             </a>
                           </td>
+
                           <td>
                             {% if allocation.description == None or allocation.description == "" %}
                               Currently no description
@@ -79,9 +80,9 @@
   						</div><!-- /.card-block -->
   					</div><!-- /.card -->
 
-            <!-- <div id="ajaxTesting">
+            <div id="ajaxTesting">
               <h5 id="test"></h5>
-            </div> -->
+            </div>
 
           </div><!-- /.content description -->
 
@@ -94,10 +95,21 @@
 
 <script>
 
-var name = '{{allocationlist[-1]|safe}}';
+var stateEntityList = {{allocationlist|safe}};
+var stateEntityListLength = stateEntityList.length;
+// var names = $('#allocationstate').getElementsByTagName('td');
 
-window.onload = function(){
-  get_states(name);
+// for (var i = 0; i < names.length; i++) {
+//   var name = names[i].toString();
+//   name.onload = get_states(name);
+// };
+
+
+window.onload = function (){
+  for (var i = 0; i < stateEntityListLength; i++) {
+    var name = stateEntityList[i];
+    get_states(name);
+  };
   setInterval( function(){
     get_states(name);
   }, 5000);

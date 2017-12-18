@@ -82,7 +82,7 @@ h4, .h4 {
 h5, .h5 {
   font-size: 16px;
   margin-bottom: 15px;
-  color: white;
+  /* color: white; */
 }
 
 h6, .h6 {
@@ -216,7 +216,11 @@ body > .navbar-collapse {
     z-index: 4;
     padding-top: 70px;
     /*padding-bottom: calc(100vh - 75px);*/
-    background-color: rgba(37, 40, 48, 0.7)}
+    /* dark theme
+    background-color: rgba(37, 40, 48, 0.7); */
+    /* light theme */
+    background-color: #24292e;
+  }
   .sidebar .sidebar-background,
   body > .navbar-collapse .sidebar-background {
     position: absolute;
@@ -375,7 +379,10 @@ body > .navbar-collapse {
     background-size: 150% 150%;
     z-index: 3;
     opacity: 1;
-    background: rgba(37, 40, 48, 1.0)
+    /* dark theme
+    background: rgba(37, 40, 48, 1.0); */
+    /* light theme */
+    background: #24292e;
    }
   .sidebar[data-image]:after, .sidebar.has-image:after,
   body > .navbar-collapse[data-image]:after,
@@ -443,7 +450,10 @@ body > .navbar-collapse {
     background-size: 150% 150%; }
 
 .main-panel {
-  background: #252830;
+  /* dark theme */
+  /* background: #252830; */
+  /* light theme */
+  background: rgba(203, 203, 210, 0.05);
   position: relative;
   z-index: 2;
   float: right;
@@ -927,7 +937,10 @@ body > .navbar-collapse {
     margin: 5px 0px;
     padding: 15px 15px;
     font-size: 14px;
-    color: #b3b3b3;
+    /* dark theme */
+    /* color: #b3b3b3; */
+    /* light theme */
+    color: white;
   }
   .navbar .container-fluid .navbar-brand {
     margin-left: 0;
@@ -1067,8 +1080,10 @@ body > .navbar-collapse {
   border-top-color: #FFFFFF; }
 
 .navbar-default {
-  /*background-color: rgba(255, 255, 255, 0.96);*/
-  background-color: #111;
+  /* light theme */
+  background-color: #24292e;
+  /* dark theme */
+  /* background-color: #111; */
   border-bottom: 1px solid rgba(0, 0, 0, 0.1);
   border-color: #e7e7e7;
  }
@@ -1150,8 +1165,10 @@ body > .navbar-collapse {
     background-color: transparent; }
 
 .footer {
-  background-color: #111;
-  /*background-color: rgba(0, 0, 0, 0.8);*/
+  /* dark theme */
+  /* background-color: #111; */
+  /* light theme */
+  background-color: #24292e;
   line-height: 20px; }
   .footer nav > ul {
     list-style: none;
@@ -1180,7 +1197,10 @@ body > .navbar-collapse {
     .footer .social-area > a:not(.btn):hover, .footer .social-area > a:not(.btn):focus {
       color: #777777; }
   .footer .copyright {
-    color: #777777;
+    /* dark theme */
+    /* color: #777777; */
+    /* light theme */
+    color: white;
     padding: 10px 15px;
     margin: 10px 3px;
     line-height: 20px;
@@ -1207,7 +1227,7 @@ body > .navbar-collapse {
   margin: 0;
   padding: 0;
   border-radius: 10px;
-  display: block;
+  /*display: block;*/
   z-index: 9000;
   position: absolute;
   opacity: 0;
@@ -1356,14 +1376,14 @@ body > .navbar-collapse {
     .card label i {
       font-size: 16px; }
   .card label {
-    color: #ffc500;
+    color: #007bff;
     font-size: 16px;
     margin-bottom: 5px;
     text-transform: uppercase;
     font-weight: 400; }
   .card .title {
     margin-top: 15px;
-    color: #ffc500;
+    color: #007bff;
     font-weight: 500; }
   .card .avatar {
     width: 30px;
@@ -1902,15 +1922,6 @@ body > .navbar-collapse {
     z-index: 9999;
     overflow-x: hidden; }
 
-  .social-line .btn {
-    margin: 0 0 10px 0; }
-
-  .subscribe-line .form-control {
-    margin: 0 0 10px 0; }
-
-  .social-line.pull-right {
-    float: none; }
-
   .footer nav.pull-left {
     float: none !important; }
 
@@ -2051,6 +2062,7 @@ body > .navbar-collapse {
     #new-project-form textarea {
       width: 100%;
       border: 1px solid #ccc;
+      border-color: lightgrey;
       background: #FFF;
       margin: 0 0 5px;
       padding: 10px;
@@ -2433,24 +2445,24 @@ textarea {
    width: 100%;
    height: 175px;
    background-color: transparent;
-   border-color: transparent;
+   border-color: lightgrey;
 }
 
 .resource-profile {
   background-color: transparent;
-  border-color: #434857;
+  border-color: rgba(0,0,0,0.09);
   font-size: 18px;
 }
 .resource-profile .panel-heading {
-  background-color: transparent;
-  color: white;
-  border-color: #434857;
+  background-color: rgba(0,0,0,0.03);
+  color: black;
+  border-color: rgba(0,0,0,0.09);
 }
 .resource-profile .panel-body:hover {
   background-color: rgba(179, 179, 179, 0.1);
 }
 .resource-profile .pubtoken p {
-  color: #ffc500;
+  color: #007bff;
 }
 .resource-profile .pubtoken:hover {
   background-color: transparent;

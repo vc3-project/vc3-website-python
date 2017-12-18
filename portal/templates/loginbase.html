@@ -115,7 +115,7 @@
 						<a class="navbar-brand" href="{{url_for('logout')}}">Logout</a>
 					{% else %}
 						<a class="navbar-brand" href="{{url_for('show_profile_page')}}">{{session['first']}} {{session['last']}}</a>
-						<a class="navbar-brand" href="{{url_for('logout')}}">Logout</a>
+						<a class="navbar-brand" href="{{url_for('logout')}}"><i class="fa fa-fw fa-sign-out"></i> Logout</a>
 					{% endif %}
 					</div>
 				</div>

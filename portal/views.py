@@ -793,7 +793,8 @@ def list_allocations():
     allocationList = []
 
     for allocation in allocations:
-        allocationList.append(str(allocation.name))
+        if allocation.owner == session['name']:
+            allocationList.append(str(allocation.name))
 
     return render_template('allocation.html', allocations=allocations,
                            resources=resources, users=users, projects=projects,
@@ -1030,9 +1031,14 @@ def list_requests():
     vc3_requests = vc3_client.listRequests()
     nodesets = vc3_client.listNodesets()
     clusters = vc3_client.listClusters
+    requestList = []
+
+    for vc3_request in vc3_requests:
+        requestList.append(str(vc3_request.name))
 
     return render_template('request.html', requests=vc3_requests,
-                           nodesets=nodesets, clusters=clusters)
+                           nodesets=nodesets, clusters=clusters,
+                           requestlist=requestList)
 
 
 @app.route('/request/new', methods=['GET', 'POST'])
