@@ -52,47 +52,12 @@
                             {{ request.name }}
                             </a>
                           </td>
-                        {% if request.action == "terminate" %}
-                          {% if request.state == "running" %}
-                          <td>
-                            <font color="orange">
-                              Terminating <i class="fa fa-exclamation-circle" style="color:orange"></i>
-                            </font>
-                          </td>
-                          {% else %}
-                          <td>
-                            <font color="red">
-                              {{ request.state }} <i class="fa fa-times-circle" style="color:red"></i>
-                            </font>
-                          </td>
-                          {% endif %}
-                        {% elif request.state == "new" %}
-                          <td>
-                            <font color="blue">
-                              {{ request.state }}
-                            </font>
-                          </td>
-                        {% elif request.state == "validated" or request.state == "configured" or request.state == "running" %}
-    											<td>
-                            <font color="green">
-                              {{ request.state }} <i class="fa fa-check-circle-o" style="color:green"></i>
-                            </font>
-                          </td>
-                        {% elif request.state=="terminated" or request.state == "terminating"%}
-                          <td>
-                            <i class="fa fa-times-circle" style="color:red"></i>
-                          </td>
-                        {% else %}
-                          <td>
-                            <font color="green">
-                              {{ request.state }} <i class="fa fa-spinner fa-spin" style="color:green"></i>
-                            </font>
-                          </td>
-                        {% endif %}
 
-                        <td>
-                          <div>{{request.cluster}}</div>
-                        </td>
+                          <td id="requeststates"></td>
+
+                          <td>
+                            <div>{{request.cluster}}</div>
+                          </td>
 
                         {% if (request.statusraw['VC3-static'] == {}) %}
                           <td>
@@ -281,5 +246,42 @@
 
   </div>
 </div>
+
+<script>
+
+var name = '{{requestlist[-1]|safe}}';
+
+window.onload = function(){
+  get_states(name);
+  setInterval( function(){
+    get_states(name);
+  }, 5000);
+}
+
+function get_states(name){
+  $.ajax({
+    url: "/rest/virtual_cluster/" + name,
+    type: "get",
+    dataType: 'json',
+    success: function(data){
+      $('#requeststates').html(data.state);
+      $('#test').html(data.state);
+      if($('#test').length != 0){
+        $('#test').css('color', 'red');
+      }
+    },
+    error: function(xhr){
+      //Do Something to handle error
+    }
+  });
+}
+
+// $(document).ajaxComplete(function(){
+//   if($('#test').length != 0){
+//     $('#test').css('color', 'red');
+//   }
+// });
+
+</script>
 
 {%endblock%}
