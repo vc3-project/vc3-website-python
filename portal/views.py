@@ -171,12 +171,12 @@ def show_profile_page():
             session['primary_identity'] = profile.identity_id
             if profile.sshpubstring is not None:
                 sshpubstring = profile.sshpubstring
-        # else:
-        #     if session['primary_identity'] not in ["c887eb90-d274-11e5-bf28-779c8998e810", "05e05adf-e9d4-487f-8771-b6b8a25e84d3", "c4686d14-d274-11e5-b866-0febeb7fd79e", "be58c8e2-fc13-11e5-82f7-f7141a8b0c16", "c456b77c-d274-11e5-b82c-23a245a48997", "f1f26455-cbd5-4933-986b-47c57ee20987", "aebe29b8-d274-11e5-ba4b-ffec0df955f2", "c444a294-d274-11e5-b7f1-e3782ed16687", "9c1c1643-8726-414f-85dc-aca266099304"]:
-        #         next
-        #     else:
-        #         flash('Please complete any missing profile fields before '
-        #               'launching a cluster.', 'warning')
+        else:
+            # if session['primary_identity'] not in ["c887eb90-d274-11e5-bf28-779c8998e810", "05e05adf-e9d4-487f-8771-b6b8a25e84d3", "c4686d14-d274-11e5-b866-0febeb7fd79e", "be58c8e2-fc13-11e5-82f7-f7141a8b0c16", "c456b77c-d274-11e5-b82c-23a245a48997", "f1f26455-cbd5-4933-986b-47c57ee20987", "aebe29b8-d274-11e5-ba4b-ffec0df955f2", "c444a294-d274-11e5-b7f1-e3782ed16687", "9c1c1643-8726-414f-85dc-aca266099304"]:
+            #     next
+            # else:
+            flash('Please complete any missing profile fields before '
+                  'launching a cluster.', 'warning')
 
         if request.args.get('next'):
             session['next'] = get_safe_redirect()

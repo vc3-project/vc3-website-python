@@ -453,7 +453,7 @@ body > .navbar-collapse {
   /* dark theme */
   /* background: #252830; */
   /* light theme */
-  background: rgba(203, 203, 210, 0.05);
+  background: #fdfcf7;
   position: relative;
   z-index: 2;
   float: right;
@@ -525,7 +525,9 @@ body > .navbar-collapse {
 
 .btn-primary {
   border-color: #edb500;
-  color: #edb500; }
+  color: #fdfcf7;
+  background-color: #edb500;
+ }
   .btn-primary:hover, .btn-primary:focus, .btn-primary:active, .btn-primary.active, .open > .btn-primary.dropdown-toggle {
     background-color: #edb500;
     color: #f4f8ff;
@@ -1383,7 +1385,7 @@ body > .navbar-collapse {
     font-weight: 400; }
   .card .title {
     margin-top: 15px;
-    color: #007bff;
+    color: #2b2b2b;
     font-weight: 500; }
   .card .avatar {
     width: 30px;
@@ -1393,7 +1395,7 @@ body > .navbar-collapse {
     margin-right: 5px; }
   .card .description {
     font-size: 14px;
-    color: #b3b3b3; }
+    color: #2b2b2b; }
   .card .footer {
     padding: 0;
     background-color: transparent;
@@ -2337,7 +2339,7 @@ RESOURCE PROFILE INDEX PAGE
 
 .filterable {
     margin-top: 15px;
-    border-color: #fcc500;
+    border-color: #b3b3b3;
     font-size: 16px;
 }
 .filterable .panel-heading .pull-right {
@@ -2357,13 +2359,13 @@ RESOURCE PROFILE INDEX PAGE
     height: auto;
 }
 .filterable .filters input[disabled]::-webkit-input-placeholder {
-    color: #333;
+    color: #2b2b2b;
 }
 .filterable .filters input[disabled]::-moz-placeholder {
-    color: #333;
+    color: #2b2b2b;
 }
 .filterable .filters input[disabled]:-ms-input-placeholder {
-    color: #333;
+    color: #2b2b2b;
 }
 .filterable tbody tr {
   color: #595753;
@@ -2374,11 +2376,17 @@ RESOURCE PROFILE INDEX PAGE
     overflow-y:auto;
 }
 .filterable .panel-heading {
-  background-color: #fcc500;
-  color: #111;
-  border-color: #fcc500;
+  /* background-color: #2b2b2b; */
+  color: #fdfcf7;
+  border-color: #2b2b2b;
 }
 .filterable button {
+  font-size: 12px;
+  color: #111;
+  background-color: #fff;
+  border-color: #fff;
+}
+.filterable button:focus, .filterable button:active {
   color: #111;
   background-color: #fff;
   border-color: #fff;
@@ -2443,10 +2451,12 @@ RESOURCE PROFILE
 textarea {
    resize: none;
    width: 100%;
+   font-size: 14px;
    height: 175px;
    background-color: transparent;
    border-color: lightgrey;
 }
+
 
 .resource-profile {
   background-color: transparent;
