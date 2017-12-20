@@ -583,7 +583,6 @@ def delete_project(name):
 
 @app.route('/cluster/new', methods=['GET', 'POST'])
 @authenticated
-@allocation_validated
 def create_cluster():
     """ Create New Cluster Template Form """
 

@@ -53,7 +53,12 @@
                             </a>
                           </td>
 
-                          <td id="requeststates"></td>
+                          <td>
+                            <div id="requeststates" class="row"></div>
+                            <!-- <div class="row">
+                              <small>{{request.state_reason}}</small>
+                            </div> -->
+                          </td>
 
                           <td>
                             <div>{{request.cluster}}</div>
@@ -107,7 +112,7 @@
 
                           <td>
                             <div class="row">
-                              {% if request.headnode['ip'] %}
+                              {% if (request.headnode['ip'] and request.headnode['state'] == 'running')%}
                               <a href="#"
                               data-toggle="popover"
                               title="To access your node via terminal"
@@ -212,7 +217,7 @@
 
                           <td>
                             <div class="row">
-                              {% if request.headnode['ip'] %}
+                              {% if (request.headnode['ip'] and request.headnode['state'] == 'running') %}
                               <a href="#"
                               data-toggle="popover"
                               title="To access your node via terminal"

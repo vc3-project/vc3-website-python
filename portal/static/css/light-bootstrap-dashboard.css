@@ -2511,8 +2511,8 @@ ALLOCATION LIST PAGE
  }
 
 .delete_entity .btn-danger {
-  border-color: : #FF4A55;
-  color: white;
+  border-color: #FF4A55;
+  /* color: white; */
 }
 .delete_entity .btn-danger:hover {
   border-color: : #FF4A55;
@@ -2522,7 +2522,7 @@ ALLOCATION LIST PAGE
 .delete_entity .btn-danger:active {
   border-color: : #FF4A55;
   background: transparent;
-  color: white;
+  color: black;
 }
 
 .progress-bar {
