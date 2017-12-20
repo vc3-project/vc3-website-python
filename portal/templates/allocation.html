@@ -49,8 +49,8 @@
     											<td>
                             <a href="{{ url_for('view_allocation', name=allocation.name) }}" title="View Allocation">{{ allocation.displayname }}</a>
                           </td>
-
-      										<td id="allocationstates"></td>
+                              {% set allocationname = allocation.name.replace(".", "-") %}
+      										<td id="{{allocationname}}"></td>
 
     											<td>
                             <a href="{{ url_for('view_resource', name=allocation.resource) }}">
@@ -80,9 +80,9 @@
   						</div><!-- /.card-block -->
   					</div><!-- /.card -->
 
-            <div id="ajaxTesting">
+            <!-- <div id="ajaxTesting">
               <h5 id="test"></h5>
-            </div>
+            </div> -->
 
           </div><!-- /.content description -->
 
@@ -121,7 +121,8 @@ function get_states(name){
     type: "get",
     dataType: 'json',
     success: function(data){
-      $('#allocationstates').html(data.state);
+      var allocation_id = name.replace(".", "-")
+      $('#'+allocation_id).html(data.state);
       $('#test').html(data.state);
       if($('#test').length != 0){
         $('#test').css('color', 'red');
