@@ -37,13 +37,14 @@
             </div><!-- /.row -->
 
             <div class="row">
-              <label for="statusbar" style="margin-top:20px;">State of Virtual Cluster</label>
+              <!-- <label for="statusbar" style="margin-top:20px;">State of Virtual Cluster</label> -->
               <div name="statusbar" id="statusbar">
                 {% if state == "terminated" %}
                 <h4>
                   <span class="label label-danger" style="color:white">
                     Successfully Terminated
                   </span>
+                  <h5>{{vc3_request.state_reason}}</h5>
                 </h4>
                   {% elif state == "terminating" %}
                 <div class="progress" style="height:25px;">
