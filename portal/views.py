@@ -1033,7 +1033,8 @@ def list_requests():
     requestList = []
 
     for vc3_request in vc3_requests:
-        requestList.append(str(vc3_request.name))
+        if vc3_request.owner == session['name']:
+            requestList.append(str(vc3_request.name))
 
     return render_template('request.html', requests=vc3_requests,
                            nodesets=nodesets, clusters=clusters,
