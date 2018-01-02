@@ -13,6 +13,10 @@
         <div class="card">
 
           <div class="header">
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item"><a href="{{url_for('show_profile_page')}}">Portal Home</a></li>
+              <li class="breadcrumb-item active">Profile</li>
+            </ol>
             <h2 class="title">
               <div class="row">
                 Welcome <span style="color:#2b2b2b">{{profile.displayname}}</span>

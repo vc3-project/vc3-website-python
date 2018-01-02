@@ -11,6 +11,11 @@
       <div class="col-md-12">
         <div class="card">
           <div class="header">
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item"><a href="{{url_for('show_profile_page')}}">Portal Home</a></li>
+              <li class="breadcrumb-item"><a href="{{url_for('list_requests')}}">Virtual Clusters</a></li>
+              <li class="breadcrum-item active">{{name}}</li>
+            </ol>
           	<h4 class="title row">Virtual Cluster:
               {{name}}
             </h4>
