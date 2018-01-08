@@ -833,9 +833,11 @@ def create_allocation():
             accountname = request.form['accountname']
             description_input = request.form['description']
             description = str(description_input)
+            resources = vc3_client.listResources()
             flash('You have already registered an allocation on that resource.', 'warning')
             return render_template('allocation_new.html', displayname=displayname,
-                                   accountname=accountname, description=description)
+                                   accountname=accountname, description=description,
+                                   resources=resources)
 
         flash('Configuring your allocation, when validated, please view your '
               'allocation to complete the setup.', 'warning')
