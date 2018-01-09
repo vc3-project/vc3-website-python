@@ -35,6 +35,11 @@
   to {
     -ms-transform: rotate(360deg); } }
 /*           Font Smoothing      */
+body {
+  background: url(../img/grid.png) repeat-x;
+  background-attachment: fixed;
+  background-color: #f8f8f8;
+}
 body,
 h1, .h1,
 h2, .h2,
