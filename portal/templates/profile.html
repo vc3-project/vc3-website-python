@@ -131,14 +131,14 @@
                 {% else %}
                   <form role="form" action="{{url_for('show_profile_page')}}" method="POST">
                     <div class="form-group">
-        							<label for="name">User Name <span id="asterik">*</span> <small>(only letters and numbers, no whitespaces)</small></label>
+        							<label for="name">Username <span id="asterik">*</span> <small>(only letters and numbers, no whitespaces)</small></label>
         							<input
         								type="text"
                         pattern="[A-Za-z\d]*"
         								id="name"
                         maxlength="14"
         								name="name"
-                        placeholder="Choose User Name..."
+                        placeholder="Choose Username..."
         								class="form-control tour-step tour-step-three"
         								required="required"
         								tabindex="1"

@@ -83,7 +83,7 @@
                     {% if pubtoken == "None" %}
                     <p>Your SSH Public Key will be available once your allocation has been validated. Please allow a few moments and refresh the page.</p>
                     <div>
-                      <font color="orange">Current State: <i class="fa fa-spinner fa-spin" style="color:orange"></i> {{ state }} </font>
+                      <font color="orange">Current State: <i class="fa fa-spinner fa-spin" style="color:orange"></i> Generating SSH-Key </font>
                     </div>
                     {% else %}
                     <p>To use this resource, paste this SSH Public Key into your ~/.ssh/authorized_keys file on the remote resource</p>
@@ -134,7 +134,7 @@
                             Enter your password for <kbd>{{accesshost}}</kbd> for access
                           </li>
                           <li>
-                            Next you will need to replace <kbd>PUT-THE-ALLOCATION-SSH-KEY-HERE</kbd> with the actual allocation key (note that it needs to be quoted), type:
+                            Next you will need to add the Allocation SSH-Key to your authorized keys, type:
                             <div>
                               <kbd>echo 'PUT-THE-ALLOCATION-SSH-KEY-HERE' >> ~/.ssh/authorized_keys<kbd>
                             </div>

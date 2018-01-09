@@ -704,7 +704,6 @@ def edit_cluster(name):
                 clustername = cluster.name
                 owner = cluster.owner
                 state = cluster.state
-                acl = cluster.acl
                 description = cluster.description
         for nodeset in nodesets:
             if nodeset.name == name:
@@ -715,7 +714,7 @@ def edit_cluster(name):
 
                 return render_template('cluster_edit.html', name=clustername,
                                        owner=owner, nodesets=nodesets,
-                                       state=state, acl=acl, projects=projects,
+                                       state=state, projects=projects,
                                        frameworks=frameworks, node_number=node_number,
                                        description=description, framework=framework)
         app.logger.error("Could not find cluster when editing: {0}".format(name))
