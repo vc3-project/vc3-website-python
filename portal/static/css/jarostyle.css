@@ -2,7 +2,10 @@
 # General
 --------------------------------------------------------------*/
 body {
-  background: #fff;
+  /* background: #fff; */
+  background: url(../img/grid.png) repeat-x;
+  background-color: #f8f8f8;
+  background-attachment: fixed;
   color: #666666;
   /*font-family: "Open Sans", sans-serif;*/
   font-family: "Raleway", sans-serif;
@@ -95,8 +98,8 @@ h1, h2, h3, h4, h5, h6 {
 
 #hero {
   background-image: url('https://s.hswstatic.com/gif/disruptive-technologies-10-orig.jpg');
-  /* background-image: url('http://rcc.lib.uchicago.edu/images/1-DSCN0050.JPG'); */
-  /* background-image: url('https://rcc.uchicago.edu/sites/rcc.uchicago.edu/files/styles/slideshow-image/public/uploads/images/slideshows/Midway2_06.jpg?itok=kFMdcqYA'); */
+  /* background: url(../img/grid.png) repeat-x; */
+  /* background-color: #f8f8f8; */
   box-shadow: inset 0 0 0 1000px rgba(0,0,0,0.1);
   background-position: center center;
   background-repeat: no-repeat;

@@ -100,7 +100,7 @@ p {
   line-height: 1.5; }
 
 h1 small, h2 small, h3 small, h4 small, h5 small, h6 small, .h1 small, .h2 small, .h3 small, .h4 small, .h5 small, .h6 small, h1 .small, h2 .small, h3 .small, h4 .small, h5 .small, h6 .small, .h1 .small, .h2 .small, .h3 .small, .h4 .small, .h5 .small, .h6 .small {
-  color: #9A9A9A;
+  color: #444;
   font-weight: 300;
   line-height: 1.5; }
 
@@ -136,7 +136,7 @@ body,
   position: relative; }
 
 a {
-  color: #b3b3b3; }
+  color: #2fa4e7; }
   a:hover, a:focus {
     /*color: #42d0ed;*/
     color: #ffc500;
@@ -224,7 +224,7 @@ body > .navbar-collapse {
     /* dark theme
     background-color: rgba(37, 40, 48, 0.7); */
     /* light theme */
-    background-color: #24292e;
+    /* background-color: #24292e; */
   }
   .sidebar .sidebar-background,
   body > .navbar-collapse .sidebar-background {
@@ -263,7 +263,7 @@ body > .navbar-collapse {
   .sidebar .logo-tim,
   body > .navbar-collapse .logo-tim {
     border-radius: 50%;
-    border: 1px solid #333;
+    border: 1px solid #444;
     display: block;
     height: 61px;
     width: 61px;
@@ -282,6 +282,7 @@ body > .navbar-collapse {
       color: #FFFFFF;
       margin: 5px 15px;
       opacity: .86;
+      -webkit-font-smoothing: antialiased;
       border-radius: 4px;
       display: block; }
     .sidebar .nav li:hover > a,
@@ -347,7 +348,7 @@ body > .navbar-collapse {
   .sidebar .logo-tim,
   body > .navbar-collapse .logo-tim {
     border-radius: 50%;
-    border: 1px solid #333;
+    border: 1px solid #444;
     display: block;
     height: 61px;
     width: 61px;
@@ -374,20 +375,20 @@ body > .navbar-collapse {
     background: #000000; }
   .sidebar:after,
   body > .navbar-collapse:after {
-    background: #787878;
-    background: -moz-linear-gradient(top, #787878 0%, #343434 100%);
-    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #787878), color-stop(100%, #343434));
-    background: -webkit-linear-gradient(top, #787878 0%, #343434 100%);
-    background: -o-linear-gradient(top, #787878 0%, #343434 100%);
-    background: -ms-linear-gradient(top, #787878 0%, #343434 100%);
-    background: linear-gradient(to bottom, #787878 0%, #343434 100%);
+    /* background: #787878; */
+    /* background: -moz-linear-gradient(top, #787878 0%, #343434 100%); */
+    /* background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #787878), color-stop(100%, #343434)); */
+    /* background: -webkit-linear-gradient(top, #787878 0%, #343434 100%); */
+    /* background: -o-linear-gradient(top, #787878 0%, #343434 100%); */
+    /* background: -ms-linear-gradient(top, #787878 0%, #343434 100%); */
+    /* background: linear-gradient(to bottom, #787878 0%, #343434 100%); */
     background-size: 150% 150%;
     z-index: 3;
     opacity: 1;
     /* dark theme
     background: rgba(37, 40, 48, 1.0); */
     /* light theme */
-    background: #24292e;
+    /* background: #24292e; */
    }
   .sidebar[data-image]:after, .sidebar.has-image:after,
   body > .navbar-collapse[data-image]:after,
@@ -458,7 +459,7 @@ body > .navbar-collapse {
   /* dark theme */
   /* background: #252830; */
   /* light theme */
-  background: #fdfcf7;
+  /* background: #fdfcf7; */
   position: relative;
   z-index: 2;
   float: right;
@@ -1383,7 +1384,7 @@ body > .navbar-collapse {
     .card label i {
       font-size: 16px; }
   .card label {
-    color: #007bff;
+    color: #2fa4e7;
     font-size: 16px;
     margin-bottom: 5px;
     text-transform: uppercase;
