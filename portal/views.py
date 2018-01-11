@@ -378,10 +378,10 @@ def create_project():
                                    users=users, allocations=allocations,
                                    description=description)
 
-        for selected_members in request.form.getlist('members'):
-            vc3_client.addUserToProject(project=name, user=selected_members)
-        for selected_allocations in request.form.getlist('allocation'):
-            vc3_client.addAllocationToProject(allocation=selected_allocations,
+        for selected_member in request.form.getlist('members'):
+            vc3_client.addUserToProject(project=name, user=selected_member)
+        for selected_allocation in request.form.getlist('allocation'):
+            vc3_client.addAllocationToProject(allocation=selected_allocation,
                                               projectname=newproject.name)
         flash('Your project has been successfully created.', 'success')
 
@@ -463,8 +463,8 @@ def add_member_to_project(name):
                 app.logger.error("Trying to add owner as member:" +
                                  "owner: {0} project:{1}".format(user, name))
                 return redirect(url_for('view_project', name=name))
-            for selected_members in request.form.getlist('newuser'):
-                vc3_client.addUserToProject(project=name, user=selected_members)
+            for selected_member in request.form.getlist('newuser'):
+                vc3_client.addUserToProject(project=name, user=selected_member)
             flash('Successfully added member to project.', 'success')
             return redirect(url_for('view_project', name=name))
     app.logger.error("Could not find project when adding user: " +
@@ -523,8 +523,8 @@ def add_allocation_to_project(name):
     for project in projects:
         if project.name == name:
             name = project.name
-            for selected_allocations in request.form.getlist('allocation'):
-                vc3_client.addAllocationToProject(allocation=selected_allocations,
+            for selected_allocation in request.form.getlist('allocation'):
+                vc3_client.addAllocationToProject(allocation=selected_allocation,
                                                   projectname=name)
             flash('Successfully added allocation to project.', 'success')
             return redirect(url_for('view_project', name=name))
@@ -606,14 +606,16 @@ def create_cluster():
         app_type = request.form['app_type']
         app_role = "worker-nodes"
         translatename = "".join(inputname.split())
-        name = translatename.lower()
+        name = owner + "-" + translatename.lower()
+        displayname = translatename.lower()
         description_input = request.form['description']
         description = str(description_input)
 
         try:
             nodeset = vc3_client.defineNodeset(name=name, owner=owner,
                                                node_number=node_number, app_type=app_type,
-                                               app_role=app_role, environment=None)
+                                               app_role=app_role, environment=None,
+                                               displayname=displayname)
             vc3_client.storeNodeset(nodeset)
         except:
             node_number = request.form['node_number']
@@ -628,7 +630,7 @@ def create_cluster():
                                    framework=framework)
 
         newcluster = vc3_client.defineCluster(
-            name=name, owner=owner, nodesets=[], description=description)
+            name=name, owner=owner, nodesets=[], description=description, displayname=displayname)
         vc3_client.storeCluster(newcluster)
         vc3_client.addNodesetToCluster(nodesetname=nodeset.name,
                                        clustername=newcluster.name)
@@ -652,7 +654,6 @@ def list_clusters():
 
 @app.route('/cluster/<name>', methods=['GET'])
 @authenticated
-@allocation_validated
 def view_cluster(name):
     """
     Specific page view, pertaining to Cluster Template
@@ -673,12 +674,13 @@ def view_cluster(name):
         owner = cluster.owner
         state = cluster.state
         description = cluster.description
+        displayname = cluster.displayname
 
         return render_template('cluster_profile.html', name=cluster_name,
                                owner=owner, state=state,
                                nodesets=nodesets, description=description,
                                users=users, clusters=clusters,
-                               projects=projects)
+                               projects=projects, displayname=displayname)
     raise LookupError('cluster')
 
 
@@ -788,15 +790,15 @@ def list_allocations():
     resources = vc3_client.listResources()
     projects = vc3_client.listProjects()
     users = vc3_client.listUsers()
-    allocationList = []
+    allocation_list = []
 
     for allocation in allocations:
         if allocation.owner == session['name']:
-            allocationList.append(str(allocation.name))
+            allocation_list.append(str(allocation.name))
 
     return render_template('allocation.html', allocations=allocations,
                            resources=resources, users=users, projects=projects,
-                           allocationlist=allocationList)
+                           allocationlist=allocation_list)
 
 
 @app.route('/allocation/new', methods=['GET', 'POST'])
@@ -1031,15 +1033,15 @@ def list_requests():
     vc3_requests = vc3_client.listRequests()
     nodesets = vc3_client.listNodesets()
     clusters = vc3_client.listClusters
-    requestList = []
+    request_list = []
 
     for vc3_request in vc3_requests:
         if vc3_request.owner == session['name']:
-            requestList.append(str(vc3_request.name))
+            request_list.append(str(vc3_request.name))
 
     return render_template('request.html', requests=vc3_requests,
                            nodesets=nodesets, clusters=clusters,
-                           requestlist=requestList)
+                           requestlist=request_list)
 
 
 @app.route('/request/new', methods=['GET', 'POST'])
@@ -1075,8 +1077,8 @@ def create_request():
         vc3requestname = translatename.lower()
         environments = []
         description = request.form['description']
-        for selected_allocations in request.form.getlist('allocation'):
-            allocations.append(selected_allocations)
+        for selected_allocation in request.form.getlist('allocation'):
+            allocations.append(selected_allocation)
 
         newrequest = vc3_client.defineRequest(name=vc3requestname,
                                               owner=owner, cluster=cluster,

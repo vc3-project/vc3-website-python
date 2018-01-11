@@ -28,62 +28,130 @@
 
             <div class="card">
   						<div class="card-block">
-  							<div class="panel panel-primary filterable">
-  								<div class="panel-heading">
-  									<h3 class="panel-title">Cluster Templates</h3>
-  									<div class="pull-right">
-  										<button class="btn btn-primary btn-sm btn-filter"><span class="glyphicon glyphicon-filter"></span> Filter</button>
-  									</div>
-  								</div>
-                  <div class="table-responsive" style="overflow-x:auto;">
-    								<table class="display table table-hover" width="100%">
-    									<thead>
-    										<tr class="filters">
-    											<th><input type="text" class="form-control" placeholder="Name" disabled></th>
-    											<th><input type="text" class="form-control" placeholder="Framework" disabled></th>
-    											<th><input type="text" class="form-control" placeholder="No. of Compute Nodes" disabled></th>
-                          <th><input type="text" class="form-control" placeholder="No. of Head Nodes" disabled></th>
-                          <th><input type="text" class="form-control" placeholder="Description" disabled></th>
-    										</tr>
-    									</thead>
-    									<tbody data-link="row" class="rowlink">
-    										{% for cluster in clusters %}
-                          {% if cluster.owner == session['name'] %}
-    										<tr>
-    											<td><a href="{{ url_for('view_cluster', name=cluster.name) }}" title="View Cluster Template">{{ cluster.name }}</a></td>
-                          <td>
-                            {% for nodeset in nodesets %}
-                              {% if nodeset.name == cluster.name %}
-                                {{ nodeset.app_type }}
-                              {% endif %}
-                            {% endfor %}
-                          </td>
-    											<td>
-                            {% for nodeset in nodesets %}
-                              {% if nodeset.name == cluster.name %}
-                                {{ nodeset.node_number }}
-                              {% endif %}
-                            {% endfor %}
-                          </td>
-                          <td>
-                            1
-                          </td>
-                          <td>
-                            {% if cluster.description == None or cluster.description == "" %}
-                              Currently no description
-                            {% else %}
-                              <div id="allocation-description">{{cluster.description}}</div>
-                            {% endif %}
-                          </td>
-    										</tr>
-    										  {% endif %}
-    										{% endfor %}
-    									</tbody>
-    								</table>
-                  </div>
-  							</div>
-  						</div>
-  					</div>
+
+                <ul class="nav nav-tabs">
+                  <li class="active"><a data-toggle="tab" href="#cluster-templates">My Cluster Templates</a></li>
+                  <li><a data-toggle="tab" href="#public-templates">Public Templates</a></li>
+                </ul>
+
+                <div class="tab-content">
+
+                  <div id="cluster-templates" class="tab-pane fade in active">
+                    <div class="panel panel-primary filterable">
+      								<div class="panel-heading">
+      									<h3 class="panel-title">My Cluster Templates</h3>
+      									<div class="pull-right">
+      										<button class="btn btn-primary btn-sm btn-filter"><span class="glyphicon glyphicon-filter"></span> Filter</button>
+      									</div>
+      								</div>
+                      <div class="table-responsive" style="overflow-x:auto;">
+        								<table class="display table table-hover" width="100%">
+        									<thead>
+        										<tr class="filters">
+        											<th><input type="text" class="form-control" placeholder="Name" disabled></th>
+        											<th><input type="text" class="form-control" placeholder="Framework" disabled></th>
+        											<th><input type="text" class="form-control" placeholder="No. of Compute Nodes" disabled></th>
+                              <th><input type="text" class="form-control" placeholder="No. of Head Nodes" disabled></th>
+                              <th><input type="text" class="form-control" placeholder="Description" disabled></th>
+        										</tr>
+        									</thead>
+        									<tbody data-link="row" class="rowlink">
+        										{% for cluster in clusters %}
+                              {% if cluster.owner == session['name'] %}
+        										<tr>
+        											<td><a href="{{ url_for('view_cluster', name=cluster.name) }}" title="View Cluster Template">{{ cluster.displayname }}</a></td>
+                              <td>
+                                {% for nodeset in nodesets %}
+                                  {% if nodeset.name == cluster.name %}
+                                    {{ nodeset.app_type }}
+                                  {% endif %}
+                                {% endfor %}
+                              </td>
+        											<td>
+                                {% for nodeset in nodesets %}
+                                  {% if nodeset.name == cluster.name %}
+                                    {{ nodeset.node_number }}
+                                  {% endif %}
+                                {% endfor %}
+                              </td>
+                              <td>
+                                1
+                              </td>
+                              <td>
+                                {% if cluster.description == None or cluster.description == "" %}
+                                  Currently no description
+                                {% else %}
+                                  <div id="allocation-description">{{cluster.description}}</div>
+                                {% endif %}
+                              </td>
+        										</tr>
+        										  {% endif %}
+        										{% endfor %}
+        									</tbody>
+        								</table>
+                      </div>
+      							</div><!-- ./panel filterable -->
+                  </div><!-- ./tab-pane #my-cluster-templates -->
+
+                  <div id="public-templates" class="tab-pane fade">
+                    <div class="panel panel-primary filterable">
+      								<div class="panel-heading">
+      									<h3 class="panel-title">Public Templates</h3>
+      									<div class="pull-right">
+      										<button class="btn btn-primary btn-sm btn-filter"><span class="glyphicon glyphicon-filter"></span> Filter</button>
+      									</div>
+      								</div>
+                      <div class="table-responsive" style="overflow-x:auto;">
+        								<table class="display table table-hover" width="100%">
+        									<thead>
+        										<tr class="filters">
+        											<th><input type="text" class="form-control" placeholder="Name" disabled></th>
+        											<th><input type="text" class="form-control" placeholder="Framework" disabled></th>
+        											<th><input type="text" class="form-control" placeholder="No. of Compute Nodes" disabled></th>
+                              <th><input type="text" class="form-control" placeholder="No. of Head Nodes" disabled></th>
+                              <th><input type="text" class="form-control" placeholder="Description" disabled></th>
+        										</tr>
+        									</thead>
+        									<tbody data-link="row" class="rowlink">
+        										{% for cluster in clusters %}
+        										<tr>
+        											<td><a href="{{ url_for('view_cluster', name=cluster.name) }}" title="View Cluster Template">{{ cluster.displayname }}</a></td>
+                              <td>
+                                {% for nodeset in nodesets %}
+                                  {% if nodeset.name == cluster.name %}
+                                    {{ nodeset.app_type }}
+                                  {% endif %}
+                                {% endfor %}
+                              </td>
+        											<td>
+                                {% for nodeset in nodesets %}
+                                  {% if nodeset.name == cluster.name %}
+                                    {{ nodeset.node_number }}
+                                  {% endif %}
+                                {% endfor %}
+                              </td>
+                              <td>
+                                1
+                              </td>
+                              <td>
+                                {% if cluster.description == None or cluster.description == "" %}
+                                  Currently no description
+                                {% else %}
+                                  <div id="allocation-description">{{cluster.description}}</div>
+                                {% endif %}
+                              </td>
+        										</tr>
+        										{% endfor %}
+        									</tbody>
+        								</table>
+                      </div>
+      							</div><!-- ./panel filterable -->
+                  </div><!-- ./tab-pane #public-templates -->
+
+                </div><!-- ./tab-content -->
+
+  						</div><!-- /.card-block -->
+  					</div><!-- /.card -->
 
           </div><!-- /.content description -->
 
