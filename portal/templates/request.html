@@ -126,6 +126,8 @@
                               data-trigger="focus">
                                 {{request.headnode['ip']}}
                               </a>
+                              {% elif request.headnode['state'] == 'terminated' %}
+                              <small> N/A </small>        
                               {% else %}
                               <small>IP Not yet available</small>
                               {% endif %}
