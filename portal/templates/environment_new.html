@@ -1,0 +1,55 @@
+{%extends "loginbase.html"%}
+
+{%block title%}Create Environment{%endblock%}
+
+{%block body%}
+{%include 'messages.html'%}
+
+<div class="col-md-8 col-sm-12">
+<section id="new_project">
+  <div class="container new-project">
+    <form role="form" id="new-project-form" action="{{url_for('create_environment')}}" method="POST">
+
+
+      <h2>Create A New Environment</h2>
+      <h5 style="color:black">An environment is blank</h5>
+      <h4><label><span id="asterik">*</span> = indicates required</label></h4>
+
+      <fieldset>
+        <label for="displayname">Environment Name <span id="asterik">*</span></label>
+        <input
+          placeholder="Environment Name"
+          name="displayname"
+          type="text"
+          tabindex="1"
+          autofocus
+          required
+          value="{{displayname}}"
+          >
+      </fieldset>
+
+      <fieldset>
+        <label for="description">Description (optional)</label>
+        <textarea
+          placeholder="A brief description..."
+          name="description"
+          id="form-textarea"
+          tabindex="4"
+          autofocus
+          maxlength="144"
+          value="{{request.description}}"
+          >{{description}}</textarea>
+        <span class="help-block exceeded"></span>
+      </fieldset>
+      <fieldset>
+        <button type="submit" tabindex="5" id="create-project" data-submit="...Sending">Create Environment</button>
+      </fieldset>
+      <fieldset>
+        <a href="{{url_for('list_environments')}}" class="btn btn-primary btn-sm" tabindex="6" title="Cancel">Cancel</a>
+      </fieldset>
+    </form>
+  </div> <!-- project container -->
+</section>
+</div>
+
+{%endblock%}

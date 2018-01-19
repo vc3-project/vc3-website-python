@@ -1,0 +1,8 @@
+1
++ : Fri Jan 19 18:36:55 2018
++ cd /srv/www/vc3-web-env/vc3-root/builds/noop.kMvwBV
++ : Fri Jan 19 18:36:55 2018
++ echo 'no explicit recipe given'
+no explicit recipe given
++ : Fri Jan 19 18:36:55 2018
++ exit 0

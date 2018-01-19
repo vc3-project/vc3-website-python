@@ -50,6 +50,12 @@
       </div>
       <ul class="nav">
 				<li class="">
+          <a href="{{url_for('dashboard')}}">
+            <i class="fa fa-dashboard" aria-hidden="true"></i>
+            <p>Monitoring</p>
+          </a>
+        </li>
+				<li class="">
           <a href="{{url_for('list_resources')}}">
             <i class="fa fa-database" aria-hidden="true"></i>
             <p class="tour-step tour-step-four">Resources</p>
@@ -80,9 +86,9 @@
           </a>
         </li>
 				<li class="">
-          <a href="{{url_for('dashboard')}}">
-            <i class="fa fa-dashboard" aria-hidden="true"></i>
-            <p>Monitoring</p>
+          <a href="{{url_for('list_environments')}}">
+            <i class="fa fa-hdd-o" aria-hidden="true"></i>
+            <p>Environments</p>
           </a>
         </li>
       </ul>

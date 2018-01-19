@@ -2,6 +2,7 @@ import base64
 import traceback
 import sys
 import time
+import subprocess
 
 from flask import (flash, redirect, render_template, request,
                    session, url_for)
@@ -11,6 +12,14 @@ from portal import app, pages
 from portal.decorators import authenticated, allocation_validated, project_exists
 from portal.utils import (load_portal_client, get_safe_redirect,
                           get_vc3_client, project_validated, project_in_vc)
+
+# subprocess.call(["vc3-builder", "vc3builder", "--list"], shell=True)
+# recipes = open('recipe_list.txt', 'w')
+# recipe = subprocess.Popen(["vc3-builder", "--list"], shell=True)
+# subprocess.call(["/usr/bin/vc3-builder", "--list"], stdout=recipes, shell=True)
+# recipe_list = recipes
+# recipes = recipe_list.read()
+recipe_list = subprocess.check_output(["/usr/bin/vc3-builder", "--list"])
 
 
 # Create a custom error handler for Exceptions
@@ -309,6 +318,15 @@ def authcallback():
         # Restrict Email access to only .edu, .gov, and .org
         # User must have a valid institutional affiliation
         # Otherwise return to error page, explaining restricted access
+        # identities = globusclient.get_identities(
+        #     primary_username=id_token.get('preferred_username'))
+        # for id in identities["identities"]:
+        #     if id["username"].split("@")[-1].split(".")[-1] in ["edu", "gov", "org"]:
+        #         inst_username = [id["username"].split("@")[-1].split(".")[-1]]
+        #
+        # if not inst_username:
+        #     return render_template('email_error.html')
+
         if not (email.split("@")[-1].split(".")[-1] in ["edu", "gov", "org"]):
             return render_template('email_error.html')
 
@@ -1215,10 +1233,59 @@ def dashboard():
     return render_template('dashboard.html')
 
 
+@app.route('/environments', methods=['GET'])
+@authenticated
+def list_environments():
+    return render_template('environments.html')
+
+
+@app.route('/environments/new', methods=['GET', 'POST'])
+@authenticated
+def create_environment():
+    """ New Environment Creation Form """
+    vc3_client = get_vc3_client()
+    if request.method == 'GET':
+        environments = vc3_client.listEnvironments()
+        return render_template('environment_new.html', environments=environments)
+
+    elif request.method == 'POST':
+        # Gathering and storing information from new allocation form
+        # into info-service
+        # Description from text input stored as string to avoid malicious input
+
+        displayname = request.form['displayname']
+        owner = session['name']
+        name = displayname.lower()
+        packagelist = []
+        envmap = {}
+        files = {}
+        description_input = request.form['description']
+        description = str(description_input)
+
+        try:
+            new_environment = vc3_client.defineEnvironment(
+                name=name, owner=owner, packagelist=packagelist,
+                envmap=envmap, files=files,
+                displayname=displayname, description=description)
+            vc3_client.storeEnvironment(new_environment)
+        except:
+            displayname = request.form['displayname']
+            description_input = request.form['description']
+            description = str(description_input)
+            environments = vc3_client.listEnvironments()
+            flash('You have already created an environment with that name.', 'warning')
+            return render_template('environment_new.html', displayname=displayname,
+                                   description=description, environments=environments)
+
+        flash('Successfully created a new environment', 'success')
+
+        return redirect(url_for('list_environments'))
+
+
 @app.route('/timeline', methods=['GET'])
 @authenticated
 def timeline():
-    return render_template('timeline.html')
+    return render_template('timeline.html', recipes=recipe_list)
 
 
 @app.route('/error', methods=['GET'])
