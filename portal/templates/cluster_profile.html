@@ -1,6 +1,6 @@
 {%extends "loginbase.html"%}
 
-{%block title%}Cluster Profile: {{name}}{%endblock%}
+{%block title%}Cluster Template Profile: {{name}}{%endblock%}
 
 {%block body%}
 
@@ -16,17 +16,17 @@
               <li class="breadcrumb-item"><a href="{{url_for('list_clusters')}}">Cluster Templates</a></li>
               <li class="breadcrum-item active">{{name}}</li>
             </ol>
-          	<h4 class="title row">Cluster: {{displayname}}</h4>
+          	<h4 class="title row">Cluster Template: {{displayname}}</h4>
             <div class="row">
               <h5>Description: {{description}}</h5>
             </div>
             {% if session['name'] == owner %}
             <div class="container row">
               <div class="pull-left col-sm-12 col-md-6">
-							  <a href="{{url_for('edit_cluster', name=name)}}" class="btn btn-primary btn-sm">Update Cluster</a>
+							  <a href="{{url_for('edit_cluster', name=name)}}" class="btn btn-primary btn-sm">Update Cluster Template</a>
 						  </div>
               <div class="delete_entity col-sm-12 col-md-6">
-  							<a href="{{url_for('delete_cluster', name=name)}}" class="btn btn-danger btn-sm">Delete Cluster</a>
+  							<a href="{{url_for('delete_cluster', name=name)}}" class="btn btn-danger btn-sm">Delete Cluster Template</a>
   						</div>
             </div>
             {% endif %}
@@ -58,7 +58,7 @@
               </div>
               <div class="panel panel-info resource-profile" style="margin: 1em;">
                 <div class="panel-heading">
-                  <h3 class="panel-title"><strong>Cluster Framework</strong></h3>
+                  <h3 class="panel-title"><strong>Cluster Template Framework</strong></h3>
                 </div>
                 <div class="panel-body disabled">
                   {% for nodeset in nodesets %}

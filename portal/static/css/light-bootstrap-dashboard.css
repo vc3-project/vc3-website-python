@@ -461,7 +461,7 @@ body > .navbar-collapse {
   /* light theme */
   /* background: #fdfcf7; */
   position: relative;
-  z-index: 2;
+  /* z-index: 2; */
   float: right;
   width: calc(100% - 260px);
   min-height: 100%; }

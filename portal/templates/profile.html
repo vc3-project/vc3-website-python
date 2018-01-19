@@ -198,7 +198,7 @@
                         placeholder="Institution Name"
                         required="required"
                         tabindex="5"
-                        value="{{session['institution']}}"
+                        value="{{session['organization']}}"
                       >
                     </div>
 
@@ -224,7 +224,7 @@
                 <div class="col-md-6">
 
                   <h2 class="title">
-                    <small>Generating SSH Public Key:</small>
+                    <small>Generating your SSH Public Key:</small>
                   </h2>
 
                   <div id="accordion" role="tablist" aria-multiselectable="true">
@@ -243,6 +243,10 @@
                             <li>To find out, open your terminal and type:  <kbd>ls ~/.ssh</kbd></li>
                             <li>If there is a <kbd>.pub</kbd> extension, such as <kbd>id_rsa.pub</kbd>, that is your SSH Public Key.</li>
                             <li>Type:  <kbd>cat ~/.ssh/id_rsa.pub</kbd> in order to see your key</li>
+                            <li>Copy the selection to the clipboard</li>
+                            <li>Paste the contents of the clipboard in the
+                              corresponding box on your VC3 Profile
+                            </li>
                           </ol>
                         </div>
                       </div>

@@ -42,7 +42,7 @@
             </div><!-- /.row -->
 
             <div class="row">
-              <!-- <label for="statusbar" style="margin-top:20px;">State of Virtual Cluster</label> -->
+              <label for="statusbar" style="margin-top:20px;">State of Virtual Cluster</label>
               <div name="statusbar" id="statusbar">
                 {% if state == "terminated" %}
                 <h4>
@@ -134,9 +134,16 @@
                     <h3 class="panel-title"><strong>Head Node IP</strong></h3>
                   </div>
 
-                  <div class="panel-body disabled">
+                  <div class="panel-body">
                     {% if vc3_request.headnode['ip'] %}
-                    <div>{{vc3_request.headnode['ip']}}</div>
+                    <a href="#"
+                      data-toggle="popover"
+                      title="To access your node via terminal"
+                      data-content="Type: ssh -i ~/.ssh/id_rsa {{session['name']}}@{{vc3_request.headnode['ip']}}"
+                      data-placement="top"
+                      data-trigger="focus">
+                      {{vc3_request.headnode['ip']}}
+                    </a>
                     {% else %}
                     <div>IP not available yet</div>
                     {% endif %}
@@ -239,14 +246,18 @@
                     <div id="collapseOne" class="collapse" role="tabpanel" aria-labelledby="headingOne">
                       <div class="card-block panel-body disabled" style="font-size: 16px">
                         <ol>
+                          {% if vc3_request.headnode['ip'] %}
                           <li>In a terminal, type:
                             <div>
                               <kbd>
-                                ssh -i ~/.ssh/id_rsa yourvc3username@HeadNodeIP
+                                ssh -i ~/.ssh/id_rsa {{session['name']}}@{{vc3_request.headnode['ip']}}
                               </kbd>
                             </div>
                           </li>
                           <li>Members of your project can login using their SSH-Keys and VC3-Usernames</li>
+                          {% else %}
+                          <li>Please allow a few moments for your Head Node to be generated.</li>
+                          {% endif %}
                         </ol>
                       </div>
                     </div>
