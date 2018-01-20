@@ -28,7 +28,9 @@
 
             <div class="card">
   						<div class="card-block">
-
+                {% for recipe in recipes %}
+                <li>{{recipe}}</li>
+                {% endfor%}
   						</div>
   					</div>
 

@@ -19,10 +19,12 @@ from portal.utils import (load_portal_client, get_safe_redirect,
 # subprocess.call(["/usr/bin/vc3-builder", "--list"], stdout=recipes, shell=True)
 # recipe_list = recipes
 # recipes = recipe_list.read()
-recipe_list = subprocess.check_output(["/usr/bin/vc3-builder", "--list"])
-
+recipes = subprocess.check_output(["/usr/bin/vc3-builder", "--list"])
+recipe_list = recipes.split()
 
 # Create a custom error handler for Exceptions
+
+
 @app.errorhandler(Exception)
 def exception_occurred(e):
     trace = traceback.format_tb(sys.exc_info()[2])
@@ -1236,7 +1238,7 @@ def dashboard():
 @app.route('/environments', methods=['GET'])
 @authenticated
 def list_environments():
-    return render_template('environments.html')
+    return render_template('environments.html', recipes=recipe_list)
 
 
 @app.route('/environments/new', methods=['GET', 'POST'])
@@ -1285,7 +1287,7 @@ def create_environment():
 @app.route('/timeline', methods=['GET'])
 @authenticated
 def timeline():
-    return render_template('timeline.html', recipes=recipe_list)
+    return render_template('timeline.html')
 
 
 @app.route('/error', methods=['GET'])
