@@ -117,16 +117,16 @@
 
                           <td>
                             <div class="row">
-                              {% if (request.headnode['ip'] and request.headnode['state'] == 'running')%}
+                              {% if request.headnode and request.headnode.url and request.headnode.state == 'running')%}
                               <a href="#"
                               data-toggle="popover"
                               title="To access your node via terminal"
-                              data-content="Type: ssh -i ~/.ssh/id_rsa {{session['name']}}@{{request.headnode['ip']}}"
+                              data-content="Type: ssh -i ~/.ssh/id_rsa {{session['name']}}@{{request.headnode.url}}"
                               data-placement="top"
                               data-trigger="focus">
-                                {{request.headnode['ip']}}
+                                {{request.headnode.url}}
                               </a>
-                              {% elif request.headnode['state'] == 'terminated' %}
+                              {% elif request.headnode.url == 'terminated' %}
                               <small> N/A </small>        
                               {% else %}
                               <small>IP Not yet available</small>
