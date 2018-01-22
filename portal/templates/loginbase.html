@@ -91,6 +91,23 @@
             <p>Environments</p>
           </a>
         </li>
+				{% if session['primary_identity'] in ['c4686d14-d274-11e5-b866-0febeb7fd79e',
+			                                       'c3b990a0-d274-11e5-b641-934c1e30fc08',
+			                                       'f1f26455-cbd5-4933-986b-47c57ee20987',
+			                                       'be58c8e2-fc13-11e5-82f7-f7141a8b0c16',
+			                                       'f79bc072-c1f4-412f-a813-00ff11760062',
+			                                       '05e05adf-e9d4-487f-8771-b6b8a25e84d3',
+			                                       'a877729e-d274-11e5-a5d2-2f448d5a1c26',
+			                                       'c887eb90-d274-11e5-bf28-779c8998e810',
+			                                       'c456b77c-d274-11e5-b82c-23a245a48997',
+			                                       'c444a294-d274-11e5-b7f1-e3782ed16687'] %}
+				<li class="">
+          <a href="{{url_for('admin')}}">
+						<i class="fa fa-user-secret" aria-hidden="true"></i>
+            <p>Admin</p>
+          </a>
+        </li>
+				{% endif %}
       </ul>
     </div>
   </div>

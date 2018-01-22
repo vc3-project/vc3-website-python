@@ -13,14 +13,9 @@ from portal.decorators import authenticated, allocation_validated, project_exist
 from portal.utils import (load_portal_client, get_safe_redirect,
                           get_vc3_client, project_validated, project_in_vc)
 
-# subprocess.call(["vc3-builder", "vc3builder", "--list"], shell=True)
-# recipes = open('recipe_list.txt', 'w')
-# recipe = subprocess.Popen(["vc3-builder", "--list"], shell=True)
-# subprocess.call(["/usr/bin/vc3-builder", "--list"], stdout=recipes, shell=True)
-# recipe_list = recipes
-# recipes = recipe_list.read()
-recipes = subprocess.check_output(["/usr/bin/vc3-builder", "--list"])
-recipe_list = recipes.split()
+
+# recipes = subprocess.check_output(["/usr/bin/vc3-builder", "--list"])
+# recipe_list = recipes.split()
 
 # Create a custom error handler for Exceptions
 
@@ -1045,6 +1040,36 @@ def view_resource(name):
     raise LookupError('resource')
 
 
+@app.route('/admin', methods=['GET'])
+@authenticated
+def admin():
+    """ List View of All Virtual Clusters """
+    if session['primary_identity'] in ['c4686d14-d274-11e5-b866-0febeb7fd79e',
+                                       'c3b990a0-d274-11e5-b641-934c1e30fc08',
+                                       'f1f26455-cbd5-4933-986b-47c57ee20987',
+                                       'be58c8e2-fc13-11e5-82f7-f7141a8b0c16',
+                                       'f79bc072-c1f4-412f-a813-00ff11760062',
+                                       '05e05adf-e9d4-487f-8771-b6b8a25e84d3',
+                                       'a877729e-d274-11e5-a5d2-2f448d5a1c26',
+                                       'c887eb90-d274-11e5-bf28-779c8998e810',
+                                       'c456b77c-d274-11e5-b82c-23a245a48997',
+                                       'c444a294-d274-11e5-b7f1-e3782ed16687']:
+        vc3_client = get_vc3_client()
+        vc3_requests = vc3_client.listRequests()
+        nodesets = vc3_client.listNodesets()
+        clusters = vc3_client.listClusters
+        request_list = []
+
+        for vc3_request in vc3_requests:
+            request_list.append(str(vc3_request.name))
+
+        return render_template('admin.html', requests=vc3_requests,
+                               nodesets=nodesets, clusters=clusters,
+                               requestlist=request_list)
+    else:
+        return redirect(url_for('errorpage'))
+
+
 @app.route('/request', methods=['GET'])
 @authenticated
 def list_requests():
@@ -1238,6 +1263,12 @@ def dashboard():
 @app.route('/environments', methods=['GET'])
 @authenticated
 def list_environments():
+    """ List View of Environments """
+
+    # Call list of build recipes from vc3-builder
+    recipes = subprocess.check_output(["vc3-builder", "--list"])
+    recipe_list = recipes.split()
+
     return render_template('environments.html', recipes=recipe_list)
 
 
@@ -1246,23 +1277,29 @@ def list_environments():
 def create_environment():
     """ New Environment Creation Form """
     vc3_client = get_vc3_client()
+    recipes = subprocess.check_output(["/usr/bin/vc3-builder", "--list"])
+    recipe_list = recipes.split()
+
     if request.method == 'GET':
         environments = vc3_client.listEnvironments()
-        return render_template('environment_new.html', environments=environments)
+        return render_template('environment_new_2.html',
+                               environments=environments, recipes=recipe_list)
 
     elif request.method == 'POST':
         # Gathering and storing information from new allocation form
         # into info-service
         # Description from text input stored as string to avoid malicious input
 
-        displayname = request.form['displayname']
+        displayname = request.form['name']
         owner = session['name']
-        name = displayname.lower()
+        name = owner + '-' + displayname.lower()
         packagelist = []
         envmap = {}
         files = {}
         description_input = request.form['description']
         description = str(description_input)
+        for package in request.form.getlist('packagelist'):
+            packagelist.append(package)
 
         try:
             new_environment = vc3_client.defineEnvironment(
@@ -1271,12 +1308,13 @@ def create_environment():
                 displayname=displayname, description=description)
             vc3_client.storeEnvironment(new_environment)
         except:
-            displayname = request.form['displayname']
+            name = request.form['name']
             description_input = request.form['description']
             description = str(description_input)
             environments = vc3_client.listEnvironments()
             flash('You have already created an environment with that name.', 'warning')
-            return render_template('environment_new.html', displayname=displayname,
+            return render_template('environment_new_2.html', name=name,
+                                   packagelist=packagelist,
                                    description=description, environments=environments)
 
         flash('Successfully created a new environment', 'success')

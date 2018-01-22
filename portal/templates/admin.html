@@ -1,0 +1,196 @@
+{%extends "loginbase.html"%}
+
+{%block title%}Requests{%endblock%}
+
+{%block body%}
+{%include 'messages.html'%}
+
+<div class="content">
+  <div class="container-fluid">
+
+    <div class="row">
+      <div class="col-sm-12">
+        <div class="card">
+          <div class="header">
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item"><a href="{{url_for('show_profile_page')}}">Portal Home</a></li>
+              <li class="breadcrumb-item active">Admin</li>
+            </ol>
+          	<h4 class="title">Virtual Clusters: Admin View</h4>
+						<hr />
+          </div>
+
+          <div class="content description">
+
+            <div class="card">
+  						<div class="card-block">
+  							<div class="panel panel-primary filterable">
+  								<div class="panel-heading">
+  									<h3 class="panel-title">All Virtual Clusters</h3>
+  									<div class="pull-right">
+  										<button class="btn btn-primary btn-sm btn-filter"><span class="glyphicon glyphicon-filter"></span> Filter</button>
+  									</div>
+  								</div>
+                  <div class="table-responsive" style="overflow-x:auto;">
+    								<table class="display table table-hover" width="100%">
+    									<thead>
+    										<tr class="filters">
+    											<th><input type="text" class="form-control" placeholder="Name" disabled></th>
+                          <th><input type="text" class="form-control" placeholder="Owner" disabled></th>
+    											<th><input type="text" class="form-control" placeholder="State" disabled></th>
+                          <th><input type="text" class="form-control" placeholder="Cluster Template" disabled></th>
+    											<th><input type="text" class="form-control" placeholder="Nodes" disabled></th>
+                          <th><input type="text" class="form-control" placeholder="Head Node (click below)" disabled></th>
+    										</tr>
+    									</thead>
+    									<tbody data-link="row" class="rowlink">
+                    {% for request in requests %}
+    										<tr>
+    											<td>
+                            <a href="{{ url_for('view_request', name=request.name) }}"
+                            title="View Info on {{request.name}} Virtual Cluster">
+                            {{ request.name }}
+                            </a>
+                          </td>
+
+                          <td>
+                            {{ request.owner }}
+                          </td>
+
+                          {% set requestname = request.name.replace(".", "-") %}
+                          <td>
+                            <div id="{{requestname}}" class="row"></div>
+                            <!-- <div class="row">
+                              <small>{{request.state_reason}}</small>
+                            </div> -->
+                          </td>
+
+                          <td>
+                            <div>{{request.cluster}}</div>
+                          </td>
+
+                        {% if (request.statusraw['VC3-static'] == {}) %}
+                          <td>
+                            <small class="label label-warning">Status currently pending</small>
+                          </td>
+                        {% elif request.statusraw == None %}
+                          <td>
+                            <small class="label label-warning">Status currently pending</small>
+                          </td>
+                        {% else %}
+                          <td>
+                          {% for key, value in request.statusinfo.iteritems() %}
+                            {% for k, v in value.iteritems() %}
+                              {% if k == "idle" %}
+                              <div class="row">
+                                <small class="pull-right" id="node-status">queued:
+                                  <span class="label label-warning" style="color:white">
+                                    {{v}}
+                                  </span>
+                                </small>
+                              </div>
+                              {% elif k == "running" %}
+                              <div class="row">
+                                <small class="pull-right" id="node-status">{{ k }}:
+                                  <span class="label label-success" style="color:white">
+                                    {{v}}
+                                  </span>
+                                </small>
+                              </div>
+                              {% endif %}
+                            {% endfor %}
+                          {% endfor %}
+                          {% for nodeset in nodesets %}
+                            {% if nodeset.name == request.cluster %}
+                            <div class="row">
+                              <small class="pull-right" id="node-status">
+                                Prescribed:
+                                <span class="label label-info" style="color:white">
+                                  {{nodeset.node_number}}
+                                </span>
+                              </small>
+                            </div>
+                            {% endif %}
+                          {% endfor %}
+                          </td>
+                        {% endif %}
+
+                          <td>
+                            <div class="row">
+                              {% if (request.headnode['ip'] and request.headnode['state'] == 'running')%}
+                              <a href="#"
+                              data-toggle="popover"
+                              title="To access your node via terminal"
+                              data-content="Type: ssh -i ~/.ssh/id_rsa {{session['name']}}@{{request.headnode['ip']}}"
+                              data-placement="top"
+                              data-trigger="focus">
+                                {{request.headnode['ip']}}
+                              </a>
+                              {% elif request.headnode['state'] == 'terminated' %}
+                              <small> N/A </small>
+                              {% else %}
+                              <small>IP Not yet available</small>
+                              {% endif %}
+                            </div>
+                          </td>
+    										</tr>
+                    {% endfor %}
+    									</tbody>
+    								</table>
+                  </div>
+  							</div>
+  						</div>
+  					</div>
+
+          </div><!-- /.content description -->
+
+        </div>
+      </div>
+		</div>
+
+  </div>
+</div>
+
+<script>
+
+var stateEntityList = {{requestlist|safe}};
+var stateEntityListLength = stateEntityList.length;
+
+window.onload = function (){
+  for (var i = 0; i < stateEntityListLength; i++) {
+    var name = stateEntityList[i];
+    get_states(name);
+  };
+  setInterval( function(){
+    get_states(name);
+  }, 5000);
+}
+
+function get_states(name){
+  $.ajax({
+    url: "/rest/virtual_cluster/" + name,
+    type: "get",
+    dataType: 'json',
+    success: function(data){
+      var request_id = name.replace(".", "-")
+      $('#'+request_id).html(data.state);
+      $('#test').html(data.state);
+      if($('#test').length != 0){
+        $('#test').css('color', 'red');
+      }
+    },
+    error: function(xhr){
+      //Do Something to handle error
+    }
+  });
+}
+
+// $(document).ajaxComplete(function(){
+//   if($('#test').length != 0){
+//     $('#test').css('color', 'red');
+//   }
+// });
+
+</script>
+
+{%endblock%}
