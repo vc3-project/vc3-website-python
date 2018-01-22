@@ -1059,6 +1059,15 @@ def list_requests():
         if vc3_request.owner == session['name']:
             request_list.append(str(vc3_request.name))
 
+        headnode = None
+        if vc3_request.headnode:
+            try:
+                headnode = vc3_client.getNodeset(vc3_request.headnode)
+            except:
+                pass
+        # use headnode structure in the profile.
+        vc3_request.headnode = headnode
+
     return render_template('request.html', requests=vc3_requests,
                            nodesets=nodesets, clusters=clusters,
                            requestlist=request_list)
@@ -1150,7 +1159,17 @@ def view_request(name):
             vc3allocations = vc3_request.allocations
             description = vc3_request.description
             project = vc3_request.project
-            headnode = vc3_request.headnode
+
+            headnode = None
+            if vc3_request.headnode:
+                try:
+                    headnode = vc3_client.getNodeset(vc3_request.headnode)
+                except:
+                    flash("Could not read headnode information for {0}".format(vc3_request))
+
+            # use headnode structure in the profile.
+            vc3_request.headnode = headnode
+                
             for user in users:
                 if user.name == owner:
                     profile = user
@@ -1161,7 +1180,7 @@ def view_request(name):
                                    action=action, state=state, users=users,
                                    vc3allocations=vc3allocations, project=project,
                                    allocations=allocations, description=description,
-                                   headnode=headnode, profile=profile,
+                                   profile=profile,
                                    vc3_request=vc3_request)
         app.logger.error("Could not find VC when viewing: {0}".format(name))
         raise LookupError('virtual cluster')

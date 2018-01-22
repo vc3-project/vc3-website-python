@@ -135,14 +135,14 @@
                   </div>
 
                   <div class="panel-body">
-                    {% if vc3_request.headnode['ip'] %}
+                    {% if vc3_request.headnode and vc3_request.headnode.url %}
                     <a href="#"
                       data-toggle="popover"
                       title="To access your node via terminal"
-                      data-content="Type: ssh -i ~/.ssh/id_rsa {{session['name']}}@{{vc3_request.headnode['ip']}}"
+                      data-content="Type: ssh -i ~/.ssh/id_rsa {{session['name']}}@{{vc3_request.headnode.url}}"
                       data-placement="top"
                       data-trigger="focus">
-                      {{vc3_request.headnode['ip']}}
+                      {{vc3_request.headnode.url}}
                     </a>
                     {% else %}
                     <div>IP not available yet</div>
@@ -246,11 +246,11 @@
                     <div id="collapseOne" class="collapse" role="tabpanel" aria-labelledby="headingOne">
                       <div class="card-block panel-body disabled" style="font-size: 16px">
                         <ol>
-                          {% if vc3_request.headnode['ip'] %}
+                          {% if vc3_request.headnode and vc3_request.headnode.url %} <!-- HACK! using url for ip of the headnode, rather than a more appropiate field. -->
                           <li>In a terminal, type:
                             <div>
                               <kbd>
-                                ssh -i ~/.ssh/id_rsa {{session['name']}}@{{vc3_request.headnode['ip']}}
+                                ssh -i ~/.ssh/id_rsa {{session['name']}}@{{vc3_request.headnode.url}}
                               </kbd>
                             </div>
                           </li>
