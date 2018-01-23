@@ -2287,7 +2287,7 @@ body > .navbar-collapse {
     --------------------------------------------------------------*/
 
     .card span {
-      color: #fcc500;
+      /* color: #fcc500; */
     }
 
     .card .card-block {
@@ -2301,7 +2301,7 @@ body > .navbar-collapse {
     }
 
     .card span {
-      color: #fcc500;
+      /* color: #fcc500; */
     }
     /*.card a:hover {
       background: #ffc907;
@@ -2332,7 +2332,7 @@ body > .navbar-collapse {
     /*This is for labels in resources*/
 
     .content .card span {
-      color: #fcc500;
+      /* color: #fcc500; */
     }
     .content .card .card-title {
       font-weight: 600;

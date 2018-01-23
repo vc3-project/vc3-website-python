@@ -14,8 +14,18 @@ from portal.utils import (load_portal_client, get_safe_redirect,
                           get_vc3_client, project_validated, project_in_vc)
 
 
-# recipes = subprocess.check_output(["/usr/bin/vc3-builder", "--list"])
-# recipe_list = recipes.split()
+# Whitelist of Admin users
+
+whitelist = ['c4686d14-d274-11e5-b866-0febeb7fd79e',
+             'c3b990a0-d274-11e5-b641-934c1e30fc08',
+             'f1f26455-cbd5-4933-986b-47c57ee20987',
+             'be58c8e2-fc13-11e5-82f7-f7141a8b0c16',
+             'f79bc072-c1f4-412f-a813-00ff11760062',
+             '05e05adf-e9d4-487f-8771-b6b8a25e84d3',
+             'a877729e-d274-11e5-a5d2-2f448d5a1c26',
+             'c887eb90-d274-11e5-bf28-779c8998e810',
+             'c456b77c-d274-11e5-b82c-23a245a48997',
+             'c444a294-d274-11e5-b7f1-e3782ed16687']
 
 # Create a custom error handler for Exceptions
 
@@ -178,11 +188,11 @@ def show_profile_page():
             if profile.sshpubstring is not None:
                 sshpubstring = profile.sshpubstring
         else:
-            # if session['primary_identity'] not in ["c887eb90-d274-11e5-bf28-779c8998e810", "05e05adf-e9d4-487f-8771-b6b8a25e84d3", "c4686d14-d274-11e5-b866-0febeb7fd79e", "be58c8e2-fc13-11e5-82f7-f7141a8b0c16", "c456b77c-d274-11e5-b82c-23a245a48997", "f1f26455-cbd5-4933-986b-47c57ee20987", "aebe29b8-d274-11e5-ba4b-ffec0df955f2", "c444a294-d274-11e5-b7f1-e3782ed16687", "9c1c1643-8726-414f-85dc-aca266099304"]:
-            #     next
-            # else:
-            flash('Please complete any missing profile fields before '
-                  'launching a cluster.', 'warning')
+            if session['primary_identity'] not in whitelist:
+                return redirect(url_for('whitelist_error'))
+            else:
+                flash('Please complete any missing profile fields before '
+                      'launching a cluster.', 'warning')
 
         if request.args.get('next'):
             session['next'] = get_safe_redirect()
@@ -343,13 +353,74 @@ def authcallback():
         else:
             return redirect(url_for('show_profile_page',
                                     next=url_for('show_profile_page')))
+        if session['primary_identity'] in whitelist:
+            return redirect(url_for('whitelist_error'))
 
-        return redirect(url_for('show_profile_page'))
+        return redirect(url_for('dashboard'))
 
+
+@app.route('/beta', methods=['GET'])
+def whitelist_error():
+    """Whitelist Erorr Page - for users not within alpha testing scope"""
+    return render_template('whitelist_error.html')
 
 # -----------------------------------------
-# CURRENT PROJECT PAGE AND ALL PROJECT ROUTES
+# LOGGED IN PORTAL ROUTES
 # -----------------------------------------
+
+
+@app.route('/portal', methods=['GET'])
+def portal():
+    """Send the existing user to Portal Home."""
+    vc3_client = get_vc3_client()
+    userlist = vc3_client.listUsers()
+    projects = vc3_client.listProjects()
+    virtualclusters = vc3_client.listRequests()
+
+    if request.method == 'GET':
+        profile = None
+        sshpubstring = None
+        name = None
+        user_projects = 0
+        user_virtualclusters = 0
+
+        for user in userlist:
+            if session['primary_identity'] == user.identity_id:
+                profile = user
+
+        if profile:
+
+            name = session['name'] = profile.name
+            session['displayname'] = profile.displayname
+            session['first'] = profile.first
+            session['last'] = profile.last
+            session['email'] = profile.email
+            session['institution'] = profile.organization
+            session['primary_identity'] = profile.identity_id
+            if profile.sshpubstring is not None:
+                sshpubstring = profile.sshpubstring
+        else:
+            # if session['primary_identity'] not in ["c887eb90-d274-11e5-bf28-779c8998e810", "05e05adf-e9d4-487f-8771-b6b8a25e84d3", "c4686d14-d274-11e5-b866-0febeb7fd79e", "be58c8e2-fc13-11e5-82f7-f7141a8b0c16", "c456b77c-d274-11e5-b82c-23a245a48997", "f1f26455-cbd5-4933-986b-47c57ee20987", "aebe29b8-d274-11e5-ba4b-ffec0df955f2", "c444a294-d274-11e5-b7f1-e3782ed16687", "9c1c1643-8726-414f-85dc-aca266099304"]:
+            #     next
+            # else:
+            flash('Please complete any missing profile fields before '
+                  'launching a cluster.', 'warning')
+
+        for project in projects:
+            if profile.name in project.members:
+                user_projects += 1
+        for vc in virtualclusters:
+            if profile.name == vc.owner:
+                user_virtualclusters += 1
+
+        if request.args.get('next'):
+            session['next'] = get_safe_redirect()
+
+        return render_template('portal_home.html', userlist=userlist,
+                               profile=profile, name=name,
+                               sshpubstring=sshpubstring,
+                               user_projects=user_projects,
+                               user_virtualclusters=user_virtualclusters)
 
 
 @app.route('/new', methods=['GET', 'POST'])
@@ -1190,11 +1261,12 @@ def view_request(name):
                 try:
                     headnode = vc3_client.getNodeset(vc3_request.headnode)
                 except:
-                    flash("Could not read headnode information for {0}".format(vc3_request))
+                    flash("Could not read headnode information for {0}".format(
+                        vc3_request), "warning")
 
             # use headnode structure in the profile.
             vc3_request.headnode = headnode
-                
+
             for user in users:
                 if user.name == owner:
                     profile = user

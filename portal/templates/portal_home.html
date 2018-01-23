@@ -1,0 +1,115 @@
+{%extends "loginbase.html"%}
+
+{%block title%}User: {{profile.name}} ({{ session['displayname'] }}){%endblock%}
+
+{%block body%}
+{%include 'messages.html'%}
+
+<div class="content">
+  <div class="container-fluid">
+    <div class="row">
+
+      <div class="col-md-12">
+        <div class="card">
+
+          <div class="header">
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item"><a href="{{url_for('show_profile_page')}}">Portal Home</a></li>
+              <li class="breadcrumb-item active">Profile</li>
+            </ol>
+            <h2 class="title">
+              <div class="row">
+                Welcome <span style="color:#2b2b2b">{{profile.displayname}}</span>
+              </div>
+            {% if profile.name %}
+              <div class="row">
+                <small>
+                  Username: <span style="color:#2b2b2b">{{profile.name}}</span>
+                </small>
+              </div>
+            {% endif %}
+            </h2>
+						<hr/>
+          </div>
+
+          <div class="content description">
+  					<div class="card-block">
+
+              {% if session.get('is_authenticated') %}
+
+              <div class="row">
+        				<div class="well">
+
+                  <div>
+                    <i class="fa fa-user-circle-o" aria-hidden="true"></i>
+                    {{profile.displayname}}
+                  </div>
+                  <div>
+                    <i class="fa fa-envelope-square" aria-hidden="true"></i>
+                    {{profile.email}}
+                  </div>
+                  <div>
+                    <i class="fa fa-university" aria-hidden="true"></i>
+                    {{profile.organization}}
+                  </div>
+
+                  <div id="accordion" role="tablist" aria-multiselectable="true">
+                    <div class="card panel panel-info" style="margin: 1em;">
+                      <div class="card-header panel-title" role="tab" id="headingOne" style="margin: 1em;">
+                        <h5 class="mb-0">
+                          <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+                            <i class="fa fa-terminal" aria-hidden="true"></i> Your SSH Key
+                          </a>
+                        </h5>
+                      </div>
+                      <div id="collapseOne" class="collapse" role="tabpanel" aria-labelledby="headingOne">
+                        <div class="card-block panel-body disabled" style="overflow-wrap:break-word;">
+                          {{profile.sshpubstring}}
+                        </div>
+                      </div>
+                    </div>
+                  </div><!-- /.accordion-->
+
+                  <div class="row">
+                    <div class="col-xs-12 divider text-center">
+                      <div class="col-xs-12 col-sm-4 emphasis">
+                          <h2><strong> {{user_projects}} </strong></h2>
+                          <p><small>Projects</small></p>
+                      </div>
+                      <div class="col-xs-12 col-sm-4 emphasis">
+                          <h2><strong> {{user_virtualclusters}} </strong></h2>
+                          <p><small>Virtual Clusters</small></p>
+                      </div>
+                      <div class="col-xs-12 col-sm-4 emphasis">
+                          <h2><strong> 20,7K </strong></h2>
+                          <p><small>Running Nodes</small></p>
+                      </div>
+                    </div>
+                  </div>
+
+        				</div>
+        			</div> <!-- row -->
+
+              <div class="content description">
+
+                <div class="card">
+      						<div class="card-block">
+    								<iframe src="https://grafana.mwt2.org/dashboard/db/vc3?orgId=1&from=-6h&to=now&theme=light"
+    								width="100%" height="950" frameborder="0"></iframe>
+      						</div>
+      					</div>
+
+              </div><!-- /.content description -->
+
+              {% endif %}
+
+            </div><!-- /.card-block -->
+          </div><!-- /.card description-->
+        </div><!-- /.card -->
+  		</div><!-- /.col-md-6 -->
+
+    </div>
+  </div>
+</div>
+
+{%endblock%}

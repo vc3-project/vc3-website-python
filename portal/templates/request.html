@@ -117,7 +117,7 @@
 
                           <td>
                             <div class="row">
-                              {% if request.headnode and request.headnode.url and request.headnode.state == 'running')%}
+                              {% if request.headnode == 'running' and request.headnode.url == 'running' and request.headnode.state == 'running' %}
                               <a href="#"
                               data-toggle="popover"
                               title="To access your node via terminal"
@@ -127,7 +127,7 @@
                                 {{request.headnode.url}}
                               </a>
                               {% elif request.headnode.url == 'terminated' %}
-                              <small> N/A </small>        
+                              <small> N/A </small>
                               {% else %}
                               <small>IP Not yet available</small>
                               {% endif %}
