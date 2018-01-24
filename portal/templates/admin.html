@@ -17,6 +17,7 @@
               <li class="breadcrumb-item active">Admin</li>
             </ol>
           	<h4 class="title">Virtual Clusters: Admin View</h4>
+            <div>{{request.headnode}}</div>
 						<hr />
           </div>
 
@@ -40,7 +41,6 @@
     											<th><input type="text" class="form-control" placeholder="State" disabled></th>
                           <th><input type="text" class="form-control" placeholder="Cluster Template" disabled></th>
     											<th><input type="text" class="form-control" placeholder="Nodes" disabled></th>
-                          <th><input type="text" class="form-control" placeholder="Head Node (click below)" disabled></th>
     										</tr>
     									</thead>
     									<tbody data-link="row" class="rowlink">
@@ -58,11 +58,12 @@
                           </td>
 
                           {% set requestname = request.name.replace(".", "-") %}
+                          {% set request_statereason = requestname + '_statereason' %}
                           <td>
                             <div id="{{requestname}}" class="row"></div>
-                            <!-- <div class="row">
-                              <small>{{request.state_reason}}</small>
-                            </div> -->
+                            <div class="row">
+                              <small id="{{request_statereason}}"></small>
+                            </div>
                           </td>
 
                           <td>
@@ -114,25 +115,6 @@
                           {% endfor %}
                           </td>
                         {% endif %}
-
-                          <td>
-                            <div class="row">
-                              {% if (request.headnode['ip'] and request.headnode['state'] == 'running')%}
-                              <a href="#"
-                              data-toggle="popover"
-                              title="To access your node via terminal"
-                              data-content="Type: ssh -i ~/.ssh/id_rsa {{session['name']}}@{{request.headnode['ip']}}"
-                              data-placement="top"
-                              data-trigger="focus">
-                                {{request.headnode['ip']}}
-                              </a>
-                              {% elif request.headnode['state'] == 'terminated' %}
-                              <small> N/A </small>
-                              {% else %}
-                              <small>IP Not yet available</small>
-                              {% endif %}
-                            </div>
-                          </td>
     										</tr>
                     {% endfor %}
     									</tbody>
@@ -173,8 +155,9 @@ function get_states(name){
     dataType: 'json',
     success: function(data){
       var request_id = name.replace(".", "-")
+      var request_statereason = (request_id+'_statereason')
       $('#'+request_id).html(data.state);
-      $('#test').html(data.state);
+      $('#'+request_statereason).html(data.statereason);
       if($('#test').length != 0){
         $('#test').css('color', 'red');
       }

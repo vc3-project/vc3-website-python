@@ -25,7 +25,8 @@ def virtual_cluster(name):
                              'statusraw': vc.statusraw,
                              'statusinfo': vc.statusinfo,
                              'displayname': vc.displayname,
-                             'description': vc.description}
+                             'description': vc.description,
+                             'statereason': vc.state_reason}
             return flask.jsonify(sanitized_obj)
     return flask.jsonify(result), 404
 

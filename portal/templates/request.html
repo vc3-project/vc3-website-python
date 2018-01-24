@@ -58,11 +58,12 @@
                           </td>
 
                           {% set requestname = request.name.replace(".", "-") %}
+                          {% set request_statereason = requestname + '_statereason' %}
                           <td>
                             <div id="{{requestname}}" class="row"></div>
-                            <!-- <div class="row">
-                              <small>{{request.state_reason}}</small>
-                            </div> -->
+                            <div class="row">
+                              <small id="{{request_statereason}}"></small>
+                            </div>
                           </td>
 
                           <td>
@@ -175,8 +176,9 @@ function get_states(name){
     dataType: 'json',
     success: function(data){
       var request_id = name.replace(".", "-")
+      var request_statereason = (request_id+'_statereason')
       $('#'+request_id).html(data.state);
-      $('#test').html(data.state);
+      $('#'+request_statereason).html(data.statereason);
       if($('#test').length != 0){
         $('#test').css('color', 'red');
       }

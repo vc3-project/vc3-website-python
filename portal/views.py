@@ -1172,7 +1172,7 @@ def list_requests():
 
     return render_template('request.html', requests=vc3_requests,
                            nodesets=nodesets, clusters=clusters,
-                           requestlist=request_list)
+                           requestlist=request_list, headnode=headnode)
 
 
 @app.route('/request/new', methods=['GET', 'POST'])
