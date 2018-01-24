@@ -353,7 +353,7 @@ def authcallback():
         else:
             return redirect(url_for('show_profile_page',
                                     next=url_for('show_profile_page')))
-        if session['primary_identity'] in whitelist:
+        if session['primary_identity'] not in whitelist:
             return redirect(url_for('whitelist_error'))
 
         return redirect(url_for('dashboard'))
