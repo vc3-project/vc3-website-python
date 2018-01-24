@@ -376,6 +376,7 @@ def portal():
     userlist = vc3_client.listUsers()
     projects = vc3_client.listProjects()
     virtualclusters = vc3_client.listRequests()
+    nodesets = vc3_client.listNodesets()
 
     if request.method == 'GET':
         profile = None
@@ -383,6 +384,7 @@ def portal():
         name = None
         user_projects = 0
         user_virtualclusters = 0
+        user_nodes = 0
 
         for user in userlist:
             if session['primary_identity'] == user.identity_id:
@@ -412,6 +414,9 @@ def portal():
         for vc in virtualclusters:
             if profile.name == vc.owner:
                 user_virtualclusters += 1
+        for nodeset in nodesets:
+            if profile.name == nodeset.owner:
+                user_nodes += nodeset.node_number
 
         if request.args.get('next'):
             session['next'] = get_safe_redirect()
@@ -420,7 +425,8 @@ def portal():
                                profile=profile, name=name,
                                sshpubstring=sshpubstring,
                                user_projects=user_projects,
-                               user_virtualclusters=user_virtualclusters)
+                               user_virtualclusters=user_virtualclusters,
+                               user_nodes=user_nodes)
 
 
 @app.route('/new', methods=['GET', 'POST'])
