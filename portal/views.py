@@ -370,6 +370,7 @@ def whitelist_error():
 
 
 @app.route('/portal', methods=['GET'])
+@authenticated
 def portal():
     """Send the existing user to Portal Home."""
     vc3_client = get_vc3_client()
@@ -1172,7 +1173,7 @@ def list_requests():
 
     return render_template('request.html', requests=vc3_requests,
                            nodesets=nodesets, clusters=clusters,
-                           requestlist=request_list, headnode=headnode)
+                           requestlist=request_list)
 
 
 @app.route('/request/new', methods=['GET', 'POST'])

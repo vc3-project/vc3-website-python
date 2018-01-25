@@ -1,0 +1,84 @@
+{%extends "loginbase.html"%}
+
+{%block title%}Create Environment{%endblock%}
+
+{%block body%}
+{%include 'messages.html'%}
+
+<div class="content">
+  <div class="container-fluid">
+    <div class="row">
+
+      <div class="col-md-12">
+        <div class="card">
+
+          <div class="header">
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item"><a href="{{url_for('home')}}">Portal</a></li>
+              <li class="breadcrumb-item"><a href="{{url_for('list_environments')}}">Environments</a></li>
+              <li class="breadcrumb-item active">Create New Cluster Template</li>
+            </ol>
+            <h4 class="title">Create New Cluster Template</h4>
+            <h5>Brief overview of various middleware frameworks</h5>
+            <!-- <label><span id="asterik">*</span> <small style="color:black">= indicates required field</small></label> -->
+						<hr/>
+          </div>
+
+          <div class="content description">
+  					<div class="card-block">
+
+              <div class="row">
+        				<div class="col-md-8">
+
+                  <h2 class="title">
+                    <small>Cluster Template Frameworks:</small>
+                  </h2>
+
+                  <div id="accordion" role="tablist" aria-multiselectable="true">
+
+                    <div class="card panel panel-info resource-profile" style="margin: 1em;">
+                      <div class="card-header panel-title" role="tab" id="headingOne" style="margin: 1em;">
+                        <h5 class="mb-0">
+                          <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+                            HTCondor or WorkQueue<i class="fa fa-info-circle" aria-hidden="true"></i>
+                          </a>
+                        </h5>
+                      </div>
+                      <div id="collapseOne" class="collapse" role="tabpanel" aria-labelledby="headingOne">
+                        <div class="card-block panel-body disabled" style="font-size: 16px">
+                          <p>Some info here relating to HRCondor and WQ</p>
+
+                          <a href="{{url_for('create_cluster')}}" class="btn btn-primary btn-sm" title="Create New Cluster Template">+ New Cluster Template</a>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="card panel panel-info resource-profile" style="margin: 1em;">
+                      <div class="card-header panel-title" role="tab" id="headingTwo" style="margin: 1em">
+                        <h5 class="mb-0">
+                          <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                            Spark <i class="fa fa-info-circle" aria-hidden="true"></i>
+                          </a>
+                        </h5>
+                      </div>
+                      <div id="collapseTwo" class="collapse" role="tabpanel" aria-labelledby="headingTwo">
+                        <div class="card-block panel-body disabled" style="font-size: 16px">
+                          ADD FORM AND INFO HERE regarding SPARK
+                        </div>
+                      </div>
+                    </div>
+                  </div><!-- /.accordion-->
+
+                </div><!-- /.col-md-6 -->
+        			</div> <!-- row -->
+            </div><!-- /.card-block -->
+          </div><!-- /.card description-->
+
+        </div><!-- /.card -->
+  		</div><!-- /.col-md-6 -->
+
+    </div>
+  </div>
+</div>
+
+{%endblock%}
