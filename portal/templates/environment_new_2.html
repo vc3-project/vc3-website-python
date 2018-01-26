@@ -48,7 +48,11 @@
 
                     <div class="form-group">
                       <label for="packagelist">Package List <span id="asterik">*</span></label>
-                      <select class="form-control selectpicker" multiple name="packagelist" tabindex="2" id="form-resource-list" required data-live-search="true" data-actions-box="true" data-header="Select Packages">
+                      <select class="form-control selectpicker"
+                      multiple name="packagelist"
+                      tabindex="2" id="form-resource-list"
+                      required data-live-search="true" data-actions-box="true"
+                      data-header="Select Packages">
                         <option value="" selected disabled>Please Select Package List</option>
                         {% for recipe in recipes %}
                         <option data-tokens="{{recipe}}" value="{{recipe}}">{{ recipe }}</option>

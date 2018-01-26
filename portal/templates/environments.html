@@ -13,7 +13,7 @@
         <div class="card">
           <div class="header">
             <ol class="breadcrumb">
-              <li class="breadcrumb-item"><a href="{{url_for('show_profile_page')}}">Portal Home</a></li>
+              <li class="breadcrumb-item"><a href="{{url_for('portal')}}">Portal Home</a></li>
               <li class="breadcrumb-item active">Environments</li>
             </ol>
           	<h4 class="title">Environments</h4>
@@ -28,9 +28,7 @@
 
             <div class="card">
   						<div class="card-block">
-                {% for recipe in recipes %}
-                <li>{{recipe}}</li>
-                {% endfor%}
+
   						</div>
   					</div>
 

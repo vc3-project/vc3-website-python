@@ -14,7 +14,7 @@
         <div class="card">
           <div class="header">
             <ol class="breadcrumb">
-              <li class="breadcrumb-item"><a href="{{url_for('show_profile_page')}}">Portal Home</a></li>
+              <li class="breadcrumb-item"><a href="{{url_for('portal')}}">Portal Home</a></li>
               <li class="breadcrumb-item active">Allocations</li>
             </ol>
           	<h4 class="title">Allocations</h4>
@@ -126,7 +126,11 @@ function get_states(name){
     dataType: 'json',
     success: function(data){
       var allocation_id = name.replace(".", "-")
-      $('#'+allocation_id).html(data.state);
+      if(data.state == "validated"){
+        $('#'+allocation_id).html("ready");
+      } else {
+        $('#'+allocation_id).html(data.state);
+      }
       $('#test').html(data.state);
       if($('#test').length != 0){
         $('#test').css('color', 'red');

@@ -236,7 +236,7 @@ def show_profile_page():
             redirect_to = session['next']
             session.pop('next')
         else:
-            redirect_to = url_for('show_profile_page')
+            redirect_to = url_for('portal')
 
         return redirect(redirect_to)
 
@@ -356,7 +356,7 @@ def authcallback():
         if session['primary_identity'] not in whitelist:
             return redirect(url_for('whitelist_error'))
 
-        return redirect(url_for('dashboard'))
+        return redirect(url_for('portal'))
 
 
 @app.route('/beta', methods=['GET'])

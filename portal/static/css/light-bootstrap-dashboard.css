@@ -2438,6 +2438,9 @@ RESOURCE PROFILE INDEX PAGE
 .filterable tbody tr td {
   vertical-align: middle;
 }
+.table-hover>tbody>tr:hover {
+    background-color: rgba(250, 250, 250, 0.5);
+}
 
 /*----------------------------------
 DASHBOARD
@@ -2496,6 +2499,9 @@ textarea {
 }
 .bootstrap-select:not([class*=col-]):not([class*=form-control]):not(.input-group-btn) {
   width: 100%;
+}
+.bootstrap-select .open{
+  max-height: 322.184px !important;
 }
 .disabled {
    pointer-events: none;

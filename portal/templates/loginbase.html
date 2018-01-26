@@ -50,12 +50,6 @@
       </div>
       <ul class="nav">
 				<li class="">
-          <a href="{{url_for('dashboard')}}">
-            <i class="fa fa-dashboard" aria-hidden="true"></i>
-            <p>Monitoring</p>
-          </a>
-        </li>
-				<li class="">
           <a href="{{url_for('list_resources')}}">
             <i class="fa fa-database" aria-hidden="true"></i>
             <p class="tour-step tour-step-four">Resources</p>
@@ -80,15 +74,21 @@
           </a>
         </li>
 				<li class="">
+          <a href="{{url_for('list_environments')}}">
+            <i class="fa fa-hdd-o" aria-hidden="true"></i>
+            <p>Environments</p>
+          </a>
+        </li>
+				<li class="">
           <a href="{{url_for('list_requests')}}">
             <i class="fa fa-spinner" aria-hidden="true"></i>
             <p>Virtual Clusters</p>
           </a>
         </li>
 				<li class="">
-          <a href="{{url_for('list_environments')}}">
-            <i class="fa fa-hdd-o" aria-hidden="true"></i>
-            <p>Environments</p>
+          <a href="{{url_for('dashboard')}}">
+            <i class="fa fa-dashboard" aria-hidden="true"></i>
+            <p>Monitoring</p>
           </a>
         </li>
 				{% if session['primary_identity'] in ['c4686d14-d274-11e5-b866-0febeb7fd79e',
@@ -131,7 +131,11 @@
 				<div class="collapse navbar-collapse">
 
 					<div class="nav navbar-nav navbar-right">
-						<a class="navbar-brand" href="{{url_for('show_profile_page')}}">{{session['first']}} {{session['last']}}</a>
+						{% if session['name'] and session['first'] %}
+						<a class="navbar-brand" href="{{url_for('portal')}}">{{session['first']}} {{session['last']}}</a>
+						{% else %}
+						<a class="navbar-brand" href="{{url_for('show_profile_page')}}">Profile</a>
+						{% endif %}
 						<a class="navbar-brand" href="{{url_for('logout')}}"><i class="fa fa-fw fa-sign-out"></i> Logout</a>
 					</div>
 				</div>
