@@ -135,7 +135,7 @@
                   </div>
 
                   <div class="panel-body">
-                    {% if vc3_request.headnode and vc3_request.headnode.app_host %}
+                    {% if vc3_request.headnode and vc3_request.headnode.app_host and vc3_request.headnode.state == 'running' %}
                     <a href="#"
                       data-toggle="popover"
                       title="To access your node via terminal"

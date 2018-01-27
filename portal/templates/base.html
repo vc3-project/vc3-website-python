@@ -83,9 +83,15 @@
             </li>
           </ul>
           <ul class="nav navbar-nav navbar-right">
+            {% if session['name'] %}
             <li>
-              <a href="{{url_for('show_profile_page')}}">{{session['first']}} {{session['last']}}</a>
+              <a href="{{url_for('portal')}}">{{session['first']}} {{session['last']}}</a>
             </li>
+            {% else%}
+            <li>
+              <a href="{{url_for('show_profile_page')}}">Profile</a>
+            </li>
+            {% endif %}
             <li>
               <a href="{{url_for('logout')}}"><i class="fa fa-fw fa-sign-out"></i> Logout</a>
             </li>
