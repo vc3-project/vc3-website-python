@@ -4,74 +4,103 @@
 
 {%block body%}
 {%include 'messages.html'%}
+<div class="content">
+  <div class="container-fluid">
+    <div class="row">
 
-<div class="col-md-8 col-sm-12">
-  <section id="new_project">
-    <div class="container new-project">
+      <div class="col-md-12">
+        <div class="card">
 
-      <form role="form" id="new-project-form" action="{{url_for('create_project')}}" method="POST">
+          <div class="header">
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item"><a href="{{url_for('home')}}">Portal</a></li>
+              <li class="breadcrumb-item"><a href="{{url_for('list_projects')}}">Projects</a></li>
+              <li class="breadcrumb-item active">New Project</li>
+            </ol>
+            <h4 class="title">Create a New Project</h4>
+            <h5>A project connects your allocations to your team members</h5>
+            <label><span id="asterik">*</span> <small style="color:black">= indicates required field</small></label>
+						<hr/>
+          </div>
 
-        <h2>Create a New Project</h2>
-        <h4>A project connects your allocations to your team members</h4>
-        <h4><label><span id="asterik">*</span> = indicates required</label></h4>
+          <div class="content description">
+  					<div class="card-block">
 
-        <fieldset>
-          <label for="name">Project Name <span id="asterik">*</span></label>
-            <input
-              placeholder="Your Project name"
-              name="name"
-              type="text"
-              tabindex="1"
-              required
-              autofocus
-              value="{{request.name}}">
-        </fieldset>
-        <fieldset>
-          <label for="members">Project Members</label>
-            <!-- owner: {{ owner }} -->
-          <select class="form-control" multiple name="members" tabindex="2" id="form-resource-list" data-live-search="true" data-actions-box="true" data-header="Select Users">
-            <!-- <option value="" selected>Add User to Project</option> -->
-            {% for user in users %}
-              {% if (user.name != owner) %}
-            <option data-tokens="{{user.displayname}}" value="{{user.name}}">{{ user.first }} {{user.last}}</option>
-              {% endif %}
-            {% endfor %}
-          </select>
-        </fieldset>
-        <fieldset>
-          <label for="allocation">Select Allocation:</label>
-          <select class="form-control selectpicker" multiple id="form-resource-list" name="allocation" tabindex="3" data-live-search="true" data-actions-box="true" data-header="Select Allocations below to add to project">
-            <!-- <option value="" selected>Add Allocation to Project</option> -->
-          <!-- Populate List of Allocations that has been defined by User -->
-          {% for allocation in allocations %}
-            {% if allocation.owner == owner and session['name'] == owner %}
-            <option data-tokens="{{allocation.displayname}}" value="{{allocation.name}}">{{ allocation.displayname }}</option>
-            {% endif %}
-          {% endfor %}
-          </select>
-        </fieldset>
-        <fieldset>
-          <label for="description">Description</label>
-          <textarea
-            placeholder="A brief description..."
-            name="description"
-            id="form-textarea"
-            tabindex="4"
-            autofocus
-            maxlength="144"
-            value="{{request.description}}"
-            >{{description}}</textarea>
-          <span class="help-block exceeded"></span>
-        </fieldset>
-        <fieldset>
-          <button type="submit" tabindex="5" id="create-project" data-submit="...Sending">Create Project</button>
-        </fieldset>
-        <fieldset>
-          <a href="{{url_for('list_projects')}}" class="btn btn-primary btn-sm" tabindex="6" title="Cancel">Cancel</a>
-        </fieldset>
+              <div class="row">
+        				<div class="col-md-6">
 
-      </form>
-    </div> <!-- project container -->
-  </section>
-</div>
+                  <form role="form" action="{{url_for('create_project')}}" method="POST">
+
+                    <div class="form-group">
+                      <label for="name">Project Name <span id="asterik">*</span></label>
+                      <input
+                        placeholder="Your Project name"
+                        name="name"
+                        class="form-control border-input"
+                        type="text"
+                        tabindex="1"
+                        required
+                        autofocus
+                        value="{{request.name}}">
+                    </div>
+
+                    <div class="form-group">
+                      <label for="members">Project Members</label>
+                        <!-- owner: {{ owner }} -->
+                      <select class="form-control border-input selectpicker" multiple name="members" tabindex="2" id="form-resource-list" data-live-search="true" data-actions-box="true" data-header="Select Users">
+                        <!-- <option value="" selected>Add User to Project</option> -->
+                        {% for user in users %}
+                          {% if (user.name != owner) %}
+                        <option data-tokens="{{user.displayname}}" value="{{user.name}}">{{ user.first }} {{user.last}}</option>
+                          {% endif %}
+                        {% endfor %}
+                      </select>
+                    </div>
+
+                    <div class="form-group">
+                      <label for="allocation">Select Allocation:</label>
+                      <select class="form-control border-input selectpicker" multiple id="form-resource-list" name="allocation" tabindex="3" data-live-search="true" data-actions-box="true" data-header="Select Allocations below to add to project">
+                        <!-- <option value="" selected>Add Allocation to Project</option> -->
+                      <!-- Populate List of Allocations that has been defined by User -->
+                      {% for allocation in allocations %}
+                        {% if allocation.owner == owner and session['name'] == owner %}
+                        <option data-tokens="{{allocation.displayname}}" value="{{allocation.name}}">{{ allocation.displayname }}</option>
+                        {% endif %}
+                      {% endfor %}
+                      </select>
+                    </div>
+
+                    <div class="form-group">
+                      <label for="description">Description (optional)</label>
+                      <textarea
+                        placeholder="A brief description..."
+                        name="description"
+                        class="form-control border-input"
+                        id="form-textarea"
+                        tabindex="4"
+                        rows="5"
+                        autofocus
+                        maxlength="144"
+                        value="{{request.description}}"
+                        >{{description}}</textarea>
+                      <span class="help-block exceeded"></span>
+                    </div>
+
+                    <div class="form-group">
+                      <a href="{{url_for('list_projects')}}" class="btn btn-warning btn-fill btn-wd" tabindex="6" title="Cancel">Cancel</a>
+                      <button type="submit" tabindex="7" class="btn btn-info btn-fill btn-wd">Create Project</button>
+                    </div>
+                  </form>
+        				</div>
+
+        			</div> <!-- row -->
+            </div><!-- /.card-block -->
+          </div><!-- /.card description-->
+        </div><!-- /.card -->
+  		</div><!-- /.col-md-6 -->
+    </div><!-- ./row -->
+  </div><!-- ./container-fluid -->
+</div><!-- ./content -->
+
+
 {%endblock%}

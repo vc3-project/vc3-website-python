@@ -630,3 +630,10 @@ $("#form-textarea").characterCounter({
 $(document).ready(function(){
     $('[data-toggle="popover"]').popover();
 });
+
+$(function() {
+  $(".sidebar-wrapper .nav li").on("click", function() {
+    $(".sidebar-wrapper .nav li").removeClass("active");
+    $(this).addClass("active");
+  });
+});
