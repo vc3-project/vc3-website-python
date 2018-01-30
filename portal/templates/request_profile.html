@@ -211,17 +211,14 @@
                     <h3 class="panel-title"><strong>Status</strong></h3>
                   </div>
                   <div class="panel-body disabled">
-                    <!-- MYSITE-hostname-sysadminname -->
-                    {% if vc3_request.statusraw['VC3-static'] == {} %}
-                    Status Currently Unavailable
-                    {% elif vc3_request.statusraw == None %}
-                    Status Currently Unavailable
-                    {% else %}
+                    {% if vc3_request.statusinfo != None %}
 
                     <label>{{vc3_request.cluster}}:</label>
                       {% for key, value in vc3_request.statusinfo.values()[0].iteritems() %}
                         <option>{{ key }}: {{ value }}</option>
                       {% endfor %}
+                    {% else %}
+                    Status is none
 
                     {% endif %}
                   </div>

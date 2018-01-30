@@ -1284,8 +1284,7 @@ def view_request(name):
                                    action=action, state=state, users=users,
                                    vc3allocations=vc3allocations, project=project,
                                    allocations=allocations, description=description,
-                                   profile=profile,
-                                   vc3_request=vc3_request)
+                                   profile=profile, vc3_request=vc3_request)
         app.logger.error("Could not find VC when viewing: {0}".format(name))
         raise LookupError('virtual cluster')
 
