@@ -4,44 +4,66 @@
 
 {%block body%}
 
-<div class="col-md-8 col-sm-12">
-<section id="new_project">
-  <div class="container new-project">
-    <form role="form" id="new-project-form" action="{{url_for('edit_request', name=name)}}" method="POST">
 
+<div class="content">
+  <div class="container-fluid">
+    <div class="row">
 
-      <h2>Edit Virtual Cluster: {{request.name}}</h2>
-      <h4><label><span id="asterik">*</span> = indicates required</label></h4>
-      <!-- <h4>An allocation is an allotted amount of CPU hours or service units (SU) of computing time on a specific resource</h4> -->
+      <div class="col-md-12">
+        <div class="card">
 
-      <!-- <fieldset>
-        <label for="name">Virtual Cluster Name <span id="asterik">*</span></label>
-        <input
-          placeholder="Your Virtual Cluster name"
-          name="name"
-          type="text"
-          tabindex="1"
-          required
-          autofocus
-          value="{{request.displayname}}">
-      </fieldset> -->
-      <fieldset>
-        <label for="description">Description</label>
-        <textarea
-          placeholder="Brief 144 Character Description..."
-          name="description"
-          tabindex="2"
-          autofocus
-          maxlength="144"
-          value="{{request.description}}"
-          >{{request.description}}</textarea>
-      </fieldset>
-      <fieldset>
-        <button type="submit" id="create-project" data-submit="...Sending" style="margin-top:25px">Update Cluster</button>
-      </fieldset>
-    </form>
-  </div> <!-- project container -->
-</section>
-</div>
+          <div class="header">
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item"><a href="{{url_for('home')}}">Portal</a></li>
+              <li class="breadcrumb-item"><a href="{{url_for('list_requests')}}">Virtual Clusters</a></li>
+              <li class="breadcrumb-item"><a href="{{url_for('view_request', name=name)}}">{{name}}</a></li>
+              <li class="breadcrumb-item active">Edit Virtual Cluster</li>
+            </ol>
+            <h4 class="title">Edit Virtual Cluster</h4>
+            <h5>You may update the description for your Virtual Cluster. If you would like to allocate other resources, you must launch a new Virtual Cluster.</h5>
+            <label><span id="asterik">*</span> <small style="color:black">= indicates required field</small></label>
+						<hr/>
+          </div>
+
+          <div class="content description">
+  					<div class="card-block">
+
+              <div class="row">
+        				<div class="col-md-6">
+
+                  <form role="form" action="{{url_for('edit_request', name=name)}}" method="POST">
+
+                    <div class="form-group">
+                      <label for="description">Description (optional)</label>
+                      <textarea
+                        placeholder="A brief description..."
+                        name="description"
+                        class="form-control border-input"
+                        id="form-textarea"
+                        tabindex="1"
+                        rows="5"
+                        autofocus
+                        maxlength="144"
+                        value="{{request.description}}"
+                        >{{request.description}}</textarea>
+                      <span class="help-block exceeded"></span>
+                    </div>
+
+                    <div class="form-group">
+                      <a href="{{url_for('view_request', name=name)}}" class="btn btn-warning btn-fill btn-wd" tabindex="2" title="Cancel">Cancel</a>
+                      <button type="submit" tabindex="3" class="btn btn-info btn-fill btn-wd">Update Virtual Cluster Description</button>
+                    </div>
+                  </form>
+        				</div>
+
+        			</div> <!-- row -->
+            </div><!-- /.card-block -->
+          </div><!-- /.card description-->
+        </div><!-- /.card -->
+  		</div><!-- /.col-md-6 -->
+    </div><!-- ./row -->
+  </div><!-- ./container-fluid -->
+</div><!-- ./content -->
+
 
 {%endblock%}

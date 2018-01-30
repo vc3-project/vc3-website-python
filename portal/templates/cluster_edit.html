@@ -4,51 +4,89 @@
 
 {%block body%}
 
-<div class="col-md-8 col-sm-12">
-<section id="new_project">
-  <div class="container new-project">
-    <form role="form" id="new-project-form" action="{{url_for('edit_cluster', name=name)}}" method="POST">
 
-      <h2>Edit Cluster Template: <small style="color:#111">{{name}}</small></h2>
-      <h4><label><span id="asterik">*</span> = indicates required</label></h4>
+<div class="content">
+  <div class="container-fluid">
+    <div class="row">
 
-      <fieldset>
-        <label for="app_type">Cluster Framework <span id="asterik">*</span></label>
-        <select class="form-control" name="app_type" tabindex="1" id="form-framework-list" required>
-          <option value="htcondor" id="htcondor">HTCondor</option>
-          <option value="workqueue" id="workqueue">WorkQueue</option>
-        </select>
-      </fieldset>
-      <fieldset>
-        <label for="node_number">Number of Nodes: <span id="asterik">*</span></label>
-        <input
-          name="node_number"
-          type="number"
-          min="1"
-          max="1000000"
-          tabindex="2"
-          required
-          autofocus
-          value="{{node_number}}">
-      </fieldset>
-      <fieldset>
-        <label for="description">Description</label>
-        <textarea
-          placeholder="A brief description..."
-          name="description"
-          tabindex="3"
-          autofocus
-          maxlength="144"
-          value="{{description}}"
-          >{{description}}</textarea>
-      </fieldset>
-      <fieldset>
-        <button type="submit" id="create-project" tabindex="4" data-submit="...Sending">Update Cluster Template</button>
-      </fieldset>
-    </form>
-  </div> <!-- project container -->
-</section>
-</div>
+      <div class="col-md-12">
+        <div class="card">
+
+          <div class="header">
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item"><a href="{{url_for('home')}}">Portal</a></li>
+              <li class="breadcrumb-item"><a href="{{url_for('list_clusters')}}">Cluster Templates</a></li>
+              <li class="breadcrumb-item"><a href="{{url_for('view_cluster', name=name)}}">{{name}}</a></li>
+              <li class="breadcrumb-item active">Edit Cluster Template</li>
+            </ol>
+            <h4 class="title">Edit Cluster Template</h4>
+            <!-- <h5>An allocation is an allotted amount of CPU hours or service units (SU) of computing time on a specific resource</h5> -->
+            <label><span id="asterik">*</span> <small style="color:black">= indicates required field</small></label>
+						<hr/>
+          </div>
+
+          <div class="content description">
+  					<div class="card-block">
+
+              <div class="row">
+        				<div class="col-md-6">
+
+                  <form role="form" action="{{url_for('edit_cluster', name=name)}}" method="POST">
+
+                    <div class="form-group">
+                      <label for="app_type">Cluster Framework <span id="asterik">*</span></label>
+                      <select class="form-control border-input" name="app_type" tabindex="1" id="form-framework-list" required>
+                        <option value="htcondor" id="htcondor">HTCondor</option>
+                        <option value="workqueue" id="workqueue">WorkQueue</option>
+                      </select>
+                    </div>
+
+                    <div class="form-group">
+                      <label for="node_number">Number of Compute Workers: <span id="asterik">*</span></label>
+                      <input
+                        name="node_number"
+                        class="form-group border-input"
+                        type="number"
+                        min="1"
+                        max="1000000"
+                        tabindex="2"
+                        required
+                        autofocus
+                        value="{{node_number}}">
+                    </div>
+
+                    <div class="form-group">
+                      <label for="description">Description (optional)</label>
+                      <textarea
+                        placeholder="A brief description..."
+                        name="description"
+                        class="form-control border-input"
+                        id="form-textarea"
+                        tabindex="3"
+                        rows="5"
+                        autofocus
+                        maxlength="144"
+                        value="{{request.description}}"
+                        >{{description}}</textarea>
+                      <span class="help-block exceeded"></span>
+                    </div>
+
+                    <div class="form-group">
+                      <a href="{{url_for('view_cluster', name=name)}}" class="btn btn-warning btn-fill btn-wd" tabindex="4" title="Cancel">Cancel</a>
+                      <button type="submit" tabindex="5" class="btn btn-info btn-fill btn-wd">Update Cluster Template</button>
+                    </div>
+                  </form>
+        				</div>
+
+        			</div> <!-- row -->
+            </div><!-- /.card-block -->
+          </div><!-- /.card description-->
+        </div><!-- /.card -->
+  		</div><!-- /.col-md-6 -->
+    </div><!-- ./row -->
+  </div><!-- ./container-fluid -->
+</div><!-- ./content -->
+
 
 <script>
 

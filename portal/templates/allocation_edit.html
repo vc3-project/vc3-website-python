@@ -4,44 +4,80 @@
 
 {%block body%}
 
-<div class="col-md-8 col-sm-12">
-<section id="new_project">
-  <div class="container new-project">
-    <form role="form" id="new-project-form" action="{{url_for('edit_allocation', name=name)}}" method="POST">
 
-      <h2>Edit Allocation</h2>
-      <h5 style="color:black">An allocation is an allotted amount of CPU hours or service units (SU) of computing time on a specific resource</h5>
-      <h4><label><span id="asterik">*</span> = indicates required</label></h4>
+<div class="content">
+  <div class="container-fluid">
+    <div class="row">
 
-      <fieldset>
-        <label for="displayname">Allocation Name <span id="asterik">*</span></label>
-        <input
-          placeholder="{{displayname}}"
-          name="displayname"
-          type="text"
-          tabindex="1"
-          autofocus
-          required
-          value="{{request.displayname}}"
-          >
-      </fieldset>
-      <fieldset>
-        <label for="description">Description</label>
-        <textarea
-          placeholder="A brief description..."
-          name="description"
-          tabindex="2"
-          autofocus
-          maxlength="144"
-          value="{{request.description}}"
-          >{{description}}</textarea>
-      </fieldset>
-      <fieldset>
-        <button type="submit" id="create-project" data-submit="...Sending">Update Allocation</button>
-      </fieldset>
-    </form>
-  </div> <!-- project container -->
-</section>
-</div>
+      <div class="col-md-12">
+        <div class="card">
+
+          <div class="header">
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item"><a href="{{url_for('home')}}">Portal</a></li>
+              <li class="breadcrumb-item"><a href="{{url_for('list_allocations')}}">Allocations</a></li>
+              <li class="breadcrumb-item"><a href="{{url_for('view_allocation', name=name)}}">{{displayname}}</a></li>
+              <li class="breadcrumb-item active">Edit Allocation</li>
+            </ol>
+            <h4 class="title">Edit Allocation</h4>
+            <h5>An allocation is an allotted amount of CPU hours or service units (SU) of computing time on a specific resource</h5>
+            <label><span id="asterik">*</span> <small style="color:black">= indicates required field</small></label>
+						<hr/>
+          </div>
+
+          <div class="content description">
+  					<div class="card-block">
+
+              <div class="row">
+        				<div class="col-md-6">
+
+                  <form role="form" action="{{url_for('edit_allocation', name=name)}}" method="POST">
+
+                    <div class="form-group">
+                      <label for="displayname">Allocation Name <span id="asterik">*</span></label>
+                      <input
+                        placeholder="{{displayname}}"
+                        name="displayname"
+                        class="form-control border-input"
+                        type="text"
+                        tabindex="1"
+                        autofocus
+                        required
+                        value="{{request.displayname}}"
+                        >
+                    </div>
+
+                    <div class="form-group">
+                      <label for="description">Description (optional)</label>
+                      <textarea
+                        placeholder="A brief description..."
+                        name="description"
+                        class="form-control border-input"
+                        id="form-textarea"
+                        tabindex="2"
+                        rows="5"
+                        autofocus
+                        maxlength="144"
+                        value="{{request.description}}"
+                        >{{description}}</textarea>
+                      <span class="help-block exceeded"></span>
+                    </div>
+
+                    <div class="form-group">
+                      <a href="{{url_for('list_allocations')}}" class="btn btn-warning btn-fill btn-wd" tabindex="3" title="Cancel">Cancel</a>
+                      <button type="submit" tabindex="4" class="btn btn-info btn-fill btn-wd">Update Allocation</button>
+                    </div>
+                  </form>
+        				</div>
+
+        			</div> <!-- row -->
+            </div><!-- /.card-block -->
+          </div><!-- /.card description-->
+        </div><!-- /.card -->
+  		</div><!-- /.col-md-6 -->
+    </div><!-- ./row -->
+  </div><!-- ./container-fluid -->
+</div><!-- ./content -->
+
 
 {%endblock%}
