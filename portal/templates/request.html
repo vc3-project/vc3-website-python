@@ -43,7 +43,7 @@
     											<th><input type="text" class="form-control" placeholder="State" disabled></th>
                           <th><input type="text" class="form-control" placeholder="Cluster Template" disabled></th>
     											<th><input type="text" class="form-control" placeholder="Nodes" disabled></th>
-                          <th><input type="text" class="form-control" placeholder="Head Node (click below)" disabled></th>
+                          <th><input type="text" class="form-control" placeholder="Head Node" disabled></th>
     										</tr>
     									</thead>
     									<tbody data-link="row" class="rowlink">
@@ -70,15 +70,7 @@
                             <div>{{request.cluster}}</div>
                           </td>
 
-                        {% if (request.statusraw['VC3-static'] == {}) %}
-                          <td>
-                            <small class="label label-warning">Status currently pending</small>
-                          </td>
-                        {% elif request.statusraw == None %}
-                          <td>
-                            <small class="label label-warning">Status currently Unavailable</small>
-                          </td>
-                        {% else %}
+                        {% if request.statusinfo != None %}
                           <td>
                           {% for key, value in request.statusinfo.iteritems() %}
                             {% for k, v in value.iteritems() %}
@@ -113,6 +105,14 @@
                             </div>
                             {% endif %}
                           {% endfor %}
+                          </td>
+                        {% elif (request.statusraw['VC3-static'] == {}) %}
+                          <td>
+                            <small class="label label-warning">Status currently pending</small>
+                          </td>
+                        {% elif request.statusraw == None %}
+                          <td>
+                            <small class="label label-warning">Status currently Unavailable</small>
                           </td>
                         {% endif %}
 
