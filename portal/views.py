@@ -25,7 +25,8 @@ whitelist = ['c4686d14-d274-11e5-b866-0febeb7fd79e',
              'a877729e-d274-11e5-a5d2-2f448d5a1c26',
              'c887eb90-d274-11e5-bf28-779c8998e810',
              'c456b77c-d274-11e5-b82c-23a245a48997',
-             'c444a294-d274-11e5-b7f1-e3782ed16687']
+             'c444a294-d274-11e5-b7f1-e3782ed16687',
+             'aebe29b8-d274-11e5-ba4b-ffec0df955f2']
 
 # Create a custom error handler for Exceptions
 
@@ -187,12 +188,12 @@ def show_profile_page():
             session['primary_identity'] = profile.identity_id
             if profile.sshpubstring is not None:
                 sshpubstring = profile.sshpubstring
-        # else:
-        #     if session['primary_identity'] not in whitelist:
-        #         return redirect(url_for('whitelist_error'))
-        #     else:
-        #         flash('Please complete any missing profile fields before '
-        #               'launching a cluster.', 'warning')
+        else:
+            if session['primary_identity'] not in whitelist:
+                return redirect(url_for('whitelist_error'))
+            else:
+                flash('Please complete any missing profile fields before '
+                      'launching a cluster.', 'warning')
 
         if request.args.get('next'):
             session['next'] = get_safe_redirect()
@@ -353,8 +354,8 @@ def authcallback():
         else:
             return redirect(url_for('show_profile_page',
                                     next=url_for('show_profile_page')))
-        # if session['primary_identity'] not in whitelist:
-        #     return redirect(url_for('whitelist_error'))
+        if session['primary_identity'] not in whitelist:
+            return redirect(url_for('whitelist_error'))
 
         return redirect(url_for('portal'))
 
