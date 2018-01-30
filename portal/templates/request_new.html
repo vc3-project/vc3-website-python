@@ -4,92 +4,115 @@
 
 {%block body%}
 
-<div class="col-md-8 col-sm-12">
-<section id="new_project">
-  <div class="container new-project">
-    <form role="form" id="new-project-form" action="{{url_for('create_request')}}" method="POST">
+<div class="content">
+  <div class="container-fluid">
+    <div class="row">
 
-      <!-- Logo -->
+      <div class="col-md-12">
+        <div class="card">
 
-      <!-- <div class="col-lg-12 logo-vc3">
-          <img width="100" class="logo" src="https://image.ibb.co/e59s3v/logosmall.png" alt="Logo" />
-      </div> -->
+          <div class="header">
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item"><a href="{{url_for('home')}}">Portal</a></li>
+              <li class="breadcrumb-item"><a href="{{url_for('list_requests')}}">Virtual Clusters</a></li>
+              <li class="breadcrumb-item active">New Virtual Cluster</li>
+            </ol>
+            <h4 class="title">Launch New Virtual Cluster</h4>
+            <!-- <h5>A project connects your allocations to your team members</h5> -->
+            <label><span id="asterik">*</span> <small style="color:black">= indicates required field</small></label>
+						<hr/>
+          </div>
 
-      <h2>Launch New Virtual Cluster</h2>
-      <h4><label><span id="asterik">*</span> = indicates required</label></h4>
-      <!-- <h4>An allocation is an allotted amount of CPU hours or service units (SU) of computing time on a specific resource</h4> -->
+          <div class="content description">
+  					<div class="card-block">
 
-      <fieldset>
-        <label for="name">Virtual Cluster Name <span id="asterik">*</span></label>
-        <input
-          placeholder="Your Virtual Cluster name"
-          name="name"
-          type="text"
-          tabindex="1"
-          required
-          autofocus
-          value="{{request.name}}">
-      </fieldset>
-      <fieldset>
-        <label for="cluster">Cluster Template <span id="asterik">*</span></label>
-        <select class="form-control" name="cluster" tabindex="2" id="form-resource-list" required>
-          <option value="" selected disabled>Please Select Cluster</option>
-          {% for cluster in clusters %}
-            {% if cluster.owner == session['name'] %}
-          <option value="{{cluster.name}}">{{ cluster.name }}</option>
-            {% endif %}
-          {% endfor %}
-        </select>
-      </fieldset>
+              <div class="row">
+        				<div class="col-md-6">
 
-      <fieldset>
-        <label for="project">Project <span id="asterik">*</span></label>
-        <select class="form-control" name="project" tabindex="3" id="project" required>
-          <option value="" selected disabled>Please Select Project</option>
-          {% for project in projects %}
-            {% if project.owner == session['name'] %}
-          <option value="{{project.name}}">{{ project.name }}</option>
-            {% endif %}
-          {% endfor %}
-        </select>
-      </fieldset>
+                  <form role="form" action="{{url_for('create_request')}}" method="POST">
 
-      <fieldset>
-        <label for="allocation">Allocations (ctrl/cmd to select multiple) <span id="asterik">*</span></label>
-        <select class="form-control" multiple name="allocation" tabindex="4" id="allocation" required>
-          <!-- also disabled ".selectpicker" above <option disabled>Please Select Allocation</option> -->
-          {% for allocation in allocations %}
-            {% if allocation.owner == session['name'] and allocation.state == "validated" %}
-          <option value="{{allocation.name}}">{{ allocation.displayname }}</option>
-            {% endif %}
-          {% endfor %}
+                    <div class="form-group">
+                      <label for="name">Virtual Cluster Name <span id="asterik">*</span></label>
+                      <input
+                        placeholder="Your Virtual Cluster name"
+                        name="name"
+                        class="form-control border-input"
+                        type="text"
+                        tabindex="1"
+                        required
+                        autofocus
+                        value="{{request.name}}">
+                    </div>
 
-        </select>
-      </fieldset>
+                    <div class="form-group">
+                      <label for="cluster">Cluster Template <span id="asterik">*</span></label>
+                      <select class="form-control border-input selectpicker" name="cluster" tabindex="2" id="form-resource-list" data-live-search="true" data-actions-box="true" data-header="Select Cluster Template" required>
+                        <!-- <option value="" selected disabled>Please Select Cluster</option> -->
+                        {% for cluster in clusters %}
+                          {% if cluster.owner == session['name'] %}
+                        <option data-tokens="{{cluster.name}}" value="{{cluster.name}}">{{ cluster.name }}</option>
+                          {% endif %}
+                        {% endfor %}
+                      </select>
+                    </div>
 
-      <fieldset>
-        <label for="description">Description</label>
-        <textarea
-          placeholder="A brief description..."
-          name="description"
-          id="form-textarea"
-          tabindex="5"
-          autofocus
-          maxlength="144"
-          value="{{request.description}}"
-          ></textarea>
-        <span class="help-block exceeded"></span>
-      </fieldset>
-      <fieldset>
-        <button type="submit" id="create-project" tabindex="6" data-submit="...Sending" style="margin-top:25px">Launch Cluster</button>
-      </fieldset>
-      <fieldset>
-        <a href="{{url_for('list_requests')}}" class="btn btn-primary btn-sm" tabindex="7" title="Cancel">Cancel </a>
-      </fieldset>
-    </form>
-  </div> <!-- project container -->
-</section>
-</div>
+                    <div class="form-group">
+                      <div class="col-md-6">
+                        <label for="project">Project <span id="asterik">*</span></label>
+                        <select class="form-control border-input selectpicker" name="project" tabindex="3" id="project" data-live-search="true" data-actions-box="true" data-header="Select Project" required>
+                          <option value="" selected disabled>Please Select Project</option>
+                          {% for project in projects %}
+                            {% if project.owner == session['name'] %}
+                          <option data-tokens="{{project.name}}" value="{{project.name}}">{{ project.name }}</option>
+                            {% endif %}
+                          {% endfor %}
+                        </select>
+                      </div>
+
+                      <div class="col-md-6">
+                        <label for="allocation">Allocations<span id="asterik">*</span></label>
+                        <select class="form-control border-input selectpicker" multiple name="allocation" tabindex="4" id="allocation" data-live-search="true" data-actions-box="true" data-header="Select Allocations for Virtual Cluster" required>
+                          <!-- also disabled ".selectpicker" above <option disabled>Please Select Allocation</option> -->
+                          {% for allocation in allocations %}
+                            {% if allocation.owner == session['name'] and allocation.state == "validated" %}
+                          <option data-tokens="{{allocation.displayname}}" value="{{allocation.name}}">{{ allocation.displayname }}</option>
+                            {% endif %}
+                          {% endfor %}
+                        </select>
+                      </div>
+                    </div>
+
+                    <div class="form-group">
+                      <label for="description">Description (optional)</label>
+                      <textarea
+                        placeholder="A brief description..."
+                        name="description"
+                        class="form-control border-input"
+                        id="form-textarea"
+                        tabindex="5"
+                        rows="5"
+                        autofocus
+                        maxlength="144"
+                        value="{{request.description}}"
+                        >{{description}}</textarea>
+                      <span class="help-block exceeded"></span>
+                    </div>
+
+                    <div class="form-group">
+                      <a href="{{url_for('list_requests')}}" class="btn btn-warning btn-fill btn-wd" tabindex="6" title="Cancel">Cancel</a>
+                      <button type="submit" tabindex="7" class="btn btn-info btn-fill btn-wd">Launch Virtual Cluster</button>
+                    </div>
+                  </form>
+        				</div>
+
+        			</div> <!-- row -->
+            </div><!-- /.card-block -->
+          </div><!-- /.card description-->
+        </div><!-- /.card -->
+  		</div><!-- /.col-md-6 -->
+    </div><!-- ./row -->
+  </div><!-- ./container-fluid -->
+</div><!-- ./content -->
 
 <script>
 

@@ -41,7 +41,7 @@
 <body>
 
 <div class="wrapper">
-  <div class="sidebar tour-step tour-step-two">
+  <div class="sidebar tour-step tour-step-two" data-active-color="danger">
     <div class="sidebar-wrapper">
       <div class="logo">
         <!-- <a href="{{url_for('show_profile_page')}}" class="simple-text">
@@ -49,7 +49,7 @@
         </a> -->
       </div>
       <ul class="nav">
-				<li class="">
+				<li>
           <a href="{{url_for('list_resources')}}">
             <i class="fa fa-database" aria-hidden="true"></i>
             <p class="tour-step tour-step-four">Resources</p>
@@ -61,31 +61,31 @@
             <p class="tour-step tour-step-five">My Allocations</p>
           </a>
         </li>
-        <li class="">
+        <li>
           <a href="{{url_for('list_projects')}}" methods="GET">
             <i class="fa fa-object-group" aria-hidden="true"></i>
             <p class="tour-step tour-step-seven">Projects</p>
           </a>
         </li>
-				<li class="">
+				<li>
           <a href="{{url_for('list_clusters')}}">
             <i class="fa fa-cube" aria-hidden="true"></i>
             <p>Cluster Templates</p>
           </a>
         </li>
-				<li class="">
+				<li>
           <a href="{{url_for('list_environments')}}">
             <i class="fa fa-hdd-o" aria-hidden="true"></i>
             <p>Environments</p>
           </a>
         </li>
-				<li class="">
+				<li>
           <a href="{{url_for('list_requests')}}">
             <i class="fa fa-spinner" aria-hidden="true"></i>
             <p>Virtual Clusters</p>
           </a>
         </li>
-				<li class="">
+				<li>
           <a href="{{url_for('dashboard')}}">
             <i class="fa fa-dashboard" aria-hidden="true"></i>
             <p>Monitoring</p>
@@ -102,7 +102,7 @@
 			                                       'c456b77c-d274-11e5-b82c-23a245a48997',
 			                                       'c444a294-d274-11e5-b7f1-e3782ed16687',
 																						 'aebe29b8-d274-11e5-ba4b-ffec0df955f2'] %}
-				<li class="">
+				<li>
           <a href="{{url_for('admin')}}">
 						<i class="fa fa-user-secret" aria-hidden="true"></i>
             <p>Admin</p>
