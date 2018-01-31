@@ -2194,7 +2194,7 @@ body > .navbar-collapse {
       margin: 0 0 10px;
       /*min-width: 100%;*/
       padding: 0;
-      width: 30%;
+      width: 100%;
     }
 
     #multiselect fieldset span{
@@ -2543,4 +2543,15 @@ ALLOCATION LIST PAGE
 
 .panel .pubtoken .span4 {
   width: 100%;
+}
+
+.input-group-button {
+    padding-top: 20px;
+    border-color: transparent;
+    background: none;
+}
+
+.navbar-default .navbar-brand:focus, .navbar-default .navbar-brand:hover {
+    color: white;
+    background-color: transparent;
 }
