@@ -90,20 +90,16 @@
                                   </span>
                                 </small>
                               </div>
+                              {% elif k == "requested" %}
+                              <div class="row">
+                                <small class="pull-right" id="node-status">{{ k }}:
+                                  <span class="label label-info" style="color:white">
+                                    {{v}}
+                                  </span>
+                                </small>
+                              </div>
                               {% endif %}
                             {% endfor %}
-                          {% endfor %}
-                          {% for nodeset in nodesets %}
-                            {% if nodeset.name == request.cluster %}
-                            <div class="row">
-                              <small class="pull-right" id="node-status">
-                                Prescribed:
-                                <span class="label label-info" style="color:white">
-                                  {{nodeset.node_number}}
-                                </span>
-                              </small>
-                            </div>
-                            {% endif %}
                           {% endfor %}
                           </td>
                         {% elif (request.statusraw['VC3-static'] == {}) %}
