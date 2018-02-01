@@ -1191,8 +1191,10 @@ def create_request():
         allocations = vc3_client.listAllocations()
         clusters = vc3_client.listClusters()
         projects = vc3_client.listProjects()
+        environments = vc3_client.listEnvironments()
         return render_template('request_new.html', allocations=allocations,
-                               clusters=clusters, projects=projects)
+                               clusters=clusters, projects=projects,
+                               environments=environments)
 
     elif request.method == 'POST':
         # Define and store new Virtual Clusters within infoservice
@@ -1208,7 +1210,7 @@ def create_request():
         policy = "static-balanced"
         translatename = "".join(inputname.split())
         vc3requestname = translatename.lower()
-        environments = []
+        environments = request.form['environment']
         description = request.form['description']
         for selected_allocation in request.form.getlist('allocation'):
             allocations.append(selected_allocation)
@@ -1391,13 +1393,12 @@ def create_environment():
         displayname = request.form['name']
         owner = session['name']
         name = owner + '-' + displayname.lower()
-        packagelist = []
+        # packagelist = []
         envmap = {}
         files = {}
         description_input = request.form['description']
         description = str(description_input)
-        for package in request.form.getlist('packagelist'):
-            packagelist.append(package)
+        packagelist = request.form['packagelist']
 
         try:
             new_environment = vc3_client.defineEnvironment(
