@@ -57,11 +57,11 @@
                         </select>
                       </div>
                       <div class="col-md-6">
-                        <label for="environment">Environment <span id="asterik">*</span></label>
+                        <label for="environment">Environment</label>
                         <select class="form-control border-input selectpicker"
                         name="environment" tabindex="3" id="form-resource-list"
                         data-live-search="true" data-actions-box="true"
-                        data-header="Select Environment" required>
+                        data-header="Select Environment">
                           <!-- <option value="" selected disabled>Please Select Cluster</option> -->
                           {% for environment in environments %}
                             {% if environment.owner == session['name'] %}
