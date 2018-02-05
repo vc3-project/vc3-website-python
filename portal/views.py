@@ -13,6 +13,8 @@ from portal.decorators import authenticated, allocation_validated, project_exist
 from portal.utils import (load_portal_client, get_safe_redirect,
                           get_vc3_client, project_validated, project_in_vc)
 
+from vc3infoservice.core import InfoEntityExistsException
+
 
 # Whitelist of Admin users
 
@@ -225,9 +227,16 @@ def show_profile_page():
                                             sshpubstring=sshpubstring)
 
             vc3_client.storeUser(newuser)
-        except:
+        except InfoEntityExistsException:
             flash('That username has already been chosen please choose another'
                   ' username', 'warning')
+            return render_template('profile.html')
+        except:
+            flash('There was an unexpected error. Please try again later', ' error', 'warning')
+            return render_template('profile.html')
+
+        if not vc3_client.validate_ssh_pub_key(sshpubstring):
+            flash('Your public ssh-key is not valid. Please try again.', ' ssh-key', 'warning')
             return render_template('profile.html')
 
         flash('Thank you. Your profile has been successfully updated. '
