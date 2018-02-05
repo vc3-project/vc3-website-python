@@ -1271,8 +1271,9 @@ def view_request(name):
                 try:
                     headnode = vc3_client.getNodeset(vc3_request.headnode)
                 except:
-                    flash("Could not read headnode information for {0}".format(
-                        vc3_request), "warning")
+                    # The headnode may have been cleaned-up already, or maybe
+                    # it was never created.
+                    pass
 
             # use headnode structure in the profile.
             vc3_request.headnode = headnode
