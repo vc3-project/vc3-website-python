@@ -1396,12 +1396,14 @@ def dashboard():
 @authenticated
 def list_environments():
     """ List View of Environments """
-
+    vc3_client = get_vc3_client()
+    environments = vc3_client.listEnvironments()
     # Call list of build recipes from vc3-builder
     recipes = subprocess.check_output(["vc3-builder", "--list"])
     recipe_list = recipes.split()
 
-    return render_template('environments.html', recipes=recipe_list)
+    return render_template('environments.html', recipes=recipe_list,
+                           environments=environments)
 
 
 @app.route('/environments/new', methods=['GET', 'POST'])
@@ -1430,7 +1432,7 @@ def create_environment():
         files = {}
         description_input = request.form['description']
         description = str(description_input)
-        packagelist = request.form['packagelist']
+        packagelist = request.form.getlist('packagelist')
 
         try:
             new_environment = vc3_client.defineEnvironment(

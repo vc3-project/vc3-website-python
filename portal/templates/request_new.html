@@ -46,59 +46,56 @@
                     </div>
 
                     <div class="form-group">
-                      <div class="col-md-6">
-                        <label for="cluster">Cluster Template <span id="asterik">*</span></label>
-                        <select class="form-control border-input selectpicker" name="cluster" tabindex="2" id="form-resource-list" data-live-search="true" data-actions-box="true" data-header="Select Cluster Template" required>
-                          <!-- <option value="" selected disabled>Please Select Cluster</option> -->
-                          {% for cluster in clusters %}
-                            {% if cluster.owner == session['name'] %}
-                          <option data-tokens="{{cluster.name}}" value="{{cluster.name}}">{{ cluster.name }}</option>
-                            {% endif %}
-                          {% endfor %}
-                        </select>
-                      </div>
-                      <div class="col-md-6">
-                        <label for="environment">Environment</label>
-                        <select class="form-control border-input selectpicker"
-                        name="environment" tabindex="3" id="form-resource-list"
-                        data-live-search="true" data-actions-box="true"
-                        data-header="Select Environment">
-                          <!-- <option value="" selected disabled>Please Select Cluster</option> -->
-                          {% for environment in environments %}
-                            {% if environment.owner == session['name'] %}
-                          <option data-tokens="{{environment.name}}"
-                          value="{{environment.packagelist}}">{{ environment.name }}</option>
-                            {% endif %}
-                          {% endfor %}
-                        </select>
-                      </div>
+                      <label for="cluster">Cluster Template <span id="asterik">*</span></label>
+                      <select class="form-control border-input selectpicker" name="cluster" tabindex="2" id="form-resource-list" data-live-search="true" data-actions-box="true" data-header="Select Cluster Template" required>
+                        <!-- <option value="" selected disabled>Please Select Cluster</option> -->
+                        {% for cluster in clusters %}
+                          {% if cluster.owner == session['name'] %}
+                        <option data-tokens="{{cluster.name}}" value="{{cluster.name}}">{{ cluster.name }}</option>
+                          {% endif %}
+                        {% endfor %}
+                      </select>
+                    </div>
+                    <div class="form-group">
+                      <label for="environment">Environment</label>
+                      <select class="form-control border-input selectpicker"
+                      name="environment" tabindex="3" id="form-resource-list"
+                      data-live-search="true" data-actions-box="true"
+                      data-header="Select Environment">
+                        <!-- <option value="" selected disabled>Please Select Cluster</option> -->
+                        {% for environment in environments %}
+                          {% if environment.owner == session['name'] %}
+                        <option data-tokens="{{environment.name}}"
+                        value="{{environment.packagelist}}">{{ environment.name }}</option>
+                          {% endif %}
+                        {% endfor %}
+                      </select>
                     </div>
 
                     <div class="form-group">
-                      <div class="col-md-6">
-                        <label for="project">Project <span id="asterik">*</span></label>
-                        <select class="form-control border-input selectpicker" name="project" tabindex="4" id="project" data-live-search="true" data-actions-box="true" data-header="Select Project" required>
-                          <option value="" selected disabled>Please Select Project</option>
-                          {% for project in projects %}
-                            {% if project.owner == session['name'] %}
-                          <option data-tokens="{{project.name}}" value="{{project.name}}">{{ project.name }}</option>
-                            {% endif %}
-                          {% endfor %}
-                        </select>
-                      </div>
-
-                      <div class="col-md-6">
-                        <label for="allocation">Allocations<span id="asterik">*</span></label>
-                        <select class="form-control border-input selectpicker" multiple name="allocation" tabindex="5" id="allocation" data-live-search="true" data-actions-box="true" data-header="Select Allocations for Virtual Cluster" required>
-                          <!-- also disabled ".selectpicker" above <option disabled>Please Select Allocation</option> -->
-                          {% for allocation in allocations %}
-                            {% if allocation.owner == session['name'] and allocation.state == "validated" %}
-                          <option data-tokens="{{allocation.displayname}}" value="{{allocation.name}}">{{ allocation.displayname }}</option>
-                            {% endif %}
-                          {% endfor %}
-                        </select>
-                      </div>
+                      <label for="project">Project <span id="asterik">*</span></label>
+                      <select class="form-control border-input selectpicker" name="project" tabindex="4" id="project" data-live-search="true" data-actions-box="true" data-header="Select Project" required>
+                        <option value="" selected disabled>Please Select Project</option>
+                        {% for project in projects %}
+                          {% if project.owner == session['name'] %}
+                        <option data-tokens="{{project.name}}" value="{{project.name}}">{{ project.name }}</option>
+                          {% endif %}
+                        {% endfor %}
+                      </select>
                     </div>
+
+                    <div class="form-group">
+                      <label for="allocation">Allocations<span id="asterik">*</span></label>
+                      <select class="form-control border-input selectpicker" multiple name="allocation" tabindex="5" id="allocation" data-live-search="true" data-actions-box="true" data-header="Select Allocations for Virtual Cluster" required>
+                        <!-- also disabled ".selectpicker" above <option disabled>Please Select Allocation</option> -->
+                        {% for allocation in allocations %}
+                          {% if allocation.owner == session['name'] and allocation.state == "validated" %}
+                        <option data-tokens="{{allocation.displayname}}" value="{{allocation.name}}">{{ allocation.displayname }}</option>
+                          {% endif %}
+                        {% endfor %}
+                      </select>
+                    </div>
+
 
                     <div class="form-group">
                       <label for="description">Description (optional)</label>
@@ -121,9 +118,10 @@
                       <button type="submit" tabindex="8" class="btn btn-info btn-fill btn-wd">Launch Virtual Cluster</button>
                     </div>
                   </form>
-        				</div>
 
+        				</div>
         			</div> <!-- row -->
+
             </div><!-- /.card-block -->
           </div><!-- /.card description-->
         </div><!-- /.card -->
