@@ -1210,20 +1210,42 @@ def create_request():
         policy = "static-balanced"
         translatename = "".join(inputname.split())
         vc3requestname = translatename.lower()
-        environments = request.form['environment']
-        description = request.form['description']
+        environment = request.form['environment']
+        description_input = request.form['description']
+        description = str(description_input)
+
         for selected_allocation in request.form.getlist('allocation'):
             allocations.append(selected_allocation)
 
-        newrequest = vc3_client.defineRequest(name=vc3requestname,
-                                              owner=owner, cluster=cluster,
-                                              project=project,
-                                              allocations=allocations,
-                                              policy=policy,
-                                              expiration=expiration,
-                                              environments=environments,
-                                              description=description)
-        vc3_client.storeRequest(newrequest)
+        try:
+            newrequest = vc3_client.defineRequest(name=vc3requestname,
+                                                  owner=owner, cluster=cluster,
+                                                  project=project,
+                                                  allocations=allocations,
+                                                  policy=policy,
+                                                  expiration=expiration,
+                                                  environments=environment,
+                                                  description=description)
+            vc3_client.storeRequest(newrequest)
+        except:
+            owner = session['name']
+            cluster = request.form['cluster']
+            environment = request.form['environment']
+            project = request.form['project']
+            policy = "static-balanced"
+            description_input = request.form['description']
+            description = str(description_input)
+
+            allocations = vc3_client.listAllocations()
+            clusters = vc3_client.listClusters()
+            projects = vc3_client.listProjects()
+            environments = vc3_client.listEnvironments()
+            flash('You have already launched a Virtual Cluster with that name.'
+                  'Please choose a different name.', 'warning')
+            return render_template('request_new.html', cluster=cluster,
+                                   clusters=clusters, environments=environments,
+                                   project=project, projects=projects,
+                                   description=description, environment=environment, allocations=allocations)
 
         flash('Your Virtual Cluster has been successfully launched.', 'success')
 
