@@ -1211,6 +1211,8 @@ def create_request():
         # Environments currently default to "condor-glidein-password-env1"
         # Return redirects to Virtual Clusters List View after creation
         allocations = []
+        environments = []
+
         inputname = request.form['name']
         owner = session['name']
         expiration = None
@@ -1219,9 +1221,11 @@ def create_request():
         policy = "static-balanced"
         translatename = "".join(inputname.split())
         vc3requestname = translatename.lower()
-        environment = request.form['environment']
         description_input = request.form['description']
         description = str(description_input)
+
+        for selected_environment in request.form.getlist('environment'):
+            environments.append(selected_environment)
 
         for selected_allocation in request.form.getlist('allocation'):
             allocations.append(selected_allocation)
@@ -1231,9 +1235,9 @@ def create_request():
                                                   owner=owner, cluster=cluster,
                                                   project=project,
                                                   allocations=allocations,
+                                                  environments=environments,
                                                   policy=policy,
                                                   expiration=expiration,
-                                                  environments=environment,
                                                   description=description)
             vc3_client.storeRequest(newrequest)
         except:
