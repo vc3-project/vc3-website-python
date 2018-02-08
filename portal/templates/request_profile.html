@@ -140,8 +140,7 @@
                       data-toggle="popover"
                       title="To access your node via terminal"
                       data-content="Type: ssh -i ~/.ssh/id_rsa {{session['name']}}@{{vc3_request.headnode.app_host}}"
-                      data-placement="top"
-                      data-trigger="focus">
+                      data-placement="top">
                       {{vc3_request.headnode.app_host}}
                     </a>
                     {% else %}
@@ -201,7 +200,9 @@
                     {% if vc3_request.environments == [] %}
                       <div>No environment yet</div>
                     {% else %}
-                      <div>{{vc3_request.environments}}</div>
+                      {% for env in vc3_request.environments %}
+                      <div>{{env}}</div>
+                      {% endfor %}
                     {% endif %}
                   </div>
                 </div>
@@ -211,14 +212,14 @@
                     <h3 class="panel-title"><strong>Status</strong></h3>
                   </div>
                   <div class="panel-body disabled">
-                    {% if vc3_request.statusinfo != None %}
+                    {% if vc3_request.statusinfo|default() %}
 
                     <label>{{vc3_request.cluster}}:</label>
                       {% for key, value in vc3_request.statusinfo.values()[0].iteritems() %}
                         <option>{{ key }}: {{ value }}</option>
                       {% endfor %}
                     {% else %}
-                    Status is none
+                    Status not yet available
 
                     {% endif %}
                   </div>
@@ -243,7 +244,7 @@
                     <div id="collapseOne" class="collapse" role="tabpanel" aria-labelledby="headingOne">
                       <div class="card-block panel-body disabled" style="font-size: 16px">
                         <ol>
-                          {% if vc3_request.headnode and vc3_request.headnode.app_host %}
+                          {% if vc3_request.headnode and vc3_request.headnode.app_host and vc3_request.headnode.state == 'running' %}
                           <li>In a terminal, type:
                             <div>
                               <kbd>

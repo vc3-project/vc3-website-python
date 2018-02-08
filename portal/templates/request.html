@@ -70,7 +70,7 @@
                             <div>{{request.cluster}}</div>
                           </td>
 
-                        {% if request.statusinfo != None %}
+                        {% if request.statusinfo|default() %}
                           <td>
                           {% for key, value in request.statusinfo.iteritems() %}
                             {% for k, v in value.iteritems() %}
@@ -90,25 +90,27 @@
                                   </span>
                                 </small>
                               </div>
-                              {% elif k == "requested" %}
-                              <div class="row">
-                                <small class="pull-right" id="node-status">{{ k }}:
-                                  <span class="label label-info" style="color:white">
-                                    {{v}}
-                                  </span>
-                                </small>
-                              </div>
                               {% endif %}
                             {% endfor %}
                           {% endfor %}
+
+                          {% for nodeset in nodesets %}
+                            {% if nodeset.name == request.cluster %}
+                            <div class="row">
+                              <small class="pull-right" id="node-status">
+                                Prescribed:
+                                <span class="label label-info" style="color:white">
+                                  {{nodeset.node_number}}
+                                </span>
+                              </small>
+                            </div>
+                            {% endif %}
+                          {% endfor %}
                           </td>
-                        {% elif (request.statusraw['VC3-static'] == {}) %}
+
+                        {% else %}
                           <td>
                             <small class="label label-warning">Status currently pending</small>
-                          </td>
-                        {% elif request.statusraw == None %}
-                          <td>
-                            <small class="label label-warning">Status currently Unavailable</small>
                           </td>
                         {% endif %}
 
@@ -119,8 +121,7 @@
                               data-toggle="popover"
                               title="To access your node via terminal"
                               data-content="Type: ssh -i ~/.ssh/id_rsa {{session['name']}}@{{request.headnode.app_host}}"
-                              data-placement="top"
-                              data-trigger="focus">
+                              data-placement="top">
                                 {{request.headnode.app_host}}
                               </a>
                               {% elif request.headnode and (request.headnode.state == 'terminated' or request.headnode.state == 'failure') %}
