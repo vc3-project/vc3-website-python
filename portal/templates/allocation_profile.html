@@ -77,16 +77,16 @@
 
                 <div class="panel panel-info resource-profile" style="margin: 1em;">
                   <div class="panel-heading">
-                    <h3 class="panel-title"><strong>Allocation SSH Public Key</strong></h3>
+                    <h3 class="panel-title"><strong>Allocation SSH public key</strong></h3>
                   </div>
                   <div class="panel-body pubtoken">
                     {% if pubtoken == "None" %}
-                    <p>Your SSH Public Key will be available once your allocation has been validated. Please allow a few moments and refresh the page.</p>
+                    <p>Your SSH public key will be available once your allocation has been validated. Please allow a few moments and refresh the page.</p>
                     <div>
-                      <font color="orange">Current State: <i class="fa fa-spinner fa-spin" style="color:orange"></i> Generating SSH-Key </font>
+                      <font color="orange">Current State: <i class="fa fa-spinner fa-spin" style="color:orange"></i> Generating SSH key </font>
                     </div>
                     {% else %}
-                    <p>To use this resource, paste this SSH Public Key into your ~/.ssh/authorized_keys file on the remote resource</p>
+                    <p>To allow the VC3 system to access this resource on your behalf, paste this SSH public key into your <kbd>~/.ssh/authorized_keys</kbd> file on the remote resource</p>
                     <textarea id="pubtoken" readonly disabled font-size="16">{{ pubtoken }}</textarea>
                     <!-- <button onclick="copyToClipboard('#pubtoken')" class="btn btn-primary btn-sm">Copy to Clipboard</button> -->
                     <div class="span10">
@@ -118,7 +118,7 @@
                     <div class="card-header panel-title" role="tab" id="headingOne" style="margin: 1em">
                       <h5 class="mb-0">
                         <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
-                          Once your SSH Public Key appears... <i class="fa fa-info-circle" aria-hidden="true"></i>
+                          Once your SSH public key appears... <i class="fa fa-info-circle" aria-hidden="true"></i>
                         </a>
                       </h5>
                     </div>
@@ -137,10 +137,10 @@
                             Create your SSH directory by entering: <kbd>mkdir -p ~/.ssh; chmod 700 ~/.ssh</kbd>
                           </li>
                           <li>
-                            Next you will need to add the Allocation SSH-Key to
-                            your authorized keys. You may click
-                            'Copy to Clipboard' button once the Allocation
-                            SSH Public-Key has generated and paste it into the
+                            Next you will need to add the Allocation SSH key to
+                            your authorized keys on the remote resource. You may click the
+                            'Copy to Clipboard' button once the 
+                            key has been generated and paste it into the
                             following line:
                             <div>
                               <kbd>echo 'ALLOCATION-SSH-KEY-HERE' >> ~/.ssh/authorized_keys<kbd>
