@@ -30,6 +30,15 @@ whitelist = ['c4686d14-d274-11e5-b866-0febeb7fd79e',
              'c444a294-d274-11e5-b7f1-e3782ed16687',
              'aebe29b8-d274-11e5-ba4b-ffec0df955f2']
 
+whitelist_email = ['jeremyvan@uchicago.edu', 'briedel@uchicago.edu',
+                   'btovar@nd.edu', 'burt@fnal.gov', 'czheng2@nd.edu',
+                   'dthain@nd.edu', 'jcaballero@bnl.gov',
+                   'jgentle@tacc.utexas.edu', 'jhover@bnl.gov',
+                   'khurtado@nd.edu', 'Kyle.D.Sweeney.84@nd.edu',
+                   'lincolnb@uchicago.edu', 'nhazekam@nd.edu',
+                   'rwg@uchicago.edu', 'sthapa@ci.uchicago.edu',
+                   'tshaffe1@nd.edu', 'czheng2@nd.edu', 'pivie@nd.edu']
+
 # Create a custom error handler for Exceptions
 
 
@@ -191,9 +200,9 @@ def show_profile_page():
             if profile.sshpubstring is not None:
                 sshpubstring = profile.sshpubstring
         else:
-            if session['primary_identity'] not in whitelist:
-                # return redirect(url_for('whitelist_error'))
-                pass
+            if session['email'] not in whitelist_email:
+                return redirect(url_for('whitelist_error'))
+                # pass
             else:
                 flash('Please complete any missing profile fields before '
                       'launching a cluster.', 'warning')
@@ -364,9 +373,9 @@ def authcallback():
         else:
             return redirect(url_for('show_profile_page',
                                     next=url_for('show_profile_page')))
-        if session['primary_identity'] not in whitelist:
-            # return redirect(url_for('whitelist_error'))
-            pass
+        if session['email'] not in whitelist_email:
+            return redirect(url_for('whitelist_error'))
+            # pass
 
         return redirect(url_for('portal'))
 
