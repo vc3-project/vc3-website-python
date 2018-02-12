@@ -114,7 +114,7 @@
                     <div class="form-group">
                       <label for="sshpubstring">SSH Public Key <span id="asterik">*</span></label>
                       <textarea
-                        placeholder="Please enter your SSH Public Key here..."
+                        placeholder="Please enter your SSH public key here..."
                         name="sshpubstring"
                         required
                         tabindex="5"
@@ -203,9 +203,9 @@
                     </div>
 
                     <div class="form-group">
-                      <label for="sshpubstring">SSH Public Key <span id="asterik">*</span></label>
+                      <label for="sshpubstring">SSH public key <span id="asterik">*</span></label>
                       <textarea
-                        placeholder="Please enter your SSH Public Key here..."
+                        placeholder="Please enter your SSH public key here..."
                         name="sshpubstring"
                         required
                         tabindex="6"
@@ -224,7 +224,7 @@
                 <div class="col-md-6">
 
                   <h2 class="title">
-                    <small>Generating your SSH Public Key:</small>
+                    <small>Adding or generating your SSH public key:</small>
                   </h2>
 
                   <div id="accordion" role="tablist" aria-multiselectable="true">
@@ -233,7 +233,7 @@
                       <div class="card-header panel-title" role="tab" id="headingOne" style="margin: 1em;">
                         <h5 class="mb-0">
                           <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
-                            Already have an SSH Public Key? <i class="fa fa-info-circle" aria-hidden="true"></i>
+                            Already have an SSH key? <i class="fa fa-info-circle" aria-hidden="true"></i>
                           </a>
                         </h5>
                       </div>
@@ -241,11 +241,11 @@
                         <div class="card-block panel-body disabled" style="font-size: 16px">
                           <ol>
                             <li>To find out, open your terminal and type:  <kbd>ls ~/.ssh</kbd></li>
-                            <li>If there is a <kbd>.pub</kbd> extension, such as <kbd>id_rsa.pub</kbd>, that is your SSH Public Key.</li>
-                            <li>Type:  <kbd>cat ~/.ssh/id_rsa.pub</kbd> in order to see your key</li>
-                            <li>Copy the selection to the clipboard</li>
+                            <li>If there is a <kbd>.pub</kbd> extension, such as <kbd>id_rsa.pub</kbd>, that is your SSH public key.</li>
+                            <li>Type:  <kbd>cat ~/.ssh/id_rsa.pub</kbd> in order to see your key.</li>
+                            <li>Copy the selection to the clipboard.</li>
                             <li>Paste the contents of the clipboard in the
-                              corresponding box on your VC3 Profile
+                              corresponding box on your VC3 Profile. Please <b>only</b> paste the SSH public ( typically ending in .pub) key into this box.
                             </li>
                           </ol>
                         </div>
@@ -256,7 +256,7 @@
                       <div class="card-header panel-title" role="tab" id="headingTwo" style="margin: 1em">
                         <h5 class="mb-0">
                           <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                            Do not have an SSH Public? <i class="fa fa-info-circle" aria-hidden="true"></i>
+                            How to create a new SSH key...<i class="fa fa-info-circle" aria-hidden="true"></i>
                           </a>
                         </h5>
                       </div>
@@ -268,10 +268,11 @@
                                 <kbd>ssh-keygen -t rsa</kbd>
                               </div>
                             </li>
-                            <li>Hit enter for the default location, and enter a new
-                              password
+                            <li>Hit enter for the default location, and optionally enter a 
+                              password. This will generate two files: A private key file
+                              (typically <kbd>id_rsa</kbd>) and a public key file (typically <kbd>id_rsa.pub</kbd>). The private key should <b>never</b> be shared, and VC3 will never ask you for your private key. 
                             </li>
-                            <li>In order to see your key type:
+                            <li>In order to see your public key type:
                               <div>
                                 <kbd>cat ~/.ssh/id_rsa.pub</kbd>
                               </div>
@@ -282,9 +283,9 @@
                                 <kbd>ssh-rsa AAAAB3N....M7Q== yourusername@yourmachine</kbd>
                               </div>
                             </li>
-                            <li>Copy the selection to the clipboard</li>
+                            <li>Copy the selection to the clipboard.</li>
                             <li>Paste the contents of the clipboard in the
-                              corresponding box on your VC3 Profile
+                              corresponding box on your VC3 Profile.
                             </li>
                           </ol>
                         </div>
