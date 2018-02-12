@@ -44,32 +44,13 @@
             <div class="row">
               <label for="statusbar" style="margin-top:20px;">State of Virtual Cluster</label>
               <div name="statusbar" id="statusbar">
-                {% if state == "terminated" %}
-                <h4>
-                  <span class="label label-danger" style="color:white">
-                    Successfully Terminated
-                  </span>
-                  <h5>{{vc3_request.state_reason}}</h5>
-                </h4>
-                  {% elif state == "terminating" %}
-                <div class="progress" style="height:25px;">
-                  <div class="progress-bar progress-bar-danger progress-bar-striped active" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width:100%">
-                    <strong style="font-size:20px">Terminating...</strong>
-                  </div>
-                </div>
+                {% if state == "new" %}
+                <h4><span class="label label-info" style="color:white">New Cluster Starting up...</span></h4>
                 <h5>State Reason: {{vc3_request.state_reason}}</h5>
-                {% elif state == "validated" %}
+                {% elif state == "initializing" or state == "pending"%}
                 <div class="progress" style="height:25px;">
                   <div class="progress-bar progress-bar-warning progress-bar-striped active" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width:100%">
-                    <strong style="font-size:20px">Validating</strong>
-                  </div>
-                </div>
-                <h5>State Reason: A valid configuration is being created for the
-                  request</h5>
-                {% elif state == "pending"%}
-                <div class="progress" style="height:25px;">
-                  <div class="progress-bar progress-bar-warning progress-bar-striped active" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width:100%">
-                    <strong style="font-size:20px">Pending...</strong>
+                    <strong style="font-size:20px">Initializing...</strong>
                   </div>
                 </div>
                 <h5>State Reason: {{vc3_request.state_reason}}</h5>
@@ -80,6 +61,13 @@
                   </div>
                 </div>
                 <h5>State Reason: {{vc3_request.state_reason}}</h5>
+                {% elif state == "terminating" %}
+                <div class="progress" style="height:25px;">
+                  <div class="progress-bar progress-bar-danger progress-bar-striped active" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width:100%">
+                    <strong style="font-size:20px">Terminating...</strong>
+                  </div>
+                </div>
+                <h5>State Reason: {{vc3_request.state_reason}}</h5>
                 {% elif state == "cleanup" %}
                 <div class="progress" style="height:25px;">
                   <div class="progress-bar progress-bar-danger progress-bar-striped active" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width:100%">
@@ -87,8 +75,13 @@
                   </div>
                 </div>
                 <h5>State Reason: {{vc3_request.state_reason}}</h5>
-                {% elif state == "new" %}
-                <h4><span class="label label-info" style="color:white">New Cluster Starting up...</span></h4>
+                {% elif state == "terminated" %}
+                <h4>
+                  <span class="label label-danger" style="color:white">
+                    Successfully Terminated
+                  </span>
+                  <h5>{{vc3_request.state_reason}}</h5>
+                </h4>
                 {% endif %}
               </div>
             </div>
@@ -198,7 +191,7 @@
 
                   <div class="panel-body disabled">
                     {% if vc3_request.environments == [] %}
-                      <div>No environment yet</div>
+                      <div>No specified environment on this Virtual Cluster</div>
                     {% else %}
                       {% for env in vc3_request.environments %}
                       <div>{{env}}</div>
@@ -213,14 +206,12 @@
                   </div>
                   <div class="panel-body disabled">
                     {% if vc3_request.statusinfo|default() %}
-
                     <label>{{vc3_request.cluster}}:</label>
                       {% for key, value in vc3_request.statusinfo.values()[0].iteritems() %}
                         <option>{{ key }}: {{ value }}</option>
                       {% endfor %}
                     {% else %}
-                    Status not yet available
-
+                    <label>Status not yet available</label>
                     {% endif %}
                   </div>
                 </div>

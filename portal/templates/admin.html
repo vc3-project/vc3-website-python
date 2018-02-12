@@ -69,15 +69,7 @@
                             <div>{{request.cluster}}</div>
                           </td>
 
-                        {% if (request.statusraw['VC3-static'] == {}) %}
-                          <td>
-                            <small class="label label-warning">Status currently pending</small>
-                          </td>
-                        {% elif request.statusraw == None %}
-                          <td>
-                            <small class="label label-warning">Status currently pending</small>
-                          </td>
-                        {% else %}
+                        {% if request.statusinfo|default() %}
                           <td>
                           {% for key, value in request.statusinfo.iteritems() %}
                             {% for k, v in value.iteritems() %}
@@ -97,7 +89,7 @@
                                   </span>
                                 </small>
                               </div>
-                              {% elif k == "misconfigured" %}
+                              {% elif k == "error" %}
                               <div class="row">
                                 <small class="pull-right" id="node-status">{{ k }}:
                                   <span class="label label-danger" style="color:white">
@@ -115,18 +107,6 @@
                               </div>
                               {% endif %}
                             {% endfor %}
-                          {% endfor %}
-                          {% for nodeset in nodesets %}
-                            {% if nodeset.name == request.cluster %}
-                            <div class="row">
-                              <small class="pull-right" id="node-status">
-                                prescribed:
-                                <span class="label label-info" style="color:white">
-                                  {{nodeset.node_number}}
-                                </span>
-                              </small>
-                            </div>
-                            {% endif %}
                           {% endfor %}
                           </td>
                         {% endif %}

@@ -90,7 +90,7 @@
                                   </span>
                                 </small>
                               </div>
-                              {% elif k == "misconfigured" %}
+                              {% elif k == "error" %}
                               <div class="row">
                                 <small class="pull-right" id="node-status">{{ k }}:
                                   <span class="label label-danger" style="color:white">
@@ -108,19 +108,6 @@
                               </div>
                               {% endif %}
                             {% endfor %}
-                          {% endfor %}
-
-                          {% for nodeset in nodesets %}
-                            {% if nodeset.name == request.cluster %}
-                            <div class="row">
-                              <small class="pull-right" id="node-status">
-                                prescribed:
-                                <span class="label label-info" style="color:white">
-                                  {{nodeset.node_number}}
-                                </span>
-                              </small>
-                            </div>
-                            {% endif %}
                           {% endfor %}
                           </td>
 

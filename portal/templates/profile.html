@@ -112,9 +112,9 @@
                     </div>
 
                     <div class="form-group">
-                      <label for="sshpubstring">SSH Public Key <span id="asterik">*</span></label>
+                      <label for="sshpubstring">SSH Key <span id="asterik">*</span></label>
                       <textarea
-                        placeholder="Please enter your SSH public key here..."
+                        placeholder="Please enter your SSH key here..."
                         name="sshpubstring"
                         required
                         tabindex="5"
@@ -203,9 +203,9 @@
                     </div>
 
                     <div class="form-group">
-                      <label for="sshpubstring">SSH public key <span id="asterik">*</span></label>
+                      <label for="sshpubstring">SSH key <span id="asterik">*</span></label>
                       <textarea
-                        placeholder="Please enter your SSH public key here..."
+                        placeholder="Please enter your SSH key here..."
                         name="sshpubstring"
                         required
                         tabindex="6"
@@ -224,7 +224,7 @@
                 <div class="col-md-6">
 
                   <h2 class="title">
-                    <small>Adding or generating your SSH public key:</small>
+                    <small>Adding or generating your SSH key:</small>
                   </h2>
 
                   <div id="accordion" role="tablist" aria-multiselectable="true">
@@ -241,11 +241,11 @@
                         <div class="card-block panel-body disabled" style="font-size: 16px">
                           <ol>
                             <li>To find out, open your terminal and type:  <kbd>ls ~/.ssh</kbd></li>
-                            <li>If there is a <kbd>.pub</kbd> extension, such as <kbd>id_rsa.pub</kbd>, that is your SSH public key.</li>
+                            <li>If there is a <kbd>.pub</kbd> extension, such as <kbd>id_rsa.pub</kbd>, that is your SSH key.</li>
                             <li>Type:  <kbd>cat ~/.ssh/id_rsa.pub</kbd> in order to see your key.</li>
                             <li>Copy the selection to the clipboard.</li>
                             <li>Paste the contents of the clipboard in the
-                              corresponding box on your VC3 Profile. Please <b>only</b> paste the SSH public ( typically ending in .pub) key into this box.
+                              corresponding box on your VC3 Profile. Please <b>only</b> paste the SSH ( typically ending in .pub) key into this box.
                             </li>
                           </ol>
                         </div>
@@ -268,11 +268,11 @@
                                 <kbd>ssh-keygen -t rsa</kbd>
                               </div>
                             </li>
-                            <li>Hit enter for the default location, and optionally enter a 
+                            <li>Hit enter for the default location, and optionally enter a
                               password. This will generate two files: A private key file
-                              (typically <kbd>id_rsa</kbd>) and a public key file (typically <kbd>id_rsa.pub</kbd>). The private key should <b>never</b> be shared, and VC3 will never ask you for your private key. 
+                              (typically <kbd>id_rsa</kbd>) and a key file (typically <kbd>id_rsa.pub</kbd>). The private key should <b>never</b> be shared, and VC3 will never ask you for your private key.
                             </li>
-                            <li>In order to see your public key type:
+                            <li>In order to see your SSH key type:
                               <div>
                                 <kbd>cat ~/.ssh/id_rsa.pub</kbd>
                               </div>
