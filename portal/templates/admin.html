@@ -97,6 +97,22 @@
                                   </span>
                                 </small>
                               </div>
+                              {% elif k == "misconfigured" %}
+                              <div class="row">
+                                <small class="pull-right" id="node-status">{{ k }}:
+                                  <span class="label label-danger" style="color:white">
+                                    {{v}}
+                                  </span>
+                                </small>
+                              </div>
+                              {% elif k == "requested" %}
+                              <div class="row">
+                                <small class="pull-right" id="node-status">{{ k }}:
+                                  <span class="label label-info" style="color:white">
+                                    {{v}}
+                                  </span>
+                                </small>
+                              </div>
                               {% endif %}
                             {% endfor %}
                           {% endfor %}
