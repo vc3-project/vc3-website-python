@@ -48,7 +48,7 @@
                     <div class="form-group">
                       <label for="cluster">Cluster Template <span id="asterik">*</span></label>
                       <select class="form-control border-input selectpicker" name="cluster" tabindex="2" id="form-resource-list" data-live-search="true" data-actions-box="true" data-header="Select Cluster Template" required>
-                        <!-- <option value="" selected disabled>Please Select Cluster</option> -->
+                        <option value="" selected disabled>Select Cluster Template</option>
                         {% for cluster in clusters %}
                           {% if cluster.owner == session['name'] %}
                         <option data-tokens="{{cluster.name}}" value="{{cluster.name}}">{{ cluster.name }}</option>
@@ -62,7 +62,7 @@
                       name="environment" tabindex="3" id="form-resource-list"
                       data-live-search="true" data-actions-box="true"
                       data-header="Select Environment">
-                        <!-- <option value="" selected disabled>Please Select Cluster</option> -->
+                        <option value="" selected disabled>Select Environment</option>
                         {% for environment in environments %}
                           {% if environment.owner == session['name'] %}
                         <option data-tokens="{{environment.name}}"
@@ -75,7 +75,7 @@
                     <div class="form-group">
                       <label for="project">Project <span id="asterik">*</span></label>
                       <select class="form-control border-input selectpicker" name="project" tabindex="4" id="project" data-live-search="true" data-actions-box="true" data-header="Select Project" required>
-                        <option value="" selected disabled>Please Select Project</option>
+                        <option value="" selected disabled>Select Project</option>
                         {% for project in projects %}
                           {% if project.owner == session['name'] %}
                         <option data-tokens="{{project.name}}" value="{{project.name}}">{{ project.name }}</option>

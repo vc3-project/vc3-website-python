@@ -2555,3 +2555,10 @@ ALLOCATION LIST PAGE
     color: white;
     background-color: transparent;
 }
+
+.dropdown-menu>.active>a, .dropdown-menu>.active>a:focus, .dropdown-menu>.active>a:hover {
+    color: #333333;
+    text-decoration: none;
+    background-color: #ededed;
+    outline: 0;
+}
