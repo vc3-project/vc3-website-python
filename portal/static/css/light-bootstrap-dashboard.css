@@ -279,7 +279,9 @@ body > .navbar-collapse {
     float: none; }
     .sidebar .nav li > a,
     body > .navbar-collapse .nav li > a {
-      color: #FFFFFF;
+      color: #FCC500;
+      background-color: #24292e;
+      /* background-color: #5C4EE5; */
       margin: 5px 15px;
       opacity: .86;
       -webkit-font-smoothing: antialiased;
@@ -287,11 +289,13 @@ body > .navbar-collapse {
       display: block; }
     .sidebar .nav li:hover > a,
     body > .navbar-collapse .nav li:hover > a {
-      background: rgba(255, 255, 255, 0.13);
+      /* background: rgba(255, 255, 255, 0.13); */
+      background-color: #fcc500;
+      color: #24292e;
       opacity: 1; }
     .sidebar .nav li.active > a,
     body > .navbar-collapse .nav li.active > a {
-      color: #FFFFFF;
+      color: #24292e;
       opacity: 1;
       background: rgba(255, 255, 255, 0.23); }
     .sidebar .nav li.separator,
@@ -372,7 +376,8 @@ body > .navbar-collapse {
   .sidebar:before,
   body > .navbar-collapse:before {
     opacity: .33;
-    background: #000000; }
+    /* background: #000000; */
+   }
   .sidebar:after,
   body > .navbar-collapse:after {
     /* background: #787878; */
@@ -2382,7 +2387,8 @@ RESOURCE PROFILE INDEX PAGE
     overflow-y:auto;
 }
 .filterable .panel-heading {
-  /* background-color: #2b2b2b; */
+  background-color: #24292e;
+  /* background-color: rgba(0,0,0,0.03); */
   color: #fdfcf7;
   border-color: #2b2b2b;
 }
@@ -2561,4 +2567,10 @@ ALLOCATION LIST PAGE
     text-decoration: none;
     background-color: #ededed;
     outline: 0;
+}
+
+#vc3diagram {
+  padding-top: 20px;
+  width: 80%;
+  height: 80%;
 }

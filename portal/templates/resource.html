@@ -26,34 +26,81 @@
 
             <div class="card">
   						<div class="card-block">
-  							<div class="panel panel-primary filterable">
-  								<div class="panel-heading">
-  									<h3 class="panel-title">Resource Profiles</h3>
-  									<div class="pull-right">
-  										<button class="btn btn-primary btn-sm btn-filter"><span class="glyphicon glyphicon-filter"></span> Filter</button>
-  									</div>
-  								</div>
-                  <div class="table-responsive" style="overflow-x:auto;">
-    								<table class="display table table-hover" width="100%">
-    									<thead>
-    										<tr class="filters">
-    											<th><input type="text" class="form-control" placeholder="Name" disabled></th>
-    											<th><input type="text" class="form-control" placeholder="Status" disabled></th>
-    											<th><input type="text" class="form-control" placeholder="Organization" disabled></th>
-    										</tr>
-    									</thead>
-    									<tbody data-link="row" class="rowlink">
-  											{% for resource in resources %}
-  											<tr>
-  												<td><a href="{{ url_for('view_resource', name=resource.name) }}" title="View Resource Profile">{{ resource.displayname }}</a></td>
-  												<td><i class="fa fa-check" aria-hidden="true" style="color:green"></i> Healthy</td>
-  												<td>{{resource.organization}}</td>
-  											</tr>
-  											{% endfor %}
-    									</tbody>
-    								</table>
+
+                <ul class="nav nav-tabs">
+                  <li class="active"><a data-toggle="tab" href="#resources">Connected Resources</a></li>
+                  <li><a data-toggle="tab" href="#resource-inprogress">To Be Connected Soon</a></li>
+                </ul>
+
+                <div class="tab-content">
+
+                  <div id="resources" class="tab-pane fade in active">
+      							<div class="panel panel-primary filterable">
+      								<div class="panel-heading">
+      									<h3 class="panel-title">Resource Profiles</h3>
+      									<div class="pull-right">
+      										<button class="btn btn-primary btn-sm btn-filter"><span class="glyphicon glyphicon-filter"></span> Filter</button>
+      									</div>
+      								</div>
+                      <div class="table-responsive" style="overflow-x:auto;">
+        								<table class="display table table-hover" width="100%">
+        									<thead>
+        										<tr class="filters">
+        											<th><input type="text" class="form-control" placeholder="Name" disabled></th>
+        											<th><input type="text" class="form-control" placeholder="Status" disabled></th>
+        											<th><input type="text" class="form-control" placeholder="Organization" disabled></th>
+        										</tr>
+        									</thead>
+        									<tbody data-link="row" class="rowlink">
+      											{% for resource in resources %}
+                              {% if resource.public %}
+      											<tr>
+      												<td><a href="{{ url_for('view_resource', name=resource.name) }}" title="View Resource Profile">{{ resource.displayname }}</a></td>
+      												<td><i class="fa fa-check" aria-hidden="true" style="color:green"></i> Healthy</td>
+      												<td>{{resource.organization}}</td>
+      											</tr>
+                              {% endif %}
+      											{% endfor %}
+        									</tbody>
+        								</table>
+                      </div>
+      							</div>
                   </div>
-  							</div>
+
+                  <div id="resource-inprogress" class="tab-pane fade in">
+                    <div class="panel panel-primary filterable">
+                      <div class="panel-heading">
+                        <h3 class="panel-title">Resources In Progress</h3>
+                        <div class="pull-right">
+                          <button class="btn btn-primary btn-sm btn-filter"><span class="glyphicon glyphicon-filter"></span> Filter</button>
+                        </div>
+                      </div>
+                      <div class="table-responsive" style="overflow-x:auto;">
+                        <table class="display table table-hover" width="100%">
+                          <thead>
+                            <tr class="filters">
+                              <th><input type="text" class="form-control" placeholder="Name" disabled></th>
+                              <th><input type="text" class="form-control" placeholder="Status" disabled></th>
+                              <th><input type="text" class="form-control" placeholder="Organization" disabled></th>
+                            </tr>
+                          </thead>
+                          <tbody data-link="row" class="rowlink">
+                            {% for resource in resources %}
+                              {% if not resource.public %}
+                            <tr>
+                              <td><a href="{{ url_for('view_resource', name=resource.name) }}" title="View Resource Profile">{{ resource.displayname }}</a></td>
+                              <td><i class="fa fa-check" aria-hidden="true" style="color:green"></i> Healthy</td>
+                              <td>{{resource.organization}}</td>
+                            </tr>
+                              {% endif %}
+                            {% endfor %}
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+                </div><!-- ./tab-content-->
+
   						</div>
   					</div>
 

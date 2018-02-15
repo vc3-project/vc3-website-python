@@ -32,7 +32,7 @@
                 <div class="delete_entity">
     							<a href="{{url_for('delete_virtualcluster', name=name)}}" class="btn btn-danger btn-xs">Delete Virtual Cluster</a>
         				</div>
-                {% elif state != "new" %}
+                {% elif state != ("new" or "cleanup") %}
                 <form action="{{url_for('view_request', name=name)}}" method="POST">
                   <button type="submit" class="btn btn-danger btn-xs" data-submit="...Terminating Cluster" title="Terminate your Virtual Cluster">Terminate Cluster</button>
                 </form>
