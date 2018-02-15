@@ -142,7 +142,7 @@
 
 					<div class="nav navbar-nav navbar-right">
 						{% if session['name'] and session['first'] %}
-						<a class="navbar-brand" href="{{url_for('portal')}}">{{session['first']}} {{session['last']}}</a>
+						<a class="navbar-brand" href="{{url_for('show_profile_page')}}">{{session['first']}} {{session['last']}}</a>
 						{% else %}
 						<a class="navbar-brand" href="{{url_for('show_profile_page')}}">Profile</a>
 						{% endif %}

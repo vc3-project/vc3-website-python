@@ -14,20 +14,11 @@
 
           <div class="header">
             <ol class="breadcrumb">
-              <li class="breadcrumb-item"><a href="{{url_for('portal')}}">Portal Home</a></li>
-              <li class="breadcrumb-item active">Profile</li>
+              <li class="breadcrumb-item active"><a href="{{url_for('portal')}}">Portal Home</a></li>
+              <!-- <li class="breadcrumb-item active">Profile</li> -->
             </ol>
             <h2 class="title">
-              <div class="row">
                 Welcome <span style="color:#2b2b2b">{{profile.displayname}}</span>
-              </div>
-            {% if profile.name %}
-              <div class="row">
-                <small>
-                  Username: <span style="color:#2b2b2b">{{profile.name}}</span>
-                </small>
-              </div>
-            {% endif %}
             </h2>
             <a href="{{url_for('show_profile_page')}}" class="btn btn-primary btn-sm" title="Edit Profile">Edit Profile</a>
 						<hr/>
@@ -35,61 +26,6 @@
 
           <div class="content description">
   					<div class="card-block">
-
-              {% if session.get('is_authenticated') %}
-
-              <div class="row">
-        				<div class="well">
-
-                  <div>
-                    <i class="fa fa-user-circle-o" aria-hidden="true"></i>
-                    {{profile.displayname}}
-                  </div>
-                  <div>
-                    <i class="fa fa-envelope-square" aria-hidden="true"></i>
-                    {{profile.email}}
-                  </div>
-                  <div>
-                    <i class="fa fa-university" aria-hidden="true"></i>
-                    {{profile.organization}}
-                  </div>
-
-                  <div id="accordion" role="tablist" aria-multiselectable="true">
-                    <div class="card panel panel-info" style="margin: 1em;">
-                      <div class="card-header panel-title" role="tab" id="headingOne" style="margin: 1em;">
-                        <h5 class="mb-0">
-                          <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
-                            <i class="fa fa-terminal" aria-hidden="true"></i> Your SSH Public Key
-                          </a>
-                        </h5>
-                      </div>
-                      <div id="collapseOne" class="collapse" role="tabpanel" aria-labelledby="headingOne">
-                        <div class="card-block panel-body disabled" style="overflow-wrap:break-word;">
-                          {{profile.sshpubstring}}
-                        </div>
-                      </div>
-                    </div>
-                  </div><!-- /.accordion-->
-
-                  <div class="row">
-                    <div class="col-xs-12 divider text-center">
-                      <div class="col-xs-12 col-sm-4 emphasis">
-                          <h2><strong> {{user_projects}} </strong></h2>
-                          <p><small>Projects</small></p>
-                      </div>
-                      <div class="col-xs-12 col-sm-4 emphasis">
-                          <h2><strong> {{user_virtualclusters}} </strong></h2>
-                          <p><small>Virtual Clusters</small></p>
-                      </div>
-                      <div class="col-xs-12 col-sm-4 emphasis">
-                          <h2><strong> {{user_nodes}}</strong></h2>
-                          <p><small>Requested Nodes</small></p>
-                      </div>
-                    </div>
-                  </div>
-
-        				</div>
-        			</div> <!-- row -->
 
               <div class="content description">
 
@@ -107,7 +43,39 @@
                         <div class="row">
                           <img id="vc3diagram" src="{{url_for('static', filename='img/vc3_portal_diagram.png')}}">
                         </div>
+                        <div class="row">
+
+                          <!-- <h2 class="title">
+                            <small>Steps to Launch Virtual Cluster</small>
+                          </h2> -->
+
+                          <div id="accordion" role="tablist" aria-multiselectable="true">
+
+                            <div class="card panel panel-info resource-profile" style="margin: 1em;">
+                              <div class="card-header panel-title" role="tab" id="headingTwo" style="margin: 1em;">
+                                <h5 class="mb-0">
+                                  <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                    Steps to Launch Virtual Cluster <i class="fa fa-info-circle" aria-hidden="true"></i>
+                                  </a>
+                                </h5>
+                              </div>
+                              <div id="collapseTwo" class="collapse" role="tabpanel" aria-labelledby="headingTwo">
+                                <div class="card-block panel-body disabled" style="font-size: 16px">
+                                  <ol>
+                                    <li>Register your Allocation</li>
+                                    <li>Once allocation is validated, you may contribute your allocation to a project.</li>
+                                    <li>Define a cluster template, specifying middleware framework.</li>
+                                    <li>Create an environment to list any additional dependencies</li>
+                                    <li>Bring these steps together and launch your first Virtual Cluster</li>
+                                  </ol>
+                                </div>
+                              </div>
+                            </div>
+
+                          </div><!-- /.accordion-->
+                        </div><!-- /.row -->
                       </div>
+
                       <div id="internal-diagram" class="tab-pane fade in">
                         <div class="row">
                           <img id="vc3diagram" src="{{url_for('static', filename='img/vc3_internal_diagram.png')}}">
@@ -120,7 +88,6 @@
 
               </div><!-- /.content description -->
 
-              {% endif %}
 
             </div><!-- /.card-block -->
           </div><!-- /.card description-->

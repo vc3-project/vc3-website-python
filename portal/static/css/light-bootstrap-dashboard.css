@@ -136,7 +136,9 @@ body,
   position: relative; }
 
 a {
-  color: #2fa4e7; }
+  /* color: #2fa4e7; */
+  color: #777;
+ }
   a:hover, a:focus {
     /*color: #42d0ed;*/
     color: #ffc500;
@@ -283,21 +285,22 @@ body > .navbar-collapse {
       background-color: #24292e;
       /* background-color: #5C4EE5; */
       margin: 5px 15px;
-      opacity: .86;
+      opacity: .76;
       -webkit-font-smoothing: antialiased;
       border-radius: 4px;
       display: block; }
     .sidebar .nav li:hover > a,
     body > .navbar-collapse .nav li:hover > a {
       /* background: rgba(255, 255, 255, 0.13); */
-      background-color: #fcc500;
-      color: #24292e;
-      opacity: 1; }
+      background-color: #24292e;
+      color: #fcc500;
+      opacity: 0.86; }
     .sidebar .nav li.active > a,
     body > .navbar-collapse .nav li.active > a {
-      color: #24292e;
+      /* color: #24292e; */
       opacity: 1;
-      background: rgba(255, 255, 255, 0.23); }
+      /* background: rgba(255, 255, 255, 0.23); */
+     }
     .sidebar .nav li.separator,
     body > .navbar-collapse .nav li.separator {
       margin: 15px 0;
@@ -309,7 +312,7 @@ body > .navbar-collapse {
     body > .navbar-collapse .nav p {
       margin: 0;
       line-height: 30px;
-      font-size: 12px;
+      font-size: 14px;
       font-weight: 600;
       /*text-transform: uppercase;*/
       margin-left: 45px; }
@@ -537,11 +540,13 @@ body > .navbar-collapse {
 .btn-primary {
   border-color: #edb500;
   color: #fdfcf7;
+  /* color: #24292e; */
   background-color: #edb500;
  }
   .btn-primary:hover, .btn-primary:focus, .btn-primary:active, .btn-primary.active, .open > .btn-primary.dropdown-toggle {
     background-color: #edb500;
-    color: #f4f8ff;
+    /* color: #f4f8ff; */
+    color: #24292e;
     border-color: #edb500; }
   .btn-primary.disabled, .btn-primary.disabled:hover, .btn-primary.disabled:focus, .btn-primary.disabled.focus, .btn-primary.disabled:active, .btn-primary.disabled.active, .btn-primary:disabled, .btn-primary:disabled:hover, .btn-primary:disabled:focus, .btn-primary:disabled.focus, .btn-primary:disabled:active, .btn-primary:disabled.active, .btn-primary[disabled], .btn-primary[disabled]:hover, .btn-primary[disabled]:focus, .btn-primary[disabled].focus, .btn-primary[disabled]:active, .btn-primary[disabled].active, fieldset[disabled] .btn-primary, fieldset[disabled] .btn-primary:hover, fieldset[disabled] .btn-primary:focus, fieldset[disabled] .btn-primary.focus, fieldset[disabled] .btn-primary:active, fieldset[disabled] .btn-primary.active {
     background-color: transparent;
@@ -935,7 +940,8 @@ body > .navbar-collapse {
 
 .nav > li > a:hover,
 .nav > li > a:focus {
-  background-color: transparent; }
+  /* background-color: transparent; */
+ }
 
 .navbar {
   border: 0;
@@ -1047,7 +1053,8 @@ body > .navbar-collapse {
   opacity: 1;
   filter: alpha(opacity=100); }
 .navbar-transparent .navbar-nav .nav > li > a.btn:hover, [class*="navbar-ct"] .navbar-nav .nav > li > a.btn:hover {
-  background-color: transparent; }
+  /* background-color: transparent; */
+ }
 .navbar-transparent .navbar-nav > .dropdown > a .caret,
 .navbar-transparent .navbar-nav > .dropdown > a:hover .caret,
 .navbar-transparent .navbar-nav > .dropdown > a:focus .caret, [class*="navbar-ct"] .navbar-nav > .dropdown > a .caret,
@@ -1376,7 +1383,8 @@ body > .navbar-collapse {
     opacity: 1;
     filter: alpha(opacity=100); }
   .card .content {
-    padding: 15px 15px 10px 15px; }
+    /* padding: 15px 15px 10px 15px; */
+   }
   .card .header {
     padding: 15px 15px 0; }
   .card .category,
@@ -1389,7 +1397,8 @@ body > .navbar-collapse {
     .card label i {
       font-size: 16px; }
   .card label {
-    color: #2fa4e7;
+    /* color: #2fa4e7; light blue */
+    color: #24292e;
     font-size: 16px;
     margin-bottom: 5px;
     text-transform: uppercase;
@@ -2388,6 +2397,7 @@ RESOURCE PROFILE INDEX PAGE
 }
 .filterable .panel-heading {
   background-color: #24292e;
+  opacity: .86;
   /* background-color: rgba(0,0,0,0.03); */
   color: #fdfcf7;
   border-color: #2b2b2b;
@@ -2558,7 +2568,7 @@ ALLOCATION LIST PAGE
 }
 
 .navbar-default .navbar-brand:focus, .navbar-default .navbar-brand:hover {
-    color: white;
+    color: #fcc500;
     background-color: transparent;
 }
 
@@ -2573,4 +2583,23 @@ ALLOCATION LIST PAGE
   padding-top: 20px;
   width: 80%;
   height: 80%;
+}
+
+.breadcrumb {
+  background-color: #f2f2f2;
+  border: 1px solid #e3e3e3;
+  opacity: .86;
+  font-size: 16px;
+  font-weight: 400;
+}
+.breadcrumb .active {
+  color: #e0af00;
+}
+
+footer a {
+  color: #fcc500;
+  opacity: .86;
+}
+footer a:hover {
+  opacity: 1;
 }

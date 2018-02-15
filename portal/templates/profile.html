@@ -39,6 +39,58 @@
               {% if session.get('is_authenticated') %}
 
               <div class="row">
+                <div class="well">
+
+                  <div>
+                    <i class="fa fa-user-circle-o" aria-hidden="true"></i>
+                    {{profile.displayname}}
+                  </div>
+                  <div>
+                    <i class="fa fa-envelope-square" aria-hidden="true"></i>
+                    {{profile.email}}
+                  </div>
+                  <div>
+                    <i class="fa fa-university" aria-hidden="true"></i>
+                    {{profile.organization}}
+                  </div>
+
+                  <div id="accordion" role="tablist" aria-multiselectable="true">
+                    <div class="card panel panel-info" style="margin: 1em;">
+                      <div class="card-header panel-title" role="tab" id="headingOne" style="margin: 1em;">
+                        <h5 class="mb-0">
+                          <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+                            <i class="fa fa-terminal" aria-hidden="true"></i> Your SSH Public Key
+                          </a>
+                        </h5>
+                      </div>
+                      <div id="collapseOne" class="collapse" role="tabpanel" aria-labelledby="headingOne">
+                        <div class="card-block panel-body disabled" style="overflow-wrap:break-word;">
+                          {{profile.sshpubstring}}
+                        </div>
+                      </div>
+                    </div>
+                  </div><!-- /.accordion-->
+
+                  <div class="row">
+                    <div class="col-xs-12 divider text-center">
+                      <div class="col-xs-12 col-sm-4 emphasis">
+                          <h2><strong> {{user_projects}} </strong></h2>
+                          <p><small>Projects</small></p>
+                      </div>
+                      <div class="col-xs-12 col-sm-4 emphasis">
+                          <h2><strong> {{user_virtualclusters}} </strong></h2>
+                          <p><small>Virtual Clusters</small></p>
+                      </div>
+                      <div class="col-xs-12 col-sm-4 emphasis">
+                          <h2><strong> {{user_nodes}}</strong></h2>
+                          <p><small>Requested Nodes</small></p>
+                      </div>
+                    </div>
+                  </div>
+
+                </div>
+              </div> <!-- row -->
+              <div class="row">
         				<!-- <div class="col-sm-6 col-md-6 col-lg-3">
         					<div class="thumbnail">
         						<img src="https://image.ibb.co/hEdfV5/blank_profile_picture_973461_960_720.png" alt="">
