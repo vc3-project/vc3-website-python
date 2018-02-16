@@ -17,12 +17,12 @@
               <li class="breadcrumb-item"><a href="{{url_for('list_allocations')}}">Allocations</a></li>
               <li class="breadcrum-item active">{{displayname}}</li>
             </ol>
-          	<h4 class="title row">Allocation: {{displayname}}</h4>
-            <div class="row">
+          	<h4 class="title">Allocation: {{displayname}}</h4>
+            <div class="">
               <h5>Description: {{description}}</h5>
             </div>
             {% if session['name'] == owner %}
-            <div class="row">
+            <div class="">
               <div class="pull-left col-sm-12 col-md-6">
   							<a href="{{url_for('edit_allocation', name=name)}}" class="btn btn-primary btn-xs">Update Allocation</a>
   						</div>

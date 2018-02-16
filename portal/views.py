@@ -361,7 +361,11 @@ def authcallback():
         userlist = vc3_client.listUsers()
         profile = None
 
+        ids = globusclient.get_identities(
+            usernames=id_token.get('preferred_username', ''))
+
         email = id_token.get('email', '')
+        # print(id_token.get('name', ''))
         # Restrict Email access to only .edu, .gov, and .org
         # User must have a valid institutional affiliation
         # Otherwise return to error page, explaining restricted access
@@ -391,6 +395,10 @@ def authcallback():
             session['primary_identity'] = profile.identity_id
             session['displayname'] = profile.displayname
         else:
+            session['name'] = ids["identities"][0]['name']
+            session['organization'] = ids["identities"][0]['organization']
+            session['first'] = session['name'].split()[0]
+            session['last'] = session['name'].split()[-1]
             return redirect(url_for('show_profile_page',
                                     next=url_for('show_profile_page')))
         if session['email'] not in whitelist_email:
@@ -419,6 +427,7 @@ def portal():
     projects = vc3_client.listProjects()
     virtualclusters = vc3_client.listRequests()
     nodesets = vc3_client.listNodesets()
+    resources = vc3_client.listResources()
 
     if request.method == 'GET':
         profile = None
@@ -468,7 +477,7 @@ def portal():
                                sshpubstring=sshpubstring,
                                user_projects=user_projects,
                                user_virtualclusters=user_virtualclusters,
-                               user_nodes=user_nodes)
+                               user_nodes=user_nodes, resources=resources)
 
 
 @app.route('/new', methods=['GET', 'POST'])

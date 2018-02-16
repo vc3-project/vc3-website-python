@@ -39,6 +39,7 @@ body {
   background: url(../img/grid.png) repeat-x;
   background-attachment: fixed;
   background-color: #f8f8f8;
+  /* box-shadow: inset 0 0 0 1000px rgba(203, 206, 221,.2); */
 }
 body,
 h1, .h1,
@@ -477,7 +478,7 @@ body > .navbar-collapse {
     padding: 30px 15px;
     min-height: calc(100% - 123px);
     min-width: 400px;
-    max-width: 90%;
+    max-width: 100%;
    }
   .main-panel > .footer {
     border-top: 1px solid #e7e7e7; }
@@ -2580,7 +2581,7 @@ ALLOCATION LIST PAGE
 }
 
 #vc3diagram {
-  padding-top: 20px;
+  /* padding-top: 20px; */
   width: 80%;
   height: 80%;
 }
