@@ -2389,7 +2389,7 @@ RESOURCE PROFILE INDEX PAGE
 .filterable {
     margin-top: 15px;
     border-color: #b3b3b3;
-    font-size: 16px;
+    font-size: 14px;
 }
 .filterable .panel-heading .pull-right {
     margin-top: -25px;
@@ -2441,6 +2441,10 @@ RESOURCE PROFILE INDEX PAGE
   color: #111;
   background-color: #fff;
   border-color: #fff;
+}
+.panel .close {
+  font-size: 24px;
+  padding-right: 5px;
 }
 .filterable .btn-danger {
   border-color: #FF4A55;
