@@ -1238,10 +1238,21 @@ def create_request():
     """
     vc3_client = get_vc3_client()
     if request.method == 'GET':
-        allocations = vc3_client.listAllocations()
+        list_allocations = vc3_client.listAllocations()
         clusters = vc3_client.listClusters()
-        projects = vc3_client.listProjects()
+        list_projects = vc3_client.listProjects()
         environments = vc3_client.listEnvironments()
+        projects = []
+        allocations = []
+
+        for project in list_projects:
+            if session['name'] in project.members:
+                projects.append(project)
+        for project in projects:
+            for allocation in list_allocations:
+                if allocation.name in project.allocations:
+                    allocations.append(allocation)
+
         return render_template('request_new.html', allocations=allocations,
                                clusters=clusters, projects=projects,
                                environments=environments)

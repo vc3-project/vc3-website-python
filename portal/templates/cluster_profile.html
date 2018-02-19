@@ -21,12 +21,12 @@
               <h5>Description: {{description}}</h5>
             </div>
             {% if session['name'] == owner %}
-            <div class="container">
+            <div class="">
               <div class="pull-left col-sm-12 col-md-6">
-							  <a href="{{url_for('edit_cluster', name=name)}}" class="btn btn-primary btn-sm">Update Cluster Template</a>
+							  <a href="{{url_for('edit_cluster', name=name)}}" class="btn btn-primary btn-xs">Update Cluster Template</a>
 						  </div>
               <div class="delete_entity col-sm-12 col-md-6">
-  							<a href="{{url_for('delete_cluster', name=name)}}" class="btn btn-danger btn-sm">Delete Cluster Template</a>
+  							<a href="{{url_for('delete_cluster', name=name)}}" class="btn btn-danger btn-xs">Delete Cluster Template</a>
   						</div>
             </div>
             {% endif %}

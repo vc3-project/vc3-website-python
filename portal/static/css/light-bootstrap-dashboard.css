@@ -139,6 +139,7 @@ body,
 a {
   /* color: #2fa4e7; */
   color: #777;
+  font-weight: 600;
  }
   a:hover, a:focus {
     /*color: #42d0ed;*/
@@ -243,7 +244,8 @@ body > .navbar-collapse {
   .sidebar .logo,
   body > .navbar-collapse .logo {
     padding: 10px 15px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.2); }
+    /* border-bottom: 1px solid rgba(255, 255, 255, 0.2); */
+   }
     .sidebar .logo p,
     body > .navbar-collapse .logo p {
       float: left;
@@ -333,7 +335,8 @@ body > .navbar-collapse {
   .sidebar .logo,
   body > .navbar-collapse .logo {
     padding: 10px 15px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.2); }
+    /* border-bottom: 1px solid rgba(255, 255, 255, 0.2); */
+   }
     .sidebar .logo p,
     body > .navbar-collapse .logo p {
       float: left;
@@ -1596,7 +1599,8 @@ body > .navbar-collapse {
     -ms-transition: all 0.33s cubic-bezier(0.685, 0.0473, 0.346, 1);
     transition: all 0.33s cubic-bezier(0.685, 0.0473, 0.346, 1);
     left: 0;
-    background-color: white; }
+    /* background-color: white; */
+   }
 
   .navbar .container {
     left: 0;
@@ -1627,7 +1631,7 @@ body > .navbar-collapse {
     left: auto;
     z-index: 1032;
     visibility: visible;
-    background-color: #999;
+    /* background-color: #999; */
     overflow-y: visible;
     border-top: none;
     text-align: left;
@@ -2613,4 +2617,9 @@ footer a {
 }
 footer a:hover {
   opacity: 1;
+}
+
+#vc3-request-page .header .row {
+  /* width: 100%; */
+  margin: 0;
 }

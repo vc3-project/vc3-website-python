@@ -50,7 +50,7 @@
                       <select class="form-control border-input selectpicker" name="cluster" tabindex="2" id="form-resource-list" data-live-search="true" data-actions-box="true" data-header="Select Cluster Template" required>
                         <option value="" selected disabled>Select Cluster Template</option>
                         {% for cluster in clusters %}
-                          {% if cluster.owner == session['name'] %}
+                          {% if cluster.owner == session['name'] or cluster.public %}
                         <option data-tokens="{{cluster.name}}" value="{{cluster.name}}">{{ cluster.name }}</option>
                           {% endif %}
                         {% endfor %}
@@ -77,9 +77,7 @@
                       <select class="form-control border-input selectpicker" name="project" tabindex="4" id="project" data-live-search="true" data-actions-box="true" data-header="Select Project" required>
                         <option value="" selected disabled>Select Project</option>
                         {% for project in projects %}
-                          {% if project.owner == session['name'] %}
                         <option data-tokens="{{project.name}}" value="{{project.name}}">{{ project.name }}</option>
-                          {% endif %}
                         {% endfor %}
                       </select>
                     </div>
@@ -89,9 +87,7 @@
                       <select class="form-control border-input selectpicker" multiple name="allocation" tabindex="5" id="allocation" data-live-search="true" data-actions-box="true" data-header="Select Allocations for Virtual Cluster" required>
                         <!-- also disabled ".selectpicker" above <option disabled>Please Select Allocation</option> -->
                         {% for allocation in allocations %}
-                          {% if allocation.owner == session['name'] and allocation.state == "validated" %}
                         <option data-tokens="{{allocation.displayname}}" value="{{allocation.name}}">{{ allocation.displayname }}</option>
-                          {% endif %}
                         {% endfor %}
                       </select>
                     </div>
@@ -132,25 +128,30 @@
 
 <script>
 
-populateSelect();
-
-$(function() {
-
-      $('#project').change(function(){
-        populateSelect();
-    });
-
-});
+var listOfProjects = {{projects|safe}};
+var listOfAllocations = {{allocations|safe}};
 
 
-function populateSelect(){
-    project=$('#project').val();
-    $('#allocation').html('');
+$(document).ready(function () {
+    // When a project is selected, set the projectName to selected project
+    $("#project").change(function () {
+      var projectName = $(this).val();
+      // Iterate through listOfProjects to select project object based on name match
+      for(i=0; i < listOfProjects.length; i++){
+        if(listOfProjects[i].name == projectName){
+          // Once projectName matches project Object, set projectAllocations list
+          var projectAllocations = listOfProjects[i].allocations;
+          // Iterate through projectAllocations and generate select options
+          // for each allocation within selected project
+          for(i=0; i < projectAllocations.length; i++){
+            var allocationName = projectAllocations[i];
+            $("#allocation").html("<option>"allocationName"</option>");
+          }
+        }
+      }
 
-       eval(project).forEach(function(t) {
-            $('#allocation').append('<option>'+t+'</option>');
-        });
     }
+  }
 
 </script>
 

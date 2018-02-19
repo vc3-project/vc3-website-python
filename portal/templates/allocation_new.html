@@ -52,7 +52,9 @@
                       <select class="form-control border-input" name="resource" tabindex="2" id="form-resource-list" required>
                         <option value="" selected disabled>Please Select Resource</option>
                         {% for resource in resources %}
+                          {% if resource.public %}
                         <option value="{{resource.name}}">{{ resource.displayname }}</option>
+                          {% endif %}
                         {% endfor %}
                       </select>
                     </div>
