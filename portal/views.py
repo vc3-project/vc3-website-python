@@ -39,7 +39,7 @@ whitelist_email = ['jeremyvan@uchicago.edu', 'briedel@uchicago.edu',
                    'rwg@uchicago.edu', 'sthapa@ci.uchicago.edu',
                    'tshaffe1@nd.edu', 'czheng2@nd.edu', 'pivie@nd.edu',
                    'jlstephen@uchicago.edu', 'balamurugan@uchicago.edu',
-                   'gfarr@uchicago.edu', 'ddl@illinois.edu']
+                   'gfarr@uchicago.edu', 'ddl@illinois.edu', 'ivukotic@uchicago.edu']
 
 # Create a custom error handler for Exceptions
 
@@ -984,8 +984,8 @@ def create_allocation():
                                    accountname=accountname, description=description,
                                    resources=resources)
 
-        flash('Configuring your allocation, when validated, please view your '
-              'allocation to complete the setup.', 'warning')
+        flash('Configuring your allocation, when allocation state is "ready", '
+              'please view your allocation to complete the setup.', 'info')
 
         return redirect(url_for('list_allocations'))
 
@@ -1023,6 +1023,8 @@ def view_allocation(name):
                 for r in resources:
                     if r.name == allocation.resource:
                         accesshost = r.accesshost
+                    else:
+                        accesshost = None
 
                 return render_template('allocation_profile.html',
                                        name=allocationname,

@@ -30,58 +30,59 @@
   						</div>
             </div>
             {% endif %}
-						<hr />
+						<hr/>
           </div>
 
           <div class="content description">
   					<div class="card-block">
+              <div class="col-md-12">
 
-              <div class="panel panel-info resource-profile" style="margin: 1em;">
-                <div class="panel-heading">
-                  <h3 class="panel-title"><strong>Owner</strong></h3>
-                </div>
-                <div class="panel-body disabled">
-                {% for user in users %}
-                  {% if user.name == owner %}
-                    {{user.first }} {{user.last}}
-                  {% endif %}
-                {% endfor %}
-                </div>
-              </div>
-              <div class="panel panel-info resource-profile" style="margin: 1em;">
-                <div class="panel-heading">
-                  <h3 class="panel-title"><strong>State</strong></h3>
-                </div>
-                <div class="panel-body disabled">
-                  {{state}}
-                </div>
-              </div>
-              <div class="panel panel-info resource-profile" style="margin: 1em;">
-                <div class="panel-heading">
-                  <h3 class="panel-title"><strong>Cluster Template Framework</strong></h3>
-                </div>
-                <div class="panel-body disabled">
-                  {% for nodeset in nodesets %}
-                    {% if nodeset.name == name %}
-                      {{ nodeset.app_type }}
+                <div class="panel panel-info resource-profile" style="margin: 1em;">
+                  <div class="panel-heading">
+                    <h3 class="panel-title"><strong>Owner</strong></h3>
+                  </div>
+                  <div class="panel-body disabled">
+                  {% for user in users %}
+                    {% if user.name == owner %}
+                      {{user.first }} {{user.last}}
                     {% endif %}
                   {% endfor %}
+                  </div>
+                </div>
+                <div class="panel panel-info resource-profile" style="margin: 1em;">
+                  <div class="panel-heading">
+                    <h3 class="panel-title"><strong>State</strong></h3>
+                  </div>
+                  <div class="panel-body disabled">
+                    {{state}}
+                  </div>
+                </div>
+                <div class="panel panel-info resource-profile" style="margin: 1em;">
+                  <div class="panel-heading">
+                    <h3 class="panel-title"><strong>Cluster Template Framework</strong></h3>
+                  </div>
+                  <div class="panel-body disabled">
+                    {% for nodeset in nodesets %}
+                      {% if nodeset.name == name %}
+                        {{ nodeset.app_type }}
+                      {% endif %}
+                    {% endfor %}
+                  </div>
+                </div>
+                <div class="panel panel-info resource-profile" style="margin: 1em;">
+                  <div class="panel-heading">
+                    <h3 class="panel-title"><strong>Number of Compute Workers</strong></h3>
+                  </div>
+                  <div class="panel-body disabled">
+                    {% for nodeset in nodesets %}
+                      {% if nodeset.name == name %}
+                        {{ nodeset.node_number }}
+                      {% endif %}
+                    {% endfor %}
+                  </div>
                 </div>
               </div>
-              <div class="panel panel-info resource-profile" style="margin: 1em;">
-                <div class="panel-heading">
-                  <h3 class="panel-title"><strong>Number of Compute Workers</strong></h3>
-                </div>
-                <div class="panel-body disabled">
-                  {% for nodeset in nodesets %}
-                    {% if nodeset.name == name %}
-                      {{ nodeset.node_number }}
-                    {% endif %}
-                  {% endfor %}
-                </div>
-              </div>
-
-  					</div>
+  					</div><!-- ./ card-block-->
           </div><!-- /.content description -->
 
         </div>

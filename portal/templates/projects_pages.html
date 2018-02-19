@@ -24,7 +24,7 @@
             {% if session['name'] == owner %}
             <row class="container">
               <div class="delete_entity pull-right">
-  							<a href="{{url_for('delete_project', name=name)}}" class="btn btn-danger btn-sm">Delete Project</a>
+  							<a href="{{url_for('delete_project', name=name)}}" class="btn btn-danger btn-xs">Delete Project</a>
   						</div>
             </row>
             {% endif %}
@@ -130,7 +130,7 @@
         					       </select>
                        </fieldset>
                         <div class="input-group-addon input-group-button">
-           					      <button type="submit" name="btn" value="adduser" class="btn btn-info btn-fill btn-wd" id="create-project" tabindex="2" data-submit="...Sending">Add User</button>
+           					      <button type="submit" name="btn" value="adduser" class="btn btn-create btn-wd" id="create-project" tabindex="2" data-submit="...Sending">Add User</button>
                         </div>
         					    </div>
                     </form>
@@ -211,7 +211,7 @@
           								</select>
           							</fieldset>
                         <div class="input-group-addon input-group-button">
-        								  <button type="submit" name="btn" value="addallocation" class="btn btn-info btn-fill btn-wd" id="create-project" tabindex="2" data-submit="...Sending">Add Allocation to Project</button>
+        								  <button type="submit" name="btn" value="addallocation" class="btn btn-create btn-wd" id="create-project" tabindex="2" data-submit="...Sending">Add Allocation to Project</button>
                         </div>
                       </div>
                     </form>
