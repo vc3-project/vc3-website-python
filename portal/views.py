@@ -379,8 +379,8 @@ def authcallback():
         # if not inst_username:
         #     return render_template('email_error.html')
 
-        if not (email.split("@")[-1].split(".")[-1] in ["edu", "gov", "org"]):
-            return render_template('email_error.html')
+        # if not (email.split("@")[-1].split(".")[-1] in ["edu", "gov", "org"]):
+        #     return render_template('email_error.html')
 
         for user in userlist:
             if session['primary_identity'] == user.identity_id:
