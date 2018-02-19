@@ -114,7 +114,7 @@
 
                         {% else %}
                           <td>
-                            <small class="label label-warning">Status currently pending</small>
+                            <small class="label label-warning">Status pending</small>
                           </td>
                         {% endif %}
 
@@ -131,7 +131,7 @@
                               {% elif request.headnode and (request.headnode.state == 'terminated' or request.headnode.state == 'failure') %}
                               <small> N/A </small>
                               {% else %}
-                              <small>IP Not yet available</small>
+                              <small>IP address not yet available</small>
                               {% endif %}
                             </div>
                           </td>
@@ -142,7 +142,97 @@
     									</tbody>
     								</table>
                   </div>
-  							</div>
+  							</div><!--./panel filterable -->
+
+                <div class="row">
+          				<div class="col-md-12">
+          					<div class="page-header">
+          					  <h4>Virtual Cluster States</h4>
+          					</div>
+          					<div style="display:inline-block;width:100%;overflow-y:auto;">
+            					<ul class="timeline timeline-horizontal">
+            						<li class="timeline-item">
+            							<div class="timeline-badge info"><i class="glyphicon glyphicon-share"></i></div>
+            							<div class="timeline-panel">
+            								<div class="timeline-heading">
+            									<h5 class="timeline-title">New</h5>
+            									<!-- <p><small class="text-muted"><i class="glyphicon glyphicon-time"></i> 11 hours ago via Twitter</small></p> -->
+            								</div>
+            								<div class="timeline-body">
+            									<p>The virtual cluster has been defined, but has not yet been processed in any way.</p>
+            								</div>
+            							</div>
+            						</li>
+            						<li class="timeline-item">
+            							<div class="timeline-badge warning"><i class="glyphicon glyphicon-hourglass"></i></div>
+            							<div class="timeline-panel">
+            								<div class="timeline-heading">
+            									<h5 class="timeline-title">Initializing</h5>
+            								</div>
+            								<div class="timeline-body">
+            									<p>The virtual cluster has been validated, and a
+                                new headnode is being setup.</p>
+            								</div>
+            							</div>
+            						</li>
+            						<li class="timeline-item">
+            							<div class="timeline-badge success"><i class="glyphicon glyphicon-check"></i></div>
+            							<div class="timeline-panel">
+            								<div class="timeline-heading">
+            									<h5 class="timeline-title">Running</h5>
+            								</div>
+            								<div class="timeline-body">
+            									<p>The factory has been configured, and at least
+                                some of the workers have started to run. This
+                                is the stage where the virtual cluster is ready
+                                to perform work.</p>
+            								</div>
+            							</div>
+            						</li>
+            						<li class="timeline-item">
+            							<div class="timeline-badge terminate"><i class="glyphicon glyphicon-remove-circle"></i></div>
+            							<div class="timeline-panel">
+            								<div class="timeline-heading">
+            									<h5 class="timeline-title">Terminate</h5>
+            								</div>
+            								<div class="timeline-body">
+            									<p>A terminate action for the virtual cluster has
+                                been received, and workers start to be vacated.
+                                The virtual cluster will remain in this stage
+                                until no worker is running.</p>
+            								</div>
+            							</div>
+            						</li>
+                        <li class="timeline-item">
+            							<div class="timeline-badge cleanup"><i class="glyphicon glyphicon-cog"></i></div>
+            							<div class="timeline-panel">
+            								<div class="timeline-heading">
+            									<h5 class="timeline-title">Cleanup</h5>
+            								</div>
+            								<div class="timeline-body">
+            									<p>The headnode is shutdown, other minor bookeping
+                                of the virtual cluster is deleted.</p>
+            								</div>
+            							</div>
+            						</li>
+                        <li class="timeline-item">
+            							<div class="timeline-badge danger"><i class="glyphicon glyphicon-remove-circle"></i></div>
+            							<div class="timeline-panel">
+            								<div class="timeline-heading">
+            									<h5 class="timeline-title">Terminated</h5>
+            								</div>
+            								<div class="timeline-body">
+            									<p>The lifetime of the virtual cluster comes to
+                                an end. The cluster remains in this stage until
+                                it is explicitly deleted.</p>
+            								</div>
+            							</div>
+            						</li>
+            					</ul>
+          				  </div>
+          				</div>
+          			</div>
+
   						</div>
   					</div>
 
@@ -178,7 +268,22 @@ function get_states(name){
     success: function(data){
       var request_id = name.replace(".", "-")
       var request_statereason = (request_id+'_statereason')
-      $('#'+request_id).html(data.state);
+      if(data.state == "new"){
+        $('#'+request_id).html("New");
+      } else if(data.state == "initializing"){
+        $('#'+request_id).html("Initializing");
+      } else if(data.state == "pending"){
+        $('#'+request_id).html("Initializing")
+      } else if(data.state == "running"){
+        $('#'+request_id).html("Running")
+      } else if(data.state == "terminate"){
+        $('#'+request_id).html("Terminate")
+      } else if(data.state == "cleanup"){
+        $('#'+request_id).html("Clean Up")
+      } else if(data.state == "terminated"){
+        $('#'+request_id).html("Terminated")
+      }
+      // $('#'+request_id).html(data.state);
       $('#'+request_statereason).html(data.statereason);
       if($('#test').length != 0){
         $('#test').css('color', 'red');

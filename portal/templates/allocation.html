@@ -81,6 +81,52 @@
                   </div><!-- /.table-responsive -->
   							</div><!-- /.panel filterable -->
 
+                <div class="row">
+          				<div class="col-md-12">
+          					<div class="page-header">
+          					  <h4>Allocation States</h4>
+          					</div>
+          					<div style="display:inline-block;width:100%;overflow-y:auto;">
+            					<ul class="timeline timeline-horizontal">
+            						<li class="timeline-item">
+            							<div class="timeline-badge info"><i class="glyphicon glyphicon-share"></i></div>
+            							<div class="timeline-panel">
+            								<div class="timeline-heading">
+            									<h5 class="timeline-title">New</h5>
+            									<!-- <p><small class="text-muted"><i class="glyphicon glyphicon-time"></i> 11 hours ago via Twitter</small></p> -->
+            								</div>
+            								<div class="timeline-body">
+            									<p>The allocation has been defined, but has not yet been processed in any way.</p>
+            								</div>
+            							</div>
+            						</li>
+            						<li class="timeline-item">
+            							<div class="timeline-badge warning"><i class="glyphicon glyphicon-hourglass"></i></div>
+            							<div class="timeline-panel">
+            								<div class="timeline-heading">
+            									<h5 class="timeline-title">Authconfigure</h5>
+            								</div>
+            								<div class="timeline-body">
+            									<p>The allocation has been validated, and login credentials are being created.</p>
+            								</div>
+            							</div>
+            						</li>
+            						<li class="timeline-item">
+            							<div class="timeline-badge success"><i class="glyphicon glyphicon-check"></i></div>
+            							<div class="timeline-panel">
+            								<div class="timeline-heading">
+            									<h5 class="timeline-title">Ready</h5>
+            								</div>
+            								<div class="timeline-body">
+            									<p>Login credentials have been created, and the allocation is now ready to be used.</p>
+            								</div>
+            							</div>
+            						</li>
+            					</ul>
+          				  </div>
+          				</div>
+          			</div>
+
   						</div><!-- /.card-block -->
   					</div><!-- /.card -->
 
@@ -127,9 +173,11 @@ function get_states(name){
     success: function(data){
       var allocation_id = name.replace(".", "-")
       if(data.state == "validated"){
-        $('#'+allocation_id).html("ready");
-      } else {
-        $('#'+allocation_id).html(data.state);
+        $('#'+allocation_id).html("Ready");
+      } else if(data.state == "new"){
+        $('#'+allocation_id).html("New");
+      } else if(data.state == "authconfigured"){
+        $('#'+allocation_id).html("Authconfigured")
       }
       $('#test').html(data.state);
       if($('#test').length != 0){
