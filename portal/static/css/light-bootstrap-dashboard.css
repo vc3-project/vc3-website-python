@@ -280,7 +280,7 @@ body > .navbar-collapse {
       height: 60px; }
   .sidebar .nav,
   body > .navbar-collapse .nav {
-    margin-top: 20px;
+    margin-top: 0px;
     float: none; }
     .sidebar .nav li > a,
     body > .navbar-collapse .nav li > a {
@@ -2792,8 +2792,8 @@ footer a:hover {
 }
 .timeline-horizontal .timeline-item {
   display: table-cell;
-  height: 280px;
-  width: 20%;
+  height: 235px;
+  /* width: 20%; */
   min-width: 320px;
   float: none !important;
   padding-left: 0px;
@@ -2808,7 +2808,7 @@ footer a:hover {
   float: none !important;
   left: 0 !important;
   right: 0 !important;
-  width: 100%;
+  width: 90%;
   margin-bottom: 20px;
 }
 .timeline-horizontal .timeline-item .timeline-panel:before {

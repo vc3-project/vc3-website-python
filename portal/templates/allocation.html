@@ -20,15 +20,62 @@
           	<h4 class="title">Allocations</h4>
             <div class="">
 							<h5>A list of your current allocations</h5>
-							<a href="{{url_for('create_allocation')}}" class="btn btn-primary btn-sm" title="Register New Allocation">+ New Allocation</a>
+							<a href="{{url_for('create_allocation')}}" class="btn btn-create btn-sm" title="Register New Allocation">+ New Allocation</a>
 						</div>
-						<hr/>
+						<!-- <hr/> -->
           </div>
 
           <div class="content description">
 
             <div class="card">
   						<div class="card-block">
+
+                <div class="row">
+          				<div class="col-md-12">
+          					<div class="page-header">
+          					  <h4>Allocation States</h4>
+          					</div>
+          					<div style="display:inline-block;width:100%;overflow-y:auto;">
+            					<ul class="timeline timeline-horizontal">
+            						<li class="timeline-item">
+            							<div class="timeline-badge info"><i class="glyphicon glyphicon-share"></i></div>
+            							<div class="timeline-panel">
+            								<div class="timeline-heading">
+            									<h5 class="timeline-title">New</h5>
+            									<!-- <p><small class="text-muted"><i class="glyphicon glyphicon-time"></i> 11 hours ago via Twitter</small></p> -->
+            								</div>
+            								<div class="timeline-body">
+            									<p>The allocation has been defined, but has not yet been processed in any way.</p>
+            								</div>
+            							</div>
+            						</li>
+            						<li class="timeline-item">
+            							<div class="timeline-badge warning"><i class="glyphicon glyphicon-hourglass"></i></div>
+            							<div class="timeline-panel">
+            								<div class="timeline-heading">
+            									<h5 class="timeline-title">Authconfigured</h5>
+            								</div>
+            								<div class="timeline-body">
+            									<p>The allocation has been validated, and login credentials are being created.</p>
+            								</div>
+            							</div>
+            						</li>
+            						<li class="timeline-item">
+            							<div class="timeline-badge success"><i class="glyphicon glyphicon-check"></i></div>
+            							<div class="timeline-panel">
+            								<div class="timeline-heading">
+            									<h5 class="timeline-title">Ready</h5>
+            								</div>
+            								<div class="timeline-body">
+            									<p>Login credentials have been created, and the allocation is now ready to be used.</p>
+            								</div>
+            							</div>
+            						</li>
+            					</ul>
+          				  </div>
+          				</div>
+          			</div>
+
   							<div class="panel panel-primary filterable">
   								<div class="panel-heading">
   									<h3 class="panel-title">My Allocations</h3>
@@ -80,52 +127,6 @@
     								</table>
                   </div><!-- /.table-responsive -->
   							</div><!-- /.panel filterable -->
-
-                <div class="row">
-          				<div class="col-md-12">
-          					<div class="page-header">
-          					  <h4>Allocation States</h4>
-          					</div>
-          					<div style="display:inline-block;width:100%;overflow-y:auto;">
-            					<ul class="timeline timeline-horizontal">
-            						<li class="timeline-item">
-            							<div class="timeline-badge info"><i class="glyphicon glyphicon-share"></i></div>
-            							<div class="timeline-panel">
-            								<div class="timeline-heading">
-            									<h5 class="timeline-title">New</h5>
-            									<!-- <p><small class="text-muted"><i class="glyphicon glyphicon-time"></i> 11 hours ago via Twitter</small></p> -->
-            								</div>
-            								<div class="timeline-body">
-            									<p>The allocation has been defined, but has not yet been processed in any way.</p>
-            								</div>
-            							</div>
-            						</li>
-            						<li class="timeline-item">
-            							<div class="timeline-badge warning"><i class="glyphicon glyphicon-hourglass"></i></div>
-            							<div class="timeline-panel">
-            								<div class="timeline-heading">
-            									<h5 class="timeline-title">Authconfigured</h5>
-            								</div>
-            								<div class="timeline-body">
-            									<p>The allocation has been validated, and login credentials are being created.</p>
-            								</div>
-            							</div>
-            						</li>
-            						<li class="timeline-item">
-            							<div class="timeline-badge success"><i class="glyphicon glyphicon-check"></i></div>
-            							<div class="timeline-panel">
-            								<div class="timeline-heading">
-            									<h5 class="timeline-title">Ready</h5>
-            								</div>
-            								<div class="timeline-body">
-            									<p>Login credentials have been created, and the allocation is now ready to be used.</p>
-            								</div>
-            							</div>
-            						</li>
-            					</ul>
-          				  </div>
-          				</div>
-          			</div>
 
   						</div><!-- /.card-block -->
   					</div><!-- /.card -->

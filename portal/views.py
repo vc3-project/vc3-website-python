@@ -1024,7 +1024,7 @@ def view_allocation(name):
                     if r.name == allocation.resource:
                         accesshost = r.accesshost
                     else:
-                        accesshost = None
+                        accesshost = resource
 
                 return render_template('allocation_profile.html',
                                        name=allocationname,
