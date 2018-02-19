@@ -217,12 +217,12 @@ def show_profile_page():
                 if profile.name == nodeset.owner:
                     user_nodes += nodeset.node_number
         else:
-            if session['email'] not in whitelist_email:
+            # if session['email'] not in whitelist_email:
                 # return redirect(url_for('whitelist_error'))
-                pass
-            else:
-                flash('Please complete any missing profile fields before '
-                      'launching a cluster.', 'warning')
+                # pass
+            # else:
+            flash('Please complete any missing profile fields before '
+                  'launching a cluster.', 'warning')
 
         if request.args.get('next'):
             session['next'] = get_safe_redirect()
@@ -365,7 +365,7 @@ def authcallback():
         ids = globusclient.get_identities(
             usernames=id_token.get('preferred_username', ''))
 
-        email = id_token.get('email', '')
+        # email = id_token.get('email', '')
         # print(id_token.get('name', ''))
         # Restrict Email access to only .edu, .gov, and .org
         # User must have a valid institutional affiliation
@@ -402,9 +402,9 @@ def authcallback():
             session['last'] = session['name'].split()[-1]
             return redirect(url_for('show_profile_page',
                                     next=url_for('show_profile_page')))
-        if session['email'] not in whitelist_email:
+        # if session['email'] not in whitelist_email:
             # return redirect(url_for('whitelist_error'))
-            pass
+            # pass
 
         return redirect(url_for('portal'))
 
