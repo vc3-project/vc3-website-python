@@ -219,7 +219,7 @@ body > .navbar-collapse {
   body > .navbar-collapse .sidebar-wrapper {
     position: fixed;
     max-height: calc(100vh - 75px);
-    /*min-height: 100%;*/
+    min-height: 100%;
     overflow: auto;
     width: 260px;
     z-index: 4;
@@ -2335,7 +2335,7 @@ body > .navbar-collapse {
 
     .card .card-block {
       padding-bottom: 10px;
-      padding-left: 10px;
+      padding-left: 15px;
       padding-right: 10px;
       /*text-align: center;*/
     }
@@ -2620,23 +2620,25 @@ ALLOCATION LIST PAGE
 }
 
 #vc3diagram-portal {
-  width: 70%;
-  height: 70%;
+  width: 80%;
+  height: 80%;
 }
 
 #portal-diagram #accordion {
-  max-width: 70%;
+  max-width: 80%;
 }
 
 .breadcrumb {
   background-color: #f2f2f2;
   border: 1px solid #e3e3e3;
+  /* margin-top: 15px; */
   opacity: .86;
   font-size: 16px;
   font-weight: 400;
 }
 .breadcrumb .active {
   color: #e0af00;
+  font-weight: 600;
 }
 
 footer a {
