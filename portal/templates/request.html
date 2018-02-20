@@ -290,8 +290,8 @@ function get_states(name){
         $('#'+request_id).html("Initializing")
       } else if(data.state == "running"){
         $('#'+request_id).html("Running")
-      } else if(data.state == "terminate"){
-        $('#'+request_id).html("Terminate")
+      } else if(data.state == "terminating"){
+        $('#'+request_id).html("Terminating")
       } else if(data.state == "cleanup"){
         $('#'+request_id).html("Clean Up")
       } else if(data.state == "terminated"){
