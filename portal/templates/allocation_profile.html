@@ -18,152 +18,152 @@
               <li class="breadcrum-item active">{{displayname}}</li>
             </ol>
           	<h4 class="title">Allocation: {{displayname}}</h4>
-            <div class="">
+            <div class="row" style="padding-left:15px">
               <h5>Description: {{description}}</h5>
             </div>
             {% if session['name'] == owner %}
-            <div class="">
-              <div class="pull-left col-sm-12 col-md-6">
-  							<a href="{{url_for('edit_allocation', name=name)}}" class="btn btn-primary btn-xs">Update Allocation</a>
-  						</div>
-              <div class="delete_entity col-sm-12 col-md-6">
-  							<a href="{{url_for('delete_allocation', name=name)}}" class="btn btn-danger btn-xs">Delete Allocation</a>
-  						</div>
+            <div class="row" style="padding-left:15px">
+              <div class="btn-group" role="group" aria-label="Basic example">
+                <a href="{{url_for('edit_allocation', name=name)}}" class="btn btn-primary btn-xs">Update Allocation</a>
+                <a href="{{url_for('delete_allocation', name=name)}}" class="btn btn-danger btn-xs">Delete Allocation</a>
+              </div>
             </div>
               {% endif %}
 						<hr />
           </div>
 
           <div class="content description">
-  					<div class="card-block">
-              <div class="col-md-6">
+            <div class="card">
+    					<div class="card-block" id="detailed-page-block">
+                <div class="col-md-6">
 
-                <div class="panel panel-info resource-profile" style="margin: 1em;">
-                  <div class="panel-heading">
-                    <h3 class="panel-title"><strong>Owner</strong></h3>
-                  </div>
-                  <div class="panel-body disabled">
-                  {% for user in users %}
-                    {% if user.name == owner %}
-                      {{user.first}} {{user.last}}
-                    {% endif %}
-                  {% endfor %}
-                  </div>
-                </div>
-
-                <div class="panel panel-info resource-profile" style="margin: 1em;">
-                  <div class="panel-heading">
-                    <h3 class="panel-title"><strong>Resource</strong></h3>
-                  </div>
-                  <div class="panel-body">
-                    <a href="{{ url_for('view_resource', name=resource) }}">
-                      {% for r in resources %}
-                        {% if resource == r.name %}
-                        <div>{{r.displayname}}</div>
-                        {% endif %}
-                      {% endfor %}
-                    </a>
-                  </div>
-                </div>
-
-                <div class="panel panel-info resource-profile" style="margin: 1em;">
-                  <div class="panel-heading">
-                    <h3 class="panel-title"><strong>Account Name on Resource:</strong></h3>
-                  </div>
-                  <div class="panel-body disabled">
-                    {{accountname}}
-                  </div>
-                </div>
-
-                <div class="panel panel-info resource-profile" style="margin: 1em;">
-                  <div class="panel-heading">
-                    <h3 class="panel-title"><strong>Allocation SSH Public Key</strong></h3>
-                  </div>
-                  <div class="panel-body pubtoken">
-                    {% if pubtoken == "None" %}
-                    <p>Your SSH public key will be available once your allocation has been validated. Please allow a few moments and refresh the page.</p>
-                    <div>
-                      <font color="orange">Current State: <i class="fa fa-spinner fa-spin" style="color:orange"></i> Generating SSH key </font>
+                  <div class="panel panel-info resource-profile" style="margin: 1em;">
+                    <div class="panel-heading">
+                      <h3 class="panel-title"><strong>Owner</strong></h3>
                     </div>
-                    {% else %}
-                    <p>To allow the VC3 system to access this resource on your behalf, paste this SSH public key into your <kbd>~/.ssh/authorized_keys</kbd> file on the remote resource</p>
-                    <textarea id="pubtoken" readonly disabled font-size="16">{{ pubtoken }}</textarea>
-                    <!-- <button onclick="copyToClipboard('#pubtoken')" class="btn btn-primary btn-sm">Copy to Clipboard</button> -->
-                    <div class="span10">
-                      <button class="btn btn-primary btn-sm" onclick="copyToClipboard('#pubtoken')">Copy to Clipboard</button>
+                    <div class="panel-body disabled">
+                    {% for user in users %}
+                      {% if user.name == owner %}
+                        {{user.first}} {{user.last}}
+                      {% endif %}
+                    {% endfor %}
                     </div>
-                    <div class="span4">
-                      <div class="alert alert-warning fade">
-                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                          <span aria-hidden="true" style="color:black">&times;</span>
-                        </button>
-                        SSH Key Copied!
+                  </div>
+
+                  <div class="panel panel-info resource-profile" style="margin: 1em;">
+                    <div class="panel-heading">
+                      <h3 class="panel-title"><strong>Resource</strong></h3>
+                    </div>
+                    <div class="panel-body">
+                      <a href="{{ url_for('view_resource', name=resource) }}">
+                        {% for r in resources %}
+                          {% if resource == r.name %}
+                          <div>{{r.displayname}}</div>
+                          {% endif %}
+                        {% endfor %}
+                      </a>
+                    </div>
+                  </div>
+
+                  <div class="panel panel-info resource-profile" style="margin: 1em;">
+                    <div class="panel-heading">
+                      <h3 class="panel-title"><strong>Account Name on Resource:</strong></h3>
+                    </div>
+                    <div class="panel-body disabled">
+                      {{accountname}}
+                    </div>
+                  </div>
+
+                  <div class="panel panel-info resource-profile" style="margin: 1em;">
+                    <div class="panel-heading">
+                      <h3 class="panel-title"><strong>Allocation SSH Public Key</strong></h3>
+                    </div>
+                    <div class="panel-body pubtoken">
+                      {% if pubtoken == "None" %}
+                      <p>Your SSH public key will be available once your allocation has been validated. Please allow a few moments and refresh the page.</p>
+                      <div>
+                        <font color="orange">Current State: <i class="fa fa-spinner fa-spin" style="color:orange"></i> Generating SSH key </font>
+                      </div>
+                      {% else %}
+                      <p>To allow the VC3 system to access this resource on your behalf, paste this SSH public key into your <kbd>~/.ssh/authorized_keys</kbd> file on the remote resource</p>
+                      <textarea id="pubtoken" readonly disabled font-size="16">{{ pubtoken }}</textarea>
+                      <!-- <button onclick="copyToClipboard('#pubtoken')" class="btn btn-primary btn-sm">Copy to Clipboard</button> -->
+                      <div class="span10">
+                        <button class="btn btn-primary btn-sm" onclick="copyToClipboard('#pubtoken')">Copy to Clipboard</button>
+                      </div>
+                      <div class="span4">
+                        <div class="alert alert-warning fade">
+                          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true" style="color:black">&times;</span>
+                          </button>
+                          SSH Key Copied!
+                        </div>
+                      </div>
+                      {% endif %}
+                    </div>
+                  </div>
+
+                </div><!-- /.col-md-6-->
+
+                <div class="col-md-6">
+
+                  <h2 class="title">
+                    <small>For VC3 to Resource SSH Access:</small>
+                  </h2>
+
+                  <div id="accordion" role="tablist" aria-multiselectable="true">
+
+                    <div class="card panel panel-info resource-profile" style="margin: 1em;">
+                      <div class="card-header panel-title" role="tab" id="headingOne" style="margin: 1em">
+                        <h5 class="mb-0">
+                          <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+                            Once your SSH public key appears... <i class="fa fa-info-circle" aria-hidden="true"></i>
+                          </a>
+                        </h5>
+                      </div>
+                      <div id="collapseOne" class="collapse" role="tabpanel" aria-labelledby="headingOne">
+                        <div class="card-block panel-body disabled" style="font-size: 16px">
+                          <ol>
+                            <li>In a terminal, type:
+                              <div>
+                                <kbd>ssh {{accountname}}@{{accesshost}}</kbd>
+                              </div>
+                            </li>
+                            <li>
+                              Enter your password for <kbd>{{accesshost}}</kbd> for access
+                            </li>
+                            <li>
+                              Create your SSH directory by entering: <kbd>mkdir -p ~/.ssh; chmod 700 ~/.ssh</kbd>
+                            </li>
+                            <li>
+                              Next you will need to add the Allocation SSH key to
+                              your authorized keys on the remote resource. You may click the
+                              'Copy to Clipboard' button once the
+                              key has been generated and paste it into the
+                              following line:
+                              <div>
+                                <kbd>echo 'ALLOCATION-SSH-KEY-HERE' >> ~/.ssh/authorized_keys<kbd>
+                              </div>
+                            </li>
+                            <li>
+                              Finally, type:
+                              <div>
+                                <kbd>chmod 600 ~/.ssh/authorized_keys<kbd>
+                              </div>
+                            </li>
+                            <li>
+                              You will only need to do this once per allocation.
+                            </li>
+                          </ol>
+                        </div>
                       </div>
                     </div>
-                    {% endif %}
-                  </div>
-                </div>
 
-              </div><!-- /.col-md-6-->
+                  </div><!-- /.accordion-->
+                </div><!-- /.col-md-6 -->
 
-              <div class="col-md-6">
-
-                <h2 class="title">
-                  <small>For VC3 to Resource SSH Access:</small>
-                </h2>
-
-                <div id="accordion" role="tablist" aria-multiselectable="true">
-
-                  <div class="card panel panel-info resource-profile" style="margin: 1em;">
-                    <div class="card-header panel-title" role="tab" id="headingOne" style="margin: 1em">
-                      <h5 class="mb-0">
-                        <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
-                          Once your SSH public key appears... <i class="fa fa-info-circle" aria-hidden="true"></i>
-                        </a>
-                      </h5>
-                    </div>
-                    <div id="collapseOne" class="collapse" role="tabpanel" aria-labelledby="headingOne">
-                      <div class="card-block panel-body disabled" style="font-size: 16px">
-                        <ol>
-                          <li>In a terminal, type:
-                            <div>
-                              <kbd>ssh {{accountname}}@{{accesshost}}</kbd>
-                            </div>
-                          </li>
-                          <li>
-                            Enter your password for <kbd>{{accesshost}}</kbd> for access
-                          </li>
-                          <li>
-                            Create your SSH directory by entering: <kbd>mkdir -p ~/.ssh; chmod 700 ~/.ssh</kbd>
-                          </li>
-                          <li>
-                            Next you will need to add the Allocation SSH key to
-                            your authorized keys on the remote resource. You may click the
-                            'Copy to Clipboard' button once the
-                            key has been generated and paste it into the
-                            following line:
-                            <div>
-                              <kbd>echo 'ALLOCATION-SSH-KEY-HERE' >> ~/.ssh/authorized_keys<kbd>
-                            </div>
-                          </li>
-                          <li>
-                            Finally, type:
-                            <div>
-                              <kbd>chmod 600 ~/.ssh/authorized_keys<kbd>
-                            </div>
-                          </li>
-                          <li>
-                            You will only need to do this once per allocation.
-                          </li>
-                        </ol>
-                      </div>
-                    </div>
-                  </div>
-
-                </div><!-- /.accordion-->
-              </div><!-- /.col-md-6 -->
-
-  					</div>
+    					</div>
+            </div>
           </div><!-- /.content description -->
 
         </div><!-- main/.card -->

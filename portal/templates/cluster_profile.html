@@ -17,24 +17,22 @@
               <li class="breadcrum-item active">{{name}}</li>
             </ol>
           	<h4 class="title">Cluster Template: {{displayname}}</h4>
-            <div class="">
+            <div class="row" style="padding-left:15px">
               <h5>Description: {{description}}</h5>
             </div>
             {% if session['name'] == owner %}
-            <div class="">
-              <div class="pull-left col-sm-12 col-md-6">
-							  <a href="{{url_for('edit_cluster', name=name)}}" class="btn btn-primary btn-xs">Update Cluster Template</a>
-						  </div>
-              <div class="delete_entity col-sm-12 col-md-6">
-  							<a href="{{url_for('delete_cluster', name=name)}}" class="btn btn-danger btn-xs">Delete Cluster Template</a>
-  						</div>
+            <div class="row" style="padding-left:15px">
+              <div class="btn-group" role="group" aria-label="Basic example">
+                <a href="{{url_for('edit_cluster', name=name)}}" class="btn btn-primary btn-secondary btn-xs">Update Cluster Template</a>
+                <a href="{{url_for('delete_cluster', name=name)}}" data-toggle="confirmation" class="btn btn-danger btn-secondary btn-xs">Delete Cluster Template</a>
+              </div>
             </div>
             {% endif %}
 						<hr/>
           </div>
 
           <div class="content description">
-  					<div class="card-block">
+  					<div class="card-block" id="detailed-page-block">
               <div class="col-md-12">
 
                 <div class="panel panel-info resource-profile" style="margin: 1em;">

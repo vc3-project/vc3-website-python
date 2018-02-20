@@ -1217,7 +1217,12 @@ body > .navbar-collapse {
   /* background-color: #111; */
   /* light theme */
   background-color: #24292e;
-  line-height: 20px; }
+  line-height: 20px;
+  /* position: fixed;
+  bottom: 0;
+  right: 0;
+  width: 100%; */
+ }
   .footer nav > ul {
     list-style: none;
     margin: 0;
@@ -2336,6 +2341,18 @@ body > .navbar-collapse {
     .card .card-block {
       padding-bottom: 10px;
       padding-left: 15px;
+      padding-right: 10px;
+      /*text-align: center;*/
+    }
+    .card #portal-home-block {
+      padding-bottom: 10px;
+      padding-left: 1px;
+      padding-right: 10px;
+      /*text-align: center;*/
+    }
+    .card #detailed-page-block {
+      padding-bottom: 10px;
+      padding-left: 0px;
       padding-right: 10px;
       /*text-align: center;*/
     }
