@@ -22,11 +22,20 @@ def virtual_cluster(name):
         if vc.name == name:
             sanitized_obj = {'name': vc.name,
                              'state': vc.state,
+                             'cluster': vc.cluster,
                              'statusraw': vc.statusraw,
                              'statusinfo': vc.statusinfo,
                              'displayname': vc.displayname,
                              'description': vc.description,
-                             'statereason': vc.state_reason}
+                             'statereason': vc.state_reason,
+                             'action': vc.action}
+            if vc.statusinfo is not None:
+                sanitized_obj['statusinfo_error'] = vc.statusinfo[vc.cluster]['error']
+                sanitized_obj['statusinfo_idle'] = vc.statusinfo[vc.cluster]['idle']
+                sanitized_obj['statusinfo_node_number'] = vc.statusinfo[vc.cluster]['node_number']
+                sanitized_obj['statusinfo_requested'] = vc.statusinfo[vc.cluster]['requested']
+                sanitized_obj['statusinfo_running'] = vc.statusinfo[vc.cluster]['running']
+
             return flask.jsonify(sanitized_obj)
     return flask.jsonify(result), 404
 

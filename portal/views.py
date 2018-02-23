@@ -217,12 +217,12 @@ def show_profile_page():
                 if profile.name == nodeset.owner:
                     user_nodes += nodeset.node_number
         else:
-            # if session['email'] not in whitelist_email:
-                # return redirect(url_for('whitelist_error'))
-                # pass
-            # else:
-            flash('Please complete any missing profile fields before '
-                  'launching a cluster.', 'warning')
+            if session['email'] not in whitelist_email:
+                return redirect(url_for('whitelist_error'))
+                pass
+            else:
+                flash('Please complete any missing profile fields before '
+                      'launching a cluster.', 'warning')
 
         if request.args.get('next'):
             session['next'] = get_safe_redirect()
@@ -365,7 +365,7 @@ def authcallback():
         ids = globusclient.get_identities(
             usernames=id_token.get('preferred_username', ''))
 
-        # email = id_token.get('email', '')
+        email = id_token.get('email', '')
         # print(id_token.get('name', ''))
         # Restrict Email access to only .edu, .gov, and .org
         # User must have a valid institutional affiliation
@@ -379,8 +379,8 @@ def authcallback():
         # if not inst_username:
         #     return render_template('email_error.html')
 
-        # if not (email.split("@")[-1].split(".")[-1] in ["edu", "gov", "org"]):
-        #     return render_template('email_error.html')
+        if not (email.split("@")[-1].split(".")[-1] in ["edu", "gov", "org"]):
+            return render_template('email_error.html')
 
         for user in userlist:
             if session['primary_identity'] == user.identity_id:
@@ -402,9 +402,9 @@ def authcallback():
             session['last'] = session['name'].split()[-1]
             return redirect(url_for('show_profile_page',
                                     next=url_for('show_profile_page')))
-        # if session['email'] not in whitelist_email:
-            # return redirect(url_for('whitelist_error'))
-            # pass
+        if session['email'] not in whitelist_email:
+            return redirect(url_for('whitelist_error'))
+            pass
 
         return redirect(url_for('portal'))
 
@@ -984,8 +984,7 @@ def create_allocation():
                                    accountname=accountname, description=description,
                                    resources=resources)
 
-        flash('Configuring your allocation, when allocation state is "ready", '
-              'please view your allocation to complete the setup.', 'info')
+        flash('Your allocation has been added.', 'success')
 
         return redirect(url_for('list_allocations'))
 
@@ -1024,7 +1023,7 @@ def view_allocation(name):
                     if r.name == allocation.resource:
                         accesshost = r.accesshost
                     else:
-                        accesshost = resource
+                        accesshost = None
 
                 return render_template('allocation_profile.html',
                                        name=allocationname,
@@ -1474,7 +1473,7 @@ def create_environment():
 
     if request.method == 'GET':
         environments = vc3_client.listEnvironments()
-        return render_template('environment_new_2.html',
+        return render_template('environment_new.html',
                                environments=environments, recipes=recipe_list)
 
     elif request.method == 'POST':
@@ -1504,13 +1503,62 @@ def create_environment():
             description = str(description_input)
             environments = vc3_client.listEnvironments()
             flash('You have already created an environment with that name.', 'warning')
-            return render_template('environment_new_2.html', name=name,
+            return render_template('environment_new.html', name=name,
                                    packagelist=packagelist,
                                    description=description, environments=environments)
 
         flash('Successfully created a new environment', 'success')
 
         return redirect(url_for('list_environments'))
+
+
+@app.route('/environments/<name>', methods=['GET'])
+@authenticated
+def view_environment(name):
+    """
+    Specific page view, pertaining to Cluster Template
+
+    :param name: name attribute of cluster
+    :return: Cluster Template profile view specific to cluster name
+    """
+    vc3_client = get_vc3_client()
+    environments = vc3_client.listEnvironments()
+    users = vc3_client.listUsers()
+    environment = None
+
+    environment = vc3_client.getEnvironment(environmentname=name)
+    if environment:
+        environment_name = environment.name
+        owner = environment.owner
+        packagelist = environment.packagelist
+        description = environment.description
+        displayname = environment.displayname
+
+        return render_template('environment_profile.html', name=environment_name,
+                               owner=owner, description=description,
+                               users=users, displayname=displayname,
+                               packagelist=packagelist)
+    raise LookupError('environment')
+
+
+@app.route('/environments/delete/<name>', methods=['GET'])
+@authenticated
+def delete_environment(name):
+    """
+    Route for method to delete Environment
+
+    :param name: name attribute of Environment to delete
+    :return: Redirect to List Environments page with Env deleted
+    """
+    vc3_client = get_vc3_client()
+
+    # Grab Env by name and delete entity
+
+    env = vc3_client.getEnvironment(environmentname=name)
+    vc3_client.deleteEnvironment(environmentname=env.name)
+    flash('Environment has been successfully deleted', 'success')
+
+    return redirect(url_for('list_environments'))
 
 
 @app.route('/timeline', methods=['GET'])

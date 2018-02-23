@@ -1,0 +1,70 @@
+{%extends "loginbase.html"%}
+
+{%block title%}Environment Profile: {{name}}{%endblock%}
+
+{%block body%}
+
+<div class="content">
+  <div class="container-fluid">
+
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="header">
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item"><a href="{{url_for('portal')}}">Portal Home</a></li>
+              <li class="breadcrumb-item"><a href="{{url_for('list_environments')}}">Environments</a></li>
+              <li class="breadcrum-item active">{{name}}</li>
+            </ol>
+          	<h4 class="title">Environment: {{displayname}}</h4>
+            <div class="row" style="padding-left:15px">
+              <h5>Description: {{description}}</h5>
+            </div>
+            {% if session['name'] == owner %}
+            <div class="row" style="padding-left:15px">
+              <div class="btn-group" role="group" aria-label="Basic example">
+                <a href="#" class="btn btn-primary btn-secondary btn-xs">Update Environment</a>
+                <a href="{{url_for('delete_environment', name=name)}}" data-toggle="confirmation" class="btn btn-danger btn-secondary btn-xs">Delete Environment</a>
+              </div>
+            </div>
+            {% endif %}
+						<hr/>
+          </div>
+
+          <div class="content description">
+  					<div class="card-block" id="detailed-page-block">
+              <div class="col-md-12">
+
+                <div class="panel panel-info resource-profile" style="margin: 1em;">
+                  <div class="panel-heading">
+                    <h3 class="panel-title"><strong>Owner</strong></h3>
+                  </div>
+                  <div class="panel-body disabled">
+                  {% for user in users %}
+                    {% if user.name == owner %}
+                      {{user.first }} {{user.last}}
+                    {% endif %}
+                  {% endfor %}
+                  </div>
+                </div>
+                <div class="panel panel-info resource-profile" style="margin: 1em;">
+                  <div class="panel-heading">
+                    <h3 class="panel-title"><strong>Package List</strong></h3>
+                  </div>
+                  <div class="panel-body disabled">
+                    {{packagelist}}
+                  </div>
+                </div>
+
+              </div>
+  					</div><!-- ./ card-block-->
+          </div><!-- /.content description -->
+
+        </div>
+      </div>
+		</div>
+
+  </div>
+</div>
+
+{%endblock%}

@@ -41,7 +41,7 @@
                           </a>
                         </h5>
                       </div>
-                      <div id="collapseTwo" class="collapse" role="tabpanel" aria-labelledby="headingTwo">
+                      <div id="collapseTwo" class="collapse show" role="tabpanel" aria-labelledby="headingTwo">
                         <div class="card-block panel-body" style="font-size: 16px">
                           <div style="display:inline-block;width:100%;overflow-y:auto;">
                   					<ul class="timeline timeline-horizontal">
@@ -176,7 +176,7 @@ window.onload = function (){
   };
   setInterval( function(){
     get_states(name);
-  }, 5000);
+  }, 3000);
 }
 
 function get_states(name){
@@ -188,11 +188,10 @@ function get_states(name){
       var allocation_id = name.replace(".", "-")
       if(data.state == "validated"){
         $('#'+allocation_id).html("Ready");
-      } else if(data.state == "new"){
-        $('#'+allocation_id).html("New");
-      } else if(data.state == "authconfigured"){
-        $('#'+allocation_id).html("Authconfigured")
+      } else {
+        $('#'+allocation_id).html((((data.state).charAt(0)).toUpperCase())+((data.state).slice(1)));
       }
+
       $('#test').html(data.state);
       if($('#test').length != 0){
         $('#test').css('color', 'red');

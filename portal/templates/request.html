@@ -159,6 +159,11 @@
 
                           {% set requestname = request.name.replace(".", "-") %}
                           {% set request_statereason = requestname + '_statereason' %}
+                          {% set request_statusinfo = requestname + '_statusinfo' %}
+                          {% set request_statusinfo_requested = requestname + '_statusinfo_requested' %}
+                          {% set request_statusinfo_running = requestname + '_statusinfo_running' %}
+                          {% set request_statusinfo_idle = requestname + '_statusinfo_idle' %}
+                          {% set request_statusinfo_error = requestname + '_statusinfo_error' %}
                           <td>
                             <div id="{{requestname}}" class="row"></div>
                             <div class="row">
@@ -171,52 +176,36 @@
                             <div>{{request.cluster}}</div>
                           </td>
 
-                        {% if request.statusinfo|default() %}
                           <td>
-                          {% for key, value in request.statusinfo.iteritems() %}
-                            {% for k, v in value.iteritems() %}
-                              {% if k == "idle" %}
-                              <div class="row">
-                                <small class="pull-right" id="node-status">queued:
-                                  <span class="label label-warning" style="color:white">
-                                    {{v}}
-                                  </span>
-                                </small>
-                              </div>
-                              {% elif k == "running" %}
-                              <div class="row">
-                                <small class="pull-right" id="node-status">{{ k }}:
-                                  <span class="label label-success" style="color:white">
-                                    {{v}}
-                                  </span>
-                                </small>
-                              </div>
-                              {% elif k == "error" %}
-                              <div class="row">
-                                <small class="pull-right" id="node-status">{{ k }}:
-                                  <span class="label label-danger" style="color:white">
-                                    {{v}}
-                                  </span>
-                                </small>
-                              </div>
-                              {% elif k == "requested" %}
-                              <div class="row">
-                                <small class="pull-right" id="node-status">{{ k }}:
-                                  <span class="label label-info" style="color:white">
-                                    {{v}}
-                                  </span>
-                                </small>
-                              </div>
-                              {% endif %}
-                            {% endfor %}
-                          {% endfor %}
-                          </td>
-
-                        {% else %}
-                          <td>
+                          {% if request.statusinfo|default() %}
+                            <div class="row">
+                              <small class="pull-right" id="node-status">Requested:
+                                <span class="label label-info" style="color:white" id="{{request_statusinfo_requested}}">Pending
+                                </span>
+                              </small>
+                            </div>
+                            <div class="row">
+                              <small class="pull-right" id="node-status">Running:
+                                <span class="label label-success" style="color:white" id="{{request_statusinfo_running}}">Pending
+                                </span>
+                              </small>
+                            </div>
+                            <div class="row">
+                              <small class="pull-right" id="node-status">Queued:
+                                <span class="label label-warning" id="{{request_statusinfo_idle}}" style="color:white">Pending
+                                </span>
+                              </small>
+                            </div>
+                            <div class="row">
+                              <small class="pull-right" id="node-status">Error:
+                                <span class="label label-danger" style="color:white" id="{{request_statusinfo_error}}">Pending
+                                </span>
+                              </small>
+                            </div>
+                          {% else %}
                             <small class="label label-warning">Status pending</small>
+                          {% endif %}
                           </td>
-                        {% endif %}
 
                           <td>
                             <div class="row">
@@ -271,7 +260,7 @@ window.onload = function (){
   };
   setInterval( function(){
     get_states(name);
-  }, 5000);
+  }, 3000);
 }
 
 function get_states(name){
@@ -280,25 +269,26 @@ function get_states(name){
     type: "get",
     dataType: 'json',
     success: function(data){
-      var request_id = name.replace(".", "-")
-      var request_statereason = (request_id+'_statereason')
-      if(data.state == "new"){
-        $('#'+request_id).html("New");
-      } else if(data.state == "initializing"){
-        $('#'+request_id).html("Initializing");
-      } else if(data.state == "pending"){
-        $('#'+request_id).html("Initializing")
-      } else if(data.state == "running"){
-        $('#'+request_id).html("Running")
-      } else if(data.state == "terminating"){
-        $('#'+request_id).html("Terminating")
-      } else if(data.state == "cleanup"){
-        $('#'+request_id).html("Clean Up")
-      } else if(data.state == "terminated"){
-        $('#'+request_id).html("Terminated")
+      var request_id = name.replace(".", "-");
+      var request_statereason = (request_id+'_statereason');
+      if(data.state == "running" && data.action == "terminate"){
+        $('#'+request_id).html("Terminating");
+        $('#'+request_statereason).html("Terminate action was received");
+      } else {
+        $('#'+request_id).html((((data.state).charAt(0)).toUpperCase())+((data.state).slice(1)));
+        $('#'+request_statereason).html(data.statereason);
       }
-      // $('#'+request_id).html(data.state);
-      $('#'+request_statereason).html(data.statereason);
+
+      var request_statusinfo = (request_id+'_statusinfo');
+      var request_statusinfo_requested = (request_id+'_statusinfo_requested');
+      var request_statusinfo_running = (request_id+'_statusinfo_running');
+      var request_statusinfo_idle = (request_id+'_statusinfo_idle');
+      var request_statusinfo_error = (request_id+'_statusinfo_error');
+
+      $('#'+request_statusinfo_requested).html(data.statusinfo_requested);
+      $('#'+request_statusinfo_running).html(data.statusinfo_running);
+      $('#'+request_statusinfo_idle).html(data.statusinfo_idle);
+      $('#'+request_statusinfo_error).html(data.statusinfo_error);
       if($('#test').length != 0){
         $('#test').css('color', 'red');
       }

@@ -133,7 +133,7 @@ h1 .subtitle {
 /*     General overwrite     */
 body,
 .wrapper {
-  min-height: 100vh;
+  min-height: 150vh;
   position: relative; }
 
 a {
@@ -198,7 +198,7 @@ input:focus {
 .wrapper {
   position: relative;
   top: 0;
-  height: 100vh;
+  height: 150vh;
   padding-top: 50px;
  }
 
@@ -2567,8 +2567,10 @@ textarea {
   width: 100%;
 }
 .bootstrap-select .open{
-  max-height: 322.184px !important;
+  /* max-height: 322.184px !important; */
   overflow: scroll;
+  top: 100%;
+  bottom: auto;
 }
 .disabled {
    pointer-events: none;
@@ -2642,7 +2644,7 @@ ALLOCATION LIST PAGE
 }
 
 #portal-diagram #accordion {
-  max-width: 80%;
+  max-width: 100%;
 }
 
 .breadcrumb {
