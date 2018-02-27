@@ -53,7 +53,7 @@
                   									<!-- <p><small class="text-muted"><i class="glyphicon glyphicon-time"></i> 11 hours ago via Twitter</small></p> -->
                   								</div>
                   								<div class="timeline-body">
-                  									<p>The allocation has been defined, but has not yet been processed in any way.</p>
+                  									<p>Login credentials are being generated for the allocation.</p>
                   								</div>
                   							</div>
                   						</li>
@@ -61,10 +61,10 @@
                   							<div class="timeline-badge warning"><i class="glyphicon glyphicon-hourglass"></i></div>
                   							<div class="timeline-panel">
                   								<div class="timeline-heading">
-                  									<h5 class="timeline-title">Authconfigured</h5>
+                  									<h5 class="timeline-title">Configured</h5>
                   								</div>
                   								<div class="timeline-body">
-                  									<p>The allocation has been validated, and login credentials are being created.</p>
+                  									<p>The allocation is waiting to be validated according to the instructions in the allocation profile page.</p>
                   								</div>
                   							</div>
                   						</li>
@@ -75,7 +75,7 @@
                   									<h5 class="timeline-title">Ready</h5>
                   								</div>
                   								<div class="timeline-body">
-                  									<p>Login credentials have been created, and the allocation is now ready to be used.</p>
+                  									<p>The allocation is ready to be used.</p>
                   								</div>
                   							</div>
                   						</li>
@@ -190,12 +190,16 @@ function get_states(name){
     dataType: 'json',
     success: function(data){
       var allocation_id = name.replace(".", "-")
-      if(data.state == "validated"){
+      if(data.state == "ready"){
          $('#'+allocation_id).html("<div class='progress-bar progress-bar-success progress-bar-striped active' role='progressbar' aria-valuenow='100' aria-valuemin='0' aria-valuemax='100' style='width: 100%'>Ready</div>");
       } else if(data.state == "new"){
         $('#'+allocation_id).html("<div class='progress-bar progress-bar-striped progress-bar-info active' role='progressbar' style='width: 30%' aria-valuenow='30' aria-valuemin='0' aria-valuemax='100'>New</div>");
-      } else if(data.state == "authconfigured"){
-        $('#'+allocation_id).html("<div class='progress-bar progress-bar-striped progress-bar-warning active' role='progressbar' style='width: 75%' aria-valuenow='75' aria-valuemin='0' aria-valuemax='100'>Authconfigured</div>");
+      } else if(data.state == "configured"){
+        $('#'+allocation_id).html("<div class='progress-bar progress-bar-striped progress-bar-warning active' role='progressbar' style='width: 75%' aria-valuenow='75' aria-valuemin='0' aria-valuemax='100'>configured</div>");
+      } else if(data.state == "failure"){
+        $('#'+allocation_id).html("<div class='progress-bar progress-bar-striped progress-bar-danger active' role='progressbar' style='width: 100%' aria-valuenow='100' aria-valuemin='0' aria-valuemax='100'>failure</div>");
+      } else if(data.state == "validation_failed"){
+        $('#'+allocation_id).html("<div class='progress-bar progress-bar-striped progress-bar-danger active' role='progressbar' style='width: 75%' aria-valuenow='75' aria-valuemin='0' aria-valuemax='100'>configured</div>");
       }
       // $('#test').html(data.state);
       // if($('#test').length != 0){
