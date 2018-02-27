@@ -30,7 +30,7 @@ def allocation_validated(f):
         allocations = vc3_client.listAllocations()
         for allocation in allocations:
             if (session['name'] == allocation.owner and
-                    allocation.state == "validated"):
+                    allocation.state == "ready"):
                 return f(*args, **kwargs)
         flash('Please validate an allocation first.', 'warning')
         return redirect(url_for('list_allocations', next=request.url))
