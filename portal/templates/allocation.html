@@ -41,7 +41,7 @@
                           </a>
                         </h5>
                       </div>
-                      <div id="collapseTwo" class="collapse show" role="tabpanel" aria-labelledby="headingTwo">
+                      <div id="collapseTwo" class="collapse" role="tabpanel" aria-labelledby="headingTwo">
                         <div class="card-block panel-body" style="font-size: 16px">
                           <div style="display:inline-block;width:100%;overflow-y:auto;">
                   					<ul class="timeline timeline-horizontal">
@@ -113,8 +113,12 @@
     											<td>
                             <a href="{{ url_for('view_allocation', name=allocation.name) }}" title="View Allocation">{{ allocation.displayname }}</a>
                           </td>
+
                               {% set allocationname = allocation.name.replace(".", "-") %}
-      										<td id="{{allocationname}}"></td>
+      										<td>
+                          <br>
+                            <div class="progress" id="{{allocationname}}"></div>
+                          </td>
 
     											<td>
                             <a href="{{ url_for('view_resource', name=allocation.resource) }}">
@@ -174,9 +178,9 @@ window.onload = function (){
     var name = stateEntityList[i];
     get_states(name);
   };
-  setInterval( function(){
-    get_states(name);
-  }, 3000);
+  setInterval(function(){
+    get_states(name, $(this));
+  }.bind(this), 3000);
 }
 
 function get_states(name){
@@ -187,15 +191,16 @@ function get_states(name){
     success: function(data){
       var allocation_id = name.replace(".", "-")
       if(data.state == "validated"){
-        $('#'+allocation_id).html("Ready");
-      } else {
-        $('#'+allocation_id).html((((data.state).charAt(0)).toUpperCase())+((data.state).slice(1)));
+         $('#'+allocation_id).html("<div class='progress-bar progress-bar-success progress-bar-striped active' role='progressbar' aria-valuenow='100' aria-valuemin='0' aria-valuemax='100' style='width: 100%'>Ready</div>");
+      } else if(data.state == "new"){
+        $('#'+allocation_id).html("<div class='progress-bar progress-bar-striped progress-bar-info active' role='progressbar' style='width: 30%' aria-valuenow='30' aria-valuemin='0' aria-valuemax='100'>New</div>");
+      } else if(data.state == "authconfigured"){
+        $('#'+allocation_id).html("<div class='progress-bar progress-bar-striped progress-bar-warning active' role='progressbar' style='width: 75%' aria-valuenow='75' aria-valuemin='0' aria-valuemax='100'>Authconfigured</div>");
       }
-
-      $('#test').html(data.state);
-      if($('#test').length != 0){
-        $('#test').css('color', 'red');
-      }
+      // $('#test').html(data.state);
+      // if($('#test').length != 0){
+      //   $('#test').css('color', 'red');
+      // }
     },
     error: function(xhr){
       //Do Something to handle error

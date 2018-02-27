@@ -177,34 +177,30 @@
                           </td>
 
                           <td>
-                          {% if request.statusinfo|default() %}
                             <div class="row">
                               <small class="pull-right" id="node-status">Requested:
-                                <span class="label label-info" style="color:white" id="{{request_statusinfo_requested}}">Pending
+                                <span class="label label-info" style="color:white" id="{{request_statusinfo_requested}}">
                                 </span>
                               </small>
                             </div>
                             <div class="row">
                               <small class="pull-right" id="node-status">Running:
-                                <span class="label label-success" style="color:white" id="{{request_statusinfo_running}}">Pending
+                                <span class="label label-success" style="color:white" id="{{request_statusinfo_running}}">
                                 </span>
                               </small>
                             </div>
                             <div class="row">
                               <small class="pull-right" id="node-status">Queued:
-                                <span class="label label-warning" id="{{request_statusinfo_idle}}" style="color:white">Pending
+                                <span class="label label-warning" id="{{request_statusinfo_idle}}" style="color:white">
                                 </span>
                               </small>
                             </div>
                             <div class="row">
                               <small class="pull-right" id="node-status">Error:
-                                <span class="label label-danger" style="color:white" id="{{request_statusinfo_error}}">Pending
+                                <span class="label label-danger" style="color:white" id="{{request_statusinfo_error}}">
                                 </span>
                               </small>
                             </div>
-                          {% else %}
-                            <small class="label label-warning">Status pending</small>
-                          {% endif %}
                           </td>
 
                           <td>
@@ -259,8 +255,8 @@ window.onload = function (){
     get_states(name);
   };
   setInterval( function(){
-    get_states(name);
-  }, 3000);
+    get_states(name, $(this));
+  }.bind(this), 3000);
 }
 
 function get_states(name){
@@ -285,10 +281,17 @@ function get_states(name){
       var request_statusinfo_idle = (request_id+'_statusinfo_idle');
       var request_statusinfo_error = (request_id+'_statusinfo_error');
 
-      $('#'+request_statusinfo_requested).html(data.statusinfo_requested);
-      $('#'+request_statusinfo_running).html(data.statusinfo_running);
-      $('#'+request_statusinfo_idle).html(data.statusinfo_idle);
-      $('#'+request_statusinfo_error).html(data.statusinfo_error);
+      if(data.statusinfo == null){
+        $('#'+request_statusinfo_requested).html("Pending");
+        $('#'+request_statusinfo_running).html("Pending");
+        $('#'+request_statusinfo_idle).html("Pending");
+        $('#'+request_statusinfo_error).html("Pending");
+      } else {
+        $('#'+request_statusinfo_requested).html(data.statusinfo_requested);
+        $('#'+request_statusinfo_running).html(data.statusinfo_running);
+        $('#'+request_statusinfo_idle).html(data.statusinfo_idle);
+        $('#'+request_statusinfo_error).html(data.statusinfo_error);
+      }
       if($('#test').length != 0){
         $('#test').css('color', 'red');
       }

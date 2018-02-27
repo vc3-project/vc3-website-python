@@ -164,9 +164,9 @@
                     </div>
 
                     <div class="form-group">
-                      <label for="sshpubstring">SSH Key <span id="asterik">*</span></label>
+                      <label for="sshpubstring">SSH Public Key <span id="asterik">*</span></label>
                       <textarea
-                        placeholder="Please enter your SSH key here..."
+                        placeholder="Please enter your SSH public key here..."
                         name="sshpubstring"
                         required
                         tabindex="5"
@@ -255,9 +255,9 @@
                     </div>
 
                     <div class="form-group">
-                      <label for="sshpubstring">SSH key <span id="asterik">*</span></label>
+                      <label for="sshpubstring">SSH Public key <span id="asterik">*</span></label>
                       <textarea
-                        placeholder="Please enter your SSH key here..."
+                        placeholder="Please enter your SSH public key here..."
                         name="sshpubstring"
                         required
                         tabindex="6"
@@ -276,7 +276,7 @@
                 <div class="col-md-6">
 
                   <h2 class="title">
-                    <small>Adding or generating your SSH key:</small>
+                    <small>Adding or generating your SSH public key:</small>
                   </h2>
 
                   <div id="accordion" role="tablist" aria-multiselectable="true">
@@ -285,7 +285,7 @@
                       <div class="card-header panel-title" role="tab" id="headingTwo" style="margin: 1em;">
                         <h5 class="mb-0">
                           <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                            Already have an SSH key? <i class="fa fa-info-circle" aria-hidden="true"></i>
+                            Already have an SSH public key? <i class="fa fa-info-circle" aria-hidden="true"></i>
                           </a>
                         </h5>
                       </div>
@@ -297,7 +297,7 @@
                             <li>Type:  <kbd>cat ~/.ssh/id_rsa.pub</kbd> in order to see your key.</li>
                             <li>Copy the selection to the clipboard.</li>
                             <li>Paste the contents of the clipboard in the
-                              corresponding box on your VC3 Profile. Please <b>only</b> paste the SSH ( typically ending in .pub) key into this box.
+                              corresponding box on your VC3 Profile. Please <b>only</b> paste the SSH ( typically ending in .pub) public key into this box.
                             </li>
                           </ol>
                         </div>
@@ -308,7 +308,7 @@
                       <div class="card-header panel-title" role="tab" id="headingThree" style="margin: 1em">
                         <h5 class="mb-0">
                           <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-                            How to create a new SSH key...<i class="fa fa-info-circle" aria-hidden="true"></i>
+                            How to create a new SSH public key...<i class="fa fa-info-circle" aria-hidden="true"></i>
                           </a>
                         </h5>
                       </div>
@@ -324,7 +324,7 @@
                               password. This will generate two files: A private key file
                               (typically <kbd>id_rsa</kbd>) and a key file (typically <kbd>id_rsa.pub</kbd>). The private key should <b>never</b> be shared, and VC3 will never ask you for your private key.
                             </li>
-                            <li>In order to see your SSH key type:
+                            <li>In order to see your SSH public key type:
                               <div>
                                 <kbd>cat ~/.ssh/id_rsa.pub</kbd>
                               </div>

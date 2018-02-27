@@ -1003,36 +1003,32 @@ def view_allocation(name):
     allocations = vc3_client.listAllocations()
     resources = vc3_client.listResources()
     users = vc3_client.listUsers()
+    allocation = vc3_client.getAllocation(allocationname=name)
 
     if request.method == 'GET':
-        for allocation in allocations:
-            if allocation.name == name:
-                allocationname = allocation.name
-                owner = allocation.owner
-                resource = allocation.resource
-                state = allocation.state
-                displayname = allocation.displayname
-                description = allocation.description
-                accountname = allocation.accountname
-                encodedpubtoken = allocation.pubtoken
-                if encodedpubtoken is None:
-                    pubtoken = 'None'
-                else:
-                    pubtoken = base64.b64decode(encodedpubtoken)
-                for r in resources:
-                    if r.name == allocation.resource:
-                        accesshost = r.accesshost
-                    else:
-                        accesshost = None
+        allocationname = allocation.name
+        owner = allocation.owner
+        resource = allocation.resource
+        state = allocation.state
+        displayname = allocation.displayname
+        description = allocation.description
+        accountname = allocation.accountname
+        encodedpubtoken = allocation.pubtoken
+        if encodedpubtoken is None:
+            pubtoken = 'None'
+        else:
+            pubtoken = base64.b64decode(encodedpubtoken)
+        allocation_resource = vc3_client.getResource(resourcename=resource)
+        accesshost = allocation_resource.accesshost
 
-                return render_template('allocation_profile.html',
-                                       name=allocationname,
-                                       owner=owner, resource=resource,
-                                       accountname=accountname,
-                                       pubtoken=pubtoken, state=state,
-                                       resources=resources, displayname=displayname,
-                                       description=description, users=users,
-                                       accesshost=accesshost)
+        return render_template('allocation_profile.html',
+                               name=allocationname,
+                               owner=owner, resource=resource,
+                               accountname=accountname,
+                               pubtoken=pubtoken, state=state,
+                               resources=resources, displayname=displayname,
+                               description=description, users=users,
+                               accesshost=accesshost)
         app.logger.error("Could not find allocation when viewing: {0}".format(name))
         raise LookupError('allocation')
 
