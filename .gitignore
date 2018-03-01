@@ -36,6 +36,7 @@ vc3-website-python-venv/
 *.egg-info/
 .installed.cfg
 *.egg
+vc3-root/
 
 # PyInstaller
 #  Usually these files are written by a python script from a template
