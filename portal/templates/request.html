@@ -266,9 +266,9 @@ function get_states(name){
     success: function(data){
       var request_id = name.replace(".", "-");
       var request_statereason = (request_id+'_statereason');
-      if(data.state == "running" && data.action == "terminate"){
+      if(data.action == "terminate" && data.state != "terminating" && data.state != "cleanup" && data.state != "terminated"){
         $('#'+request_id).html("Terminating");
-        $('#'+request_statereason).html("Terminate action was received");
+        $('#'+request_statereason).html("Scheduling virtual cluster termination");
       } else {
         $('#'+request_id).html((((data.state).charAt(0)).toUpperCase())+((data.state).slice(1)));
         $('#'+request_statereason).html(data.statereason);
