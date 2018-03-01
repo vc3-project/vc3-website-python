@@ -195,11 +195,11 @@ function get_states(name){
       } else if(data.state == "new"){
         $('#'+allocation_id).html("<div class='progress-bar progress-bar-striped progress-bar-info active' role='progressbar' style='width: 30%' aria-valuenow='30' aria-valuemin='0' aria-valuemax='100'>New</div>");
       } else if(data.state == "configured"){
-        $('#'+allocation_id).html("<div class='progress-bar progress-bar-striped progress-bar-warning active' role='progressbar' style='width: 75%' aria-valuenow='75' aria-valuemin='0' aria-valuemax='100'>configured</div>");
+        $('#'+allocation_id).html("<div class='progress-bar progress-bar-striped progress-bar-warning active' role='progressbar' style='width: 75%' aria-valuenow='75' aria-valuemin='0' aria-valuemax='100'>Configured</div>");
       } else if(data.state == "failure"){
-        $('#'+allocation_id).html("<div class='progress-bar progress-bar-striped progress-bar-danger active' role='progressbar' style='width: 100%' aria-valuenow='100' aria-valuemin='0' aria-valuemax='100'>failure</div>");
+        $('#'+allocation_id).html("<div class='progress-bar progress-bar-striped progress-bar-danger active' role='progressbar' style='width: 100%' aria-valuenow='100' aria-valuemin='0' aria-valuemax='100'>Failure</div>");
       } else if(data.state == "validation_failed"){
-        $('#'+allocation_id).html("<div class='progress-bar progress-bar-striped progress-bar-danger active' role='progressbar' style='width: 75%' aria-valuenow='75' aria-valuemin='0' aria-valuemax='100'>configured</div>");
+        $('#'+allocation_id).html("<div class='progress-bar progress-bar-striped progress-bar-danger active' role='progressbar' style='width: 100%' aria-valuenow='100' aria-valuemin='0' aria-valuemax='100'>Validation Failure</div>");
       }
       // $('#test').html(data.state);
       // if($('#test').length != 0){
