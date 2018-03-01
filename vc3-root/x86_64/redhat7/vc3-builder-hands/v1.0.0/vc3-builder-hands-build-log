@@ -1,8 +1,0 @@
-1
-+ : Fri Jan 19 18:20:22 2018
-+ cd /srv/www/vc3-web-env/vc3-root/builds/vc3-builder-hands.YEIHXQ
-+ : Fri Jan 19 18:20:22 2018
-+ echo 'hello builder'
-hello builder
-+ : Fri Jan 19 18:20:22 2018
-+ exit 0
