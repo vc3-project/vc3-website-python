@@ -43,39 +43,23 @@
 
                       <div id="portal-diagram" class="tab-pane fade in active">
                         <div class="row">
-
-                          <!-- <h2 class="title">
-                            <small>Steps to Launch Virtual Cluster</small>
-                          </h2> -->
-
-                          <div id="accordion" role="tablist" aria-multiselectable="true">
-
-                            <div class="card panel panel-info resource-profile" style="margin: 1em;">
-                              <div class="card-header panel-title" role="tab" id="headingTwo" style="margin: 1em;">
-                                <h5 class="mb-0">
-                                  <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                                    Virtual Cluster Workflow <i class="fa fa-info-circle" aria-hidden="true"></i>
-                                  </a>
-                                </h5>
-                              </div>
-                              <div id="collapseTwo" class="collapse" role="tabpanel" aria-labelledby="headingTwo">
-                                <div class="card-block panel-body" style="font-size: 16px">
-                                  <ol>
-                                    <li>Register resource allocations.</li>
-                                    <li>Add allocations to projects.</li>
-                                    <li>Define a cluster template, or use one from the public library</li>
-                                    <li>Create desired software environment for the workers.</li>
-                                    <li>Launch virtual cluster.</li>
-                                  </ol>
-                                  For more information, please visit our <a href="https://vc3-project.github.io/vc3-mkdocs/" target="_blank">documentation guide</a>
-                                  <img id="vc3diagram-portal" src="{{url_for('static', filename='img/vc3_portal_diagram_numbered.png')}}">
-                                </div>
-                              </div>
-                            </div>
-
-                          </div><!-- /.accordion-->
+                          <div class="card-block panel-body" style="font-size: 16px">
+                            <h2 class="title">
+                              <small>Steps to Launch Virtual Cluster</small>
+                            </h2>
+                            <ol>
+                              <li>Register resource allocations.</li>
+                              <li>Add allocations to projects.</li>
+                              <li>Define a cluster template, or use one from the public library</li>
+                              <li>Create desired software environment for the workers.</li>
+                              <li>Launch virtual cluster.</li>
+                              <br>
+                              For more information, please visit our <a href="https://vc3-project.github.io/vc3-mkdocs/" target="_blank">documentation guide</a>
+                            </ol>
+                            <img id="vc3diagram-portal" src="{{url_for('static', filename='img/vc3_portal_diagram_num.png')}}">
+                          </div>
                         </div><!-- /.row -->
-                      </div>
+                      </div><!-- #portal-diagram-->
 
                       <div id="internal-diagram" class="tab-pane fade in">
                         <h2 class="title">

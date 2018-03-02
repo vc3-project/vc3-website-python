@@ -32,7 +32,7 @@ def allocation_validated(f):
             if (session['name'] == allocation.owner and
                     allocation.state == "ready"):
                 return f(*args, **kwargs)
-        flash('Please validate an allocation first.', 'warning')
+        flash('You must have a validated allocation to create a project.', 'warning')
         return redirect(url_for('list_allocations', next=request.url))
     return decorated_function
 

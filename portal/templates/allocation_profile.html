@@ -24,7 +24,7 @@
             {% if session['name'] == owner %}
             <div class="row" style="padding-left:15px">
               <div class="btn-group" role="group" aria-label="Basic example">
-                <a href="{{url_for('edit_allocation', name=name)}}" class="btn btn-primary btn-xs">Update Allocation</a>
+                <a href="{{url_for('edit_allocation', name=name)}}" class="btn btn-create btn-xs">Update Allocation</a>
                 <a href="{{url_for('delete_allocation', name=name)}}" class="btn btn-danger btn-xs">Delete Allocation</a>
               </div>
             </div>
@@ -89,10 +89,10 @@
                       <textarea id="pubtoken" readonly disabled font-size="16">{{ pubtoken }}</textarea>
                       <!-- <button onclick="copyToClipboard('#pubtoken')" class="btn btn-primary btn-sm">Copy to Clipboard</button> -->
                       <div class="span10">
-                        <button class="btn btn-primary btn-sm" onclick="copyToClipboard('#pubtoken')">Copy to Clipboard</button>
+                        <button class="btn btn-create btn-sm" onclick="copyToClipboard('#pubtoken')">Copy to Clipboard</button>
                       </div>
                       <div class="span4">
-                        <div class="alert alert-warning fade">
+                        <div class="alert alert-success fade">
                           <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                             <span aria-hidden="true" style="color:black">&times;</span>
                           </button>

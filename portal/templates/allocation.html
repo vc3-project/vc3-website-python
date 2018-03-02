@@ -31,62 +31,73 @@
   						<div class="card-block">
 
                 <div class="row">
-                  <div id="accordion" role="tablist" aria-multiselectable="true">
-
-                    <div class="card panel panel-info resource-profile" style="margin: 1em;">
-                      <div class="card-header panel-title" role="tab" id="headingTwo" style="margin: 1em;">
-                        <h5 class="mb-0">
-                          <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                            Allocation States <i class="fa fa-info-circle" aria-hidden="true"></i>
-                          </a>
-                        </h5>
+                  <div class="card-block panel-body" style="font-size: 16px">
+                    <div style="display:inline-block;width:100%;overflow-y:auto;">
+                      <div class="timeline-heading">
+                        <h4 class="timeline-title">
+                          Allocation State Diagram
+                        </h4>
                       </div>
-                      <div id="collapseTwo" class="collapse" role="tabpanel" aria-labelledby="headingTwo">
-                        <div class="card-block panel-body" style="font-size: 16px">
-                          <div style="display:inline-block;width:100%;overflow-y:auto;">
-                  					<ul class="timeline timeline-horizontal">
-                  						<li class="timeline-item">
-                  							<div class="timeline-badge info"><i class="glyphicon glyphicon-share"></i></div>
-                  							<div class="timeline-panel">
-                  								<div class="timeline-heading">
-                  									<h5 class="timeline-title">New</h5>
-                  									<!-- <p><small class="text-muted"><i class="glyphicon glyphicon-time"></i> 11 hours ago via Twitter</small></p> -->
-                  								</div>
-                  								<div class="timeline-body">
-                  									<p>Login credentials are being generated for the allocation.</p>
-                  								</div>
-                  							</div>
-                  						</li>
-                  						<li class="timeline-item">
-                  							<div class="timeline-badge warning"><i class="glyphicon glyphicon-hourglass"></i></div>
-                  							<div class="timeline-panel">
-                  								<div class="timeline-heading">
-                  									<h5 class="timeline-title">Configured</h5>
-                  								</div>
-                  								<div class="timeline-body">
-                  									<p>The allocation is waiting to be validated according to the instructions in the allocation profile page.</p>
-                  								</div>
-                  							</div>
-                  						</li>
-                  						<li class="timeline-item">
-                  							<div class="timeline-badge success"><i class="glyphicon glyphicon-check"></i></div>
-                  							<div class="timeline-panel">
-                  								<div class="timeline-heading">
-                  									<h5 class="timeline-title">Ready</h5>
-                  								</div>
-                  								<div class="timeline-body">
-                  									<p>The allocation is ready to be used.</p>
-                  								</div>
-                  							</div>
-                  						</li>
-                  					</ul>
-                				  </div>
+                  		<ul class="timeline timeline-horizontal">
+                  			<li class="timeline-item">
+                  				<div class="timeline-badge info"><i class="glyphicon glyphicon-share"></i></div>
+                  				<div class="timeline-panel">
+                  					<div class="timeline-heading">
+                  						<h5 class="timeline-title">New</h5>
+                  					</div>
+                  					<div class="timeline-body">
+                  						<p>Login credentials are being generated for the allocation.</p>
+                  					</div>
+                  				</div>
+                  			</li>
+                  			<li class="timeline-item">
+                  				<div class="timeline-badge warning"><i class="glyphicon glyphicon-hourglass"></i></div>
+                  				<div class="timeline-panel">
+                  					<div class="timeline-heading">
+                  						<h5 class="timeline-title">Configured</h5>
+                  					</div>
+                  					<div class="timeline-body">
+                  						<p>Please go to your allocation page, and follow the instructions to copy the public ssh key to the corresponding resource. Afterwards, click the 'validate allocation' button.</p>
+                  					</div>
+                  				</div>
+                  			</li>
+                        <li class="timeline-item">
+                  				<div class="timeline-badge danger"><i class="glyphicon glyphicon-hourglass"></i></div>
+                  				<div class="timeline-panel">
+                  					<div class="timeline-heading">
+                  						<h5 class="timeline-title">Validation Failure</h5>
+                  					</div>
+                  					<div class="timeline-body">
+                  						<p>The allocation needs to be validated. Please follow the instructions in your allocation page. Copy the public SSH key to the corresponding resource, to try and validate again.</p>
+                  					</div>
+                  				</div>
+                  			</li>
+                  			<li class="timeline-item">
+                  				<div class="timeline-badge success"><i class="glyphicon glyphicon-check"></i></div>
+                  				<div class="timeline-panel">
+                  					<div class="timeline-heading">
+                  						<h5 class="timeline-title">Ready</h5>
+                  					</div>
+                  					<div class="timeline-body">
+                  						<p>The allocation SSH public key is available within your allocation's detailed profile. Please Copy/Paste the SSH key to your account in the resource.</p>
+                  					</div>
+                  				</div>
+                  			</li>
+                        <li class="timeline-item">
+                  				<div class="timeline-badge danger"><i class="glyphicon glyphicon-remove-circle"></i></div>
+                  				<div class="timeline-panel">
+                  					<div class="timeline-heading">
+                  						<h5 class="timeline-title">Failure</h5>
+                  					</div>
+                  					<div class="timeline-body">
+                  						<p>There was an error while processing the allocation.</p>
+                  					</div>
+                  				</div>
+                  			</li>
+                  		</ul>
+                	  </div>
 
-                        </div>
-                      </div>
-                    </div>
-
-                  </div><!-- /.accordion-->
+                  </div>
           			</div>
 
   							<div class="panel panel-primary filterable">
@@ -116,8 +127,9 @@
 
                               {% set allocationname = allocation.name.replace(".", "-") %}
       										<td>
-                          <br>
+                            <br>
                             <div class="progress" id="{{allocationname}}"></div>
+                            <div id="validation-button"></div>
                           </td>
 
     											<td>
@@ -196,10 +208,12 @@ function get_states(name){
         $('#'+allocation_id).html("<div class='progress-bar progress-bar-striped progress-bar-info active' role='progressbar' style='width: 30%' aria-valuenow='30' aria-valuemin='0' aria-valuemax='100'>New</div>");
       } else if(data.state == "configured"){
         $('#'+allocation_id).html("<div class='progress-bar progress-bar-striped progress-bar-warning active' role='progressbar' style='width: 75%' aria-valuenow='75' aria-valuemin='0' aria-valuemax='100'>Configured</div>");
+        $('#validation-button').html("<a href='allocation/"+name+"' class='btn btn-create btn-xs pull-right' style='color:white'>Validate</a>");
       } else if(data.state == "failure"){
         $('#'+allocation_id).html("<div class='progress-bar progress-bar-striped progress-bar-danger active' role='progressbar' style='width: 100%' aria-valuenow='100' aria-valuemin='0' aria-valuemax='100'>Failure</div>");
       } else if(data.state == "validation_failed"){
         $('#'+allocation_id).html("<div class='progress-bar progress-bar-striped progress-bar-danger active' role='progressbar' style='width: 100%' aria-valuenow='100' aria-valuemin='0' aria-valuemax='100'>Validation Failure</div>");
+        $('#validation-button').html("<a href='allocation/"+name+"' class='btn btn-create btn-xs pull-right' style='color:white'>Validate</a>");
       }
       // $('#test').html(data.state);
       // if($('#test').length != 0){

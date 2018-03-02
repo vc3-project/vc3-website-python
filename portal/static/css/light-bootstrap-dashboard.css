@@ -2639,8 +2639,8 @@ ALLOCATION LIST PAGE
 }
 
 #vc3diagram-portal {
-  width: 80%;
-  height: 80%;
+  max-width: 65%;
+  /* height: 50%; */
 }
 
 #portal-diagram #accordion {
