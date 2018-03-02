@@ -2,6 +2,9 @@ from flask import redirect, request, session, url_for, flash
 from threading import Lock
 from ConfigParser import SafeConfigParser
 
+import os
+import errno
+
 import globus_sdk
 
 from vc3client import client
@@ -136,3 +139,78 @@ def project_in_vc(name):
             return True
         else:
             return False
+
+
+def allocation_script_for_resource(allocation_name, output_path):
+    """
+    Writes to output_path a script that a user has to execute at a resource.
+    The script copies the public ssh key that vc3 would use to communicate with
+    the resource.
+
+    :param allocation_name: name of the allocation on the resource
+    :param output_path: name of the file to write the script.
+
+    :return: None, raises exception on errors (OSError if file cannot be created, vc3infoservice.core.InfoEntityMissingException if allocation does not exists.)
+    """
+
+    vc3_client = get_vc3_client()
+    allocation = vc3_client.getAllocation(allocation_name)
+    pubkey    = vc3_client.decode(allocation.pubtoken)
+    dir_name   = os.path.dirname(output_path)
+
+    try:
+        os.makedirs(dir_name, 0755)
+    except OSError as e:
+        if e.errno == errno.EEXIST:
+            pass
+        else:
+            raise
+
+    with open(output_path, 'w+b') as fh:
+        script = """#! /bin/sh
+
+PUBKEY="{}"
+AUTHFILE=~/.ssh/authorized_keys
+
+if [ ! -d ~/.ssh ]
+then
+    /bin/echo -n "Creating ~/.ssh directory... "
+    if mkdir -m 0700 -p ~/.ssh
+    then
+        echo "done"
+    else
+        echo "error"
+        exit 1
+    fi
+fi
+
+if [ ! -f $AUTHFILE ]
+then
+    /bin/echo -n "Creating $AUTHFILE file... "
+    if (umask 177; touch $AUTHFILE)
+    then
+        echo "done"
+    else
+        echo "error"
+        exit 1
+    fi
+fi
+
+/bin/echo -n "Copying public key to $AUTHFILE file... "
+
+if /bin/grep -q "$PUBKEY" $AUTHFILE
+then
+    echo "key already in file."
+elif /bin/echo "$PUBKEY" >> $AUTHFILE
+then
+    echo "done"
+else
+    echo "error"
+    exit 1
+fi
+
+exit 0
+
+""".format(pubkey)
+        fh.write(script)
+
