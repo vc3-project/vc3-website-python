@@ -85,7 +85,6 @@
                         <font color="orange">Current State: <i class="fa fa-spinner fa-spin" style="color:orange"></i> Generating SSH key </font>
                       </div>
                       {% else %}
-                      <p>To allow the VC3 system to access this resource on your behalf, paste this SSH public key into your <kbd>~/.ssh/authorized_keys</kbd> file on the remote resource</p>
                       <textarea id="pubtoken" readonly disabled font-size="16">{{ pubtoken }}</textarea>
                       <!-- <button onclick="copyToClipboard('#pubtoken')" class="btn btn-primary btn-sm">Copy to Clipboard</button> -->
                       <div class="span10">
@@ -123,6 +122,7 @@
                       </div>
                       <div id="collapseOne" class="collapse" role="tabpanel" aria-labelledby="headingOne">
                         <div class="card-block panel-body disabled" style="font-size: 16px">
+                            To allow the VC3 system to access this resource on your behalf, you need to copy the new allocation ssh public on the remote resource. To do this:</p>
                           <ol>
                             <li>In a terminal, type:
                               <div>
@@ -132,24 +132,18 @@
                             <li>
                               Enter your password for <kbd>{{accesshost}}</kbd> for access
                             </li>
-                            <li>
-                              Create your SSH directory by entering: <kbd>mkdir -p ~/.ssh; chmod 700 ~/.ssh</kbd>
-                            </li>
-                            <li>
-                              Next you will need to add the Allocation SSH key to
-                              your authorized keys on the remote resource. You may click the
-                              'Copy to Clipboard' button once the
-                              key has been generated and paste it into the
-                              following line:
+                            <li> Next you will need to add the allocation ssh public key to
+                              your authorized keys on the remote resource.
+                            {% if pubtoken == "None" %}
+                              Instructions will appear here when the key is
+                              ready.
+                            {% else %}
+                              Please copy and paste the following line into
+                              your ssh session:
                               <div>
-                                <kbd>echo 'ALLOCATION-SSH-KEY-HERE' >> ~/.ssh/authorized_keys<kbd>
+                              <kbd>(umask 077 && mkdir -p ~/.ssh && echo '{{pubtoken}}' >> ~/.ssh/authorized_keys) </kbd>
                               </div>
-                            </li>
-                            <li>
-                              Finally, type:
-                              <div>
-                                <kbd>chmod 600 ~/.ssh/authorized_keys<kbd>
-                              </div>
+                            {% endif %}
                             </li>
                             <li>
                               You will only need to do this once per allocation.
