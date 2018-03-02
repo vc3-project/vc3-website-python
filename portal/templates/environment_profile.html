@@ -23,7 +23,7 @@
             {% if session['name'] == owner %}
             <div class="row" style="padding-left:15px">
               <div class="btn-group" role="group" aria-label="Basic example">
-                <a href="#" class="btn btn-primary btn-secondary btn-xs">Update Environment</a>
+                <!-- <a href="#" class="btn btn-create btn-secondary btn-xs">Update Environment</a> -->
                 <a href="{{url_for('delete_environment', name=name)}}" data-toggle="confirmation" class="btn btn-danger btn-secondary btn-xs">Delete Environment</a>
               </div>
             </div>
@@ -52,7 +52,9 @@
                     <h3 class="panel-title"><strong>Package List</strong></h3>
                   </div>
                   <div class="panel-body disabled">
-                    {{packagelist}}
+                    {% for package in packagelist%}
+                      <ul><li>{{package}}</li></ul>
+                    {% endfor %}
                   </div>
                 </div>
 
