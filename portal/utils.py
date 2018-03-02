@@ -175,7 +175,7 @@ AUTHFILE=~/.ssh/authorized_keys
 if [ ! -d ~/.ssh ]
 then
     /bin/echo -n "Creating ~/.ssh directory... "
-    if mkdir -p ~/.ssh
+    if mkdir -m 0700 -p ~/.ssh
     then
         echo "done"
     else
