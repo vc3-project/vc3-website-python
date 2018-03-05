@@ -1,5 +1,6 @@
 
 import flask
+import base64
 from portal.utils import get_vc3_client
 
 from portal import app
@@ -58,6 +59,9 @@ def allocation(name):
                              'state': x.state,
                              'owner': x.owner,
                              'displayname': x.displayname,
-                             'description': x.description}
+                             'description': x.description,
+                             'pubtoken': x.pubtoken}
+            if x.pubtoken:
+                sanitized_obj['pubtoken'] = base64.b64decode(x.pubtoken).rstrip('\n')
             return flask.jsonify(sanitized_obj)
     return flask.jsonify(result), 404

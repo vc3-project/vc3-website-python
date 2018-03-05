@@ -988,7 +988,7 @@ def create_allocation():
 
         flash('Your allocation has been added.', 'success')
 
-        return redirect(url_for('list_allocations'))
+        return redirect(url_for('view_allocation', name=name))
 
 
 @app.route('/allocation/<name>', methods=['GET', 'POST'])
@@ -1058,6 +1058,20 @@ def view_allocation(name):
                                        owner=owner, accountname=accountname,
                                        resource=resource, allocations=allocations,
                                        resources=resources)
+
+
+@app.route('/allocation/<name>/validate', methods=['GET', 'POST'])
+@authenticated
+def validate_allocation(name):
+    vc3_client = get_vc3_client()
+
+    allocation = vc3_client.getAllocation(allocationname=name)
+    if allocation.name == name:
+        allocation.state = "validate"
+
+    vc3_client.storeAllocation(allocation)
+    flash('Allocation successfully validated', 'success')
+    return redirect(url_for('view_allocation', name=name))
 
 
 @app.route('/allocation/edit/<name>', methods=['GET', 'POST'])
@@ -1387,7 +1401,7 @@ def view_request(name):
 
                 vc3_client.terminateRequest(requestname=requestname)
 
-                flash('Your Virtual Cluster has successfully begun termination.',
+                flash('Your Virtual Cluster has begun terminating.',
                       'success')
                 return redirect(url_for('list_requests'))
         flash('Could not find specified Virtual Cluster', 'warning')
