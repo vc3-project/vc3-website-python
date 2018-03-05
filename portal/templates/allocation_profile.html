@@ -209,18 +209,19 @@ function get_states(name){
       var allocation_id = name.replace(".", "-")
       if(data.state == "new"){
         $('#'+allocation_id).html("<div class='progress-bar progress-bar-striped progress-bar-info active' role='progressbar' style='width: 30%' aria-valuenow='30' aria-valuemin='0' aria-valuemax='100'>New</div>");
+        $('#validation-button').html();
       } else if(data.state == "configured"){
         $('#'+allocation_id).html("<div class='progress-bar progress-bar-striped progress-bar-warning active' role='progressbar' style='width: 75%' aria-valuenow='75' aria-valuemin='0' aria-valuemax='100'>Configured</div>");
         $('#validation-button').html("<a href='{{url_for('validate_allocation', name=name)}}' class='btn btn-create btn-xs' title='Validate Allocation'>Validate</a>");
       } else if(data.state == "failure"){
         $('#'+allocation_id).html("<div class='progress-bar progress-bar-striped progress-bar-danger active' role='progressbar' style='width: 100%' aria-valuenow='100' aria-valuemin='0' aria-valuemax='100'>Failure</div>");
+        $('#validation-button').html();
       } else if(data.state == "validation_failed"){
         $('#'+allocation_id).html("<div class='progress-bar progress-bar-striped progress-bar-danger active' role='progressbar' style='width: 100%' aria-valuenow='100' aria-valuemin='0' aria-valuemax='100'>Validation Failure</div>");
         $('#validation-button').html("<a href='{{url_for('validate_allocation', name=name)}}' class='btn btn-create btn-xs' title='Validate Allocation'>Validate</a>");
-      } else if(data.state == "validate"){
-        $('#'+allocation_id).html("<div class='progress-bar progress-bar-striped progress-bar-success active' role='progressbar' style='width: 100%' aria-valuenow='100' aria-valuemin='0' aria-valuemax='100'>Validated</div>");
       } else if(data.state == "ready"){
         $('#'+allocation_id).html("<div class='progress-bar progress-bar-striped progress-bar-success active' role='progressbar' style='width: 100%' aria-valuenow='100' aria-valuemin='0' aria-valuemax='100'>Validated</div>");
+        $('#validation-button').html();
       }
       // $('#test').html(data.state);
       // if($('#test').length != 0){

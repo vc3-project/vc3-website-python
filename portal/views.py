@@ -1067,10 +1067,10 @@ def validate_allocation(name):
 
     allocation = vc3_client.getAllocation(allocationname=name)
     if allocation.name == name:
-        allocation.state = "validate"
+        allocation.action = "validate"
 
     vc3_client.storeAllocation(allocation)
-    flash('Allocation successfully validated', 'success')
+    flash('Allocation is validating', 'success')
     return redirect(url_for('view_allocation', name=name))
 
 
