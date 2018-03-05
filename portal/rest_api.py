@@ -60,6 +60,7 @@ def allocation(name):
                              'owner': x.owner,
                              'displayname': x.displayname,
                              'description': x.description,
+                             'statereason': x.state_reason,
                              'pubtoken': x.pubtoken}
             if x.pubtoken:
                 sanitized_obj['pubtoken'] = base64.b64decode(x.pubtoken).rstrip('\n')
