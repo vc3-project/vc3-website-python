@@ -208,7 +208,11 @@ function get_states(name){
     dataType: 'json',
     success: function(data){
       var allocation_id = name.replace(".", "-")
-      if(data.state == "new"){
+      if(data.action == "validate"){
+        $('#'+allocation_id).html("<div class='progress-bar progress-bar-striped progress-bar-warning active' role='progressbar' style='width: 75%' aria-valuenow='75' aria-valuemin='0' aria-valuemax='100'>Validating...</div>");
+        $('#validation-button').html();
+        $('#validation-msg').html(data.statereason);
+      else if(data.state == "new"){
         $('#'+allocation_id).html("<div class='progress-bar progress-bar-striped progress-bar-info active' role='progressbar' style='width: 30%' aria-valuenow='30' aria-valuemin='0' aria-valuemax='100'>New</div>");
         $('#validation-button').html();
         $('#validation-msg').html(data.statereason);
