@@ -1070,7 +1070,7 @@ def validate_allocation(name):
         allocation.action = "validate"
 
     vc3_client.storeAllocation(allocation)
-    flash('Allocation is validating', 'success')
+    flash('Allocation is validating', 'warning')
     return redirect(url_for('view_allocation', name=name))
 
 
@@ -1100,7 +1100,7 @@ def edit_allocation(name):
                                    pubtoken=pubtoken, description=description,
                                    displayname=displayname)
         app.logger.error("Could not find allocation when editing: {0}".format(name))
-        raise LookupError('alliocation')
+        raise LookupError('allocation')
 
     elif request.method == 'POST':
         allocation = vc3_client.getAllocation(allocationname=name)
