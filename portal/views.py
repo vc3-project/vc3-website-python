@@ -1070,7 +1070,7 @@ def validate_allocation(name):
         allocation.action = "validate"
 
     vc3_client.storeAllocation(allocation)
-    flash('Allocation is validating', 'warning')
+    # flash('Allocation is validating', 'warning')
     return redirect(url_for('view_allocation', name=name))
 
 

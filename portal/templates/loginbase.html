@@ -57,44 +57,44 @@
           <img src="https://image.ibb.co/e59s3v/logosmall.png" alt="" title="" width="100px" height="100px" /></img>
         </a> -->
       </div>
-      <ul class="nav">
-				<li>
+      <ul class="nav" id="side-nav">
+				<li class="side-nav-list">
           <a href="{{url_for('list_resources')}}">
             <i class="fa fa-database" aria-hidden="true"></i>
             <p class="tour-step tour-step-four">Resources</p>
           </a>
         </li>
-        <li>
+        <li class="side-nav-list">
           <a href="{{url_for('list_allocations')}}">
             <i class="fa fa-cube" aria-hidden="true"></i>
             <p class="tour-step tour-step-five">Allocations</p>
           </a>
         </li>
-        <li>
+        <li class="side-nav-list">
           <a href="{{url_for('list_projects')}}" methods="GET">
             <i class="fa fa-folder-open-o" aria-hidden="true"></i>
             <p class="tour-step tour-step-seven">Projects</p>
           </a>
         </li>
-				<li>
+				<li class="side-nav-list">
           <a href="{{url_for('list_clusters')}}">
             <i class="fa fa-cog" aria-hidden="true"></i>
             <p>Cluster Templates</p>
           </a>
         </li>
-				<li>
+				<li class="side-nav-list">
           <a href="{{url_for('list_environments')}}">
             <i class="fa fa-hdd-o" aria-hidden="true"></i>
             <p>Environments</p>
           </a>
         </li>
-				<li>
+				<li class="side-nav-list">
           <a href="{{url_for('list_requests')}}">
             <i class="" aria-hidden="true"><img src="{{url_for('static', filename='img/favicon.ico')}}" style="width:100%;"></i>
             <p>Virtual Clusters</p>
           </a>
         </li>
-				<li>
+				<li class="side-nav-list">
           <a href="{{url_for('dashboard')}}">
             <i class="fa fa-dashboard" aria-hidden="true"></i>
             <p>Monitoring</p>
@@ -111,7 +111,7 @@
 			                                       'c456b77c-d274-11e5-b82c-23a245a48997',
 			                                       'c444a294-d274-11e5-b7f1-e3782ed16687',
 																						 'aebe29b8-d274-11e5-ba4b-ffec0df955f2'] %}
-				<li>
+				<li class="side-nav-list">
           <a href="{{url_for('admin')}}">
 						<i class="fa fa-user-secret" aria-hidden="true"></i>
             <p>Admin</p>
@@ -177,6 +177,23 @@
 
     <!-- Light Bootstrap Table Core javascript and methods for Demo purpose -->
 	<script type="text/javascript" src="{{url_for('static', filename='js/custom.js')}}"></script>
+	<script>
+
+	// Get the container element
+	var sideNavContainer = document.getElementById("side-nav");
+
+	// Get all buttons with class="btn" inside the container
+	var sideNavLists = sideNavContainer.getElementsByClassName("side-nav-list");
+
+	// Loop through the buttons and add the active class to the current/clicked button
+	for (var i = 0; i < sideNavLists.length; i++) {
+	  sideNavLists[i].addEventListener("click", function() {
+	    var current = document.getElementsByClassName("active");
+	    current[0].className = current[0].className.replace(" active", "");
+	    this.className += " active";
+	  });
+	}
+	</script>
 
 
 </html>

@@ -2813,7 +2813,7 @@ footer a:hover {
 }
 .timeline-horizontal .timeline-item {
   display: table-cell;
-  height: 235px;
+  height: 285px;
   /* width: 20%; */
   min-width: 320px;
   float: none !important;
