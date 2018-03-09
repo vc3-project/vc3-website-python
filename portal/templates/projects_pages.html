@@ -35,7 +35,7 @@
             <div class="card">
   						<div class="card-block">
 
-                <ul class="nav nav-tabs">
+                <ul class="nav nav-tabs" id="projectTab">
                   <li class="active"><a data-toggle="tab" href="#project-members">Members</a></li>
                   <li><a data-toggle="tab" href="#project-allocations">Allocations</a></li>
                 </ul>
@@ -227,5 +227,18 @@
 
   </div>
 </div>
+
+<script>
+$(function() {
+    $('a[data-toggle="tab"]').on('click', function(e) {
+        window.localStorage.setItem('activeTab', $(e.target).attr('href'));
+    });
+    var activeTab = window.localStorage.getItem('activeTab');
+    if (activeTab) {
+        $('#projectTab a[href="' + activeTab + '"]').tab('show');
+        window.localStorage.removeItem("activeTab");
+    }
+});
+</script>
 
 {%endblock%}

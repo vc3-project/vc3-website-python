@@ -109,7 +109,7 @@
                       <h3 class="panel-title"><strong>Step 3: Add Allocation SSH Public Key to Resource</strong></h3>
                     </div>
                     <div class="panel-body pubtoken">
-                      <p>Click `Copy to Clipboard` and paste the following line into your SSH session. You will only need to do this once per allocation.</p>
+                      <p>Once the SSH key is generated below, click `Copy to Clipboard` and paste the following line into your SSH session. You will only need to do this once per allocation.</p>
                       <textarea id="pubtoken" readonly disabled font-size="16"></textarea>
                       <!-- <button onclick="copyToClipboard('#pubtoken')" class="btn btn-primary btn-sm">Copy to Clipboard</button> -->
                       <div class="span10">
@@ -225,11 +225,11 @@ function get_states(name){
       var allocation_id = name.replace(".", "-")
       if(data.action == "validate"){
         $('#'+allocation_id).html("<div class='progress-bar progress-bar-striped progress-bar-warning active' role='progressbar' style='width: 75%' aria-valuenow='75' aria-valuemin='0' aria-valuemax='100'>Validating...</div>");
-        $('#validation-button').html();
+        $('#validation-button').html("");
         $('#validation-msg').html(data.statereason);
       } else if(data.state == "new"){
         $('#'+allocation_id).html("<div class='progress-bar progress-bar-striped progress-bar-info active' role='progressbar' style='width: 30%' aria-valuenow='30' aria-valuemin='0' aria-valuemax='100'>New</div>");
-        $('#validation-button').html();
+        $('#validation-button').html("");
         $('#validation-msg').html(data.statereason);
       } else if(data.state == "configured"){
         $('#'+allocation_id).html("<div class='progress-bar progress-bar-striped progress-bar-warning active' role='progressbar' style='width: 75%' aria-valuenow='75' aria-valuemin='0' aria-valuemax='100'>Configured</div>");
@@ -237,7 +237,7 @@ function get_states(name){
         $('#validation-msg').html(data.statereason+" Please follow the instructions below and click the Validate button.");
       } else if(data.state == "failure"){
         $('#'+allocation_id).html("<div class='progress-bar progress-bar-striped progress-bar-danger active' role='progressbar' style='width: 100%' aria-valuenow='100' aria-valuemin='0' aria-valuemax='100'>Failure</div>");
-        $('#validation-button').html();
+        $('#validation-button').html("");
         $('#validation-msg').html(data.statereason);
       } else if(data.state == "validation_failure"){
         $('#'+allocation_id).html("<div class='progress-bar progress-bar-striped progress-bar-danger active' role='progressbar' style='width: 75%' aria-valuenow='75' aria-valuemin='0' aria-valuemax='100'>Validation Failure</div>");
@@ -245,7 +245,7 @@ function get_states(name){
         $('#validation-msg').html("Please make sure to copy your allocation SSH key onto your resource, and try again.");
       } else if(data.state == "ready"){
         $('#'+allocation_id).html("<div class='progress-bar progress-bar-striped progress-bar-success active' role='progressbar' style='width: 100%' aria-valuenow='100' aria-valuemin='0' aria-valuemax='100'>Validated</div>");
-        $('#validation-button').html();
+        $('#validation-button').html("");
         $('#validation-msg').html(data.statereason);
       }
       // $('#test').html(data.state);

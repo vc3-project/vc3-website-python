@@ -167,10 +167,9 @@
                           {% set request_statusinfo_idle = requestname + '_statusinfo_idle' %}
                           {% set request_statusinfo_error = requestname + '_statusinfo_error' %}
                           <td>
-                            <div id="{{requestname}}" class="row"></div>
-                            <div class="row">
-                              <small id="{{request_statereason}}"></small>
-                            </div>
+                            <br>
+                            <div id="{{requestname}}" class="progress"></div>
+                            <small id="{{request_statereason}}"></small>
                           </td>
 
                           <td>
@@ -257,7 +256,7 @@ window.onload = function (){
   };
   setInterval( function(){
     get_states(name, $(this));
-  }.bind(this), 3000);
+  }.bind(this), 4000);
 }
 
 function get_states(name){
@@ -269,12 +268,31 @@ function get_states(name){
       var request_id = name.replace(".", "-");
       var request_statereason = (request_id+'_statereason');
       if(data.action == "terminate" && data.state != "terminating" && data.state != "cleanup" && data.state != "terminated"){
-        $('#'+request_id).html("Terminating");
+        $('#'+request_id).html("<div class='progress-bar progress-bar-striped progress-bar-danger active' role='progressbar' style='width: 33%' aria-valuenow='33' aria-valuemin='0' aria-valuemax='100'>Terminating</div>");
         $('#'+request_statereason).html("Scheduling virtual cluster termination");
-      } else {
-        $('#'+request_id).html((((data.state).charAt(0)).toUpperCase())+((data.state).slice(1)));
+      } else if(data.state == "new"){
+        $('#'+request_id).html("<div class='progress-bar progress-bar-striped progress-bar-info active' role='progressbar' style='width: 25%' aria-valuenow='25' aria-valuemin='0' aria-valuemax='100'>New</div>");
+        $('#'+request_statereason).html(data.statereason);
+      } else if(data.state == "initializing"){
+        $('#'+request_id).html("<div class='progress-bar progress-bar-striped progress-bar-warning active' role='progressbar' style='width: 50%' aria-valuenow='50' aria-valuemin='0' aria-valuemax='100'>Initializing</div>");
+        $('#'+request_statereason).html(data.statereason);
+      } else if(data.state == "pending"){
+        $('#'+request_id).html("<div class='progress-bar progress-bar-striped progress-bar-warning active' role='progressbar' style='width: 75%' aria-valuenow='75' aria-valuemin='0' aria-valuemax='100'>Pending</div>");
+        $('#'+request_statereason).html(data.statereason);
+      } else if(data.state == "running"){
+        $('#'+request_id).html("<div class='progress-bar progress-bar-striped progress-bar-success active' role='progressbar' style='width: 100%' aria-valuenow='100' aria-valuemin='0' aria-valuemax='100'>Running</div>");
+        $('#'+request_statereason).html(data.statereason);
+      } else if(data.state == "cleanup"){
+        $('#'+request_id).html("<div class='progress-bar progress-bar-striped progress-bar-danger active' role='progressbar' style='width: 66%' aria-valuenow='66' aria-valuemin='0' aria-valuemax='100'>Clean Up</div>");
+        $('#'+request_statereason).html(data.statereason);
+      } else if(data.state == "terminated"){
+        $('#'+request_id).html("<div class='progress-bar progress-bar-striped progress-bar-danger active' role='progressbar' style='width: 100%' aria-valuenow='100' aria-valuemin='0' aria-valuemax='100'>Terminated</div>");
         $('#'+request_statereason).html(data.statereason);
       }
+      //  else if {
+      //   $('#'+request_id).html((((data.state).charAt(0)).toUpperCase())+((data.state).slice(1)));
+      //   $('#'+request_statereason).html(data.statereason);
+      // }
 
       var request_statusinfo = (request_id+'_statusinfo');
       var request_statusinfo_requested = (request_id+'_statusinfo_requested');
