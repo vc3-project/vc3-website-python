@@ -950,7 +950,7 @@ def list_allocations():
 @app.route('/allocation/new', methods=['GET', 'POST'])
 @authenticated
 def create_allocation():
-    """ New Alloation Creation Form """
+    """ New Allocation Creation Form """
     vc3_client = get_vc3_client()
     if request.method == 'GET':
         resources = vc3_client.listResources()
@@ -970,10 +970,13 @@ def create_allocation():
         description_input = request.form['description']
         description = str(description_input)
         # url = request.form['url']
+        allocation_resource = vc3_client.getResource(resourcename=resource)
+        pubtokendocurl = allocation_resource.pubtokendocurl
+        
         try:
             newallocation = vc3_client.defineAllocation(
                 name=name, owner=owner, resource=resource, accountname=accountname,
-                displayname=displayname, description=description)
+                displayname=displayname, description=description, pubtokendocurl=pubtokendocurl)
             vc3_client.storeAllocation(newallocation)
         except:
             displayname = request.form['displayname']
