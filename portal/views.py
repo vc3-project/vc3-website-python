@@ -972,11 +972,12 @@ def create_allocation():
         # url = request.form['url']
         allocation_resource = vc3_client.getResource(resourcename=resource)
         pubtokendocurl = allocation_resource.pubtokendocurl
-        
+
         try:
             newallocation = vc3_client.defineAllocation(
-                name=name, owner=owner, resource=resource, accountname=accountname,
-                displayname=displayname, description=description, pubtokendocurl=pubtokendocurl)
+                name=name, owner=owner, resource=resource,
+                accountname=accountname, displayname=displayname,
+                description=description, pubtokendocurl=pubtokendocurl)
             vc3_client.storeAllocation(newallocation)
         except:
             displayname = request.form['displayname']
@@ -1019,6 +1020,8 @@ def view_allocation(name):
         description = allocation.description
         accountname = allocation.accountname
         encodedpubtoken = allocation.pubtoken
+        pubtokendocurl = allocation.pubtokendocurl
+
         if encodedpubtoken is None:
             pubtoken = 'None'
         else:
@@ -1026,14 +1029,24 @@ def view_allocation(name):
         allocation_resource = vc3_client.getResource(resourcename=resource)
         accesshost = allocation_resource.accesshost
 
-        return render_template('allocation_profile.html',
-                               name=allocationname,
-                               owner=owner, resource=resource,
-                               accountname=accountname,
-                               pubtoken=pubtoken, state=state,
-                               resources=resources, displayname=displayname,
-                               description=description, users=users,
-                               accesshost=accesshost)
+        if pubtokendocurl is None:
+            return render_template('allocation_profile.html',
+                                   name=allocationname,
+                                   owner=owner, resource=resource,
+                                   accountname=accountname,
+                                   pubtoken=pubtoken, state=state,
+                                   resources=resources, displayname=displayname,
+                                   description=description, users=users,
+                                   accesshost=accesshost)
+        else:
+            return render_template('allocation_profile_specific.html',
+                                   name=allocationname,
+                                   owner=owner, resource=resource,
+                                   accountname=accountname,
+                                   pubtoken=pubtoken, state=state,
+                                   resources=resources, displayname=displayname,
+                                   description=description, users=users,
+                                   accesshost=accesshost, pubtokendocurl=pubtokendocurl)
         app.logger.error("Could not find allocation when viewing: {0}".format(name))
         raise LookupError('allocation')
 
