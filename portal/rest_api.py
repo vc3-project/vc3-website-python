@@ -19,6 +19,7 @@ def virtual_cluster(name):
     result = {}
     vc3_client = get_vc3_client()
     virtual_clusters = vc3_client.listRequests()
+    nodesets = vc3_client.listNodesets()
     for vc in virtual_clusters:
         if vc.name == name:
             sanitized_obj = {'name': vc.name,
@@ -29,13 +30,19 @@ def virtual_cluster(name):
                              'displayname': vc.displayname,
                              'description': vc.description,
                              'statereason': vc.state_reason,
-                             'action': vc.action}
+                             'action': vc.action,
+                             'headnode': vc.headnode}
             if vc.statusinfo is not None:
                 sanitized_obj['statusinfo_error'] = vc.statusinfo[vc.cluster]['error']
                 sanitized_obj['statusinfo_idle'] = vc.statusinfo[vc.cluster]['idle']
                 sanitized_obj['statusinfo_node_number'] = vc.statusinfo[vc.cluster]['node_number']
                 sanitized_obj['statusinfo_requested'] = vc.statusinfo[vc.cluster]['requested']
                 sanitized_obj['statusinfo_running'] = vc.statusinfo[vc.cluster]['running']
+            for nodeset in nodesets:
+                if nodeset.name == vc.headnode:
+                    sanitized_obj['headnode_app_host'] = nodeset.app_host
+                    sanitized_obj['headnode_state'] = nodeset.state
+                    sanitized_obj['headnode_state_reason'] = nodeset.state_reason
 
             return flask.jsonify(sanitized_obj)
     return flask.jsonify(result), 404
