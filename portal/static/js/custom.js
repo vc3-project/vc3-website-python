@@ -434,7 +434,7 @@ function copyToClipboard(element) {
   $temp.remove();
 }
 
-$(".btn").on("click", function() {
+$(".btn-copy").on("click", function() {
     $(".alert").removeClass("in").show();
 	$(".alert").delay(200).addClass("in").fadeOut(8000);
 });
@@ -666,3 +666,8 @@ $(function() {
     $(this).addClass("active");
   });
 });
+
+// $(".nav a").on("click", function(){
+//    $(".nav").find(".active").removeClass("active");
+//    $(this).parent().addClass("active");
+// });

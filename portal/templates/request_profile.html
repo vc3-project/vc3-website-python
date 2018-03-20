@@ -14,7 +14,7 @@
             <ol class="breadcrumb">
               <li class="breadcrumb-item"><a href="{{url_for('portal')}}">Portal Home</a></li>
               <li class="breadcrumb-item"><a href="{{url_for('list_requests')}}">Virtual Clusters</a></li>
-              <li class="breadcrum-item active">{{name}}</li>
+              <li class="breadcrumb-item active">{{name}}</li>
             </ol>
           	<h4 class="title row">Virtual Cluster:
               {{name}}
@@ -23,7 +23,7 @@
 
             <div class="row">
               <div class="pull-left col-sm-12 col-md-6">
-                <a href="{{url_for('edit_request', name=name)}}" class="btn btn-primary btn-xs">Update Description</a>
+                <a href="{{url_for('edit_request', name=name)}}" class="btn btn-create btn-xs">Update Description</a>
   						</div>
               <div class="delete_entity col-sm-12 col-md-6">
               {% if profile.name == owner %}

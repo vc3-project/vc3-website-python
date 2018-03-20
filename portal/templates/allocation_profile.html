@@ -16,7 +16,7 @@
             <ol class="breadcrumb">
               <li class="breadcrumb-item"><a href="{{url_for('portal')}}">Portal Home</a></li>
               <li class="breadcrumb-item"><a href="{{url_for('list_allocations')}}">Allocations</a></li>
-              <li class="breadcrum-item active">{{displayname}}</li>
+              <li class="breadcrumb-item active">{{displayname}}</li>
             </ol>
           	<h4 class="title">Allocation: {{displayname}}</h4>
             <div class="row" style="padding-left:15px">
@@ -34,7 +34,7 @@
             <br>
             <div class="progress" id="{{allocationname}}"></div>
             <p id="validation-msg"></p>
-            <div id="validation-button"></div>
+            <!-- <div id="validation-button"></div> -->
 						<!-- <hr /> -->
           </div>
 
@@ -113,7 +113,7 @@
                       <textarea id="pubtoken" readonly disabled font-size="16"></textarea>
                       <!-- <button onclick="copyToClipboard('#pubtoken')" class="btn btn-primary btn-sm">Copy to Clipboard</button> -->
                       <div class="span10">
-                        <button class="btn btn-create btn-sm" onclick="copyToClipboard('#pubtoken')">Copy to Clipboard</button>
+                        <button class="btn btn-create btn-sm btn-copy" onclick="copyToClipboard('#pubtoken')">Copy to Clipboard</button>
                       </div>
                       <div class="span4">
                         <div class="alert alert-success fade">
@@ -130,8 +130,10 @@
                     <div class="panel-heading">
                       <h3 class="panel-title"><strong>Step 4: Validate Allocation</strong></h3>
                     </div>
-                    <div class="panel-body disabled">
-                      If your allocation state is still in the "configured" state, please click the "Validate" button below the status bar.
+                    <div class="panel-body">
+                      If your allocation state is still in the "configured" state, please click the "Validate" button below:
+                      <br>
+                      <div id="validation-button"></div>
                     </div>
                   </div>
 
