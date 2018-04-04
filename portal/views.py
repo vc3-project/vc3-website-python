@@ -264,11 +264,13 @@ def show_profile_page():
                   ' username', 'warning')
             return render_template('profile.html')
         except:
-            flash('There was an unexpected error. Please try again later', ' error', 'warning')
+            flash('There was an unexpected error. Please try again later',
+                  ' error', 'warning')
             return render_template('profile.html')
 
         if not vc3_client.validate_ssh_pub_key(sshpubstring):
-            flash('Your public ssh-key is not valid. Please try again.', ' ssh-key', 'warning')
+            flash('Your public ssh-key is not valid. Please try again.',
+                  ' ssh-key', 'warning')
             return render_template('profile.html')
 
         flash('Thank you. Your profile has been successfully updated. '
@@ -642,7 +644,8 @@ def remove_member_from_project(name):
     # Remove allocation if user has allocation in project
     for allocation in project.allocations:
         if allocation in user_allocations:
-            vc3_client.removeAllocationFromProject(allocation=allocation, projectname=name)
+            vc3_client.removeAllocationFromProject(
+                allocation=allocation, projectname=name)
 
     # Finally remove user from project entirely
     vc3_client.removeUserFromProject(user=user, project=project.name)
@@ -695,7 +698,8 @@ def remove_allocation_from_project(name):
     vc3_client = get_vc3_client()
     remove_allocation = request.form['remove_allocation']
 
-    vc3_client.removeAllocationFromProject(allocation=remove_allocation, projectname=name)
+    vc3_client.removeAllocationFromProject(
+        allocation=remove_allocation, projectname=name)
     flash('You have successfully removed allocation from this project', 'success')
 
     return redirect(url_for('view_project', name=name))
@@ -865,7 +869,8 @@ def edit_cluster(name):
                                        state=state, projects=projects,
                                        frameworks=frameworks, node_number=node_number,
                                        description=description, framework=framework)
-        app.logger.error("Could not find cluster when editing: {0}".format(name))
+        app.logger.error(
+            "Could not find cluster when editing: {0}".format(name))
         raise LookupError('cluster')
 
     elif request.method == 'POST':
@@ -972,11 +977,12 @@ def create_allocation():
         # url = request.form['url']
         allocation_resource = vc3_client.getResource(resourcename=resource)
         pubtokendocurl = allocation_resource.pubtokendocurl
-        
+
         try:
             newallocation = vc3_client.defineAllocation(
-                name=name, owner=owner, resource=resource, accountname=accountname,
-                displayname=displayname, description=description, pubtokendocurl=pubtokendocurl)
+                name=name, owner=owner, resource=resource,
+                accountname=accountname, displayname=displayname,
+                description=description, pubtokendocurl=pubtokendocurl)
             vc3_client.storeAllocation(newallocation)
         except:
             displayname = request.form['displayname']
@@ -984,7 +990,8 @@ def create_allocation():
             description_input = request.form['description']
             description = str(description_input)
             resources = vc3_client.listResources()
-            flash('You have already registered an allocation on that resource.', 'warning')
+            flash(
+                'You have already registered an allocation on that resource.', 'warning')
             return render_template('allocation_new.html', displayname=displayname,
                                    accountname=accountname, description=description,
                                    resources=resources)
@@ -1019,6 +1026,8 @@ def view_allocation(name):
         description = allocation.description
         accountname = allocation.accountname
         encodedpubtoken = allocation.pubtoken
+        pubtokendocurl = allocation.pubtokendocurl
+
         if encodedpubtoken is None:
             pubtoken = 'None'
         else:
@@ -1026,15 +1035,26 @@ def view_allocation(name):
         allocation_resource = vc3_client.getResource(resourcename=resource)
         accesshost = allocation_resource.accesshost
 
-        return render_template('allocation_profile.html',
-                               name=allocationname,
-                               owner=owner, resource=resource,
-                               accountname=accountname,
-                               pubtoken=pubtoken, state=state,
-                               resources=resources, displayname=displayname,
-                               description=description, users=users,
-                               accesshost=accesshost)
-        app.logger.error("Could not find allocation when viewing: {0}".format(name))
+        if pubtokendocurl is None:
+            return render_template('allocation_profile.html',
+                                   name=allocationname,
+                                   owner=owner, resource=resource,
+                                   accountname=accountname,
+                                   pubtoken=pubtoken, state=state,
+                                   resources=resources, displayname=displayname,
+                                   description=description, users=users,
+                                   accesshost=accesshost)
+        else:
+            return render_template('allocation_profile_specific.html',
+                                   name=allocationname,
+                                   owner=owner, resource=resource,
+                                   accountname=accountname,
+                                   pubtoken=pubtoken, state=state,
+                                   resources=resources, displayname=displayname,
+                                   description=description, users=users,
+                                   accesshost=accesshost, pubtokendocurl=pubtokendocurl)
+        app.logger.error(
+            "Could not find allocation when viewing: {0}".format(name))
         raise LookupError('allocation')
 
     elif request.method == 'POST':
@@ -1102,7 +1122,8 @@ def edit_allocation(name):
                                    resource=resource, accountname=accountname,
                                    pubtoken=pubtoken, description=description,
                                    displayname=displayname)
-        app.logger.error("Could not find allocation when editing: {0}".format(name))
+        app.logger.error(
+            "Could not find allocation when editing: {0}".format(name))
         raise LookupError('allocation')
 
     elif request.method == 'POST':
@@ -1243,10 +1264,29 @@ def list_requests():
                            requestlist=request_list)
 
 
-@app.route('/request/new', methods=['GET', 'POST'])
+@app.route('/request/newproject', methods=['GET', 'POST'])
 @authenticated
-@project_exists
-def create_request():
+def create_request_project():
+    vc3_client = get_vc3_client()
+
+    if request.method == 'GET':
+        list_projects = vc3_client.listProjects()
+        projects = []
+
+        for project in list_projects:
+            if session['name'] in project.members:
+                projects.append(project)
+
+        return render_template('request_new_init.html', projects=projects)
+
+    elif request.method == 'POST':
+        project = request.form['project']
+        return redirect(url_for('create_request', project=project))
+
+
+@app.route('/request/new/<project>', methods=['GET', 'POST'])
+@authenticated
+def create_request(project):
     """
     Form to launch new Virtual Cluster
 
@@ -1254,24 +1294,20 @@ def create_request():
     """
     vc3_client = get_vc3_client()
     if request.method == 'GET':
-        list_allocations = vc3_client.listAllocations()
         clusters = vc3_client.listClusters()
-        list_projects = vc3_client.listProjects()
+        projects = vc3_client.listProjects()
         environments = vc3_client.listEnvironments()
-        projects = []
+        get_project = vc3_client.getProject(projectname=project)
+        project = get_project.name
         allocations = []
 
-        for project in list_projects:
-            if session['name'] in project.members:
-                projects.append(project)
-        for project in projects:
-            for allocation in list_allocations:
-                if allocation.name in project.allocations:
-                    allocations.append(allocation)
+        for allocation in get_project.allocations:
+            allocations.append(vc3_client.getAllocation(
+                allocationname=allocation))
 
-        return render_template('request_new.html', allocations=allocations,
-                               clusters=clusters, projects=projects,
-                               environments=environments)
+        return render_template('request_new.html',
+                               clusters=clusters, allocations=allocations,
+                               environments=environments, project=project)
 
     elif request.method == 'POST':
         # Define and store new Virtual Clusters within infoservice
@@ -1285,7 +1321,7 @@ def create_request():
         owner = session['name']
         expiration = None
         cluster = request.form['cluster']
-        project = request.form['project']
+        project = project
         policy = "static-balanced"
         translatename = "".join(inputname.split())
         vc3requestname = translatename.lower()
@@ -1312,7 +1348,7 @@ def create_request():
             owner = session['name']
             cluster = request.form['cluster']
             environment = request.form['environment']
-            project = request.form['project']
+            project = project
             policy = "static-balanced"
             description_input = request.form['description']
             description = str(description_input)
@@ -1326,7 +1362,8 @@ def create_request():
             return render_template('request_new.html', cluster=cluster,
                                    clusters=clusters, environments=environments,
                                    project=project, projects=projects,
-                                   description=description, environment=environment, allocations=allocations)
+                                   description=description, environment=environment,
+                                   allocations=allocations)
 
         flash('Your Virtual Cluster has been successfully launched.', 'success')
 
@@ -1408,7 +1445,8 @@ def view_request(name):
                       'success')
                 return redirect(url_for('list_requests'))
         flash('Could not find specified Virtual Cluster', 'warning')
-        app.logger.error("Could not find VC when terminating: {0}".format(name))
+        app.logger.error(
+            "Could not find VC when terminating: {0}".format(name))
         return redirect(url_for('list_requests'))
 
 
@@ -1456,6 +1494,20 @@ def delete_virtualcluster(name):
     flash('Virtual Cluster has been successfully deleted', 'success')
 
     return redirect(url_for('list_requests'))
+
+
+@app.route('/request/<name>/relaunch', methods=['GET', 'POST'])
+@authenticated
+def relaunch_virtualcluster(name):
+    vc3_client = get_vc3_client()
+
+    virtual_cluster = vc3_client.getRequest(requestname=name)
+    if virtual_cluster.name == name:
+        virtual_cluster.action = "relaunch"
+
+    vc3_client.storeRequest(virtual_cluster)
+    # flash('Allocation is validating', 'warning')
+    return redirect(url_for('view_request', name=name))
 
 
 @app.route('/monitoring', methods=['GET'])

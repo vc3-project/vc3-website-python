@@ -30,7 +30,7 @@
               <div class="row">
         				<div class="col-md-6">
 
-                  <form role="form" action="{{url_for('create_request')}}" method="POST">
+                  <form role="form" action="{{url_for('create_request', project=project)}}" method="POST">
 
                     <div class="form-group">
                       <label for="name">Virtual Cluster Name <span id="asterik">*</span></label>
@@ -72,15 +72,7 @@
                       </select>
                     </div>
 
-                    <div class="form-group">
-                      <label for="project">Project <span id="asterik">*</span></label>
-                      <select class="form-control border-input selectpicker" name="project" tabindex="4" id="project" data-live-search="true" data-actions-box="true" data-header="Select Project" required>
-                        <option value="" selected disabled>Select Project</option>
-                        {% for project in projects %}
-                        <option data-tokens="{{project.name}}" value="{{project.name}}">{{ project.name }}</option>
-                        {% endfor %}
-                      </select>
-                    </div>
+
 
                     <div class="form-group">
                       <label for="allocation">Allocations<span id="asterik">*</span></label>
@@ -126,33 +118,5 @@
   </div><!-- ./container-fluid -->
 </div><!-- ./content -->
 
-<script>
-
-var listOfProjects = {{projects|safe}};
-var listOfAllocations = {{allocations|safe}};
-
-
-$(document).ready(function () {
-    // When a project is selected, set the projectName to selected project
-    $("#project").change(function () {
-      var projectName = $(this).val();
-      // Iterate through listOfProjects to select project object based on name match
-      for(i=0; i < listOfProjects.length; i++){
-        if(listOfProjects[i].name == projectName){
-          // Once projectName matches project Object, set projectAllocations list
-          var projectAllocations = listOfProjects[i].allocations;
-          // Iterate through projectAllocations and generate select options
-          // for each allocation within selected project
-          for(i=0; i < projectAllocations.length; i++){
-            var allocationName = projectAllocations[i];
-            $("#allocation").html("<option>"allocationName"</option>");
-          }
-        }
-      }
-
-    }
-  }
-
-</script>
 
 {%endblock%}

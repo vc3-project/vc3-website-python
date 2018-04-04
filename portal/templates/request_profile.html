@@ -14,7 +14,7 @@
             <ol class="breadcrumb">
               <li class="breadcrumb-item"><a href="{{url_for('portal')}}">Portal Home</a></li>
               <li class="breadcrumb-item"><a href="{{url_for('list_requests')}}">Virtual Clusters</a></li>
-              <li class="breadcrum-item active">{{name}}</li>
+              <li class="breadcrumb-item active">{{name}}</li>
             </ol>
           	<h4 class="title row">Virtual Cluster:
               {{name}}
@@ -23,7 +23,7 @@
 
             <div class="row">
               <div class="pull-left col-sm-12 col-md-6">
-                <a href="{{url_for('edit_request', name=name)}}" class="btn btn-primary btn-xs">Update Description</a>
+                <a href="{{url_for('edit_request', name=name)}}" class="btn btn-create btn-xs">Update Description</a>
   						</div>
               <div class="delete_entity col-sm-12 col-md-6">
               {% if profile.name == owner %}
@@ -43,47 +43,14 @@
 
             <div class="row">
               <label for="statusbar" style="margin-top:20px;">State of Virtual Cluster</label>
-              <div name="statusbar" id="statusbar">
-                {% if state == "new" %}
-                <h4><span class="label label-info" style="color:white">New Cluster Starting up...</span></h4>
-                <h5>State Reason: {{vc3_request.state_reason}}</h5>
-                {% elif state == "initializing" or state == "pending"%}
-                <div class="progress" style="height:25px;">
-                  <div class="progress-bar progress-bar-warning progress-bar-striped active" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width:100%">
-                    <strong style="font-size:20px">Initializing...</strong>
-                  </div>
-                </div>
-                <h5>State Reason: {{vc3_request.state_reason}}</h5>
-                {% elif state == "running" %}
-                <div class="progress" style="height:25px;">
-                  <div class="progress-bar progress-bar-success progress-bar-striped active" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width:100%">
-                    <strong style="font-size:20px">Running</strong>
-                  </div>
-                </div>
-                <h5>State Reason: {{vc3_request.state_reason}}</h5>
-                {% elif state == "terminating" %}
-                <div class="progress" style="height:25px;">
-                  <div class="progress-bar progress-bar-danger progress-bar-striped active" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width:100%">
-                    <strong style="font-size:20px">Terminating...</strong>
-                  </div>
-                </div>
-                <h5>State Reason: {{vc3_request.state_reason}}</h5>
-                {% elif state == "cleanup" %}
-                <div class="progress" style="height:25px;">
-                  <div class="progress-bar progress-bar-danger progress-bar-striped active" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width:100%">
-                    <strong style="font-size:20px">Cleaning Up</strong>
-                  </div>
-                </div>
-                <h5>State Reason: {{vc3_request.state_reason}}</h5>
-                {% elif state == "terminated" %}
-                <h4>
-                  <span class="label label-danger" style="color:white">
-                    Successfully Terminated
-                  </span>
-                  <h5>{{vc3_request.state_reason}}</h5>
-                </h4>
-                {% endif %}
-              </div>
+
+              {% set requestname = name.replace(".", "-") %}
+              {% set request_statereason = requestname + '_statereason' %}
+              <br>
+              <div class="progress" id="{{requestname}}"></div>
+              <p id="{{request_statereason}}"></p>
+              <p id="relaunch-btn"></p>
+
             </div>
 						<hr />
           </div><!-- ./header -->
@@ -265,5 +232,100 @@
 	</div><!-- /.container-fluid -->
 
 </div><!-- /.content -->
+
+
+<script>
+
+
+window.onload = function (){
+  var name = {{name|tojson}};
+  get_states(name);
+  setInterval(function(){
+    get_states(name, $(this));
+  }.bind(this), 4000);
+}
+
+function get_states(name){
+  $.ajax({
+    url: "/rest/virtual_cluster/" + name,
+    type: "get",
+    dataType: 'json',
+    success: function(data){
+      var request_id = name.replace(".", "-");
+      var request_statereason = (request_id+'_statereason');
+      if(data.action == "terminate" && data.state != "terminating" && data.state != "cleanup" && data.state != "terminated"){
+        $('#'+request_id).html("<div class='progress-bar progress-bar-striped progress-bar-danger active' role='progressbar' style='width: 33%' aria-valuenow='33' aria-valuemin='0' aria-valuemax='100'>Terminating</div>");
+        $('#'+request_statereason).html("Scheduling virtual cluster termination");
+      } else if(data.state == "new"){
+        $('#'+request_id).html("<div class='progress-bar progress-bar-striped progress-bar-info active' role='progressbar' style='width: 25%' aria-valuenow='25' aria-valuemin='0' aria-valuemax='100'>New</div>");
+        $('#'+request_statereason).html(data.statereason);
+      } else if(data.state == "initializing"){
+        $('#'+request_id).html("<div class='progress-bar progress-bar-striped progress-bar-warning active' role='progressbar' style='width: 50%' aria-valuenow='50' aria-valuemin='0' aria-valuemax='100'>Initializing</div>");
+        $('#'+request_statereason).html(data.statereason);
+      } else if(data.state == "pending"){
+        $('#'+request_id).html("<div class='progress-bar progress-bar-striped progress-bar-warning active' role='progressbar' style='width: 75%' aria-valuenow='75' aria-valuemin='0' aria-valuemax='100'>Pending</div>");
+        $('#'+request_statereason).html(data.statereason);
+      } else if(data.state == "running"){
+        $('#'+request_id).html("<div class='progress-bar progress-bar-striped progress-bar-success active' role='progressbar' style='width: 100%' aria-valuenow='100' aria-valuemin='0' aria-valuemax='100'>Running</div>");
+        $('#'+request_statereason).html(data.statereason);
+      } else if(data.state == "cleanup"){
+        $('#'+request_id).html("<div class='progress-bar progress-bar-striped progress-bar-danger active' role='progressbar' style='width: 66%' aria-valuenow='66' aria-valuemin='0' aria-valuemax='100'>Clean Up</div>");
+        $('#'+request_statereason).html(data.statereason);
+      } else if(data.state == "terminated"){
+        $('#'+request_id).html("<div class='progress-bar progress-bar-striped progress-bar-danger active' role='progressbar' style='width: 100%' aria-valuenow='100' aria-valuemin='0' aria-valuemax='100'>Terminated</div>");
+        $('#'+request_statereason).html(data.statereason);
+        $('#relaunch-btn').html("<a href='{{url_for('relaunch_virtualcluster', name=name)}}' class='btn btn-create btn-xs' title='Relaunch Virtual Cluster'>Relaunch</a>");
+      } else if(data.action == "relaunch"){
+        $('#'+request_id).html("<div class='progress-bar progress-bar-striped progress-bar-info active' role='progressbar' style='width: 25%' aria-valuenow='25' aria-valuemin='0' aria-valuemax='100'>Relaunching</div>");
+        $('#'+request_statereason).html(data.statereason);
+      }
+      //  else if {
+      //   $('#'+request_id).html((((data.state).charAt(0)).toUpperCase())+((data.state).slice(1)));
+      //   $('#'+request_statereason).html(data.statereason);
+      // }
+
+      var request_statusinfo = (request_id+'_statusinfo');
+      var request_statusinfo_requested = (request_id+'_statusinfo_requested');
+      var request_statusinfo_running = (request_id+'_statusinfo_running');
+      var request_statusinfo_idle = (request_id+'_statusinfo_idle');
+      var request_statusinfo_error = (request_id+'_statusinfo_error');
+
+      if(data.statusinfo == null){
+        $('#'+request_statusinfo_requested).html("Pending");
+        $('#'+request_statusinfo_running).html("Pending");
+        $('#'+request_statusinfo_idle).html("Pending");
+        $('#'+request_statusinfo_error).html("Pending");
+      } else {
+        $('#'+request_statusinfo_requested).html(data.statusinfo_requested);
+        $('#'+request_statusinfo_running).html(data.statusinfo_running);
+        $('#'+request_statusinfo_idle).html(data.statusinfo_idle);
+        $('#'+request_statusinfo_error).html(data.statusinfo_error);
+      }
+      if($('#test').length != 0){
+        $('#test').css('color', 'red');
+      }
+
+      var request_headnode_app_host = (request_id + '_headnode_app_host');
+      if(data.headnode_state == 'running'){
+        $('#'+request_headnode_app_host).html("<a href='#' data-toggle='popover' title='To access your node via terminal' data-target-selector='#children-age' data-content='Type: ssh -i ~/.ssh/id_rsa {{session['name']}}@"+data.headnode_app_host+" data-placement='top'>"+data.headnode_app_host+"</a>");
+      } else if(data.headnode_state == ("terminated" || "failure")){
+        $('#'+request_headnode_app_host).html("N/A");
+      } else {
+        $('#'+request_headnode_app_host).html("IP not yet available");
+      }
+    },
+    error: function(xhr){
+      //Do Something to handle error
+    }
+  });
+}
+
+// $(document).ajaxComplete(function(){
+//   if($('#test').length != 0){
+//     $('#test').css('color', 'red');
+//   }
+// });
+
+</script>
 
 {%endblock%}

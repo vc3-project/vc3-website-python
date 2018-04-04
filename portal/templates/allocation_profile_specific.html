@@ -20,7 +20,7 @@
             </ol>
           	<h4 class="title">Allocation: {{displayname}}</h4>
             <div class="row" style="padding-left:15px">
-              <h5>Description: {{description}}</h5>
+              <h5>Description: {{description}} {{name}}</h5>
             </div>
             {% if session['name'] == owner %}
             <div class="row" style="padding-left:15px">
@@ -84,36 +84,14 @@
 
                   <div class="panel panel-info resource-profile" style="margin: 1em;">
                     <div class="panel-heading">
-                      <h3 class="panel-title"><strong>Step 1: Log Into Resource</strong></h3>
-                    </div>
-                    <div class="panel-body disabled">
-                      In a terminal, type:
-                        <div>
-                          <kbd>ssh {{accountname}}@{{accesshost}}</kbd>
-                        </div>
-                      </li>
-                    </div>
-                  </div>
-
-                  <div class="panel panel-info resource-profile" style="margin: 1em;">
-                    <div class="panel-heading">
-                      <h3 class="panel-title"><strong>Step 2: Access Resource</strong></h3>
-                    </div>
-                    <div class="panel-body disabled">
-                      Enter your password for <kbd>{{accesshost}}</kbd> for access
-                    </div>
-                  </div>
-
-                  <div class="panel panel-info resource-profile" style="margin: 1em;">
-                    <div class="panel-heading">
-                      <h3 class="panel-title"><strong>Step 3: Add Allocation SSH Public Key to Resource</strong></h3>
+                      <h3 class="panel-title"><strong>Step 1: Copy Allocation SSH Public Key</strong></h3>
                     </div>
                     <div class="panel-body pubtoken">
-                      <p>Once the SSH key is generated below, click `Copy to Clipboard` and paste the following line into your SSH session. You will only need to do this once per allocation.</p>
+                      <p>Once the SSH key is generated below, you may click `Copy to Clipboard` below in order to copy your Allocation SSH Public Key</p>
                       <textarea id="pubtoken" readonly disabled font-size="16"></textarea>
                       <!-- <button onclick="copyToClipboard('#pubtoken')" class="btn btn-primary btn-sm">Copy to Clipboard</button> -->
                       <div class="span10">
-                        <button class="btn btn-create btn-sm btn-copy" onclick="copyToClipboard('#pubtoken')">Copy to Clipboard</button>
+                        <button class="btn btn-create btn-sm" onclick="copyToClipboard('#pubtoken')">Copy to Clipboard</button>
                       </div>
                       <div class="span4">
                         <div class="alert alert-success fade">
@@ -128,7 +106,18 @@
 
                   <div class="panel panel-info resource-profile" style="margin: 1em;">
                     <div class="panel-heading">
-                      <h3 class="panel-title"><strong>Step 4: Validate Allocation</strong></h3>
+                      <h3 class="panel-title"><strong>Step 2: Store Public Key in Resource</strong></h3>
+                    </div>
+                    <div class="panel-body">
+                      Please use the following link in order to add your SSH Public Key to this resource:
+                      <br>
+                      <a href="{{pubtokendocurl}}" target="_blank">Resource Instructions</a>
+                    </div>
+                  </div>
+
+                  <div class="panel panel-info resource-profile" style="margin: 1em;">
+                    <div class="panel-heading">
+                      <h3 class="panel-title"><strong>Step 3: Validate Allocation</strong></h3>
                     </div>
                     <div class="panel-body">
                       If your allocation state is still in the "configured" state, please click the "Validate" button below:
@@ -210,7 +199,7 @@ function get_ssh(name){
     success: function(data){
       var allocation_id = name.replace(".", "-")
       if(data.pubtoken != null){
-         $('#pubtoken').html("(umask 077 && mkdir -p ~/.ssh && echo '"+data.pubtoken+"' >> ~/.ssh/authorized_keys)");
+         $('#pubtoken').html(data.pubtoken);
       } else {
         $('#pubtoken').html("Current State: Generating SSH key...");
       }
