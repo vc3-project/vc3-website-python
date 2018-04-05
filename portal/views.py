@@ -1603,11 +1603,12 @@ def view_environment(name):
         packagelist = environment.packagelist
         description = environment.description
         displayname = environment.displayname
+        required_os = environment.required_os
 
         return render_template('environment_profile.html', name=environment_name,
                                owner=owner, description=description,
                                users=users, displayname=displayname,
-                               packagelist=packagelist)
+                               packagelist=packagelist, required_os=required_os)
     raise LookupError('environment')
 
 

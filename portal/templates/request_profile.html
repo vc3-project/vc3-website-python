@@ -265,6 +265,9 @@ function get_states(name){
       } else if(data.state == "pending"){
         $('#'+request_id).html("<div class='progress-bar progress-bar-striped progress-bar-warning active' role='progressbar' style='width: 75%' aria-valuenow='75' aria-valuemin='0' aria-valuemax='100'>Pending</div>");
         $('#'+request_statereason).html(data.statereason);
+      } else if(data.state == "failure"){
+        $('#'+request_id).html("<div class='progress-bar progress-bar-striped progress-bar-danger active' role='progressbar' style='width: 100%' aria-valuenow='100' aria-valuemin='0' aria-valuemax='100'>Failure</div>");
+        $('#'+request_statereason).html(data.statereason);
       } else if(data.state == "running"){
         $('#'+request_id).html("<div class='progress-bar progress-bar-striped progress-bar-success active' role='progressbar' style='width: 100%' aria-valuenow='100' aria-valuemin='0' aria-valuemax='100'>Running</div>");
         $('#'+request_statereason).html(data.statereason);
