@@ -1537,11 +1537,13 @@ def create_environment():
     vc3_client = get_vc3_client()
     recipes = subprocess.check_output(["/usr/bin/vc3-builder", "--list"])
     recipe_list = recipes.split()
+    oss = subprocess.check_output(["/usr/bin/vc3-builder", "--list=os"])
+    os_list = oss.split()
 
     if request.method == 'GET':
         environments = vc3_client.listEnvironments()
         return render_template('environment_new.html',
-                               environments=environments, recipes=recipe_list)
+                               environments=environments, recipes=recipe_list, oss=os_list)
 
     elif request.method == 'POST':
         # Gathering and storing information from new allocation form
@@ -1557,11 +1559,12 @@ def create_environment():
         description_input = request.form['description']
         description = str(description_input)
         packagelist = request.form.getlist('packagelist')
+        required_os = request.form.get('required_os', None)
 
         try:
             new_environment = vc3_client.defineEnvironment(
                 name=name, owner=owner, packagelist=packagelist,
-                envmap=envmap, files=files,
+                envmap=envmap, files=files, required_os=required_os,
                 displayname=displayname, description=description)
             vc3_client.storeEnvironment(new_environment)
         except:
@@ -1571,7 +1574,7 @@ def create_environment():
             environments = vc3_client.listEnvironments()
             flash('You have already created an environment with that name.', 'warning')
             return render_template('environment_new.html', name=name,
-                                   packagelist=packagelist,
+                                   packagelist=packagelist, required_os=required_os,
                                    description=description, environments=environments)
 
         flash('Successfully created a new environment', 'success')
