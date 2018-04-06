@@ -1560,11 +1560,15 @@ def create_environment():
         description = str(description_input)
         packagelist = request.form.getlist('packagelist')
         required_os = request.form.get('required_os', None)
+        required_os_strict = None
+        if required_os is not None:
+            os, version = required_os.split(":")
+            required_os_strict = "{0}:{1}:{1}".format(os, version)
 
         try:
             new_environment = vc3_client.defineEnvironment(
                 name=name, owner=owner, packagelist=packagelist,
-                envmap=envmap, files=files, required_os=required_os,
+                envmap=envmap, files=files, required_os=required_os_strict,
                 displayname=displayname, description=description)
             vc3_client.storeEnvironment(new_environment)
         except:
