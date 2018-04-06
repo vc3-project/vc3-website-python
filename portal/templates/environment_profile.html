@@ -62,7 +62,11 @@
                     <h3 class="panel-title"><strong>Required OS</strong></h3>
                   </div>
                   <div class="panel-body disabled">
-                    {{required_os}}
+                    {% if required_os %}
+                      {{required_os}}
+                    {% else %}
+                    None specified
+                    {% endif %}
                   </div>
                 </div>
 

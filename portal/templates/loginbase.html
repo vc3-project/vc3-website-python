@@ -58,25 +58,25 @@
         </a> -->
       </div>
       <ul class="nav" id="side-nav">
-				<li class="side-nav-list">
+				<li class="side-nav-list" id="resource">
           <a href="{{url_for('list_resources')}}">
             <i class="fa fa-database" aria-hidden="true"></i>
             <p class="tour-step tour-step-four">Resources</p>
           </a>
         </li>
-        <li class="side-nav-list">
+        <li class="side-nav-list" id="allocation">
           <a href="{{url_for('list_allocations')}}">
             <i class="fa fa-cube" aria-hidden="true"></i>
             <p class="tour-step tour-step-five">Allocations</p>
           </a>
         </li>
-        <li class="side-nav-list">
+        <li class="side-nav-list" id="project">
           <a href="{{url_for('list_projects')}}" methods="GET">
             <i class="fa fa-folder-open-o" aria-hidden="true"></i>
             <p class="tour-step tour-step-seven">Projects</p>
           </a>
         </li>
-				<li class="side-nav-list">
+				<li class="side-nav-list" id="cluster">
           <a href="{{url_for('list_clusters')}}">
             <i class="fa fa-cog" aria-hidden="true"></i>
             <p>Cluster Templates</p>
@@ -88,13 +88,13 @@
             <p>Environments</p>
           </a>
         </li>
-				<li class="side-nav-list">
+				<li class="side-nav-list" id="request">
           <a href="{{url_for('list_requests')}}">
             <i class="" aria-hidden="true"><img src="{{url_for('static', filename='img/favicon.ico')}}" style="width:100%;"></i>
             <p>Virtual Clusters</p>
           </a>
         </li>
-				<li class="side-nav-list">
+				<li class="side-nav-list" id="monitoring">
           <a href="{{url_for('dashboard')}}">
             <i class="fa fa-dashboard" aria-hidden="true"></i>
             <p>Monitoring</p>
@@ -179,20 +179,11 @@
 	<script type="text/javascript" src="{{url_for('static', filename='js/custom.js')}}"></script>
 	<script>
 
-	// Get the container element
-	var sideNavContainer = document.getElementById("side-nav");
-
-	// Get all buttons with class="btn" inside the container
-	var sideNavLists = sideNavContainer.getElementsByClassName("side-nav-list");
-
-	// Loop through the buttons and add the active class to the current/clicked button
-	for (var i = 0; i < sideNavLists.length; i++) {
-	  sideNavLists[i].addEventListener("click", function() {
-	    var current = document.getElementsByClassName("side-nav-list active");
-	    current[0].className = current[0].className.replace("side-nav-list active", "");
-	    this.className += "side-nav-list active";
-	  });
-	}
+	$(document).ready(function() {
+	// get current URL path and assign 'active' class
+	var pathname = window.location.pathname;
+	$('.nav > li > a[href="'+pathname+'"]').parent().addClass('active');
+	})
 	</script>
 
 

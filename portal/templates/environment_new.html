@@ -47,7 +47,7 @@
                     </div>
 
                     <div class="form-group">
-                      <label for="packagelist">Package List <span id="asterik">*</span></label>
+                      <label for="packagelist">Package List</label>
                       <select class="form-control selectpicker"
                       multiple name="packagelist"
                       tabindex="2" id="form-resource-list"
@@ -64,9 +64,10 @@
                       <label for="required_os">Operating Systems List (Optional) <span id="asterik">*</span></label>
                       <select class="form-control selectpicker"
                       name="required_os"
-                      tabindex="3" id="form-oss-list"
+                      tabindex="3" id="form-resource-list"
                       data-live-search="true"
                       data-header="Select Operating System (None to use native OS)">
+                        <option value="" selected>Nothing selected</option>
                         {% for os in oss %}
                         <option data-tokens="{{os}}" value="{{os}}">{{ os }}</option>
                         {% endfor %}
