@@ -1523,7 +1523,7 @@ def list_environments():
     vc3_client = get_vc3_client()
     environments = vc3_client.listEnvironments()
     # Call list of build recipes from vc3-builder
-    recipes = subprocess.check_output(["vc3-builder", "--list"])
+    recipes = subprocess.check_output(["/usr/bin/vc3-builder", "--list"])
     recipe_list = recipes.split()
 
     return render_template('environments.html', recipes=recipe_list,
