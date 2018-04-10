@@ -67,7 +67,7 @@
                       tabindex="3" id="form-resource-list"
                       data-live-search="true"
                       data-header="Select Operating System (None to use native OS)">
-                        <option value="" selected>Nothing selected</option>
+                        <option value="" selected disabled>Select Environment</option>
                         {% for os in oss %}
                         <option data-tokens="{{os}}" value="{{os}}">{{ os }}</option>
                         {% endfor %}

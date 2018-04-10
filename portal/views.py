@@ -1244,13 +1244,20 @@ def list_requests():
     vc3_client = get_vc3_client()
     vc3_requests = vc3_client.listRequests()
     nodesets = vc3_client.listNodesets()
-    clusters = vc3_client.listClusters
+    clusters = vc3_client.listClusters()
     request_list = []
+    projects = []
 
     for vc3_request in vc3_requests:
+        vc_projectname = vc3_request.project
+        associated_project = vc3_client.getProject(projectname=vc_projectname)
+
         if vc3_request.owner == session['name']:
             request_list.append(str(vc3_request.name))
 
+        if session['name'] in associated_project.members:
+            request_list.append(str(vc3_request.name))
+            
         headnode = None
         if vc3_request.headnode:
             try:
@@ -1262,10 +1269,10 @@ def list_requests():
 
     return render_template('request.html', requests=vc3_requests,
                            nodesets=nodesets, clusters=clusters,
-                           requestlist=request_list)
+                           requestlist=request_list, projects=projects)
 
 
-@app.route('/request/newproject', methods=['GET', 'POST'])
+@app.route('/request/new', methods=['GET', 'POST'])
 @authenticated
 def create_request_project():
     vc3_client = get_vc3_client()
@@ -1324,8 +1331,10 @@ def create_request(project):
         cluster = request.form['cluster']
         project = project
         policy = "static-balanced"
+
         translatename = "".join(inputname.split())
-        vc3requestname = translatename.lower()
+        vc3requestname = owner + "." + translatename.lower()
+
         description_input = request.form['description']
         description = str(description_input)
 
@@ -1580,7 +1589,8 @@ def create_environment():
             flash('You have already created an environment with that name.', 'warning')
             return render_template('environment_new.html', name=name,
                                    packagelist=packagelist, required_os=required_os,
-                                   description=description, environments=environments)
+                                   description=description, environments=environments,
+                                   recipes=recipe_list, oss=os_list)
 
         flash('Successfully created a new environment', 'success')
 

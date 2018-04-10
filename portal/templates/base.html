@@ -92,7 +92,7 @@
             </li>
           </ul>
           <ul class="nav navbar-nav navbar-right">
-            {% if session['name'] %}
+            {% if session['name'] and session['first'] %}
             <li>
               <a href="{{url_for('portal')}}">{{session['first']}} {{session['last']}}</a>
             </li>
