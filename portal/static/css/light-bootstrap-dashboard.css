@@ -2608,6 +2608,7 @@ ALLOCATION LIST PAGE
 
 .progress-bar {
   line-height: 22px;
+  color: black;
 }
 
 .panel .pubtoken .span4 {

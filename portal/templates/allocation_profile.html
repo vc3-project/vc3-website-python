@@ -242,11 +242,11 @@ function get_states(name){
         $('#validation-button').html("");
         $('#validation-msg').html(data.statereason);
       } else if(data.state == "validation_failure"){
-        $('#'+allocation_id).html("<div class='progress-bar progress-bar-striped progress-bar-danger active' role='progressbar' style='width: 75%' aria-valuenow='75' aria-valuemin='0' aria-valuemax='100'>Validation Failure</div>");
+        $('#'+allocation_id).html("<div class='progress-bar progress-bar-danger' role='progressbar' style='width: 75%' aria-valuenow='75' aria-valuemin='0' aria-valuemax='100'>Validation Failure</div>");
         $('#validation-button').html("<a href='{{url_for('validate_allocation', name=name)}}' class='btn btn-create btn-xs' title='Validate Allocation'>Validate</a>");
         $('#validation-msg').html("Please make sure to copy your allocation SSH key onto your resource, and try again.");
       } else if(data.state == "ready"){
-        $('#'+allocation_id).html("<div class='progress-bar progress-bar-striped progress-bar-success active' role='progressbar' style='width: 100%' aria-valuenow='100' aria-valuemin='0' aria-valuemax='100'>Validated</div>");
+        $('#'+allocation_id).html("<div class='progress-bar progress-bar-success' role='progressbar' style='width: 100%' aria-valuenow='100' aria-valuemin='0' aria-valuemax='100'>Ready</div>");
         $('#validation-button').html("");
         $('#validation-msg').html(data.statereason);
       }

@@ -4,6 +4,8 @@ import sys
 import time
 import subprocess
 
+from datetime import datetime, timedelta
+
 from flask import (flash, redirect, render_template, request,
                    session, url_for)
 
@@ -1257,7 +1259,7 @@ def list_requests():
 
         if session['name'] in associated_project.members:
             request_list.append(str(vc3_request.name))
-            
+
         headnode = None
         if vc3_request.headnode:
             try:
@@ -1334,6 +1336,16 @@ def create_request(project):
 
         translatename = "".join(inputname.split())
         vc3requestname = owner + "." + translatename.lower()
+
+        d = int(request.form['days'])
+        h = int(request.form['hours'])
+        m = int(request.form['minutes'])
+
+        now = datetime.utcnow()
+        t_delta = timedelta(days=d, hours=h, minutes=m)
+        expiration = now + t_delta
+
+        expiration = expiration.replace(microsecond=0).isoformat()
 
         description_input = request.form['description']
         description = str(description_input)
