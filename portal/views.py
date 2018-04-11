@@ -1329,7 +1329,6 @@ def create_request(project):
 
         inputname = request.form['name']
         owner = session['name']
-        expiration = None
         cluster = request.form['cluster']
         project = project
         policy = "static-balanced"
@@ -1341,11 +1340,14 @@ def create_request(project):
         h = int(request.form['hours'])
         m = int(request.form['minutes'])
 
-        now = datetime.utcnow()
-        t_delta = timedelta(days=d, hours=h, minutes=m)
-        expiration = now + t_delta
+        if (d == 0 and h == 0 and m == 0):
+            expiration = None
+        else:
+            now = datetime.utcnow()
+            t_delta = timedelta(days=d, hours=h, minutes=m)
+            expiration = now + t_delta
 
-        expiration = expiration.replace(microsecond=0).isoformat()
+            expiration = expiration.replace(microsecond=0).isoformat()
 
         description_input = request.form['description']
         description = str(description_input)
