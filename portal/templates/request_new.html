@@ -86,36 +86,14 @@
 
                     <div class="form-group">
                       <label for="expiration">Expiration</label>
-                      <p>If not selected, expiration defaults to none, and your virtual cluster will never expire</p>
-                      <div class="form-inline">
-                        <div class="form-group">
-                          <label for="days">Days:</label>
-                          <input type="number" name="days" min="0" max="100"
-                          class="form-control border-input"
-                          tabindex="6"
-                          style="width:100%"
-                          value="0"
-                          autofocus>
-                        </div>
-                        <div class="form-group">
-                          <label for="hours">Hours:</label>
-                          <input type="number" name="hours" min="0" max="100"
-                          class="form-control border-input"
-                          tabindex="7"
-                          style="width:100%"
-                          value="0"
-                          autofocus>
-                        </div>
-                        <div class="form-group">
-                          <label for="minutes">Minutes:</label>
-                          <input type="number" name="minutes" min="0" max="100"
-                          class="form-control border-input"
-                          tabindex="8"
-                          style="width:100%"
-                          value="0"
-                          autofocus>
-                        </div>
-                      </div>
+                      <p>If not selected, expiration defaults to 1 hour</p>
+                        <label for="hours">Hours:</label>
+                        <input type="number" name="hours" min="1" max="1000"
+                        class="form-control border-input"
+                        tabindex="7"
+                        style="width:100%"
+                        value="1"
+                        autofocus>
                     </div>
 
 

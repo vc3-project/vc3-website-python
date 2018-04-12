@@ -1336,15 +1336,15 @@ def create_request(project):
         translatename = "".join(inputname.split())
         vc3requestname = owner + "." + translatename.lower()
 
-        d = int(request.form['days'])
+        # d = int(request.form['days'])
         h = int(request.form['hours'])
-        m = int(request.form['minutes'])
+        # m = int(request.form['minutes'])
 
-        if (d == 0 and h == 0 and m == 0):
+        if (h == 0):
             expiration = None
         else:
             now = datetime.utcnow()
-            t_delta = timedelta(days=d, hours=h, minutes=m)
+            t_delta = timedelta(hours=h)
             expiration = now + t_delta
 
             expiration = expiration.replace(microsecond=0).isoformat()
