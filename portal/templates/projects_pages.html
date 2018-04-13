@@ -85,6 +85,16 @@
                       				{% if user.name == member and user.name != project.owner %}
                       			<tr>
                       				<td>
+                      					<div>
+                                  {{user.email}}
+                                </div>
+                              </td>
+                      				<td>
+                                <div>
+                                  {{ user.organization }}
+                                </div>
+                              </td>
+                              <td>
                                 <form role="form" action="{{url_for('remove_member_from_project', name=name)}}" method="POST">
                         					<div>
                                     {{user.first}} {{user.last}}
@@ -96,16 +106,6 @@
                                 {% endif %}
                               </form>
                       				</td>
-                      				<td>
-                      					<div>
-                                  {{user.email}}
-                                </div>
-                              </td>
-                      				<td>
-                                <div>
-                                  {{ user.organization }}
-                                </div>
-                              </td>
                       			</tr>
                       				{% endif %}
                       			{% endfor %}
@@ -152,6 +152,7 @@
                       				<th><input type="text" class="form-control" placeholder="Name" disabled></th>
                       				<th><input type="text" class="form-control" placeholder="Owner" disabled></th>
                       				<th><input type="text" class="form-control" placeholder="Organization" disabled></th>
+                              <th></th>
                       			</tr>
                       		</thead>
                       		<tbody data-link="row" class="rowlink">
@@ -165,13 +166,6 @@
                       			<tr>
                       				<td>
                       					<div>{{allocation.displayname}}</div>
-                                {% if (session['name'] == allocation.owner) %}
-                                <form role="form" action="{{url_for('remove_allocation_from_project', name=name)}}" method="POST">
-                                  <div>
-                                    <button type="submit" name="remove_allocation" value="{{allocation.name}}" class="btn btn-danger btn-xs" data-submit="Removing Allocation...">Remove Allocation</button>
-                                  </div>
-                                </form>
-                                {% endif %}
                       				</td>
                       				<td>
                       					<div>
@@ -182,6 +176,15 @@
                                 <div>
                                   {{ user.organization }}
                                 </div>
+                              </td>
+                              <td>
+                                {% if (session['name'] == allocation.owner) %}
+                                <form role="form" action="{{url_for('remove_allocation_from_project', name=name)}}" method="POST">
+                                  <div>
+                                    <button type="submit" name="remove_allocation" value="{{allocation.name}}" class="btn btn-danger btn-xs" data-submit="Removing Allocation...">Remove Allocation</button>
+                                  </div>
+                                </form>
+                                {% endif %}
                               </td>
                       			</tr>
                       								{% endif %}
