@@ -296,7 +296,7 @@ function get_states(name){
         $('#'+request_id).html("<div class='progress-bar progress-bar-striped progress-bar-danger active' role='progressbar' style='width: 66%' aria-valuenow='66' aria-valuemin='0' aria-valuemax='100'>Clean Up</div>");
         $('#'+request_statereason).html(data.statereason);
       } else if(data.state == "terminated"){
-        $('#'+request_id).html("<div class='progress-bar progress-bar-striped progress-bar-danger' role='progressbar' style='width: 100%' aria-valuenow='100' aria-valuemin='0' aria-valuemax='100'>Terminated</div>");
+        $('#'+request_id).html("<div class='progress-bar progress-bar-danger' role='progressbar' style='width: 100%' aria-valuenow='100' aria-valuemin='0' aria-valuemax='100'>Terminated</div>");
         $('#'+request_statereason).html(data.statereason);
       } else if(data.action == "relaunch"){
         $('#'+request_id).html("<div class='progress-bar progress-bar-striped progress-bar-info active' role='progressbar' style='width: 25%' aria-valuenow='25' aria-valuemin='0' aria-valuemax='100'>Relaunching</div>");

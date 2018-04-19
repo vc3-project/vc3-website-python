@@ -999,7 +999,7 @@ def create_allocation():
                                    accountname=accountname, description=description,
                                    resources=resources)
 
-        flash('Your allocation has been added.', 'success')
+        flash('Your allocation has being registered.', 'success')
 
         return redirect(url_for('view_allocation', name=name))
 
@@ -1187,24 +1187,29 @@ def view_resource(name):
     :return: Directs to detailed profile view of said Resource
     """
     vc3_client = get_vc3_client()
-    resources = vc3_client.listResources()
+    # resources = vc3_client.listResources()
+    resource = vc3_client.getResource(resourcename=name)
 
-    for resource in resources:
-        if resource.name == name:
-            resourcename = resource.name
-            owner = resource.owner
-            accessflavor = resource.accessflavor
-            description = resource.description
-            displayname = resource.displayname
-            url = resource.url
-            docurl = resource.docurl
-            organization = resource.organization
+    resourcename = resource.name
+    owner = resource.owner
+    accessflavor = resource.accessflavor
+    description = resource.description
+    displayname = resource.displayname
+    url = resource.url
+    docurl = resource.docurl
+    organization = resource.organization
+    node = resource.node
 
-            return render_template('resource_profile.html', name=resourcename,
-                                   owner=owner, accessflavor=accessflavor,
-                                   resource=resource, description=description,
-                                   displayname=displayname, url=url,
-                                   docurl=docurl, organization=organization)
+    nodeset = vc3_client.getNodeset(nodesetname=node)
+    cores = nodeset.cores
+    memory_mb = nodeset.memory_mb
+    storage_mb = nodeset.storage_mb
+
+    return render_template('resource_profile.html', name=resourcename,
+                            owner=owner, accessflavor=accessflavor,
+                            resource=resource, description=description,
+                            displayname=displayname, url=url,
+                            docurl=docurl, organization=organization, nodeset=nodeset)
     app.logger.error("Could not find Resource when viewing: {0}".format(name))
     raise LookupError('resource')
 
@@ -1284,7 +1289,7 @@ def create_request_project():
         projects = []
 
         for project in list_projects:
-            if session['name'] in project.members:
+            if (session['name'] in project.members and len(project.allocations) > 0):
                 projects.append(project)
 
         return render_template('request_new_init.html', projects=projects)
@@ -1336,18 +1341,41 @@ def create_request(project):
         translatename = "".join(inputname.split())
         vc3requestname = owner + "." + translatename.lower()
 
-        # d = int(request.form['days'])
-        h = int(request.form['hours'])
-        # m = int(request.form['minutes'])
-
-        if (h == 0):
-            expiration = None
-        else:
+        if request.form['hours']:
+            date_selected = request.form['hours']
+            local_datetime = datetime.strptime(date_selected, "%Y-%m-%dT%H:%M")
+            utc_datetime = local_datetime.strftime("%Y-%m-%dT%H:%M:%S")
             now = datetime.utcnow()
-            t_delta = timedelta(hours=h)
+            expiration = utc_datetime
+        else:
+            expiration = None
+            now = datetime.utcnow()
+            t_delta = timedelta(days=1)
             expiration = now + t_delta
 
-            expiration = expiration.replace(microsecond=0).isoformat()
+        # date_and_time = date_selected.split("T")
+        #
+        # date_splits = date_and_time[0].split("-")
+        # time_splits = date_and_time[1].split(":")
+        #
+        # year = int(date_splits[0])
+        # month = int(date_splits[1])
+        # day = int(date_splits[2])
+        # hour = int(time_splits[0])
+        # minute = int(time_splits[1])
+
+        # if not date_selected:
+        #     expiration = None
+        #     now = datetime.utcnow()
+        #     t_delta = timedelta(days=1)
+        #     expiration = now + t_delta
+        # else:
+        #     now = datetime.utcnow()
+        #     # t_delta = timedelta(days=day, hours=hour, minutes=minute)
+        #     # expiration = now + t_delta
+        #     expiration = utc_datetime
+
+            # expiration = expiration.replace(microsecond=0).isoformat()
 
         description_input = request.form['description']
         description = str(description_input)
@@ -1561,13 +1589,26 @@ def create_environment():
     vc3_client = get_vc3_client()
     recipes = subprocess.check_output(["/usr/bin/vc3-builder", "--list"])
     recipe_list = recipes.split()
+
+    recipes_section = subprocess.check_output(["/usr/bin/vc3-builder", "--list=section"])
+    recipe_list_section = recipes_section.split()
+
+    expected_sections = ["--- bioinformatics tools", "--- compilation tools",
+    "--- data management tools", "--- data transfer tools", "--- databases",
+    "--- demos", "--- environment tools", "--- environments", "--- file systems",
+    "--- file utilities", "--- hpc", "--- job execution engines",
+    "--- numerical methods tools", "--- perl packages", "--- programming languages",
+    "--- python packages", "--- scripting languages", "--- software building",
+    "--- source version control", "--- workflow tools"]
+
     oss = subprocess.check_output(["/usr/bin/vc3-builder", "--list=os"])
     os_list = oss.split()
 
     if request.method == 'GET':
         environments = vc3_client.listEnvironments()
         return render_template('environment_new.html',
-                               environments=environments, recipes=recipe_list, oss=os_list)
+                               environments=environments, recipes=recipe_list,
+                               recipe_list_section=recipes_section, oss=os_list)
 
     elif request.method == 'POST':
         # Gathering and storing information from new allocation form
