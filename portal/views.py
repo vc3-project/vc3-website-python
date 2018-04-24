@@ -1339,19 +1339,29 @@ def create_request(project):
         policy = "static-balanced"
 
         translatename = "".join(inputname.split())
-        vc3requestname = owner + "." + translatename.lower()
-
-        if request.form['hours']:
-            date_selected = request.form['hours']
-            local_datetime = datetime.strptime(date_selected, "%Y-%m-%dT%H:%M")
-            utc_datetime = local_datetime.strftime("%Y-%m-%dT%H:%M:%S")
-            now = datetime.utcnow()
-            expiration = utc_datetime
-        else:
+        displayname = translatename.lower()
+        vc3requestname = owner + "-" + displayname
+        h = int(request.form['hours'])
+        if h == 0:
             expiration = None
+        else:
             now = datetime.utcnow()
-            t_delta = timedelta(days=1)
+            t_delta = timedelta(hours=h)
             expiration = now + t_delta
+            expiration = expiration.replace(microsecond=0).isoformat()
+
+
+        # if request.form['hours']:
+        #     date_selected = request.form['hours']
+        #     local_datetime = datetime.strptime(date_selected, "%Y-%m-%dT%H:%M")
+        #     utc_datetime = local_datetime.strftime("%Y-%m-%dT%H:%M:%S")
+        #     now = datetime.utcnow()
+        #     expiration = utc_datetime
+        # else:
+        #     expiration = None
+        #     now = datetime.utcnow()
+        #     t_delta = timedelta(days=1)
+        #     expiration = now + t_delta
 
         # date_and_time = date_selected.split("T")
         #
@@ -1394,7 +1404,7 @@ def create_request(project):
                                                   environments=environments,
                                                   policy=policy,
                                                   expiration=expiration,
-                                                  description=description)
+                                                  description=description, displayname=displayname)
             vc3_client.storeRequest(newrequest)
         except:
             owner = session['name']
@@ -1593,13 +1603,13 @@ def create_environment():
     recipes_section = subprocess.check_output(["/usr/bin/vc3-builder", "--list=section"])
     recipe_list_section = recipes_section.split()
 
-    expected_sections = ["--- bioinformatics tools", "--- compilation tools",
-    "--- data management tools", "--- data transfer tools", "--- databases",
-    "--- demos", "--- environment tools", "--- environments", "--- file systems",
-    "--- file utilities", "--- hpc", "--- job execution engines",
-    "--- numerical methods tools", "--- perl packages", "--- programming languages",
-    "--- python packages", "--- scripting languages", "--- software building",
-    "--- source version control", "--- workflow tools"]
+    # expected_sections = ["--- bioinformatics tools", "--- compilation tools",
+    # "--- data management tools", "--- data transfer tools", "--- databases",
+    # "--- demos", "--- environment tools", "--- environments", "--- file systems",
+    # "--- file utilities", "--- hpc", "--- job execution engines",
+    # "--- numerical methods tools", "--- perl packages", "--- programming languages",
+    # "--- python packages", "--- scripting languages", "--- software building",
+    # "--- source version control", "--- workflow tools"]
 
     oss = subprocess.check_output(["/usr/bin/vc3-builder", "--list=os"])
     os_list = oss.split()
@@ -1626,6 +1636,7 @@ def create_environment():
         packagelist = request.form.getlist('packagelist')
         required_os = request.form.get('required_os', None)
         required_os_strict = None
+
         if required_os is not None:
             os, version = required_os.split(":")
             required_os_strict = "{0}:{1}:{1}".format(os, version)
@@ -1680,6 +1691,36 @@ def view_environment(name):
                                users=users, displayname=displayname,
                                packagelist=packagelist, required_os=required_os)
     raise LookupError('environment')
+
+
+@app.route('/environments/envmap/<name>', methods=['GET', 'POST'])
+@authenticated
+def add_envmap(name):
+    """ Add New Environment Mapping Form """
+    if request.method == 'GET':
+        vc3_client = get_vc3_client()
+        environment = vc3_client.getEnvironment(environmentname=name)
+        envtype = type(environment.envmap)
+
+        return render_template('environment_new_envmap.html', environment=environment, envtype=envtype, name=name)
+
+    elif request.method == 'POST':
+
+        vc3_client = get_vc3_client()
+        environment = vc3_client.getEnvironment(environmentname=name)
+        # try:
+        env_name = request.form['envmap_name']
+        env_var = request.form['envmap_val']
+        environment.envmap[env_name] = env_var
+        vc3_client.storeEnvironment(environment)
+        # except:
+        #     flash('dam son', 'warning')
+        #     return render_template('environment_new_envmap.html', environment=environment, envtype=envtype)
+
+
+        flash('Successfully created added new environment variable', 'success')
+
+        return redirect(url_for('view_environment', name=name))
 
 
 @app.route('/environments/delete/<name>', methods=['GET'])

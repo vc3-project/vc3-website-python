@@ -52,6 +52,7 @@
                               <th><input type="text" class="form-control" placeholder="Cores" disabled></th>
                               <th><input type="text" class="form-control" placeholder="Memory" disabled></th>
                               <th><input type="text" class="form-control" placeholder="Storage" disabled></th>
+                              <th><input type="text" class="form-control" placeholder="Native OS" disabled></th>
         										</tr>
         									</thead>
         									<tbody data-link="row" class="rowlink">
@@ -67,6 +68,7 @@
                               <td>{{nodeset.cores}}</td>
                               <td>{{nodeset.memory_mb}} MB</td>
                               <td>{{nodeset.storage_mb}} MB</td>
+                              <td>{{nodeset.native_os}}</td>
       											</tr>
                               {% endif %}
       											{% endfor %}
