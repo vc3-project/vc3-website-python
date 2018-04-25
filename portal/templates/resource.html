@@ -49,16 +49,26 @@
         											<th><input type="text" class="form-control" placeholder="Name" disabled></th>
         											<th><input type="text" class="form-control" placeholder="Organization" disabled></th>
         											<th><input type="text" class="form-control" placeholder="Description" disabled></th>
+                              <th><input type="text" class="form-control" placeholder="Cores" disabled></th>
+                              <th><input type="text" class="form-control" placeholder="Memory" disabled></th>
+                              <th><input type="text" class="form-control" placeholder="Storage" disabled></th>
+                              <th><input type="text" class="form-control" placeholder="Native OS" disabled></th>
         										</tr>
         									</thead>
         									<tbody data-link="row" class="rowlink">
       											{% for resource in resources %}
                               {% if resource.public %}
+                              {% set vc3_client = get_vc3_client() %}
+                              {% set nodeset = vc3_client.getNodeset(nodesetname=resource.node)%}
       											<tr>
       												<td><a href="{{ url_for('view_resource', name=resource.name) }}" title="View Resource Profile">{{ resource.displayname }}</a></td>
       												<!-- <td><i class="fa fa-check" aria-hidden="true" style="color:green"></i> Healthy</td> -->
                               <td>{{resource.organization}}</td>
       												<td>{{resource.description}}</td>
+                              <td>{{nodeset.cores}}</td>
+                              <td>{{nodeset.memory_mb}} MB</td>
+                              <td>{{nodeset.storage_mb}} MB</td>
+                              <td>{{nodeset.native_os}}</td>
       											</tr>
                               {% endif %}
       											{% endfor %}

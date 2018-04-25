@@ -431,18 +431,12 @@ def portal():
     """Send the existing user to Portal Home."""
     vc3_client = get_vc3_client()
     userlist = vc3_client.listUsers()
-    projects = vc3_client.listProjects()
-    virtualclusters = vc3_client.listRequests()
-    nodesets = vc3_client.listNodesets()
     resources = vc3_client.listResources()
 
     if request.method == 'GET':
         profile = None
         sshpubstring = None
         name = None
-        user_projects = 0
-        user_virtualclusters = 0
-        user_nodes = 0
 
         for user in userlist:
             if session['primary_identity'] == user.identity_id:
@@ -466,25 +460,12 @@ def portal():
             flash('Please complete any missing profile fields before '
                   'launching a cluster.', 'warning')
 
-        for project in projects:
-            if profile.name in project.members:
-                user_projects += 1
-        for vc in virtualclusters:
-            if profile.name == vc.owner:
-                user_virtualclusters += 1
-        for nodeset in nodesets:
-            if profile.name == nodeset.owner:
-                user_nodes += nodeset.node_number
-
         if request.args.get('next'):
             session['next'] = get_safe_redirect()
 
         return render_template('portal_home.html', userlist=userlist,
                                profile=profile, name=name,
-                               sshpubstring=sshpubstring,
-                               user_projects=user_projects,
-                               user_virtualclusters=user_virtualclusters,
-                               user_nodes=user_nodes, resources=resources)
+                               sshpubstring=sshpubstring, resources=resources)
 
 
 @app.route('/new', methods=['GET', 'POST'])
