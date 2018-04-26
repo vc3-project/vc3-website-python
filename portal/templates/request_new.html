@@ -33,7 +33,7 @@
                   <form role="form" action="{{url_for('create_request', project=project)}}" method="POST">
 
                     <div class="form-group">
-                      <label for="name">Virtual Cluster Name <span id="asterik">*</span></label>
+                      <label for="name">Virtual Cluster Name (no dot notation)<span id="asterik">*</span></label>
                       <input
                         placeholder="Your Virtual Cluster name"
                         name="name"
@@ -41,6 +41,7 @@
                         type="text"
                         tabindex="1"
                         required
+                        pattern="^[^\.]*$"
                         autofocus
                         value="{{request.name}}">
                     </div>
