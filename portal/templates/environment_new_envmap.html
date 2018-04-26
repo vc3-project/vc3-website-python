@@ -1,0 +1,85 @@
+{%extends "loginbase.html"%}
+
+{%block title%}Create Environment{%endblock%}
+
+{%block body%}
+{%include 'messages.html'%}
+
+<div class="content">
+  <div class="container-fluid">
+    <div class="row">
+
+      <div class="col-md-12">
+        <div class="card">
+
+          <div class="header">
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item"><a href="{{url_for('portal')}}">Portal</a></li>
+              <li class="breadcrumb-item"><a href="{{url_for('list_environments')}}">Environments</a></li>
+              <li class="breadcrumb-item"><a href="{{url_for('view_environment', name=name)}}">{{name}}</a></li>
+              <li class="breadcrumb-item active">Add Environment Variable</li>
+            </ol>
+            <h4 class="title">Add Environment Variable</h4>
+            <h5>Brief overview description of what an environment is here</h5>
+            <label><span id="asterik">*</span> <small style="color:black">= indicates required field</small></label>
+						<hr/>
+            {{environment.envmap}}
+            {{environment}}
+          </div>
+
+          <div class="content description">
+  					<div class="card-block">
+
+              <div class="row">
+        				<div class="col-md-6">
+
+                  <form role="form" action="{{url_for('add_envmap', name=name)}}" method="POST">
+
+                    <div class="form-group">
+                      <p>{ 'HOME':'/home/myotherhome', 'MyVar_Name':'MyRandomVar_Value 123' }</p>
+
+                      <label for="envmap_name">Variable Name (only alpha-numeric characters)</label>
+                      <input
+                        type="text"
+                        id="envmap_name"
+                        name="envmap_name"
+                        pattern="^[a-zA-Z0-9]+$"
+                        placeholder="Environment Variable"
+                        class="form-control"
+                        tabindex="1"
+                        value="{{envmap_name}}"
+                      >
+                    </div>
+
+                    <div class="form-group">
+                      <label for="envmap_val">Variable Value (only alpha-numeric characters)</label>
+                      <input
+                        type="text"
+                        id="envmap_val"
+                        name="envmap_val"
+                        pattern="^[a-zA-Z0-9]+$"
+                        placeholder="Environment Variable"
+                        class="form-control"
+                        tabindex="2"
+                        value="{{envmap_val}}"
+                      >
+                    </div>
+
+                    <div class="form-group">
+                      <a href="{{url_for('view_environment', name=name)}}" class="btn btn-primary" tabindex="3" title="Cancel">Cancel</a>
+                      <button type="submit" tabindex="4" class="btn btn-create">Add New Environment Variable</button>
+                    </div>
+                  </form>
+        				</div>
+
+        			</div> <!-- row -->
+            </div><!-- /.card-block -->
+          </div><!-- /.card description-->
+        </div><!-- /.card -->
+  		</div><!-- /.col-md-6 -->
+
+    </div>
+  </div>
+</div>
+
+{%endblock%}

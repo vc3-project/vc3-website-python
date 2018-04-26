@@ -3,6 +3,7 @@
 {%block title%}Environment Profile: {{name}}{%endblock%}
 
 {%block body%}
+{%include 'messages.html'%}
 
 <div class="content">
   <div class="container-fluid">
@@ -26,6 +27,9 @@
                 <!-- <a href="#" class="btn btn-create btn-secondary btn-xs">Update Environment</a> -->
                 <a href="{{url_for('delete_environment', name=name)}}" data-toggle="confirmation" class="btn btn-danger btn-secondary btn-xs">Delete Environment</a>
               </div>
+            </div>
+            <div class="row" style="padding-left:15px">
+              <a href="{{url_for('add_envmap', name=name)}}" data-toggle="confirmation" class="btn btn-create btn-secondary btn-xs">Add Environment Variable</a>
             </div>
             {% endif %}
 						<hr/>
@@ -66,6 +70,18 @@
                       {{required_os}}
                     {% else %}
                     None specified
+                    {% endif %}
+                  </div>
+                </div>
+                <div class="panel panel-info resource-profile" style="margin: 1em;">
+                  <div class="panel-heading">
+                    <h3 class="panel-title"><strong>Environment Variables</strong></h3>
+                  </div>
+                  <div class="panel-body disabled">
+                    {% if envmap %}
+                      {% for map in envmap %}
+                      <ul><li>{{map}}=/{{envmap[map]}}</li></ul>
+                      {% endfor %}
                     {% endif %}
                   </div>
                 </div>

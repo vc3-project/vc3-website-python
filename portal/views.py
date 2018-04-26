@@ -1485,7 +1485,7 @@ def view_request(name):
 
                 vc3_client.terminateRequest(requestname=requestname)
 
-                flash('Your Virtual Cluster has begun terminating.',
+                flash('Your Virtual Cluster has begun termination.',
                       'success')
                 return redirect(url_for('list_requests'))
         flash('Could not find specified Virtual Cluster', 'warning')
@@ -1667,11 +1667,12 @@ def view_environment(name):
         description = environment.description
         displayname = environment.displayname
         required_os = environment.required_os
+        envmap = environment.envmap
 
         return render_template('environment_profile.html', name=environment_name,
                                owner=owner, description=description,
                                users=users, displayname=displayname,
-                               packagelist=packagelist, required_os=required_os)
+                               packagelist=packagelist, required_os=required_os, envmap=envmap)
     raise LookupError('environment')
 
 
@@ -1693,7 +1694,9 @@ def add_envmap(name):
         # try:
         env_name = request.form['envmap_name']
         env_var = request.form['envmap_val']
-        environment.envmap[env_name] = env_var
+        envmap = environment.envmap
+        envmap[env_name] = env_var
+        environment.envmap = envmap
         vc3_client.storeEnvironment(environment)
         # except:
         #     flash('dam son', 'warning')
