@@ -59,16 +59,16 @@
       											{% for resource in resources %}
                               {% if resource.public %}
                               {% set vc3_client = get_vc3_client() %}
-                              {% set nodeset = vc3_client.getNodeset(nodesetname=resource.node)%}
+                              {% set nodeinfo = vc3_client.getNodeinfo(nodeinfoName=resource.nodeinfo)%}
       											<tr>
       												<td><a href="{{ url_for('view_resource', name=resource.name) }}" title="View Resource Profile">{{ resource.displayname }}</a></td>
       												<!-- <td><i class="fa fa-check" aria-hidden="true" style="color:green"></i> Healthy</td> -->
                               <td>{{resource.organization}}</td>
       												<td>{{resource.description}}</td>
-                              <td>{{nodeset.cores}}</td>
-                              <td>{{nodeset.memory_mb}} MB</td>
-                              <td>{{nodeset.storage_mb}} MB</td>
-                              <td>{{nodeset.native_os}}</td>
+                              <td>{{nodeinfo.cores}}</td>
+                              <td>{{nodeinfo.memory_mb}} MB</td>
+                              <td>{{nodeinfo.storage_mb}} MB</td>
+                              <td>{{nodeinfo.native_os}}</td>
       											</tr>
                               {% endif %}
       											{% endfor %}

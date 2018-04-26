@@ -1179,18 +1179,18 @@ def view_resource(name):
     url = resource.url
     docurl = resource.docurl
     organization = resource.organization
-    node = resource.node
+    nodeinfo = resource.nodeinfo
 
-    nodeset = vc3_client.getNodeset(nodesetname=node)
-    cores = nodeset.cores
-    memory_mb = nodeset.memory_mb
-    storage_mb = nodeset.storage_mb
+    nodeinfo = vc3_client.getNodeinfo(nodeinfoName=nodeinfo)
+    cores = nodeinfo.cores
+    memory_mb = nodeinfo.memory_mb
+    storage_mb = nodeinfo.storage_mb
 
     return render_template('resource_profile.html', name=resourcename,
                             owner=owner, accessflavor=accessflavor,
                             resource=resource, description=description,
                             displayname=displayname, url=url,
-                            docurl=docurl, organization=organization, nodeset=nodeset)
+                            docurl=docurl, organization=organization, nodeinfo=nodeinfo)
     app.logger.error("Could not find Resource when viewing: {0}".format(name))
     raise LookupError('resource')
 
