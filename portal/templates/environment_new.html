@@ -22,7 +22,6 @@
             <h5>Brief overview description of what an environment is here</h5>
             <label><span id="asterik">*</span> <small style="color:black">= indicates required field</small></label>
 						<hr/>
-            {{recipe_list_section}}
           </div>
 
           <div class="content description">
@@ -48,11 +47,11 @@
                     </div>
 
                     <div class="form-group">
-                      <label for="packagelist">Package List <span id="asterik">*</span></label>
+                      <label for="packagelist">Package List</label>
                       <select class="form-control selectpicker"
                       multiple name="packagelist"
                       tabindex="2" id="form-resource-list"
-                      required data-live-search="true" data-actions-box="true"
+                      data-live-search="true" data-actions-box="true"
                       data-header="Select Packages">
                         <!-- <option value="" selected disabled>Please Select Package List</option> -->
                         {% for recipe in recipes %}
