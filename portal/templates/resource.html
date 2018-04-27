@@ -53,6 +53,7 @@
                               <th><input type="text" class="form-control" placeholder="Memory" disabled></th>
                               <th><input type="text" class="form-control" placeholder="Storage" disabled></th>
                               <th><input type="text" class="form-control" placeholder="Native OS" disabled></th>
+                              <th><input type="text" class="form-control" placeholder="Features" disabled></th>
         										</tr>
         									</thead>
         									<tbody data-link="row" class="rowlink">
@@ -69,6 +70,14 @@
                               <td>{{nodeinfo.memory_mb}} MB</td>
                               <td>{{nodeinfo.storage_mb}} MB</td>
                               <td>{{nodeinfo.native_os}}</td>
+                              <td>{% if nodeinfo.features %}
+                                    {% for feature in nodeinfo.features %}
+                                      {{feature.capitalize()}}
+                                    {% endfor %}
+                                  {% else %}
+                                    N/A
+                                  {% endif %}
+                              </td>
       											</tr>
                               {% endif %}
       											{% endfor %}

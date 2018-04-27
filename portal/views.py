@@ -109,6 +109,14 @@ def page(path):
     return render_template('blog_page.html', page=page_path)
 
 
+@app.route('/resources', methods=['GET'])
+def list_home_resources():
+    """ Route for HPC and Resources List View """
+    vc3_client = get_vc3_client()
+    resources = vc3_client.listResources()
+
+    return render_template('home_resource.html', resources=resources)
+
 @app.route('/community', methods=['GET'])
 def community():
     """Send the user to community page"""
