@@ -1,0 +1,93 @@
+{%extends "base.html"%}
+
+{%block title%}Connected Resources{%endblock%}
+
+{%block body%}
+
+<!--==========================
+  Public Resources Section
+============================-->
+  <section id="community">
+    <div class="container wow fadeInUp">
+
+      <div class="header">
+        <h2 class="title"><strong>Connected Resources</strong></h2>
+        <div class="">
+          <h5>Browse current list of known resource profiles</h5>
+        </div>
+        <hr />
+      </div>
+
+      <div class="row">
+        <div class="col-md-10">
+
+          <table data-toggle="table" data-sort-name="name" data-sort-order="desc">
+        		<thead>
+        			<tr>
+        				<th data-field="name" data-sortable="true"> Name </th>
+        				<th data-field="organization" data-sortable="true"> Organization </th>
+        				<th data-field="description" data-sortable="true"> Description </th>
+        				<th data-field="cores" data-sortable="true"> Cores </th>
+                <th data-field="memory" data-sortable="true"> Memory </th>
+                <th data-field="storage" data-sortable="true"> Storage </th>
+                <th data-field="native_os" data-sortable="true"> Native OS </th>
+                <th data-field="features" data-sortable="true"> Features </th>
+        			</tr>
+        		</thead>
+            <tbody data-link="row" class="rowlink">
+              {% for resource in resources %}
+                {% if resource.public %}
+                {% set vc3_client = get_vc3_client() %}
+                {% set nodeinfo = vc3_client.getNodeinfo(nodeinfoName=resource.nodeinfo)%}
+              <tr>
+                <td>{{ resource.displayname }}</td>
+                <td>{{resource.organization}}</td>
+                <td>{{resource.description}}</td>
+                <td>{{nodeinfo.cores}}</td>
+                <td>{{nodeinfo.memory_mb}} MB</td>
+                <td>{{nodeinfo.storage_mb}} MB</td>
+                <td>{{nodeinfo.native_os}}</td>
+                <td>{% if nodeinfo.features %}
+                      {% for feature in nodeinfo.features %}
+                        {{feature.capitalize()}}
+                      {% endfor %}
+                    {% else %}
+                      N/A
+                    {% endif %}
+                </td>
+              </tr>
+                {% endif %}
+              {% endfor %}
+            </tbody>
+        	</table>
+
+        </div>
+
+      </div><!-- row -->
+
+      <hr />
+
+      <div class="header">
+        <h2 class="title"><strong>Monitoring</strong></h2>
+        <div class="">
+          <h5>Monitoring Cluster Activity</h5>
+        </div>
+        <hr />
+      </div>
+
+      <div class="row">
+        <div class="col-md-10">
+            <iframe src="https://grafana.mwt2.org/dashboard/db/vc3?orgId=1&from=-6h&to=now&theme=light"
+            width="100%" height="950" frameborder="0"></iframe>
+        </div>
+      </div>
+    </div><!-- wow fadeInUp -->
+    <hr />
+  </section>
+
+  <div class="vc3-divider-img">
+    <img src="https://image.ibb.co/cpdMMa/vc3divider.png" alt="Virtual Clusters 3 Divider">
+  </div>
+
+
+{%endblock%}
