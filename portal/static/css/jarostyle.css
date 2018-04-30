@@ -14,7 +14,7 @@ body {
 
 a {
   /*color: #03C4EB;*/
-  color: #b3b3b3;
+  /* color: #b3b3b3; */
   transition: 0.5s;
   /*-webkit-font-smoothing: antialiased;*/
 }
@@ -1328,4 +1328,114 @@ fieldset {
 
 :-ms-input-placeholder {
   color: #888;
+}
+
+
+/*----------------------------------
+RESOURCE PROFILE INDEX PAGE
+----------------------------------*/
+
+.filterable {
+    margin-top: 15px;
+    border-color: #b3b3b3;
+    font-size: 14px;
+}
+.filterable .panel-heading .pull-right {
+    margin-top: -25px;
+}
+.filterable .panel-heading .panel-title {
+  font-weight: 400;
+  font-size: 20px;
+  text-align: center;
+}
+.filterable .filters input[disabled] {
+    background-color: transparent;
+    border: none;
+    cursor: auto;
+    box-shadow: none;
+    padding: 0;
+    height: auto;
+}
+.filterable .filters input[disabled]::-webkit-input-placeholder {
+    color: #2b2b2b;
+}
+.filterable .filters input[disabled]::-moz-placeholder {
+    color: #2b2b2b;
+}
+.filterable .filters input[disabled]:-ms-input-placeholder {
+    color: #2b2b2b;
+}
+.filterable tbody tr {
+  color: #595753;
+}
+.filterable tbody tr td .members {
+    /*width:250px;*/
+    max-height:100px;
+    overflow-y:auto;
+}
+.filterable .panel-heading {
+  background-color: #24292e;
+  opacity: .86;
+  /* background-color: rgba(0,0,0,0.03); */
+  color: #fdfcf7;
+  border-color: #2b2b2b;
+}
+.filterable button {
+  font-size: 12px;
+  color: #111;
+  background-color: #fff;
+  border-color: #fff;
+}
+.filterable button:focus, .filterable button:active {
+  color: #111;
+  background-color: #fff;
+  border-color: #fff;
+}
+.panel .close {
+  font-size: 24px;
+  padding-right: 5px;
+}
+.filterable .btn-danger {
+  border-color: #FF4A55;
+  color: black;
+}
+.filterable .btn-danger:hover {
+  border-color: #FF4A55;
+  background-color: #FF4A55;
+  color: white;
+}
+.filterable .btn-danger:active {
+  border-color: #FF4A55;
+  background-color: white;
+  color: black;
+}
+.filterable glyphicon {
+  color: #111;
+}
+.filterable button:hover {
+  color: #111;
+  background-color: #fff;
+  border-color: #fff;
+}
+.filterable button:active {
+  color: #111;
+  background-color: #fff;
+  border-color: #fff;
+}
+.filterable a {
+  color: rgba(30, 26, 18,0.9);
+  font-weight: 600;
+}
+.filterable a:hover {
+  color: #fcc500;
+}
+.filterable tbody tr td #node-status {
+  margin-right: 60px;
+}
+
+.filterable tbody tr td {
+  vertical-align: middle;
+}
+.table-hover>tbody>tr:hover {
+    background-color: rgba(250, 250, 250, 0.5);
 }

@@ -19,19 +19,20 @@
       </div>
 
       <div class="row">
-        <div class="col-md-10">
+        <div class="col-md-10" style="width:100%">
 
           <table data-toggle="table" data-sort-name="name" data-sort-order="desc">
         		<thead>
         			<tr>
-        				<th data-field="name" data-sortable="true"> Name </th>
+        				<th data-field="name" data-sortable="true"> Resource Name </th>
         				<th data-field="organization" data-sortable="true"> Organization </th>
         				<th data-field="description" data-sortable="true"> Description </th>
+                <th data-field="batch_scheduler" data-sortable="true"> Batch Scheduler </th>
         				<th data-field="cores" data-sortable="true"> Cores </th>
                 <th data-field="memory" data-sortable="true"> Memory </th>
                 <th data-field="storage" data-sortable="true"> Storage </th>
                 <th data-field="native_os" data-sortable="true"> Native OS </th>
-                <th data-field="features" data-sortable="true"> Features </th>
+                <th data-field="features" data-sortable="true"> Containers </th>
         			</tr>
         		</thead>
             <tbody data-link="row" class="rowlink">
@@ -40,9 +41,10 @@
                 {% set vc3_client = get_vc3_client() %}
                 {% set nodeinfo = vc3_client.getNodeinfo(nodeinfoName=resource.nodeinfo)%}
               <tr>
-                <td>{{ resource.displayname }}</td>
+                <td><a href="{{ resource.url }}" title="View Resource Profile" target="_blank" style="font-weight:bold">{{ resource.displayname }}</a></td>
                 <td>{{resource.organization}}</td>
                 <td>{{resource.description}}</td>
+                <td>{{resource.accessflavor.capitalize()}}</td>
                 <td>{{nodeinfo.cores}}</td>
                 <td>{{nodeinfo.memory_mb}} MB</td>
                 <td>{{nodeinfo.storage_mb}} MB</td>
@@ -76,7 +78,7 @@
       </div>
 
       <div class="row">
-        <div class="col-md-10">
+        <div class="col-md-10" style="width:100%">
             <iframe src="https://grafana.mwt2.org/dashboard/db/vc3?orgId=1&from=-6h&to=now&theme=light"
             width="100%" height="950" frameborder="0"></iframe>
         </div>
