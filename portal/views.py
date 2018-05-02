@@ -644,7 +644,7 @@ def remove_member_from_project(name):
     vc3_client.removeUserFromProject(user=user, project=project.name)
     flash('Successfully removed member from project.', 'success')
 
-    return redirect(url_for('view_project', name=name))
+    return redirect(url_for('list_projects'))
 
 
 @app.route('/project/<name>/addallocation', methods=['POST'])
@@ -1522,7 +1522,15 @@ def edit_request(name):
         vc3_request = vc3_client.getRequest(requestname=name)
         if vc3_request:
             vc3_request.description = request.form['description']
-            # vc3_request.displayname = request.form['displayname']
+
+            h = int(request.form['hours'])
+            if h == 0:
+                expiration = None
+            else:
+                now = datetime.utcnow()
+                t_delta = timedelta(hours=h)
+                expiration = now + t_delta
+                vc3_request.expiration = expiration.replace(microsecond=0).isoformat()
 
             vc3_client.storeRequest(vc3_request)
         return redirect(url_for('view_request', name=name))
