@@ -979,7 +979,7 @@ def create_allocation():
                 pubtokendocurl=pubtokendocurl)
             vc3_client.storeAllocation(newallocation)
         except:
-            displayname = request.form['displayname']
+            # displayname = request.form['displayname']
             accountname = request.form['accountname']
             # description_input = request.form['description']
             # description = str(description_input)

@@ -116,7 +116,7 @@
     											<th><input type="text" class="form-control" placeholder="Allocation Profile" disabled></th>
     											<th><input type="text" class="form-control" placeholder="State" disabled></th>
     											<th><input type="text" class="form-control" placeholder="Resource" disabled></th>
-                          <th><input type="text" class="form-control" placeholder="Description" disabled></th>
+                          <!-- <th><input type="text" class="form-control" placeholder="Description" disabled></th> -->
     										</tr>
     									</thead>
     									<tbody data-link="row" class="rowlink">
@@ -145,13 +145,13 @@
                             </a>
                           </td>
 
-                          <td>
+                          <!-- <td>
                             {% if allocation.description == None or allocation.description == "" %}
                               Currently no description
                             {% else %}
                               <div id="allocation-description">{{allocation.description}}</div>
                             {% endif %}
-                          </td>
+                          </td> -->
     										</tr>
                           {% endif %}
     										{% endfor %}
