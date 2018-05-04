@@ -33,7 +33,7 @@
 
                   <form role="form" action="{{url_for('create_allocation')}}" method="POST">
 
-                    <div class="form-group">
+                    <!-- <div class="form-group">
                       <label for="displayname">Allocation Name <span id="asterik">*</span></label>
                       <input
                         placeholder="Allocation Name"
@@ -45,7 +45,7 @@
                         required
                         value="{{displayname}}"
                         >
-                    </div>
+                    </div> -->
 
                     <div class="form-group">
                       <label for="resource">Resource <span id="asterik">*</span></label>
@@ -72,7 +72,7 @@
                         required>
                     </div>
 
-                    <div class="form-group">
+                    <!-- <div class="form-group">
                       <label for="description">Description (optional)</label>
                       <textarea
                         placeholder="A brief description..."
@@ -86,7 +86,7 @@
                         value="{{request.description}}"
                         >{{description}}</textarea>
                       <span class="help-block exceeded"></span>
-                    </div>
+                    </div> -->
 
                     <div class="form-group">
                       <a href="{{url_for('list_allocations')}}" class="btn btn-primary" tabindex="5" title="Cancel">Cancel</a>

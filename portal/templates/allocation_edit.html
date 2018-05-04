@@ -20,7 +20,7 @@
               <li class="breadcrumb-item active">Edit Allocation</li>
             </ol>
             <h4 class="title">Edit Allocation</h4>
-            <h5>An allocation is an allotted amount of CPU hours or service units (SU) of computing time on a specific resource</h5>
+            <h5>You may update the name of your allocation.</h5>
             <label><span id="asterik">*</span> <small style="color:black">= indicates required field</small></label>
 						<hr/>
           </div>
@@ -47,7 +47,7 @@
                         >
                     </div>
 
-                    <div class="form-group">
+                    <!-- <div class="form-group">
                       <label for="description">Description (optional)</label>
                       <textarea
                         placeholder="A brief description..."
@@ -61,7 +61,7 @@
                         value="{{request.description}}"
                         >{{description}}</textarea>
                       <span class="help-block exceeded"></span>
-                    </div>
+                    </div> -->
 
                     <div class="form-group">
                       <a href="{{url_for('list_allocations')}}" class="btn btn-primary" tabindex="3" title="Cancel">Cancel</a>

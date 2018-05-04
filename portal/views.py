@@ -959,14 +959,15 @@ def create_allocation():
         # into info-service
         # Description from text input stored as string to avoid malicious input
 
-        displayname = request.form['displayname']
+        # displayname = request.form['displayname']
         owner = session['name']
         resource = request.form['resource']
         accountname = request.form['accountname']
         allocationname = owner + "." + resource
+        displayname = owner + '-' + resource
         name = allocationname.lower()
-        description_input = request.form['description']
-        description = str(description_input)
+        # description_input = request.form['description']
+        # description = str(description_input)
         # url = request.form['url']
         allocation_resource = vc3_client.getResource(resourcename=resource)
         pubtokendocurl = allocation_resource.pubtokendocurl
@@ -975,19 +976,18 @@ def create_allocation():
             newallocation = vc3_client.defineAllocation(
                 name=name, owner=owner, resource=resource,
                 accountname=accountname, displayname=displayname,
-                description=description, pubtokendocurl=pubtokendocurl)
+                pubtokendocurl=pubtokendocurl)
             vc3_client.storeAllocation(newallocation)
         except:
             displayname = request.form['displayname']
             accountname = request.form['accountname']
-            description_input = request.form['description']
-            description = str(description_input)
+            # description_input = request.form['description']
+            # description = str(description_input)
             resources = vc3_client.listResources()
             flash(
                 'You have already registered an allocation on that resource.', 'warning')
             return render_template('allocation_new.html', displayname=displayname,
-                                   accountname=accountname, description=description,
-                                   resources=resources)
+                                   accountname=accountname, resources=resources)
 
         flash('Your allocation has being registered.', 'success')
 
@@ -996,7 +996,6 @@ def create_allocation():
 
 @app.route('/allocation/<name>', methods=['GET', 'POST'])
 @authenticated
-# @allocation_validated
 def view_allocation(name):
     """
     Allocation Detailed Page View
@@ -1016,7 +1015,7 @@ def view_allocation(name):
         resource = allocation.resource
         state = allocation.state
         displayname = allocation.displayname
-        description = allocation.description
+        # description = allocation.description
         accountname = allocation.accountname
         encodedpubtoken = allocation.pubtoken
         pubtokendocurl = allocation.pubtokendocurl
@@ -1035,16 +1034,14 @@ def view_allocation(name):
                                    accountname=accountname,
                                    pubtoken=pubtoken, state=state,
                                    resources=resources, displayname=displayname,
-                                   description=description, users=users,
-                                   accesshost=accesshost)
+                                   users=users, accesshost=accesshost)
         else:
             return render_template('allocation_profile_specific.html',
                                    name=allocationname,
                                    owner=owner, resource=resource,
                                    accountname=accountname,
                                    pubtoken=pubtoken, state=state,
-                                   resources=resources, displayname=displayname,
-                                   description=description, users=users,
+                                   resources=resources, displayname=displayname, users=users,
                                    accesshost=accesshost, pubtokendocurl=pubtokendocurl)
         app.logger.error(
             "Could not find allocation when viewing: {0}".format(name))
@@ -1107,14 +1104,13 @@ def edit_allocation(name):
             resource = allocation.resource
             accountname = allocation.accountname
             pubtoken = allocation.pubtoken
-            description = allocation.description
+            # description = allocation.description
             displayname = allocation.displayname
 
             return render_template('allocation_edit.html', name=allocationname,
                                    owner=owner, resources=resources,
                                    resource=resource, accountname=accountname,
-                                   pubtoken=pubtoken, description=description,
-                                   displayname=displayname)
+                                   pubtoken=pubtoken, displayname=displayname)
         app.logger.error(
             "Could not find allocation when editing: {0}".format(name))
         raise LookupError('allocation')
@@ -1122,7 +1118,7 @@ def edit_allocation(name):
     elif request.method == 'POST':
         allocation = vc3_client.getAllocation(allocationname=name)
         if allocation.name == name:
-            allocation.description = request.form['description']
+            # allocation.description = request.form['description']
             allocation.displayname = request.form['displayname']
 
         vc3_client.storeAllocation(allocation)
