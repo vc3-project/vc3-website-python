@@ -523,7 +523,7 @@ def create_project():
         for selected_allocation in request.form.getlist('allocation'):
             vc3_client.addAllocationToProject(allocation=selected_allocation,
                                               projectname=newproject.name)
-        flash('Your project has been successfully created.', 'success')
+        # flash('Your project has been successfully created.', 'success')
 
         return redirect(url_for('list_projects'))
 
@@ -896,7 +896,7 @@ def edit_cluster(name):
         vc3_client.storeNodeset(nodeset)
         vc3_client.storeCluster(cluster)
         # Redirect to updated cluster profile page
-        flash('Cluster has been successfully updated', 'success')
+        # flash('Cluster has been successfully updated', 'success')
         return redirect(url_for('view_cluster', name=name))
 
 
@@ -989,7 +989,7 @@ def create_allocation():
             return render_template('allocation_new.html', displayname=displayname,
                                    accountname=accountname, resources=resources)
 
-        flash('Your allocation has being registered.', 'success')
+        # flash('Your allocation has being registered.', 'success')
 
         return redirect(url_for('view_allocation', name=name))
 
@@ -1066,7 +1066,7 @@ def view_allocation(name):
                                                             resource=resource,
                                                             accountname=accountname)
                 vc3_client.storeAllocation(newallocation)
-                flash('Allocation created', 'success')
+                # flash('Allocation created', 'success')
                 return render_template('allocation_profile.html', name=allocationname,
                                        owner=owner, accountname=accountname,
                                        resource=resource, allocations=allocations,
@@ -1122,7 +1122,7 @@ def edit_allocation(name):
             allocation.displayname = request.form['displayname']
 
         vc3_client.storeAllocation(allocation)
-        flash('Allocation successfully updated', 'success')
+        # flash('Allocation successfully updated', 'success')
         return redirect(url_for('view_allocation', name=name))
 
 
@@ -1413,7 +1413,7 @@ def create_request(project):
                                    description=description, environment=environment,
                                    allocations=allocations)
 
-        flash('Your Virtual Cluster has been successfully launched.', 'success')
+        # flash('Your Virtual Cluster has been successfully launched.', 'success')
 
         return redirect(url_for('list_requests'))
 
@@ -1489,8 +1489,8 @@ def view_request(name):
 
                 vc3_client.terminateRequest(requestname=requestname)
 
-                flash('Your Virtual Cluster has begun termination.',
-                      'success')
+                # flash('Your Virtual Cluster has begun termination.',
+                      # 'success')
                 return redirect(url_for('list_requests'))
         flash('Could not find specified Virtual Cluster', 'warning')
         app.logger.error(
@@ -1652,7 +1652,7 @@ def create_environment():
                                    description=description, environments=environments,
                                    recipes=recipe_list, oss=os_list)
 
-        flash('Successfully created a new environment', 'success')
+        # flash('Successfully created a new environment', 'success')
 
         return redirect(url_for('list_environments'))
 
@@ -1715,7 +1715,7 @@ def add_envmap(name):
         #     return render_template('environment_new_envmap.html', environment=environment, envtype=envtype)
 
 
-        flash('Successfully created added new environment variable', 'success')
+        # flash('Successfully created added new environment variable', 'success')
 
         return redirect(url_for('view_environment', name=name))
 

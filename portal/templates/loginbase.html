@@ -59,42 +59,63 @@
       </div>
       <ul class="nav" id="side-nav">
 				<li class="side-nav-list" id="resource">
+					<div class="floatcontainer">
+						<div id="nav-active-bar"></div>
+					</div>
           <a href="{{url_for('list_resources')}}">
             <i class="fa fa-database" aria-hidden="true"></i>
             <p class="tour-step tour-step-four">Resources</p>
           </a>
         </li>
         <li class="side-nav-list" id="allocation">
+					<div class="floatcontainer">
+						<div id="nav-active-bar"></div>
+					</div>
           <a href="{{url_for('list_allocations')}}">
             <i class="fa fa-cube" aria-hidden="true"></i>
             <p class="tour-step tour-step-five">Allocations</p>
           </a>
         </li>
         <li class="side-nav-list" id="project">
+					<div class="floatcontainer">
+						<div id="nav-active-bar"></div>
+					</div>
           <a href="{{url_for('list_projects')}}" methods="GET">
             <i class="fa fa-folder-open-o" aria-hidden="true"></i>
             <p class="tour-step tour-step-seven">Projects</p>
           </a>
         </li>
 				<li class="side-nav-list" id="cluster">
+					<div class="floatcontainer">
+						<div id="nav-active-bar"></div>
+					</div>
           <a href="{{url_for('list_clusters')}}">
             <i class="fa fa-cog" aria-hidden="true"></i>
             <p>Cluster Templates</p>
           </a>
         </li>
-				<li class="side-nav-list">
+				<li class="side-nav-list" id="environment">
+					<div class="floatcontainer">
+						<div id="nav-active-bar"></div>
+					</div>
           <a href="{{url_for('list_environments')}}">
             <i class="fa fa-hdd-o" aria-hidden="true"></i>
             <p>Environments</p>
           </a>
         </li>
 				<li class="side-nav-list" id="request">
+					<div class="floatcontainer">
+						<div id="nav-active-bar"></div>
+					</div>
           <a href="{{url_for('list_requests')}}">
             <i class="" aria-hidden="true"><img src="{{url_for('static', filename='img/favicon.ico')}}" style="width:100%;"></i>
             <p>Virtual Clusters</p>
           </a>
         </li>
 				<li class="side-nav-list" id="monitoring">
+					<div class="floatcontainer">
+						<div id="nav-active-bar"></div>
+					</div>
           <a href="{{url_for('dashboard')}}">
             <i class="fa fa-dashboard" aria-hidden="true"></i>
             <p>Monitoring</p>
@@ -112,6 +133,9 @@
 			                                       'c444a294-d274-11e5-b7f1-e3782ed16687',
 																						 'aebe29b8-d274-11e5-ba4b-ffec0df955f2'] %}
 				<li class="side-nav-list">
+					<div class="floatcontainer">
+						<div id="nav-active-bar"></div>
+					</div>
           <a href="{{url_for('admin')}}">
 						<i class="fa fa-user-secret" aria-hidden="true"></i>
             <p>Admin</p>
@@ -182,7 +206,15 @@
 	$(document).ready(function() {
 	// get current URL path and assign 'active' class
 	var pathname = window.location.pathname;
-	$('.nav > li > a[href="'+pathname+'"]').parent().addClass('active');
+	var pathsplit = pathname.split('/')
+	// console.log(pathsplit[1])
+	if(pathsplit.length > 1){
+		var parentpath = pathsplit[1];
+		$('.nav > li > a[href="/'+parentpath+'"]').parent().addClass('active');
+	} else {
+		// look to update the full a[href=''] uri below
+		$('.nav > li > a[href="'+pathname+'"]').parent().addClass('active');
+	}
 	})
 	</script>
 

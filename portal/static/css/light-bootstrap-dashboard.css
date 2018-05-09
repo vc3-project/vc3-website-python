@@ -292,17 +292,31 @@ body > .navbar-collapse {
       -webkit-font-smoothing: antialiased;
       border-radius: 4px;
       display: block; }
+      .sidebar .nav li .floatcontainer {
+        float: right;
+      }
+      .sidebar .nav li .floatcontainer #nav-active-bar {
+        width: 6px;
+        height: 50px;
+        position: fixed;
+        background-color: #3cba54;
+        opacity: 0;
+      }
+      .sidebar .nav li:hover .floatcontainer #nav-active-bar {
+        opacity: 0.86;
+      }
+      .sidebar .nav li.active .floatcontainer #nav-active-bar {
+        opacity: 1;
+      }
+
     .sidebar .nav li:hover > a,
     body > .navbar-collapse .nav li:hover > a {
-      /* background: rgba(255, 255, 255, 0.13); */
       background-color: #24292e;
       color: #fcc500;
       opacity: 0.86; }
     .sidebar .nav li.active > a,
     body > .navbar-collapse .nav li.active > a {
-      /* color: #24292e; */
       opacity: 1;
-      /* background: rgba(255, 255, 255, 0.23); */
      }
     .sidebar .nav li.separator,
     body > .navbar-collapse .nav li.separator {
