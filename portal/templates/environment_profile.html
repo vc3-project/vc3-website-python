@@ -18,18 +18,14 @@
               <li class="breadcrumb-item active">{{name}}</li>
             </ol>
           	<h4 class="title">Environment: {{displayname}}</h4>
-            <div class="row" style="padding-left:15px">
-              <h5>Description: {{description}}</h5>
-            </div>
+            <!-- <div class="row" style="padding-left:15px">
+              <h5>Description: </h5>
+            </div> -->
             {% if session['name'] == owner %}
             <div class="row" style="padding-left:15px">
-              <div class="btn-group" role="group" aria-label="Basic example">
-                <!-- <a href="#" class="btn btn-create btn-secondary btn-xs">Update Environment</a> -->
-                <a href="{{url_for('delete_environment', name=name)}}" data-toggle="confirmation" class="btn btn-danger btn-secondary btn-xs">Delete Environment</a>
-              </div>
-            </div>
-            <div class="row" style="padding-left:15px">
+              <!-- <a href="#" class="btn btn-create btn-secondary btn-xs">Update Environment</a> -->
               <a href="{{url_for('add_envmap', name=name)}}" data-toggle="confirmation" class="btn btn-create btn-secondary btn-xs">Add Environment Variable</a>
+              <a href="{{url_for('delete_environment', name=name)}}" data-toggle="confirmation" class="btn btn-danger btn-secondary btn-xs">Delete Environment</a>
             </div>
             {% endif %}
 						<hr/>
@@ -56,9 +52,13 @@
                     <h3 class="panel-title"><strong>Package List</strong></h3>
                   </div>
                   <div class="panel-body disabled">
-                    {% for package in packagelist%}
-                      <ul><li>{{package}}</li></ul>
-                    {% endfor %}
+                    {% if packagelist %}
+                      {% for package in packagelist%}
+                        <ul><li>{{package}}</li></ul>
+                      {% endfor %}
+                    {% else %}
+                      Currently no package-list specified.
+                    {% endif %}
                   </div>
                 </div>
                 <div class="panel panel-info resource-profile" style="margin: 1em;">
@@ -69,7 +69,7 @@
                     {% if required_os %}
                       {{required_os}}
                     {% else %}
-                    None specified
+                    Currently no required OS specified.
                     {% endif %}
                   </div>
                 </div>
@@ -82,6 +82,8 @@
                       {% for map in envmap %}
                       <ul><li>{{map}}=/{{envmap[map]}}</li></ul>
                       {% endfor %}
+                    {% else %}
+                      Currently no environment variables specified.
                     {% endif %}
                   </div>
                 </div>

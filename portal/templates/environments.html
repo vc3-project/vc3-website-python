@@ -43,7 +43,7 @@
     											<th><input type="text" class="form-control" placeholder="Environment Name" disabled></th>
     											<th><input type="text" class="form-control" placeholder="Package List" disabled></th>
     											<th><input type="text" class="form-control" placeholder="Owner" disabled></th>
-                          <th><input type="text" class="form-control" placeholder="Description" disabled></th>
+                          <!-- <th><input type="text" class="form-control" placeholder="Description" disabled></th> -->
     										</tr>
     									</thead>
     									<tbody data-link="row" class="rowlink">
@@ -68,13 +68,13 @@
                             {{environment.owner}}
                           </td>
 
-                          <td>
+                          <!-- <td>
                             {% if environment.description == None or environment.description == "" %}
                               Currently no description
                             {% else %}
                               <div id="environment-description">{{environment.description}}</div>
                             {% endif %}
-                          </td>
+                          </td> -->
     										</tr>
                           {% endif %}
     										{% endfor %}

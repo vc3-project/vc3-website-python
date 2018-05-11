@@ -1623,8 +1623,8 @@ def create_environment():
         # packagelist = []
         envmap = {}
         files = {}
-        description_input = request.form['description']
-        description = str(description_input)
+        # description_input = request.form['description']
+        # description = str(description_input)
         packagelist = request.form.getlist('packagelist')
         required_os = request.form.get('required_os', None)
         required_os_strict = None
@@ -1637,17 +1637,17 @@ def create_environment():
             new_environment = vc3_client.defineEnvironment(
                 name=name, owner=owner, packagelist=packagelist,
                 envmap=envmap, files=files, required_os=required_os_strict,
-                displayname=displayname, description=description)
+                displayname=displayname)
             vc3_client.storeEnvironment(new_environment)
         except:
             name = request.form['name']
-            description_input = request.form['description']
-            description = str(description_input)
+            # description_input = request.form['description']
+            # description = str(description_input)
             environments = vc3_client.listEnvironments()
             flash('You have already created an environment with that name.', 'warning')
             return render_template('environment_new.html', name=name,
                                    packagelist=packagelist, required_os=required_os,
-                                   description=description, environments=environments,
+                                   environments=environments,
                                    recipes=recipe_list, oss=os_list)
 
         # flash('Successfully created a new environment', 'success')
@@ -1674,14 +1674,13 @@ def view_environment(name):
         environment_name = environment.name
         owner = environment.owner
         packagelist = environment.packagelist
-        description = environment.description
+        # description = environment.description
         displayname = environment.displayname
         required_os = environment.required_os
         envmap = environment.envmap
 
         return render_template('environment_profile.html', name=environment_name,
-                               owner=owner, description=description,
-                               users=users, displayname=displayname,
+                               owner=owner, users=users, displayname=displayname,
                                packagelist=packagelist, required_os=required_os, envmap=envmap)
     raise LookupError('environment')
 
@@ -1701,16 +1700,12 @@ def add_envmap(name):
 
         vc3_client = get_vc3_client()
         environment = vc3_client.getEnvironment(environmentname=name)
-        # try:
         env_name = request.form['envmap_name']
         env_var = request.form['envmap_val']
         envmap = environment.envmap
         envmap[env_name] = env_var
         environment.envmap = envmap
         vc3_client.storeEnvironment(environment)
-        # except:
-        #     flash('dam son', 'warning')
-        #     return render_template('environment_new_envmap.html', environment=environment, envtype=envtype)
 
 
         # flash('Successfully created added new environment variable', 'success')
