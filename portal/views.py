@@ -751,34 +751,32 @@ def create_cluster():
         translatename = "".join(inputname.split())
         name = owner + "-" + translatename.lower()
         displayname = translatename.lower()
-        description_input = request.form['description']
-        description = str(description_input)
+        # description_input = request.form['description']
+        # description = str(description_input)
 
         try:
             nodeset = vc3_client.defineNodeset(name=name, owner=owner,
                                                node_number=node_number, app_type=app_type,
-                                               app_role=app_role, environment=None,
-                                               displayname=displayname)
+                                               app_role=app_role, environment=None)
             vc3_client.storeNodeset(nodeset)
         except:
             node_number = request.form['node_number']
             app_type = request.form['app_type']
-            description_input = request.form['description']
-            description = str(description_input)
+            # description_input = request.form['description']
+            # description = str(description_input)
             framework = app_type
             flash('A cluster template with that name already exists.', 'warning')
             return render_template('cluster_new.html', clusters=clusters,
                                    projects=projects, nodesets=nodesets,
-                                   description=description, node_number=node_number,
-                                   framework=framework)
+                                   node_number=node_number, framework=framework)
 
         newcluster = vc3_client.defineCluster(
-            name=name, owner=owner, nodesets=[], description=description, displayname=displayname)
+            name=name, owner=owner, nodesets=[], displayname=displayname)
         vc3_client.storeCluster(newcluster)
         vc3_client.addNodesetToCluster(nodesetname=nodeset.name,
                                        clustername=newcluster.name)
 
-        flash('Your cluster template has been successfully defined.', 'success')
+        # flash('Your cluster template has been successfully defined.', 'success')
         return redirect(url_for('list_clusters'))
 
 
@@ -816,12 +814,12 @@ def view_cluster(name):
         cluster_name = cluster.name
         owner = cluster.owner
         state = cluster.state
-        description = cluster.description
+        # description = cluster.description
         displayname = cluster.displayname
 
         return render_template('cluster_profile.html', name=cluster_name,
                                owner=owner, state=state,
-                               nodesets=nodesets, description=description,
+                               nodesets=nodesets,
                                users=users, clusters=clusters,
                                projects=projects, displayname=displayname)
     raise LookupError('cluster')
@@ -849,7 +847,7 @@ def edit_cluster(name):
                 clustername = cluster.name
                 owner = cluster.owner
                 state = cluster.state
-                description = cluster.description
+                # description = cluster.description
         for nodeset in nodesets:
             if nodeset.name == name:
                 node_number = nodeset.node_number
@@ -861,7 +859,7 @@ def edit_cluster(name):
                                        owner=owner, nodesets=nodesets,
                                        state=state, projects=projects,
                                        frameworks=frameworks, node_number=node_number,
-                                       description=description, framework=framework)
+                                       framework=framework)
         app.logger.error(
             "Could not find cluster when editing: {0}".format(name))
         raise LookupError('cluster')
@@ -877,7 +875,7 @@ def edit_cluster(name):
         # Assign new attribute to selected cluster
         if cluster.name == name:
             cluster_name = cluster.name
-            cluster.description = request.form['description']
+            # cluster.description = request.form['description']
             nodeset.node_number = request.form['node_number']
             nodeset.app_type = request.form['app_type']
         if cluster_name is None:
@@ -920,7 +918,7 @@ def delete_cluster(name):
 
     cluster = vc3_client.getCluster(clustername=name)
     vc3_client.deleteCluster(clustername=cluster.name)
-    flash('Cluster Template has been successfully deleted', 'success')
+    # flash('Cluster Template has been successfully deleted', 'success')
 
     return redirect(url_for('list_clusters'))
 

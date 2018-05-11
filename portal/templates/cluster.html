@@ -52,7 +52,7 @@
         											<th><input type="text" class="form-control" placeholder="Framework" disabled></th>
         											<th><input type="text" class="form-control" placeholder="Compute Workers" disabled></th>
                               <th><input type="text" class="form-control" placeholder="Head Nodes" disabled></th>
-                              <th><input type="text" class="form-control" placeholder="Description" disabled></th>
+                              <!-- <th><input type="text" class="form-control" placeholder="Description" disabled></th> -->
         										</tr>
         									</thead>
         									<tbody data-link="row" class="rowlink">
@@ -77,13 +77,13 @@
                               <td>
                                 1
                               </td>
-                              <td>
+                              <!-- <td>
                                 {% if cluster.description == None or cluster.description == "" %}
                                   Currently no description
                                 {% else %}
                                   <div id="allocation-description">{{cluster.description}}</div>
                                 {% endif %}
-                              </td>
+                              </td> -->
         										</tr>
         										  {% endif %}
         										{% endfor %}
