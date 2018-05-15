@@ -126,12 +126,11 @@
     											<td>
                             <a href="{{ url_for('view_allocation', name=allocation.name) }}" title="View Allocation">{{ allocation.displayname }}</a>
                           </td>
-
                               {% set allocationname = allocation.name.replace(".", "-") %}
       										<td>
                             <br>
                             <div class="progress" id="{{allocationname}}"></div>
-                            <p id="validation-msg"></p>
+                            <p id="{{allocationname}}validation-msg"></p>
                             <div id="validation-button"></div>
                           </td>
 
@@ -144,14 +143,6 @@
                             {% endfor %}
                             </a>
                           </td>
-
-                          <!-- <td>
-                            {% if allocation.description == None or allocation.description == "" %}
-                              Currently no description
-                            {% else %}
-                              <div id="allocation-description">{{allocation.description}}</div>
-                            {% endif %}
-                          </td> -->
     										</tr>
                           {% endif %}
     										{% endfor %}
@@ -207,19 +198,19 @@ function get_states(name){
       var allocation_id = name.replace(".", "-")
       if(data.state == "ready"){
          $('#'+allocation_id).html("<div class='progress-bar progress-bar-success active' role='progressbar' aria-valuenow='100' aria-valuemin='0' aria-valuemax='100' style='width: 100%'>Ready</div>");
-         $('#validation-msg').html("Add allocation to a project to use.");
+         $('#'+allocation_id+'validation-msg').html("Add allocation to a project to use.");
       } else if(data.state == "new"){
         $('#'+allocation_id).html("<div class='progress-bar progress-bar-striped progress-bar-info active' role='progressbar' style='width: 30%' aria-valuenow='30' aria-valuemin='0' aria-valuemax='100'>New</div>");
-        $('#validation-msg').html(data.statereason);
+        $('#'+allocation_id+'validation-msg').html(data.statereason);
       } else if(data.state == "configured"){
-        $('#'+allocation_id).html("<div class='progress-bar progress-bar-striped progress-bar-warning active' role='progressbar' style='width: 75%' aria-valuenow='75' aria-valuemin='0' aria-valuemax='100'>Configured</div>");
-        $('#validation-msg').html(data.statereason);
+        $('#'+allocation_id).html("<div class='progress-bar progress-bar-striped progress-bar-warning active' role='progressbar' style='width: 75%' aria-valuenow='75' aria-valuemin='0' aria-valuemax='100'>Waiting to be validated</div>");
+        $('#'+allocation_id+'validation-msg').html(data.statereason);
       } else if(data.state == "failure"){
         $('#'+allocation_id).html("<div class='progress-bar progress-bar-striped progress-bar-danger active' role='progressbar' style='width: 100%' aria-valuenow='100' aria-valuemin='0' aria-valuemax='100'>Failure</div>");
-        $('#validation-msg').html(data.statereason);
+        $('#'+allocation_id+'validation-msg').html(data.statereason);
       } else if(data.state == "validation_failure"){
         $('#'+allocation_id).html("<div class='progress-bar progress-bar-danger' role='progressbar' style='width: 75%' aria-valuenow='75' aria-valuemin='0' aria-valuemax='100'>Validation Failure</div>");
-        $('#validation-msg').html(data.statereason);
+        $('#'+allocation_id+'validation-msg').html(data.statereason);
       }
 
       // $('#test').html(data.state);
