@@ -33,7 +33,7 @@
                   <form role="form" action="{{url_for('create_request', project=project)}}" method="POST">
 
                     <div class="form-group">
-                      <label for="name">Virtual Cluster Name (no dot notation)<span id="asterik">*</span></label>
+                      <label for="name">Virtual Cluster Name (A-z, 0-9, _ and -)<span id="asterik">*</span></label>
                       <input
                         placeholder="Your Virtual Cluster name"
                         name="name"
@@ -86,7 +86,7 @@
 
                     <div class="form-group">
                       <label for="expiration">Expiration</label>
-                      <p>If not selected, expiration defaults to 1 day from launch.</p>
+                      <p>If not selected, expiration defaults to 1 hour from launch.</p>
                         <!-- <label for="hours">Date/Time Select:</label>
                         <input type="datetime-local" name="hours"
                         class="form-control border-input"
