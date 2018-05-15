@@ -192,17 +192,11 @@ def show_profile_page():
 
     vc3_client = get_vc3_client()
     userlist = vc3_client.listUsers()
-    projects = vc3_client.listProjects()
-    nodesets = vc3_client.listNodesets()
-    virtualclusters = vc3_client.listRequests()
 
     if request.method == 'GET':
         profile = None
         sshpubstring = None
         name = None
-        user_projects = 0
-        user_virtualclusters = 0
-        user_nodes = 0
 
         for user in userlist:
             if session['primary_identity'] == user.identity_id:
@@ -219,15 +213,6 @@ def show_profile_page():
             session['primary_identity'] = profile.identity_id
             if profile.sshpubstring is not None:
                 sshpubstring = profile.sshpubstring
-            for project in projects:
-                if profile.name in project.members:
-                    user_projects += 1
-            for vc in virtualclusters:
-                if profile.name == vc.owner:
-                    user_virtualclusters += 1
-            for nodeset in nodesets:
-                if profile.name == nodeset.owner:
-                    user_nodes += nodeset.node_number
         else:
             if session['email'] not in whitelist_email:
                 return redirect(url_for('whitelist_error'))
@@ -239,10 +224,7 @@ def show_profile_page():
             session['next'] = get_safe_redirect()
 
         return render_template('profile.html', userlist=userlist,
-                               profile=profile, name=name,
-                               user_projects=user_projects,
-                               user_virtualclusters=user_virtualclusters,
-                               user_nodes=user_nodes)
+                               profile=profile, name=name)
     elif request.method == 'POST':
         first = request.form['first']
         last = request.form['last']
