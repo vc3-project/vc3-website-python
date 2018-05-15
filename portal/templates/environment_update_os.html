@@ -1,0 +1,67 @@
+{%extends "loginbase.html"%}
+
+{%block title%}Update Required OS{%endblock%}
+
+{%block body%}
+{%include 'messages.html'%}
+
+<div class="content">
+  <div class="container-fluid">
+    <div class="row">
+
+      <div class="col-md-12">
+        <div class="card">
+
+          <div class="header">
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item"><a href="{{url_for('portal')}}">Portal</a></li>
+              <li class="breadcrumb-item"><a href="{{url_for('list_environments')}}">Environments</a></li>
+              <li class="breadcrumb-item active">Update Environment OS</li>
+            </ol>
+            <h4 class="title">Update Environment OS</h4>
+            <h5></h5>
+            <label><span id="asterik">*</span> <small style="color:black">= indicates required field</small></label>
+						<hr/>
+          </div>
+
+          <div class="content description">
+  					<div class="card-block">
+
+              <div class="row">
+        				<div class="col-md-6">
+
+                  <form role="form" action="{{url_for('edit_environment_os')}}" method="POST">
+
+
+                    <div class="form-group">
+                      <label for="required_os">Operating Systems List (Optional)</label>
+                      <select class="form-control selectpicker"
+                      name="required_os"
+                      tabindex="3" id="form-resource-list"
+                      data-live-search="true"
+                      data-header="Select Operating System (None to use native OS)">
+                        <option value="" selected disabled>Select Environment</option>
+                        {% for os in oss %}
+                        <option data-tokens="{{os}}" value="{{os}}">{{ os }}</option>
+                        {% endfor %}
+                      </select>
+                    </div>
+
+                    <div class="form-group">
+                      <a href="{{url_for('list_environments')}}" class="btn btn-primary" tabindex="6" title="Cancel">Cancel</a>
+                      <button type="submit" tabindex="7" class="btn btn-create">Update Environment OS</button>
+                    </div>
+                  </form>
+        				</div>
+
+        			</div> <!-- row -->
+            </div><!-- /.card-block -->
+          </div><!-- /.card description-->
+        </div><!-- /.card -->
+  		</div><!-- /.col-md-6 -->
+
+    </div>
+  </div>
+</div>
+
+{%endblock%}

@@ -229,12 +229,13 @@ def show_profile_page():
                 if profile.name == nodeset.owner:
                     user_nodes += nodeset.node_number
         else:
-            if session['email'] not in whitelist_email:
-                return redirect(url_for('whitelist_error'))
-                pass
-            else:
-                flash('Please complete any missing profile fields before '
-                      'launching a cluster.', 'warning')
+            pass
+            # if session['email'] not in whitelist_email:
+            #     return redirect(url_for('whitelist_error'))
+            #     pass
+            # else:
+            #     flash('Please complete any missing profile fields before '
+            #           'launching a cluster.', 'warning')
 
         if request.args.get('next'):
             session['next'] = get_safe_redirect()
@@ -417,7 +418,7 @@ def authcallback():
             return redirect(url_for('show_profile_page',
                                     next=url_for('show_profile_page')))
         if session['email'] not in whitelist_email:
-            return redirect(url_for('whitelist_error'))
+            # return redirect(url_for('whitelist_error'))
             pass
 
         return redirect(url_for('portal'))
@@ -1711,6 +1712,50 @@ def add_envmap(name):
         # flash('Successfully created added new environment variable', 'success')
 
         return redirect(url_for('view_environment', name=name))
+
+
+@app.route('/environments/edit/<name>', methods=['GET', 'POST'])
+@authenticated
+def edit_environment_os(name):
+    """
+    Route to edit specific Environment OS
+
+    :param name: name attribute of Environment
+    :return: Directs to detailed page view of Environments with updated attributes
+    """
+    vc3_client = get_vc3_client()
+
+    oss = subprocess.check_output(["/usr/bin/vc3-builder", "--list=os"])
+    os_list = oss.split()
+
+    if request.method == 'GET':
+        environment = vc3_client.getEnvironment(environmentname=name)
+        return render_template('environment_update_os.html',
+                                environment=environment, name=name,
+                                oss=os_list)
+
+    elif request.method == 'POST':
+
+        required_os = request.form.get('required_os', None)
+        required_os_strict = None
+
+        if required_os is not None:
+            os, version = required_os.split(":")
+            required_os_strict = "{0}:{1}:{1}".format(os, version)
+
+        try:
+            updated_environment = vc3_client.getEnvironment(environmentname=name)
+            updated_environment.required_os = required_os_strict
+            vc3_client.storeEnvironment(updated_environment)
+        except:
+            environments = vc3_client.listEnvironments()
+            flash('You have already created an environment with that name.', 'warning')
+            return render_template('environment_new.html', name=name,
+                                   required_os=required_os,
+                                   environments=environments,
+                                   oss=os_list)
+
+        return redirect(url_for('list_environments'))
 
 
 @app.route('/environments/delete/<name>', methods=['GET'])
