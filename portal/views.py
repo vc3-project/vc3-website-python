@@ -392,7 +392,7 @@ def authcallback():
         # if not inst_username:
         #     return render_template('email_error.html')
 
-        if not (email.split("@")[-1].split(".")[-1] in ["edu", "gov", "org"]):
+        if not (email.split("@")[-1].split(".")[-1] in ["edu", "gov", "org", "ch"]):
             return render_template('email_error.html')
 
         for user in userlist:
