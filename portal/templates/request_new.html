@@ -18,8 +18,8 @@
               <li class="breadcrumb-item"><a href="{{url_for('list_requests')}}">Virtual Clusters</a></li>
               <li class="breadcrumb-item active">New Virtual Cluster</li>
             </ol>
-            <h4 class="title">Launch New Virtual Cluster</h4>
-            <!-- <h5>A project connects your allocations to your team members</h5> -->
+            <h4 class="title">Project: <strong>{{project}}</strong></h4>
+            <h3>Launch New Virtual Cluster</h3>
             <label><span id="asterik">*</span> <small style="color:black">= indicates required field</small></label>
 						<hr/>
           </div>
@@ -86,7 +86,8 @@
 
                     <div class="form-group">
                       <label for="expiration">Expiration</label>
-                      <p>If not selected, expiration defaults to 1 hour from launch.</p>
+                      <p>If not specified, expiration defaults to 1 hour from
+                        launch, when your virtual cluster will be terminated.</p>
                         <!-- <label for="hours">Date/Time Select:</label>
                         <input type="datetime-local" name="hours"
                         class="form-control border-input"
@@ -102,7 +103,7 @@
                     </div>
 
 
-                    <div class="form-group">
+                    <!-- <div class="form-group">
                       <label for="description">Description (optional)</label>
                       <textarea
                         placeholder="A brief description..."
@@ -115,7 +116,7 @@
                         value="{{request.description}}"
                         >{{description}}</textarea>
                       <span class="help-block exceeded"></span>
-                    </div>
+                    </div> -->
 
                     <div class="form-group">
                       <a href="{{url_for('list_requests')}}" class="btn btn-primary" tabindex="10" title="Cancel">Cancel</a>

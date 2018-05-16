@@ -19,13 +19,14 @@
           	<h4 class="title row">Virtual Cluster:
               {{name}}
             </h4>
-            <h5>Description: {{description}}</h5>
+            <h5></h5>
 
-            <div class="row">
-              <div class="pull-left col-sm-12 col-md-6">
+            <div class="title row">
+              <!-- <div class="pull-left">
                 <a href="{{url_for('edit_request', name=name)}}" class="btn btn-create btn-xs">Update Description</a>
   						</div>
-              <div class="delete_entity col-sm-12 col-md-6">
+            <hr /> -->
+              <div class="delete_entity">
               {% if profile.name == owner %}
                 {% if state == "terminating" %}
                 {% elif state == "terminated" %}
@@ -57,7 +58,7 @@
 
           <div class="content description">
   					<div class="card-block">
-              <div class="col-md-6">
+              <div class="col-md-5">
                 <div class="panel panel-info resource-profile" style="margin: 1em;">
                   <div class="panel-heading">
                     <h3 class="panel-title"><strong>Owner</strong></h3>
@@ -184,7 +185,7 @@
                 </div>
               </div><!-- /.col-md-6-->
 
-              <div class="col-md-6">
+              <div class="col-md-7">
 
                 <h2 class="title">
                   <small>Node Access</small>
@@ -200,7 +201,7 @@
                       </h5>
                     </div>
                     <div id="collapseOne" class="collapse" role="tabpanel" aria-labelledby="headingOne">
-                      <div class="card-block panel-body disabled" style="font-size: 16px">
+                      <div class="card-block panel-body disabled">
                         <ol>
                           {% if vc3_request.headnode and vc3_request.headnode.app_host and vc3_request.headnode.state == 'running' %}
                           <li>In a terminal, type:

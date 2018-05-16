@@ -1351,8 +1351,8 @@ def create_request(project):
 
             # expiration = expiration.replace(microsecond=0).isoformat()
 
-        description_input = request.form['description']
-        description = str(description_input)
+        # description_input = request.form['description']
+        # description = str(description_input)
 
         for selected_environment in request.form.getlist('environment'):
             environments.append(selected_environment)
@@ -1368,7 +1368,7 @@ def create_request(project):
                                                   environments=environments,
                                                   policy=policy,
                                                   expiration=expiration,
-                                                  description=description, displayname=displayname)
+                                                  displayname=displayname)
             vc3_client.storeRequest(newrequest)
         except:
             owner = session['name']
@@ -1376,8 +1376,8 @@ def create_request(project):
             environment = request.form['environment']
             project = project
             policy = "static-balanced"
-            description_input = request.form['description']
-            description = str(description_input)
+            # description_input = request.form['description']
+            # description = str(description_input)
 
             allocations = vc3_client.listAllocations()
             clusters = vc3_client.listClusters()
@@ -1388,12 +1388,11 @@ def create_request(project):
             return render_template('request_new.html', cluster=cluster,
                                    clusters=clusters, environments=environments,
                                    project=project, projects=projects,
-                                   description=description, environment=environment,
-                                   allocations=allocations)
+                                   environment=environment, allocations=allocations)
 
         # flash('Your Virtual Cluster has been successfully launched.', 'success')
 
-        return redirect(url_for('list_requests'))
+        return redirect(url_for('view_request', name=vc3requestname))
 
 
 @app.route('/request/<name>', methods=['GET', 'POST'])

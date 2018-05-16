@@ -2354,8 +2354,8 @@ body > .navbar-collapse {
 
     .card .card-block {
       padding-bottom: 10px;
-      padding-left: 15px;
-      padding-right: 10px;
+      /* padding-left: 15px; */
+      /* padding-right: 10px; */
       /*text-align: center;*/
     }
     .card #portal-home-block {
@@ -2550,7 +2550,7 @@ textarea {
 .resource-profile {
   background-color: transparent;
   border-color: rgba(0,0,0,0.09);
-  font-size: 18px;
+  /* font-size: 18px; */
 }
 .resource-profile .panel-heading {
   background-color: rgba(0,0,0,0.03);
