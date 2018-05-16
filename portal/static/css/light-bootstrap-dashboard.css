@@ -2772,7 +2772,7 @@ footer a:hover {
   border: 1px solid #c0c0c0;
   background: #ffffff;
   border-radius: 2px;
-  padding: 20px;
+  padding: 12px;
   -webkit-box-shadow: 0 1px 6px rgba(0, 0, 0, 0.175);
   box-shadow: 0 1px 6px rgba(0, 0, 0, 0.175);
 }
@@ -2794,6 +2794,7 @@ footer a:hover {
 .timeline .timeline-item .timeline-panel .timeline-body > p,
 .timeline .timeline-item .timeline-panel .timeline-body > ul {
   margin-bottom: 0;
+  font-size: 12px;
 }
 .timeline .timeline-item .timeline-panel .timeline-body > p + p {
   margin-top: 5px;
@@ -2828,7 +2829,7 @@ footer a:hover {
 }
 .timeline-horizontal .timeline-item {
   display: table-cell;
-  height: 285px;
+  height: 195px;
   /* width: 20%; */
   min-width: 320px;
   float: none !important;
@@ -2865,4 +2866,12 @@ footer a:hover {
   top: auto;
   bottom: 0px;
   left: 43px;
+}
+
+/* Override panel padding for States Explanation */
+
+.state-description .panel-body {
+  padding: 0px;
+  padding-left: 10px;
+  padding-right: 10px;
 }
