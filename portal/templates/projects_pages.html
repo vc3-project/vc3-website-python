@@ -57,6 +57,7 @@
                       				<th><input type="text" class="form-control" placeholder="Name" disabled></th>
                       				<th><input type="text" class="form-control" placeholder="Email" disabled></th>
                       				<th><input type="text" class="form-control" placeholder="Organization" disabled></th>
+                              <th></th>
                       			</tr>
                       		</thead>
                       		<tbody data-link="row" class="rowlink">
@@ -84,6 +85,11 @@
                       			{% for user in users %}
                       				{% if user.name == member and user.name != project.owner %}
                       			<tr>
+                              <td>
+                                <div>
+                                  {{user.first}} {{user.last}}
+                                </div>
+                      				</td>
                       				<td>
                       					<div>
                                   {{user.email}}
@@ -96,16 +102,13 @@
                               </td>
                               <td>
                                 <form role="form" action="{{url_for('remove_member_from_project', name=name)}}" method="POST">
-                        					<div>
-                                    {{user.first}} {{user.last}}
-                                  </div>
                                 {% if (session['name'] == owner or session['name'] == member) %}
                                   <div>
                                     <button type="submit" name="submit" value="{{user.name}}" class="btn btn-danger btn-xs pull-right" data-submit="Removing User...">Remove User</button>
                                   </div>
                                 {% endif %}
                               </form>
-                      				</td>
+                              </td>
                       			</tr>
                       				{% endif %}
                       			{% endfor %}
