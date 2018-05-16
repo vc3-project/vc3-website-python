@@ -1538,6 +1538,18 @@ def relaunch_virtualcluster(name):
     if virtual_cluster.name == name:
         virtual_cluster.action = "relaunch"
 
+    # h = int(request.form['hours'])
+    h = 2
+    if h == 0:
+        expiration = None
+    else:
+        now = datetime.utcnow()
+        t_delta = timedelta(hours=h)
+        expiration = now + t_delta
+        expiration = expiration.replace(microsecond=0).isoformat()
+
+    virtual_cluster.expiration = expiration
+
     vc3_client.storeRequest(virtual_cluster)
     # flash('Allocation is validating', 'warning')
     return redirect(url_for('view_request', name=name))

@@ -279,7 +279,9 @@ function get_states(name){
         $('#'+request_id).html("<div class='progress-bar progress-bar-striped progress-bar-danger' role='progressbar' style='width: 100%' aria-valuenow='100' aria-valuemin='0' aria-valuemax='100'>Terminated</div>");
         $('#'+request_statereason).html(data.statereason);
         $('#relaunch-btn').html("<a href='{{url_for('relaunch_virtualcluster', name=name)}}' class='btn btn-create btn-xs' title='Relaunch Virtual Cluster'>Relaunch</a>");
-      } else if(data.action == "relaunch"){
+      }
+
+      if(data.action == "relaunch"){
         $('#'+request_id).html("<div class='progress-bar progress-bar-striped progress-bar-info active' role='progressbar' style='width: 25%' aria-valuenow='25' aria-valuemin='0' aria-valuemax='100'>Relaunching</div>");
         $('#'+request_statereason).html(data.statereason);
       }

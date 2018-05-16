@@ -620,6 +620,7 @@ body > .navbar-collapse {
   color: #FFFFFF;
   background-color: #337ab7;
   opacity: 0.86;
+  box-shadow: 1px 1px 1px 1px #888888;
 }
 .btn-create:hover, .btn-create:focus, .btn-create:active, .btn-create.active, .open > .btn-create.dropdown-toggle {
   background-color: #337ab7;
