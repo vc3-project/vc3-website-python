@@ -43,7 +43,9 @@ whitelist_email = ['jeremyvan@uchicago.edu', 'briedel@uchicago.edu',
                    'czheng2@nd.edu', 'pivie@nd.edu',
                    'jlstephen@uchicago.edu', 'balamurugan@uchicago.edu',
                    'gfarr@uchicago.edu', 'ddl@illinois.edu',
-                   'ivukotic@uchicago.edu', 'ivukotic@cern.ch', 'klannon@nd.edu']
+                   'ivukotic@uchicago.edu', 'ivukotic@cern.ch',
+                   'klannon@nd.edu', 'rob.rwg@gmail.com',
+                   'rwg@hep.uchicago.edu', 'robert.w.gardner@cern.ch']
 
 # Create a custom error handler for Exceptions
 
@@ -374,7 +376,7 @@ def authcallback():
         # if not inst_username:
         #     return render_template('email_error.html')
 
-        if not (email.split("@")[-1].split(".")[-1] in ["edu", "gov", "org", "ch"]):
+        if not (email.split("@")[-1].split(".")[-1] in ["edu", "gov", "org", "ch", 'com']):
             return render_template('email_error.html')
 
         for user in userlist:
