@@ -220,7 +220,7 @@ body > .navbar-collapse {
     position: fixed;
     max-height: calc(100vh - 75px);
     min-height: 100%;
-    overflow: auto;
+    /* overflow: visible; */
     width: 260px;
     z-index: 4;
     padding-top: 70px;
@@ -2421,7 +2421,7 @@ RESOURCE PROFILE INDEX PAGE
 .filterable {
     margin-top: 15px;
     border-color: #b3b3b3;
-    font-size: 14px;
+    font-size: 12px;
 }
 .filterable .panel-heading .pull-right {
     margin-top: -25px;
@@ -2462,6 +2462,13 @@ RESOURCE PROFILE INDEX PAGE
   /* background-color: rgba(0,0,0,0.03); */
   color: #fdfcf7;
   border-color: #2b2b2b;
+}
+
+.filterable .form-control {
+  font-size: 12px;
+}
+.filterable #cores {
+  min-width: 100px;
 }
 .filterable button {
   font-size: 12px;
