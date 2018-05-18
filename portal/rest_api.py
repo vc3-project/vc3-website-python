@@ -64,6 +64,7 @@ def allocation(name):
         if x.name == name:
             sanitized_obj = {'name': x.name,
                              'state': x.state,
+                             'action': x.action,
                              'owner': x.owner,
                              'displayname': x.displayname,
                              'description': x.description,

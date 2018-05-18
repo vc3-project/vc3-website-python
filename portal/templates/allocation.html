@@ -31,12 +31,16 @@
   						<div class="card-block">
 
                 <div class="row">
+                  <div id="accordion" role="tablist" aria-multiselectable="true">
                   <div class="card panel panel-info resource-profile state-description" style="margin: 1em;">
                     <div class="card-header panel-title" role="tab" id="headingTwo" style="margin: 1em;">
                       <h5 class="mb-0">
+                        <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
                           Allocation States <i class="fa fa-info-circle" aria-hidden="true"></i>
+                        </a>
                       </h5>
                     </div>
+                    <div id="collapseTwo" class="collapse" role="tabpanel" aria-labelledby="headingTwo">
                     <div class="card-block panel-body" style="font-size: 16px">
                 			<div style="display:inline-block;width:100%;overflow-y:auto;">
                     		<ul class="timeline timeline-horizontal">
@@ -98,8 +102,10 @@
                     		</ul>
                       </div>
                 	  </div>
+                  </div>
 
                   </div>
+                </div>
           			</div>
 
   							<div class="panel panel-primary filterable">

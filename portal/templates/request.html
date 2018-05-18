@@ -33,13 +33,17 @@
   						<div class="card-block">
 
                 <div class="row">
+                  <div id="accordion" role="tablist" aria-multiselectable="true">
 
                   <div class="card panel panel-info resource-profile state-description" style="margin: 1em;">
                     <div class="card-header panel-title" role="tab" id="headingTwo" style="margin: 1em;">
                       <h5 class="mb-0">
-                          Virtual Cluster States <i class="fa fa-info-circle" aria-hidden="true"></i>
+                          <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                            Virtual Cluster States <i class="fa fa-info-circle" aria-hidden="true"></i>
+                          </a>
                       </h5>
                     </div>
+                    <div id="collapseTwo" class="collapse" role="tabpanel" aria-labelledby="headingTwo">
                     <div class="card-block panel-body" style="font-size: 16px">
                 			<div style="display:inline-block;width:100%;overflow-y:auto;">
                   			<ul class="timeline timeline-horizontal">
@@ -127,6 +131,8 @@
                 		  </div>
                     </div>
                   </div>
+                  </div>
+                </div>
 
           			</div><!--./row-->
 
@@ -142,10 +148,11 @@
     									<thead>
     										<tr class="filters">
     											<th><input type="text" class="form-control" placeholder="Name" disabled></th>
-    											<th><input type="text" class="form-control" placeholder="State" disabled></th>
-                          <th><input type="text" class="form-control" placeholder="Cluster Template" disabled></th>
-    											<th><input type="text" class="form-control" placeholder="Workers" disabled></th>
+    											<th><input type="text" class="form-control" placeholder="Project" disabled></th>
                           <th><input type="text" class="form-control" placeholder="Head Node" disabled></th>
+    											<th><input type="text" class="form-control" placeholder="Workers" disabled></th>
+                          <th><input type="text" class="form-control" placeholder="State" disabled></th>
+                          <th><input type="text" class="form-control" placeholder="Cluster Template" disabled></th>
     										</tr>
     									</thead>
     									<tbody data-link="row" class="rowlink">
@@ -159,51 +166,11 @@
                             </a>
                           </td>
 
+                          <td>
+                            {{ request.project }}
+                          </td>
+
                           {% set requestname = request.name.replace(".", "-") %}
-                          {% set request_statereason = requestname + '_statereason' %}
-                          {% set request_statusinfo = requestname + '_statusinfo' %}
-                          {% set request_statusinfo_requested = requestname + '_statusinfo_requested' %}
-                          {% set request_statusinfo_running = requestname + '_statusinfo_running' %}
-                          {% set request_statusinfo_idle = requestname + '_statusinfo_idle' %}
-                          {% set request_statusinfo_error = requestname + '_statusinfo_error' %}
-                          {% set request_headnode_app_host = requestname + '_headnode_app_host' %}
-                          <td>
-                            <br>
-                            <div id="{{requestname}}" class="progress"></div>
-                            <small id="{{request_statereason}}"></small>
-                          </td>
-
-                          <td>
-                            <div>{{request.cluster}}</div>
-                          </td>
-
-                          <td>
-                            <div class="row">
-                              <small class="pull-right" id="node-status">Requested:
-                                <span class="label label-info" style="color:white" id="{{request_statusinfo_requested}}">
-                                </span>
-                              </small>
-                            </div>
-                            <div class="row">
-                              <small class="pull-right" id="node-status">Running:
-                                <span class="label label-success" style="color:white" id="{{request_statusinfo_running}}">
-                                </span>
-                              </small>
-                            </div>
-                            <div class="row">
-                              <small class="pull-right" id="node-status">Queued:
-                                <span class="label label-warning" id="{{request_statusinfo_idle}}" style="color:white">
-                                </span>
-                              </small>
-                            </div>
-                            <div class="row">
-                              <small class="pull-right" id="node-status">Error:
-                                <span class="label label-danger" style="color:white" id="{{request_statusinfo_error}}">
-                                </span>
-                              </small>
-                            </div>
-                          </td>
-
                           {% set request_headnode_app_host = requestname + '_headnode_app_host' %}
                           <td>
                             <!-- <div class="row" id="{{request_headnode_app_host}}"> -->
@@ -227,6 +194,52 @@
                               {% endif %}
                             </div>
                           </td>
+
+                          {% set request_statereason = requestname + '_statereason' %}
+                          {% set request_statusinfo = requestname + '_statusinfo' %}
+                          {% set request_statusinfo_requested = requestname + '_statusinfo_requested' %}
+                          {% set request_statusinfo_running = requestname + '_statusinfo_running' %}
+                          {% set request_statusinfo_idle = requestname + '_statusinfo_idle' %}
+                          {% set request_statusinfo_error = requestname + '_statusinfo_error' %}
+                          {% set request_headnode_app_host = requestname + '_headnode_app_host' %}
+
+                          <td>
+                            <div class="row">
+                              <small class="" id="node-status">Requested:
+                                <span class="label label-info" style="color:white" id="{{request_statusinfo_requested}}">
+                                </span>
+                              </small>
+                            </div>
+                            <div class="row">
+                              <small class="" id="node-status">Running:
+                                <span class="label label-success" style="color:white" id="{{request_statusinfo_running}}">
+                                </span>
+                              </small>
+                            </div>
+                            <div class="row">
+                              <small class="" id="node-status">Queued:
+                                <span class="label label-warning" id="{{request_statusinfo_idle}}" style="color:white">
+                                </span>
+                              </small>
+                            </div>
+                            <div class="row">
+                              <small class="" id="node-status">Error:
+                                <span class="label label-danger" style="color:white" id="{{request_statusinfo_error}}">
+                                </span>
+                              </small>
+                            </div>
+                          </td>
+
+                          <td>
+                            <br>
+                            <div id="{{requestname}}" class="progress"></div>
+                            <small id="{{request_statereason}}"></small>
+                          </td>
+
+                          <td>
+                            <div>{{request.cluster}}</div>
+                          </td>
+
     										</tr>
                         <!-- endif  -->
                       {% endif %}
