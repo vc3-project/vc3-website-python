@@ -2470,6 +2470,15 @@ RESOURCE PROFILE INDEX PAGE
 .filterable #cores {
   min-width: 100px;
 }
+.filterable #mem_core {
+  min-width: 100px;
+}
+.filterable #disk_space {
+  min-width: 100px;
+}
+.filterable #containers {
+  min-width: 100px;
+}
 .filterable button {
   font-size: 12px;
   color: #111;

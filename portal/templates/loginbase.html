@@ -57,6 +57,20 @@
           <img src="https://image.ibb.co/e59s3v/logosmall.png" alt="" title="" width="100px" height="100px" /></img>
         </a> -->
       </div>
+			{% if session['email'] in ['jeremyvan@uchicago.edu', 'briedel@uchicago.edu',
+			                   'btovar@nd.edu', 'burt@fnal.gov', 'czheng2@nd.edu',
+			                   'dthain@nd.edu', 'jcaballero@bnl.gov',
+			                   'jgentle@tacc.utexas.edu', 'jhover@bnl.gov',
+			                   'khurtado@nd.edu', 'Kyle.D.Sweeney.84@nd.edu',
+			                   'lincolnb@uchicago.edu', 'nhazekam@nd.edu',
+			                   'rwg@uchicago.edu', 'sthapa@ci.uchicago.edu',
+			                   'sthapa@uchicago.edu', 'tshaffe1@nd.edu',
+			                   'czheng2@nd.edu', 'pivie@nd.edu',
+			                   'jlstephen@uchicago.edu', 'balamurugan@uchicago.edu',
+			                   'gfarr@uchicago.edu', 'ddl@illinois.edu',
+			                   'ivukotic@uchicago.edu', 'ivukotic@cern.ch',
+			                   'klannon@nd.edu', 'rob.rwg@gmail.com',
+			                   'rwg@hep.uchicago.edu', 'robert.w.gardner@cern.ch'] %}
       <ul class="nav" id="side-nav">
 				<li class="side-nav-list" id="resource">
 					<div class="floatcontainer">
@@ -142,6 +156,7 @@
           </a>
         </li>
 				{% endif %}
+			{% endif %}
       </ul>
     </div>
   </div>
@@ -165,7 +180,8 @@
 				<div class="collapse navbar-collapse">
 
 					<div class="nav navbar-nav navbar-right">
-						{% if session['name'] and session['first'] %}
+						{% if white_list_error %}
+						{% elif session['name'] and session['first']%}
 						<a class="navbar-brand" href="{{url_for('show_profile_page')}}">{{session['first']}} {{session['last']}}</a>
 						{% else %}
 						<a class="navbar-brand" href="{{url_for('show_profile_page')}}">Profile</a>
@@ -190,7 +206,7 @@
 
   <!--   Core JS Files   -->
 	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0/jquery.min.js"></script>
-	<script type="text/javascript" src="https://www.jqueryscript.net/demo/Twitter-Like-Text-Box-Character-Counter-with-jQuery-Bootstrap/jquery.charactercounter.js"></script>
+	<!-- <script type="text/javascript" src="https://www.jqueryscript.net/demo/Twitter-Like-Text-Box-Character-Counter-with-jQuery-Bootstrap/jquery.charactercounter.js"></script> -->
 	<script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.4/js/bootstrap-select.min.js"></script>
 	<script type="text/javascript" src="https://raw.githubusercontent.com/mistic100/Bootstrap-Confirmation/master/bootstrap-confirmation.min.js"></script>

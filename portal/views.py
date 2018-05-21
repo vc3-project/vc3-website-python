@@ -216,6 +216,7 @@ def show_profile_page():
             session['primary_identity'] = profile.identity_id
             if profile.sshpubstring is not None:
                 sshpubstring = profile.sshpubstring
+                session['ssh'] = sshpubstring
         else:
             if session['email'] not in whitelist_email:
                 return redirect(url_for('whitelist_error'))
@@ -393,6 +394,7 @@ def authcallback():
             session['institution'] = profile.organization
             session['primary_identity'] = profile.identity_id
             session['displayname'] = profile.displayname
+            session['ssh'] = profile.sshpubstring
         else:
             session['name'] = ids["identities"][0]['name']
             session['organization'] = ids["identities"][0]['organization']
@@ -409,7 +411,8 @@ def authcallback():
 @app.route('/beta', methods=['GET'])
 def whitelist_error():
     """Whitelist Erorr Page - for users not within alpha testing scope"""
-    return render_template('whitelist_error.html')
+    white_list_error = True
+    return render_template('whitelist_error.html', white_list_error=white_list_error)
 
 # -----------------------------------------
 # LOGGED IN PORTAL ROUTES
@@ -444,6 +447,7 @@ def portal():
             session['primary_identity'] = profile.identity_id
             if profile.sshpubstring is not None:
                 sshpubstring = profile.sshpubstring
+                session['ssh'] = sshpubstring
             # removed count here
         else:
             # if session['primary_identity'] not in ["c887eb90-d274-11e5-bf28-779c8998e810", "05e05adf-e9d4-487f-8771-b6b8a25e84d3", "c4686d14-d274-11e5-b866-0febeb7fd79e", "be58c8e2-fc13-11e5-82f7-f7141a8b0c16", "c456b77c-d274-11e5-b82c-23a245a48997", "f1f26455-cbd5-4933-986b-47c57ee20987", "aebe29b8-d274-11e5-ba4b-ffec0df955f2", "c444a294-d274-11e5-b7f1-e3782ed16687", "9c1c1643-8726-414f-85dc-aca266099304"]:
@@ -657,7 +661,7 @@ def add_allocation_to_project(name):
     app.logger.error("Could not find project when adding allocation: " +
                      "alloc: {0} project:{1}".format(new_allocation, name))
     flash('Project not found, could not add allocation to project', 'warning')
-    return redirect(url_for('view_project', name=allocationhash))
+    return redirect(url_for('view_project', name=name))
 
 
 @app.route('/project/<name>/removeallocation', methods=['POST'])
