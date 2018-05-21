@@ -96,8 +96,8 @@
                       <h3 class="panel-title"><strong>Step 4: Validate Allocation</strong></h3>
                     </div>
                     <div class="panel-body">
-                      If your allocation state is still in the "configured" state, please click the "Validate" button below:
-                      <br>
+                      <!-- If your allocation state is still in the "configured" state, please click the "Validate" button below: -->
+                      <!-- <br> -->
                       <div id="validation-button"></div>
                     </div>
                   </div>
@@ -231,18 +231,13 @@ function get_states(name){
     dataType: 'json',
     success: function(data){
       var allocation_id = name.replace(".", "-")
-      if(data.action == "validate"){
-        $('#'+allocation_id).html("<div class='progress-bar progress-bar-striped progress-bar-info active' role='progressbar' style='width: 85%' aria-valuenow='85' aria-valuemin='0' aria-valuemax='100'>Attempting validation...</div>");
-        $('#validation-button').html("");
-        $('#validation-msg').html("Attempting to validate your allocation.");
-      }
       if(data.state == "new"){
         $('#'+allocation_id).html("<div class='progress-bar progress-bar-striped progress-bar-info active' role='progressbar' style='width: 30%' aria-valuenow='30' aria-valuemin='0' aria-valuemax='100'>New</div>");
-        $('#validation-button').html("");
+        $('#validation-button').html("Waiting to configure your allocation.");
         $('#validation-msg').html(data.statereason);
       } else if(data.state == "configured"){
         $('#'+allocation_id).html("<div class='progress-bar progress-bar-striped progress-bar-warning active' role='progressbar' style='width: 75%' aria-valuenow='75' aria-valuemin='0' aria-valuemax='100'>Waiting to be validated...</div>");
-        $('#validation-button').html("<a href='{{url_for('validate_allocation', name=name)}}' class='btn btn-create btn-xs' title='Validate Allocation'>Validate</a>");
+        $('#validation-button').html("If your allocation state is still in the 'Waiting to be validated' state, please click the 'Validate' button below:<br><a href='{{url_for('validate_allocation', name=name)}}' class='btn btn-create btn-xs' title='Validate Allocation'>Validate</a>");
         $('#validation-msg').html("Please follow the instructions below and click the Validate button at the bottom.");
       } else if(data.state == "failure"){
         $('#'+allocation_id).html("<div class='progress-bar progress-bar-striped progress-bar-danger active' role='progressbar' style='width: 100%' aria-valuenow='100' aria-valuemin='0' aria-valuemax='100'>Failure</div>");
@@ -250,12 +245,18 @@ function get_states(name){
         $('#validation-msg').html(data.statereason);
       } else if(data.state == "validation_failure"){
         $('#'+allocation_id).html("<div class='progress-bar progress-bar-danger' role='progressbar' style='width: 75%' aria-valuenow='75' aria-valuemin='0' aria-valuemax='100'>Validation Failure</div>");
-        $('#validation-button').html("<a href='{{url_for('validate_allocation', name=name)}}' class='btn btn-create btn-xs' title='Validate Allocation'>Validate</a>");
+        $('#validation-button').html("Validation has failed, please make sure to copy your allocation SSH key onto your resource, and try again.:<br><a href='{{url_for('validate_allocation', name=name)}}' class='btn btn-create btn-xs' title='Validate Allocation'>Validate</a>");
         $('#validation-msg').html("Please make sure to copy your allocation SSH key onto your resource, and try again.");
       } else if(data.state == "ready"){
         $('#'+allocation_id).html("<div class='progress-bar progress-bar-success' role='progressbar' style='width: 100%' aria-valuenow='100' aria-valuemin='0' aria-valuemax='100'>Ready</div>");
-        $('#validation-button').html("");
+        $('#validation-button').html("Your allocation has been validated.");
         $('#validation-msg').html(data.statereason + " Add this allocation to a project in order to launch a Virtual Cluster.");
+      }
+
+      if(data.action == "validate"){
+        $('#'+allocation_id).html("<div class='progress-bar progress-bar-striped progress-bar-info active' role='progressbar' style='width: 85%' aria-valuenow='85' aria-valuemin='0' aria-valuemax='100'>Attempting validation...</div>");
+        $('#validation-button').html("Attempting to be validate your allocation.");
+        $('#validation-msg').html("Attempting to validate your allocation.");
       }
       // $('#test').html(data.state);
       // if($('#test').length != 0){

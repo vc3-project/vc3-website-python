@@ -350,7 +350,9 @@ function get_states(name){
         $('#'+request_headnode_app_host_status).html('Ready');
         $('#'+request_headnode_steps).html("<li>Head Node IP: "+data.headnode_app_host+"</li><li>In a terminal, type: <div><kbd>ssh -i ~/.ssh/id_rsa {{session['name']}}@"+data.headnode_app_host+"</kbd></div></li><li>Members of your project can log in using their SSH keys and VC3 usernames</li>");
       } else if(data.headnode_state == ("terminated" || "failure")){
+        $('#'+request_headnode_app_host_status).html('Terminated');
         $('#'+request_headnode_app_host).html("N/A");
+        $('#'+request_headnode_steps).html("N/A");
       } else {
         $('#'+request_headnode_app_host).html("IP not yet available. Please wait a few moments... "+data.headnode_state);
         $('#'+request_headnode_app_host_status).html('Building...');

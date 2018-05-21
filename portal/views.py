@@ -119,6 +119,7 @@ def list_home_resources():
 
     return render_template('home_resource.html', resources=resources)
 
+
 @app.route('/community', methods=['GET'])
 def community():
     """Send the user to community page"""
@@ -647,6 +648,7 @@ def add_allocation_to_project(name):
     for project in projects:
         if project.name == name:
             name = project.name
+            allocationhash = (str(name) + '#' + 'project-allocations')
             for selected_allocation in request.form.getlist('allocation'):
                 vc3_client.addAllocationToProject(allocation=selected_allocation,
                                                   projectname=name)
@@ -655,7 +657,7 @@ def add_allocation_to_project(name):
     app.logger.error("Could not find project when adding allocation: " +
                      "alloc: {0} project:{1}".format(new_allocation, name))
     flash('Project not found, could not add allocation to project', 'warning')
-    return redirect(url_for('view_project', name=name))
+    return redirect(url_for('view_project', name=allocationhash))
 
 
 @app.route('/project/<name>/removeallocation', methods=['POST'])
@@ -1172,10 +1174,10 @@ def view_resource(name):
     storage_mb = nodeinfo.storage_mb
 
     return render_template('resource_profile.html', name=resourcename,
-                            owner=owner, accessflavor=accessflavor,
-                            resource=resource, description=description,
-                            displayname=displayname, url=url,
-                            docurl=docurl, organization=organization, nodeinfo=nodeinfo)
+                           owner=owner, accessflavor=accessflavor,
+                           resource=resource, description=description,
+                           displayname=displayname, url=url,
+                           docurl=docurl, organization=organization, nodeinfo=nodeinfo)
     app.logger.error("Could not find Resource when viewing: {0}".format(name))
     raise LookupError('resource')
 
@@ -1315,7 +1317,6 @@ def create_request(project):
             t_delta = timedelta(hours=h)
             expiration = now + t_delta
             expiration = expiration.replace(microsecond=0).isoformat()
-
 
         # if request.form['hours']:
         #     date_selected = request.form['hours']
@@ -1470,7 +1471,7 @@ def view_request(name):
                 vc3_client.terminateRequest(requestname=requestname)
 
                 # flash('Your Virtual Cluster has begun termination.',
-                      # 'success')
+                # 'success')
                 return redirect(url_for('view_request', name=requestname))
         flash('Could not find specified Virtual Cluster', 'warning')
         app.logger.error(
@@ -1506,7 +1507,8 @@ def edit_request(name):
                 now = datetime.utcnow()
                 t_delta = timedelta(hours=h)
                 expiration = now + t_delta
-                vc3_request.expiration = expiration.replace(microsecond=0).isoformat()
+                vc3_request.expiration = expiration.replace(
+                    microsecond=0).isoformat()
 
             vc3_client.storeRequest(vc3_request)
         return redirect(url_for('view_request', name=name))
@@ -1586,7 +1588,8 @@ def create_environment():
     recipes = subprocess.check_output(["/usr/bin/vc3-builder", "--list"])
     recipe_list = recipes.split()
 
-    recipes_section = subprocess.check_output(["/usr/bin/vc3-builder", "--list=section"])
+    recipes_section = subprocess.check_output(
+        ["/usr/bin/vc3-builder", "--list=section"])
     recipe_list_section = recipes_section.split()
 
     # expected_sections = ["--- bioinformatics tools", "--- compilation tools",
@@ -1701,7 +1704,6 @@ def add_envmap(name):
         environment.envmap = envmap
         vc3_client.storeEnvironment(environment)
 
-
         # flash('Successfully created added new environment variable', 'success')
 
         return redirect(url_for('view_environment', name=name))
@@ -1724,8 +1726,8 @@ def edit_environment_os(name):
     if request.method == 'GET':
         environment = vc3_client.getEnvironment(environmentname=name)
         return render_template('environment_update_os.html',
-                                environment=environment, name=name,
-                                oss=os_list)
+                               environment=environment, name=name,
+                               oss=os_list)
 
     elif request.method == 'POST':
 
@@ -1737,7 +1739,8 @@ def edit_environment_os(name):
             required_os_strict = "{0}:{1}:{1}".format(os, version)
 
         try:
-            updated_environment = vc3_client.getEnvironment(environmentname=name)
+            updated_environment = vc3_client.getEnvironment(
+                environmentname=name)
             updated_environment.required_os = required_os_strict
             vc3_client.storeEnvironment(updated_environment)
         except:
