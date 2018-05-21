@@ -41,29 +41,33 @@
 
                       <div id="portal-diagram" class="tab-pane fade in active">
                         <div class="row">
-                          <div class="card-block panel-body" style="font-size: 16px">
-                            <h2 class="title">
-                              <small>Steps to Launch a Virtual Cluster</small>
-                            </h2>
-                            <ol>
-                              <li>Register resource <a href="{{url_for('create_allocation')}}">allocations</a>.</li>
-                              <li>Add allocations to projects.</li>
-                              <li>Define a cluster template, or use one from the public library.</li>
-                              <li>Create desired software environment for the workers.</li>
-                              <li>Launch virtual cluster.</li>
-                              <br>
-                              For more information, please visit our <a href="https://vc3-project.github.io/vc3-mkdocs/" target="_blank">documentation guide</a>
-                            </ol>
-                            <img id="vc3diagram-portal" src="{{url_for('static', filename='img/vc3_portal_diagram_num.png')}}">
+                          <div class="card-block panel-body" style="font-size: 13px">
+                            <div class="col-md-7">
+                              <img id="vc3diagram-portal" src="{{url_for('static', filename='img/vc3_portal_diagram_num.png')}}">
+                            </div>
+                            <div class='col-md-5'>
+                              <h2 class="title">
+                                <small>Steps to Launch a Virtual Cluster</small>
+                              </h2>
+                              <ol>
+                                <li>Register resource <a href="{{url_for('create_allocation')}}">allocations</a>.</li>
+                                <li>Add allocations to projects.</li>
+                                <li>Define a cluster template, or use one from the public library.</li>
+                                <li>Create desired software environment for the workers.</li>
+                                <li>Launch virtual cluster.</li>
+                                <br>
+                                For more information, please visit our <a href="https://vc3-project.github.io/vc3-mkdocs/" target="_blank">documentation guide</a>
+                              </ol>
+                            </div>
                           </div>
                         </div><!-- /.row -->
                       </div><!-- #portal-diagram-->
 
                       <div id="internal-diagram" class="tab-pane fade in">
-                        <h2 class="title">
+                        <!-- <h2 class="title">
                           <small>Inside the VC3 Dynamic Infrastructure</small>
-                        </h2>
-                        <hr/>
+                        </h2> -->
+                        <!-- <hr/> -->
                         <div class="row">
                           <img id="vc3diagram" src="{{url_for('static', filename='img/vc3_internal_diagram_updated_180402.png')}}">
                         </div>

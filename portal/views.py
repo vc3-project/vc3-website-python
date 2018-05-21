@@ -1432,6 +1432,7 @@ def view_request(name):
             vc3allocations = vc3_request.allocations
             description = vc3_request.description
             project = vc3_request.project
+            displayname = vc3_request.displayname
 
             headnode = None
             if vc3_request.headnode:
@@ -1455,7 +1456,7 @@ def view_request(name):
                                    action=action, state=state, users=users,
                                    vc3allocations=vc3allocations, project=project,
                                    allocations=allocations, description=description,
-                                   profile=profile, vc3_request=vc3_request)
+                                   profile=profile, vc3_request=vc3_request, displayname=displayname)
         app.logger.error("Could not find VC when viewing: {0}".format(name))
         raise LookupError('virtual cluster')
 
@@ -1470,11 +1471,11 @@ def view_request(name):
 
                 # flash('Your Virtual Cluster has begun termination.',
                       # 'success')
-                return redirect(url_for('list_requests'))
+                return redirect(url_for('view_request', name=requestname))
         flash('Could not find specified Virtual Cluster', 'warning')
         app.logger.error(
             "Could not find VC when terminating: {0}".format(name))
-        return redirect(url_for('list_requests'))
+        return redirect(url_for('view_request', name=requestname))
 
 
 @app.route('/request/edit/<name>', methods=['GET', 'POST'])

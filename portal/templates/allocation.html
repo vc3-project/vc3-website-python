@@ -120,8 +120,8 @@
     									<thead>
     										<tr class="filters">
     											<th><input type="text" class="form-control" placeholder="Allocation Profile" disabled></th>
-    											<th><input type="text" class="form-control" placeholder="State" disabled></th>
     											<th><input type="text" class="form-control" placeholder="Resource" disabled></th>
+    											<th><input type="text" class="form-control" placeholder="State Info" disabled></th>
                           <!-- <th><input type="text" class="form-control" placeholder="Description" disabled></th> -->
     										</tr>
     									</thead>
@@ -132,15 +132,8 @@
     											<td>
                             <a href="{{ url_for('view_allocation', name=allocation.name) }}" title="View Allocation">{{ allocation.displayname }}</a>
                           </td>
-                              {% set allocationname = allocation.name.replace(".", "-") %}
-      										<td>
-                            <br>
-                            <div class="progress" id="{{allocationname}}"></div>
-                            <p id="{{allocationname}}validation-msg"></p>
-                            <div id="validation-button"></div>
-                          </td>
 
-    											<td>
+                          <td>
                             <a href="{{ url_for('view_resource', name=allocation.resource) }}">
                             {% for resource in resources %}
                               {% if allocation.resource == resource.name %}
@@ -149,6 +142,15 @@
                             {% endfor %}
                             </a>
                           </td>
+
+                              {% set allocationname = allocation.name.replace(".", "-") %}
+      										<td>
+                            <br>
+                            <div class="progress" id="{{allocationname}}"></div>
+                            <p id="{{allocationname}}validation-msg"></p>
+                            <div id="validation-button"></div>
+                          </td>
+
     										</tr>
                           {% endif %}
     										{% endfor %}

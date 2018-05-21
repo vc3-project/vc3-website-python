@@ -2657,13 +2657,13 @@ ALLOCATION LIST PAGE
 
 #vc3diagram {
   padding-top: 20px;
-  width: 80%;
-  height: 80%;
+  width: 65%;
+  /* height: 50%; */
 }
 
 #vc3diagram-portal {
-  max-width: 65%;
-  /* height: 50%; */
+  max-width: 100%;
+  max-height: 420px;
 }
 
 #portal-diagram #accordion {
