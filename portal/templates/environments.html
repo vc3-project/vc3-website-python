@@ -117,7 +117,7 @@
         									</thead>
         									<tbody data-link="row" class="rowlink">
         										{% for environment in environments %}
-                              {% if environment.owner == session['name'] %}
+                              {% if environment.public %}
         										<tr>
         											<td>
                                 <a href="{{url_for('view_environment', name=environment.name)}}" title="View Environment">{{ environment.displayname }}</a>
