@@ -22,24 +22,9 @@
             <h5></h5>
 
             <div class="title row">
-              <!-- <div class="pull-left">
-                <a href="{{url_for('edit_request', name=name)}}" class="btn btn-create btn-xs">Update Description</a>
-  						</div>
-            <hr /> -->
-              <div class="delete_entity" id="request_delete">
               {% if profile.name == owner %}
-                {% if state == "terminating" %}
-                {% elif state == "terminated" %}
-                <div class="delete_entity">
-    							<a href="{{url_for('delete_virtualcluster', name=name)}}" class="btn btn-danger btn-xs">Delete Virtual Cluster</a>
-        				</div>
-                {% elif state != ("new" or "cleanup") %}
-                <form action="{{url_for('view_request', name=name)}}" method="POST">
-                  <button type="submit" class="btn btn-danger btn-xs" data-submit="...Terminating Cluster" title="Terminate your Virtual Cluster">Terminate Cluster</button>
-                </form>
-                {% endif %}
+              <div class="delete_entity" id="request_delete"></div>
               {% endif %}
-  						</div>
             </div><!-- /.row -->
 
             <div class="row">
@@ -103,8 +88,11 @@
                   <div class="panel-heading">
                     <h3 class="panel-title"><strong>Expiration</strong></h3>
                   </div>
-                  <div class="panel-body disabled">
-                    {{vc3_request.expiration}}
+                  <div class="panel-body">
+                    {{expiration}}
+                    <div class="pull-right">
+                      <a href="{{url_for('edit_request', name=name)}}" class="btn btn-create btn-xs">Update Expiration</a>
+        						</div>
                   </div>
                 </div>
 
@@ -277,6 +265,13 @@ window.onload = function (){
   }.bind(this), 4000);
 }
 
+function deleteConfirm() {
+    var r = confirm("Are you sure you want to delete this virtual cluster?");
+    if(r == true){
+      window.location.href = "{{url_for('delete_virtualcluster', name=name)}}";
+    }
+}
+
 function get_states(name){
   $.ajax({
     url: "/rest/virtual_cluster/" + name,
@@ -290,36 +285,45 @@ function get_states(name){
         $('#'+request_statereason).html("Scheduling virtual cluster termination");
       } else if(data.state == "new"){
         $('#'+request_id).html("<div class='progress-bar progress-bar-striped progress-bar-info active' role='progressbar' style='width: 25%' aria-valuenow='25' aria-valuemin='0' aria-valuemax='100'>New</div>");
+        $('#request_delete').html("<form action='{{url_for('view_request', name=name)}}' method='POST'><button type='submit' class='btn btn-danger btn-xs' data-submit='...Terminating Cluster' title='Terminate your Virtual Cluster'>Terminate Cluster</button></form>");
         $('#'+request_statereason).html(data.statereason);
       } else if(data.state == "initializing"){
         $('#'+request_id).html("<div class='progress-bar progress-bar-striped progress-bar-warning active' role='progressbar' style='width: 50%' aria-valuenow='50' aria-valuemin='0' aria-valuemax='100'>Initializing</div>");
         $('#'+request_statereason).html(data.statereason);
+        $('#request_delete').html("<form action='{{url_for('view_request', name=name)}}' method='POST'><button type='submit' class='btn btn-danger btn-xs' data-submit='...Terminating Cluster' title='Terminate your Virtual Cluster'>Terminate Cluster</button></form>");
       } else if(data.state == "pending"){
         $('#'+request_id).html("<div class='progress-bar progress-bar-striped progress-bar-warning active' role='progressbar' style='width: 75%' aria-valuenow='75' aria-valuemin='0' aria-valuemax='100'>Pending</div>");
         $('#'+request_statereason).html(data.statereason);
+        $('#request_delete').html("<form action='{{url_for('view_request', name=name)}}' method='POST'><button type='submit' class='btn btn-danger btn-xs' data-submit='...Terminating Cluster' title='Terminate your Virtual Cluster'>Terminate Cluster</button></form>");
       } else if(data.state == "failure"){
         $('#'+request_id).html("<div class='progress-bar progress-bar-striped progress-bar-danger active' role='progressbar' style='width: 100%' aria-valuenow='100' aria-valuemin='0' aria-valuemax='100'>Failure</div>");
         $('#'+request_statereason).html(data.statereason);
+        $('#request_delete').html("<form action='{{url_for('view_request', name=name)}}' method='POST'><button type='submit' class='btn btn-danger btn-xs' data-submit='...Terminating Cluster' title='Terminate your Virtual Cluster'>Terminate Cluster</button></form>");
       } else if(data.state == "running"){
         $('#'+request_id).html("<div class='progress-bar progress-bar-striped progress-bar-success active' role='progressbar' style='width: 100%' aria-valuenow='100' aria-valuemin='0' aria-valuemax='100'>Running</div>");
         $('#'+request_statereason).html(data.statereason);
+        $('#request_delete').html("<form action='{{url_for('view_request', name=name)}}' method='POST'><button type='submit' class='btn btn-danger btn-xs' data-submit='...Terminating Cluster' title='Terminate your Virtual Cluster'>Terminate Cluster</button></form>");
       } else if(data.state == "cleanup"){
         $('#'+request_id).html("<div class='progress-bar progress-bar-striped progress-bar-danger active' role='progressbar' style='width: 66%' aria-valuenow='66' aria-valuemin='0' aria-valuemax='100'>Clean Up</div>");
         $('#'+request_statereason).html(data.statereason);
+        $('#request_delete').html("");
+      } else if(data.state == "terminating"){
+        $('#'+request_id).html("<div class='progress-bar progress-bar-striped progress-bar-danger active' role='progressbar' style='width: 33%' aria-valuenow='33' aria-valuemin='0' aria-valuemax='100'>Terminating</div>");
+        $('#'+request_statereason).html(data.statereason);
       } else if(data.state == "terminated"){
-        $('#'+request_id).html("<div class='progress-bar progress-bar-striped progress-bar-danger' role='progressbar' style='width: 100%' aria-valuenow='100' aria-valuemin='0' aria-valuemax='100'>Terminated</div>");
+        $('#'+request_id).html("<div class='progress-bar progress-bar progress-bar-danger' role='progressbar' style='width: 100%' aria-valuenow='100' aria-valuemin='0' aria-valuemax='100'>Terminated</div>");
         $('#'+request_statereason).html(data.statereason);
         $('#relaunch-btn').html("<a href='{{url_for('relaunch_virtualcluster', name=name)}}' class='btn btn-create btn-xs' title='Relaunch Virtual Cluster'>Relaunch</a>");
+        $('#request_delete').html("<a href='#' onclick='deleteConfirm()' class='btn btn-danger btn-xs'>Delete Virtual Cluster</a>");
       }
 
       if(data.action == "relaunch"){
         $('#'+request_id).html("<div class='progress-bar progress-bar-striped progress-bar-info active' role='progressbar' style='width: 25%' aria-valuenow='25' aria-valuemin='0' aria-valuemax='100'>Relaunching</div>");
-        $('#'+request_statereason).html(data.statereason);
+        $('#'+request_statereason).html("Attempting to relaunch your virtual cluster.");
+        $('#request_delete').html(" ");
+        $('#relaunch-btn').html(" ");
+
       }
-      //  else if {
-      //   $('#'+request_id).html((((data.state).charAt(0)).toUpperCase())+((data.state).slice(1)));
-      //   $('#'+request_statereason).html(data.statereason);
-      // }
 
       var request_statusinfo = (request_id+'_statusinfo');
       var request_statusinfo_requested = (request_id+'_statusinfo_requested');
@@ -349,13 +353,17 @@ function get_states(name){
         $('#'+request_headnode_app_host).html(data.headnode_app_host);
         $('#'+request_headnode_app_host_status).html('Ready');
         $('#'+request_headnode_steps).html("<li>Head Node IP: "+data.headnode_app_host+"</li><li>In a terminal, type: <div><kbd>ssh -i ~/.ssh/id_rsa {{session['name']}}@"+data.headnode_app_host+"</kbd></div></li><li>Members of your project can log in using their SSH keys and VC3 usernames</li>");
-      } else if(data.headnode_state == ("terminated" || "failure")){
+      } else if(data.action == ("relaunch")){
+        $('#'+request_headnode_app_host_status).html('Relaunching...');
+        $('#'+request_headnode_app_host).html("N/A");
+        $('#'+request_headnode_steps).html("N/A");
+      } else if(data.state == ("terminated" || "failure")){
         $('#'+request_headnode_app_host_status).html('Terminated');
         $('#'+request_headnode_app_host).html("N/A");
         $('#'+request_headnode_steps).html("N/A");
       } else {
         $('#'+request_headnode_app_host).html("IP not yet available. Please wait a few moments... "+data.headnode_state);
-        $('#'+request_headnode_app_host_status).html('Building...');
+        $('#'+request_headnode_app_host_status).html("Building...");
         $('#'+request_headnode_steps).html("Please allow a few moments for your head node to be generated.");
       }
     },

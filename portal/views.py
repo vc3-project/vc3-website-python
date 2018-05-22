@@ -4,7 +4,10 @@ import sys
 import time
 import subprocess
 
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, tzinfo
+# from dateutil import tz
+import pytz
+import tzlocal
 
 from flask import (flash, redirect, render_template, request,
                    session, url_for)
@@ -1451,6 +1454,14 @@ def view_request(name):
             # use headnode structure in the profile.
             vc3_request.headnode = headnode
 
+            expiration_utc = vc3_request.expiration
+            local_timezone = tzlocal.get_localzone()  # get pytz tzinfo
+            utc_time = datetime.strptime(expiration_utc, '%Y-%m-%dT%H:%M:%S')
+            local_time = utc_time.replace(
+                tzinfo=pytz.utc).astimezone(local_timezone)
+            # time_difference = expiration_utc - datetime.now()
+            local_time = local_time.strftime('%m/%d/%Y at %H:%M:%S %Z')
+
             for user in users:
                 if user.name == owner:
                     profile = user
@@ -1461,7 +1472,8 @@ def view_request(name):
                                    action=action, state=state, users=users,
                                    vc3allocations=vc3allocations, project=project,
                                    allocations=allocations, description=description,
-                                   profile=profile, vc3_request=vc3_request, displayname=displayname)
+                                   profile=profile, vc3_request=vc3_request,
+                                   displayname=displayname, expiration=local_time)
         app.logger.error("Could not find VC when viewing: {0}".format(name))
         raise LookupError('virtual cluster')
 
@@ -1496,13 +1508,23 @@ def edit_request(name):
     vc3_client = get_vc3_client()
     if request.method == 'GET':
         vc3_request = vc3_client.getRequest(requestname=name)
-        return render_template('request_edit.html', request=vc3_request, name=name)
+        # Get current expiration and re-format to display on edit VC expiration
+        # page
+        current_expiration = vc3_request.expiration
+        local_timezone = tzlocal.get_localzone()  # get pytz tzinfo
+        utc_time = datetime.strptime(current_expiration, '%Y-%m-%dT%H:%M:%S')
+        local_time = utc_time.replace(
+            tzinfo=pytz.utc).astimezone(local_timezone)
+        # time_difference = expiration_utc - datetime.now()
+        local_time = local_time.strftime('%m/%d/%Y at %H:%M:%S %Z')
+        return render_template('request_edit.html', request=vc3_request,
+                               name=name, current_expiration=local_time)
 
     elif request.method == 'POST':
         vc3_request = None
         vc3_request = vc3_client.getRequest(requestname=name)
         if vc3_request:
-            vc3_request.description = request.form['description']
+            # vc3_request.description = request.form['description']
 
             h = int(request.form['hours'])
             if h == 0:

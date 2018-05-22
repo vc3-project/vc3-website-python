@@ -96,6 +96,9 @@
             </li>
           </ul>
           <ul class="nav navbar-nav navbar-right">
+            <li>
+              <a href="http://docs.virtualclusters.org/" target="_blank">Release: closed-beta</a>
+            </li>
             {% if session['name'] and session['first'] %}
             <li>
               <a href="{{url_for('portal')}}">{{session['first']}} {{session['last']}}</a>
@@ -112,6 +115,9 @@
           <!-- Display these links if user is not authenticated -->
           {%else%}
           <ul class="nav navbar-nav navbar-right">
+            <li>
+              <a href="http://docs.virtualclusters.org/" target="_blank">Release: closed-beta</a>
+            </li>
             <li>
               <a href="{{url_for('blog')}}">News</a>
             </li>
