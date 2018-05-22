@@ -114,7 +114,7 @@
 					</div>
           <a href="{{url_for('list_environments')}}">
             <i class="fa fa-hdd-o" aria-hidden="true"></i>
-            <p>Environments</p>
+            <p>Environments (beta)</p>
           </a>
         </li>
 				<li class="side-nav-list" id="request">
@@ -181,9 +181,12 @@
 
 					<div class="nav navbar-nav navbar-right">
 						{% if white_list_error %}
+						<a class="navbar-brand" href="http://docs.virtualclusters.org/" target="_blank">Release: closed-beta</a>
 						{% elif session['name'] and session['first']%}
+						<a class="navbar-brand" href="http://docs.virtualclusters.org/" target="_blank">Release: closed-beta</a>
 						<a class="navbar-brand" href="{{url_for('show_profile_page')}}">{{session['first']}} {{session['last']}}</a>
 						{% else %}
+						<a class="navbar-brand" href="https://docs.virtualclusters.org/" target="_blank">Release: closed-beta</a>
 						<a class="navbar-brand" href="{{url_for('show_profile_page')}}">Profile</a>
 						{% endif %}
 						<a class="navbar-brand" href="{{url_for('logout')}}"><i class="fa fa-fw fa-sign-out"></i> Logout</a>

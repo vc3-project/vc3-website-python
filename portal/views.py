@@ -631,7 +631,7 @@ def remove_member_from_project(name):
     vc3_client.removeUserFromProject(user=user, project=project.name)
     flash('Successfully removed member from project.', 'success')
 
-    return redirect(url_for('list_projects'))
+    return redirect(url_for('view_project', name=name))
 
 
 @app.route('/project/<name>/addallocation', methods=['POST'])

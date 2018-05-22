@@ -59,7 +59,7 @@
                             {% endfor %}
                             {% for member in project.members %}
                               {% for user in users %}
-                                {% if user.name == member %}
+                                {% if (user.name == member) and (user.name != project.owner) %}
                               <div>
                                 <small>{{ user.first }} {{ user.last}} ({{ user.organization }})</small>
                               </div>

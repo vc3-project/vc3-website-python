@@ -282,7 +282,10 @@ function get_states(name){
     success: function(data){
       var request_id = name.replace(".", "-");
       var request_statereason = (request_id+'_statereason');
-      if(data.action == "terminate" && data.state != "terminating" && data.state != "cleanup" && data.state != "terminated"){
+      if(data.action == "relaunch"){
+        $('#'+request_id).html("<div class='progress-bar progress-bar-striped progress-bar-info active' role='progressbar' style='width: 25%' aria-valuenow='25' aria-valuemin='0' aria-valuemax='100'>Relaunching</div>");
+        $('#'+request_statereason).html(data.statereason);
+      } else if(data.action == "terminate" && data.state != "terminating" && data.state != "cleanup" && data.state != "terminated"){
         $('#'+request_id).html("<div class='progress-bar progress-bar-striped progress-bar-danger active' role='progressbar' style='width: 33%' aria-valuenow='33' aria-valuemin='0' aria-valuemax='100'>Terminating</div>");
         $('#'+request_statereason).html("Scheduling virtual cluster termination");
       } else if(data.state == "new"){
@@ -311,10 +314,6 @@ function get_states(name){
         $('#'+request_statereason).html(data.statereason);
       }
 
-      if(data.action == "relaunch"){
-        $('#'+request_id).html("<div class='progress-bar progress-bar-striped progress-bar-info active' role='progressbar' style='width: 25%' aria-valuenow='25' aria-valuemin='0' aria-valuemax='100'>Relaunching</div>");
-        $('#'+request_statereason).html(data.statereason);
-      }
       //  else if {
       //   $('#'+request_id).html((((data.state).charAt(0)).toUpperCase())+((data.state).slice(1)));
       //   $('#'+request_statereason).html(data.statereason);
