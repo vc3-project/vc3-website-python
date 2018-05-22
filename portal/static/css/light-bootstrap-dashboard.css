@@ -2776,10 +2776,12 @@ footer a:hover {
   background-color: #59ba1f;
 }
 .timeline .timeline-item .timeline-badge.warning {
-  background-color: #d1bd10;
+  /* background-color: #d1bd10; */
+  background-color: #f0ad4e;
 }
 .timeline .timeline-item .timeline-badge.danger {
-  background-color: #ba1f1f;
+  /* background-color: #ba1f1f; */
+  background-color: #d9534f;
 }
 .timeline .timeline-item .timeline-panel {
   position: relative;
