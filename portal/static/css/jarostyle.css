@@ -925,7 +925,8 @@ body.mobile-nav-active #mobile-nav-toggle {
   padding-top: 20px;
 }
 #blog .container .row span a {
-  color: #ffc500;
+  /* color: #ffc500; */
+
 }
 #blog .container .row article .pagepreview {
   overflow: hidden;
@@ -946,8 +947,8 @@ section #blog_article {
   padding-top: 20px;
 }
 #blog_article h2{
-  /*color: rgb(3, 196, 235);*/
-  color: #ffc500;
+  color: rgb(3, 196, 235);
+  /* color: #ffc500; */
 }
 .container .demo-videos {
 	width: 100%;
