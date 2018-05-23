@@ -76,7 +76,7 @@
 
                     <div class="form-group">
                       <label for="allocation">Allocations<span id="asterik">*</span></label>
-                      <select class="form-control border-input selectpicker" multiple name="allocation" tabindex="5" id="allocation" data-live-search="true" data-actions-box="true" data-header="Select Allocations for Virtual Cluster" required>
+                      <select class="form-control border-input selectpicker" multiple name="allocation" tabindex="4" id="allocation" data-live-search="true" data-actions-box="true" data-header="Select Allocations for Virtual Cluster" required>
                         <!-- also disabled ".selectpicker" above <option disabled>Please Select Allocation</option> -->
                         {% for allocation in allocations %}
                         <option data-tokens="{{allocation.displayname}}" value="{{allocation.name}}">{{ allocation.displayname }}</option>
@@ -86,7 +86,7 @@
 
                     <div class="form-group">
                       <label for="expiration">Expiration</label>
-                      <p>If not specified, expiration defaults to 72 hours from
+                      <p>If not specified, expiration defaults to 6 hours from
                         launch, when your virtual cluster will automatically be terminated.</p>
                         <!-- <label for="hours">Date/Time Select:</label>
                         <input type="datetime-local" name="hours"
@@ -97,9 +97,9 @@
                         <label for="hours">Hours:</label>
                         <input type="number" name="hours" min="1" max="10000"
                         class="form-control border-input"
-                        tabindex="6"
+                        tabindex="5"
                         style="width:100%"
-                        value="72">
+                        value="6">
                     </div>
 
 
@@ -119,8 +119,8 @@
                     </div> -->
 
                     <div class="form-group">
-                      <a href="{{url_for('list_requests')}}" class="btn btn-primary" tabindex="10" title="Cancel">Cancel</a>
-                      <button type="submit" tabindex="11" class="btn btn-create btn-wd">Launch Virtual Cluster</button>
+                      <a href="{{url_for('list_requests')}}" class="btn btn-primary" tabindex="6" title="Cancel">Cancel</a>
+                      <button type="submit" tabindex="7" class="btn btn-create btn-wd">Launch Virtual Cluster</button>
                     </div>
                   </form>
 
