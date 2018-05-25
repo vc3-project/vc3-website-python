@@ -549,8 +549,18 @@ def view_project(name):
     projects = vc3_client.listProjects()
     allocations = vc3_client.listAllocations()
     users = vc3_client.listUsers()
+    requests = vc3_client.listRequests()
     project = None
+    headnode = None
 
+    for vc3_request in requests:
+        if vc3_request.headnode:
+            try:
+                headnode = vc3_client.getNodeset(vc3_request.headnode)
+            except:
+                pass
+        # use headnode structure in the profile.
+        vc3_request.headnode = headnode
     # Scanning list of projects and matching with name of project argument
 
     project = vc3_client.getProject(projectname=name)
@@ -564,7 +574,7 @@ def view_project(name):
         return render_template('projects_pages.html', name=name, owner=owner,
                                members=members, allocations=allocations,
                                projects=projects, users=users, project=project,
-                               description=description)
+                               description=description, requests=requests)
     app.logger.error("Could not find project when viewing: {0}".format(name))
     raise LookupError('project')
 
@@ -1249,9 +1259,19 @@ def list_requests():
         # use headnode structure in the profile.
         vc3_request.headnode = headnode
 
+        # convert expiration to readable format
+        expiration_utc = vc3_request.expiration
+        local_timezone = tzlocal.get_localzone()  # get pytz tzinfo
+        utc_time = datetime.strptime(expiration_utc, '%Y-%m-%dT%H:%M:%S')
+        local_time = utc_time.replace(
+            tzinfo=pytz.utc).astimezone(local_timezone)
+        # time_difference = expiration_utc - datetime.now()
+        local_time = local_time.strftime('%m/%d - %H:%M %Z')
+
     return render_template('request.html', requests=vc3_requests,
                            nodesets=nodesets, clusters=clusters,
-                           requestlist=request_list, projects=projects)
+                           requestlist=request_list, projects=projects,
+                           expiration=local_time)
 
 
 @app.route('/request/new', methods=['GET', 'POST'])

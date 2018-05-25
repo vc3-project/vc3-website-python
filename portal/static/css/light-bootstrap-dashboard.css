@@ -138,7 +138,8 @@ body,
 
 a {
   /* color: #2fa4e7; */
-  color: #777;
+  color: #337ab7;
+  /* color: #777; */
   font-weight: 600;
  }
   a:hover, a:focus {
@@ -2522,7 +2523,7 @@ RESOURCE PROFILE INDEX PAGE
   border-color: #fff;
 }
 .filterable a {
-  color: rgba(30, 26, 18,0.9);
+  /* color: rgba(30, 26, 18,0.9); black link */
   font-weight: 600;
 }
 .filterable a:hover {

@@ -947,8 +947,8 @@ section #blog_article {
   padding-top: 20px;
 }
 #blog_article h2{
-  color: rgb(3, 196, 235);
-  /* color: #ffc500; */
+  /* color: rgb(3, 196, 235); */
+  color: #337ab7;
 }
 .container .demo-videos {
 	width: 100%;
