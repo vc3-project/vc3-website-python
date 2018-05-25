@@ -674,7 +674,7 @@ def add_allocation_to_project(name):
     app.logger.error("Could not find project when adding allocation: " +
                      "alloc: {0} project:{1}".format(new_allocation, name))
     flash('Project not found, could not add allocation to project', 'warning')
-    return redirect(url_for('view_project', name=name))
+    return redirect(url_for('view_project', name=allocationhash))
 
 
 @app.route('/project/<name>/removeallocation', methods=['POST'])
@@ -1270,8 +1270,7 @@ def list_requests():
 
     return render_template('request.html', requests=vc3_requests,
                            nodesets=nodesets, clusters=clusters,
-                           requestlist=request_list, projects=projects,
-                           expiration=local_time)
+                           requestlist=request_list, projects=projects)
 
 
 @app.route('/request/new', methods=['GET', 'POST'])
