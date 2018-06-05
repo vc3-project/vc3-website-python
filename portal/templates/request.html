@@ -153,6 +153,7 @@
     											<th><input type="text" class="form-control" placeholder="Workers" disabled></th>
                           <th><input type="text" class="form-control" placeholder="State" disabled></th>
                           <th><input type="text" class="form-control" placeholder="Cluster Template" disabled></th>
+                          <!-- <th><input type="text" class="form-control" placeholder="Expiration" disabled></th> -->
     										</tr>
     									</thead>
     									<tbody data-link="row" class="rowlink">
@@ -174,7 +175,7 @@
                           {% set request_headnode_app_host = requestname + '_headnode_app_host' %}
                           <td>
                             <!-- <div class="row" id="{{request_headnode_app_host}}"> -->
-                            </div>
+                            <!-- </div> -->
                             <div class="row">
                               {% if request.headnode and request.headnode.app_host and request.headnode.state == 'running' %}
                               <a href="#"
@@ -237,6 +238,10 @@
                           <td>
                             <div>{{clusterinfo.displayname}}</div>
                           </td>
+
+                          <!-- <td>
+                            <div>{{expiration}}</div>
+                          </td> -->
 
     										</tr>
                         <!-- endif  -->
