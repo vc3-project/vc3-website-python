@@ -48,7 +48,7 @@ whitelist_email = ['jeremyvan@uchicago.edu', 'briedel@uchicago.edu',
                    'gfarr@uchicago.edu', 'ddl@illinois.edu',
                    'ivukotic@uchicago.edu', 'ivukotic@cern.ch',
                    'klannon@nd.edu', 'rob.rwg@gmail.com',
-                   'rwg@hep.uchicago.edu', 'robert.w.gardner@cern.ch', 
+                   'rwg@hep.uchicago.edu', 'robert.w.gardner@cern.ch',
                    'jzhou93@uchicago.edu', 'cnweaver@uchicago.edu']
 
 # Create a custom error handler for Exceptions
@@ -884,14 +884,6 @@ def edit_cluster(name):
             # could not find cluster, punt
             LookupError('cluster')
 
-        # if app_type == "htcondor":
-        #     nodeset.environment = "condor-glidein-password-env1"
-        # elif app_type == "workqueue":
-        #     nodeset.environment = []
-        # else:
-        #     app.logger.error("Got unsupported framework when viewing " +
-        #                      "cluster template: {0}".format(app_type))
-        #     raise ValueError('app_type not a recognized framework')
         # Store nodeset and cluster with new attributes into infoservice
         vc3_client.storeNodeset(nodeset)
         vc3_client.storeCluster(cluster)
@@ -963,12 +955,12 @@ def create_allocation():
         owner = session['name']
         resource = request.form['resource']
         accountname = request.form['accountname']
-        allocationname = owner + "." + resource
-        displayname = owner + '-' + resource
+        allocationname = owner + "." + resource     # username.uchicago-midway
+        displayname = owner + '-' + resource        # username-uchicago-midway
         name = allocationname.lower()
         # description_input = request.form['description']
         # description = str(description_input)
-        # url = request.form['url']
+        # Grab pubtoken doc url from selected resource
         allocation_resource = vc3_client.getResource(resourcename=resource)
         pubtokendocurl = allocation_resource.pubtokendocurl
 
@@ -985,9 +977,12 @@ def create_allocation():
             # description = str(description_input)
             resources = vc3_client.listResources()
             flash(
-                'You have already registered an allocation on that resource.', 'warning')
-            return render_template('allocation_new.html', displayname=displayname,
-                                   accountname=accountname, resources=resources)
+                'You have already registered an allocation on that resource.',
+                'warning')
+            return render_template('allocation_new.html',
+                                   displayname=displayname,
+                                   accountname=accountname,
+                                   resources=resources)
 
         # flash('Your allocation has being registered.', 'success')
 
@@ -1033,7 +1028,8 @@ def view_allocation(name):
                                    owner=owner, resource=resource,
                                    accountname=accountname,
                                    pubtoken=pubtoken, state=state,
-                                   resources=resources, displayname=displayname,
+                                   resources=resources,
+                                   displayname=displayname,
                                    users=users, accesshost=accesshost)
         else:
             return render_template('allocation_profile_specific.html',
@@ -1041,8 +1037,9 @@ def view_allocation(name):
                                    owner=owner, resource=resource,
                                    accountname=accountname,
                                    pubtoken=pubtoken, state=state,
-                                   resources=resources, displayname=displayname, users=users,
-                                   accesshost=accesshost, pubtokendocurl=pubtokendocurl)
+                                   resources=resources, displayname=displayname,
+                                   users=users, accesshost=accesshost,
+                                   pubtokendocurl=pubtokendocurl)
         app.logger.error(
             "Could not find allocation when viewing: {0}".format(name))
         raise LookupError('allocation')
@@ -1222,6 +1219,14 @@ def admin():
 
         for vc3_request in vc3_requests:
             request_list.append(str(vc3_request.name))
+            headnode = None
+            if vc3_request.headnode:
+                try:
+                    headnode = vc3_client.getNodeset(vc3_request.headnode)
+                except:
+                    pass
+            # use headnode structure in the profile.
+            vc3_request.headnode = headnode
 
         return render_template('admin.html', requests=vc3_requests,
                                nodesets=nodesets, clusters=clusters,
