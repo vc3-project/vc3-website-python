@@ -69,22 +69,7 @@
                             <!-- <div class="row" id="{{request_headnode_app_host}}"> -->
                             <!-- </div> -->
                             <div class="row">
-                              {% if request.headnode and request.headnode.app_host and request.headnode.state == 'running' %}
-                              <a href="#"
-                              data-toggle="popover"
-                              title="To access your node via terminal"
-                              data-target-selector="#children-age"
-                              data-content="Type: ssh -i ~/.ssh/id_rsa {{session['name']}}@{{request.headnode.app_host}}"
-                              data-placement="top">
-                                {{request.headnode.app_host}}
-                              </a>
-                              {% elif request.headnode and (request.headnode.state == 'terminated' or request.headnode.state == 'failure') %}
-                              <small> N/A </small>
-                              {% elif request.state == 'terminated' %}
-                              <small> N/A </small>
-                              {% else %}
-                              <small>IP address not yet available</small>
-                              {% endif %}
+                              <small id="{{request_headnode_app_host}}"></small>
                             </div>
                           </td>
 
@@ -233,7 +218,7 @@ function get_states(name){
 
       var request_headnode_app_host = (request_id + '_headnode_app_host');
       if(data.headnode_state == 'running'){
-        $('#'+request_headnode_app_host).html("<a href='#' data-toggle='popover' title='To access your node via terminal' data-target-selector='#children-age' data-content='Type: ssh -i ~/.ssh/id_rsa {{session['name']}}@"+data.headnode_app_host+" data-placement='top'>"+data.headnode_app_host+"</a>");
+        $('#'+request_headnode_app_host).html(data.headnode_app_host);
       } else if(data.headnode_state == ("terminated" || "failure")){
         $('#'+request_headnode_app_host).html("N/A");
       } else {

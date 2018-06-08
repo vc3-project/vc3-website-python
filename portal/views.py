@@ -1265,14 +1265,16 @@ def list_requests():
         # use headnode structure in the profile.
         vc3_request.headnode = headnode
 
-        # convert expiration to readable format
-        expiration_utc = vc3_request.expiration
-        local_timezone = tzlocal.get_localzone()  # get pytz tzinfo
-        utc_time = datetime.strptime(expiration_utc, '%Y-%m-%dT%H:%M:%S')
-        local_time = utc_time.replace(
-            tzinfo=pytz.utc).astimezone(local_timezone)
-        # time_difference = expiration_utc - datetime.now()
-        local_time = local_time.strftime('%m/%d - %H:%M %Z')
+        expiration_utc = None
+        if vc3_request.expiration:
+            # convert expiration to readable format
+            expiration_utc = vc3_request.expiration
+            local_timezone = tzlocal.get_localzone()  # get pytz tzinfo
+            utc_time = datetime.strptime(expiration_utc, '%Y-%m-%dT%H:%M:%S')
+            local_time = utc_time.replace(
+                tzinfo=pytz.utc).astimezone(local_timezone)
+            # time_difference = expiration_utc - datetime.now()
+            local_time = local_time.strftime('%m/%d - %H:%M %Z')
 
     return render_template('request.html', requests=vc3_requests,
                            nodesets=nodesets, clusters=clusters,

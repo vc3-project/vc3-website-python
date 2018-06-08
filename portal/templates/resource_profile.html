@@ -25,58 +25,60 @@
 
           <div class="content description">
   					<div class="card-block">
-              <div class="panel panel-info resource-profile" style="margin: 1em;">
-                <div class="panel-heading">
-                  <h3 class="panel-title"><strong>Organization</strong></h3>
+              <div class='row'>
+                <div class="panel panel-info resource-profile" style="margin: 1em;">
+                  <div class="panel-heading">
+                    <h3 class="panel-title"><strong>Organization</strong></h3>
+                  </div>
+                  <div class="panel-body disabled">
+                    {{organization}}
+                  </div>
                 </div>
-                <div class="panel-body disabled">
-                  {{organization}}
+                <div class="panel panel-info resource-profile" style="margin: 1em;">
+                  <div class="panel-heading">
+                    <h3 class="panel-title"><strong>Resource Website</strong></h3>
+                  </div>
+                  <div class="panel-body">
+                    <a href="{{url}}" target="_blank">{{url}}</a>
+                  </div>
                 </div>
-              </div>
-              <div class="panel panel-info resource-profile" style="margin: 1em;">
-                <div class="panel-heading">
-                  <h3 class="panel-title"><strong>Resource Website</strong></h3>
+                <div class="panel panel-info resource-profile" style="margin: 1em;">
+                  <div class="panel-heading">
+                    <h3 class="panel-title"><strong>User-Guide</strong></h3>
+                  </div>
+                  <div class="panel-body">
+                    <a href="{{docurl}}" target="_blank">{{docurl}}</a>
+                  </div>
                 </div>
-                <div class="panel-body">
-                  <a href="{{url}}" target="_blank">{{url}}</a>
+                <div class="panel panel-info resource-profile" style="margin: 1em;">
+                  <div class="panel-heading">
+                    <h3 class="panel-title"><strong>Resource Status</strong></h3>
+                  </div>
+                  <div class="panel-body disabled">
+                    <i class="fa fa-check" aria-hidden="true" style="color:green"></i> Healthy
+                  </div>
                 </div>
-              </div>
-              <div class="panel panel-info resource-profile" style="margin: 1em;">
-                <div class="panel-heading">
-                  <h3 class="panel-title"><strong>User-Guide</strong></h3>
+                <div class="panel panel-info resource-profile" style="margin: 1em;">
+                  <div class="panel-heading">
+                    <h3 class="panel-title"><strong>Batch System Scheduler</strong></h3>
+                  </div>
+                  <div class="panel-body disabled">
+                    {{accessflavor}}
+                  </div>
                 </div>
-                <div class="panel-body">
-                  <a href="{{docurl}}" target="_blank">{{docurl}}</a>
-                </div>
-              </div>
-              <div class="panel panel-info resource-profile" style="margin: 1em;">
-                <div class="panel-heading">
-                  <h3 class="panel-title"><strong>Resource Status</strong></h3>
-                </div>
-                <div class="panel-body disabled">
-                  <i class="fa fa-check" aria-hidden="true" style="color:green"></i> Healthy
-                </div>
-              </div>
-              <div class="panel panel-info resource-profile" style="margin: 1em;">
-                <div class="panel-heading">
-                  <h3 class="panel-title"><strong>Batch System Scheduler</strong></h3>
-                </div>
-                <div class="panel-body disabled">
-                  {{accessflavor}}
-                </div>
-              </div>
-              <div class="panel panel-info resource-profile" style="margin: 1em;">
-                <div class="panel-heading">
-                  <h3 class="panel-title"><strong>Nodeset Information</strong></h3>
-                </div>
-                <div class="panel-body disabled">
-                  Cores per slot: {{nodeinfo.cores}}
-                </div>
-                <div class="panel-body disabled">
-                  Memory per slot: {{nodeinfo.memory_mb}} MB
-                </div>
-                <div class="panel-body disabled">
-                  Disk Space: {{nodeinfo.storage_mb}} MB
+                <div class="panel panel-info resource-profile" style="margin: 1em;">
+                  <div class="panel-heading">
+                    <h3 class="panel-title"><strong>Nodeset Information</strong></h3>
+                  </div>
+                  <div class="panel-body disabled">
+                    Cores per slot: {{nodeinfo.cores}}
+                  </div>
+                  <div class="panel-body disabled">
+                    Memory per slot: {{nodeinfo.memory_mb}} MB
+                  </div>
+                  <div class="panel-body disabled">
+                    Disk Space: {{nodeinfo.storage_mb}} MB
+                  </div>
                 </div>
               </div>
   					</div>
