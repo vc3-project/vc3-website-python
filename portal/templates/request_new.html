@@ -42,12 +42,12 @@
                         tabindex="1"
                         required
                         pattern="^[^\.]*$"
-                        value="{{request.name}}">
+                        value="{{inputname}}">
                     </div>
 
                     <div class="form-group">
                       <label for="cluster">Cluster Template <span id="asterik">*</span></label>
-                      <select class="form-control border-input selectpicker" name="cluster" tabindex="2" id="form-resource-list" data-live-search="true" data-actions-box="true" data-header="Select Cluster Template" required>
+                      <select class="form-control border-input selectpicker" name="cluster" tabindex="2" id="form-framework-list" data-live-search="true" data-actions-box="true" data-header="Select Cluster Template" required>
                         <option value="" selected disabled>Select Cluster Template</option>
                         {% for cluster in clusters %}
                           {% if cluster.owner == session['name'] or cluster.public %}
@@ -135,5 +135,29 @@
   </div><!-- ./container-fluid -->
 </div><!-- ./content -->
 
+<script>
 
+
+window.onload = function(){
+  autoSelect('form-framework-list', '{{cluster}}');
+  // autoSelectAllocation('allocation', '{{allocation}}');
+}
+
+function autoSelect(a,b) {
+  var selector = document.getElementById(a);
+  selector.value = b
+}
+
+function autoSelectAllocation(a, b){
+  var allocationToSelect = {{allocation}}
+  var selector = document.getElementById(a);
+  for (var i=0, l=select.options.length, o; i<l; i++){
+    o = select.options[i];
+    if(allocationToSelect.indexOf(o.text) != -1){
+      o.selected = true;
+    }
+  }
+}
+
+</script>
 {%endblock%}
