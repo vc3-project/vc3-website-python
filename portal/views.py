@@ -50,7 +50,7 @@ whitelist_email = ['jeremyvan@uchicago.edu', 'briedel@uchicago.edu',
                    'klannon@nd.edu', 'rob.rwg@gmail.com',
                    'rwg@hep.uchicago.edu', 'robert.w.gardner@cern.ch',
                    'jzhou93@uchicago.edu', 'cnweaver@uchicago.edu',
-                   'annawoodard@uchicago.edu']
+                   'annawoodard@uchicago.edu', 'yiyangou@uchicago.edu']
 
 # Create a custom error handler for Exceptions
 
