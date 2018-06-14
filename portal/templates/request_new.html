@@ -76,7 +76,7 @@
 
                     <div class="form-group">
                       <label for="allocation">Allocations<span id="asterik">*</span></label>
-                      <select class="form-control border-input selectpicker" multiple name="allocation" tabindex="4" id="allocation" data-live-search="true" data-actions-box="true" data-header="Select Allocations for Virtual Cluster" required>
+                      <select class="form-control border-input selectpicker" multiple name="allocation" tabindex="4" id="form-allocation-list" data-live-search="true" data-actions-box="true" data-header="Select Allocations for Virtual Cluster" required>
                         <!-- also disabled ".selectpicker" above <option disabled>Please Select Allocation</option> -->
                         {% for allocation in allocations %}
                         <option data-tokens="{{allocation.displayname}}" value="{{allocation.name}}">{{ allocation.displayname }}</option>
@@ -140,7 +140,7 @@
 
 window.onload = function(){
   autoSelect('form-framework-list', '{{cluster}}');
-  // autoSelectAllocation('allocation', '{{allocation}}');
+  // autoSelectAllocation('form-allocation-list', '{{allocation}}');
 }
 
 function autoSelect(a,b) {
@@ -151,13 +151,16 @@ function autoSelect(a,b) {
 function autoSelectAllocation(a, b){
   var allocationToSelect = {{allocation}}
   var selector = document.getElementById(a);
-  for (var i=0, l=select.options.length, o; i<l; i++){
-    o = select.options[i];
-    if(allocationToSelect.indexOf(o.text) != -1){
-      o.selected = true;
-    }
+  for (var i=0, i<selector.option.length; i++){
+    o = selector.option[i];
+    o.selected = true;
   }
 }
+
+// var sel = document.forms[0].selectName;
+// for(var i=0; i<sel.options.length; i++){
+//   sel.options[i].selected = true;
+// }
 
 </script>
 {%endblock%}
