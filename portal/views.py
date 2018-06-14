@@ -225,11 +225,11 @@ def show_profile_page():
                 session['ssh'] = sshpubstring
         else:
             if session['email'] not in whitelist_email:
-                # return redirect(url_for('whitelist_error'))
-                pass
-            # else:
-            #     flash('Please complete any missing profile fields before '
-            #           'launching a cluster.', 'warning')
+                return redirect(url_for('whitelist_error'))
+                # pass
+            else:
+                flash('Please complete any missing profile fields before '
+                      'launching a cluster.', 'warning')
 
         if request.args.get('next'):
             session['next'] = get_safe_redirect()
@@ -410,8 +410,8 @@ def authcallback():
             return redirect(url_for('show_profile_page',
                                     next=url_for('show_profile_page')))
         if session['email'] not in whitelist_email:
-            # return redirect(url_for('whitelist_error'))
-            pass
+            return redirect(url_for('whitelist_error'))
+            # pass
 
         return redirect(url_for('portal'))
 
