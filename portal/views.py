@@ -33,7 +33,8 @@ whitelist = ['c4686d14-d274-11e5-b866-0febeb7fd79e',
              'c887eb90-d274-11e5-bf28-779c8998e810',
              'c456b77c-d274-11e5-b82c-23a245a48997',
              'c444a294-d274-11e5-b7f1-e3782ed16687',
-             'aebe29b8-d274-11e5-ba4b-ffec0df955f2']
+             'aebe29b8-d274-11e5-ba4b-ffec0df955f2',
+             '385eaec0-0a96-4203-b7cc-57e96500764d']
 
 whitelist_email = ['jeremyvan@uchicago.edu', 'briedel@uchicago.edu',
                    'btovar@nd.edu', 'burt@fnal.gov', 'czheng2@nd.edu',
@@ -225,11 +226,11 @@ def show_profile_page():
                 session['ssh'] = sshpubstring
         else:
             if session['email'] not in whitelist_email:
-                pass
-            #     return redirect(url_for('whitelist_error'))
-            # else:
-            #     flash('Please complete any missing profile fields before '
-            #           'launching a cluster.', 'warning')
+                return redirect(url_for('whitelist_error'))
+                # pass
+            else:
+                flash('Please complete any missing profile fields before '
+                      'launching a cluster.', 'warning')
 
         if request.args.get('next'):
             session['next'] = get_safe_redirect()
@@ -410,8 +411,8 @@ def authcallback():
             return redirect(url_for('show_profile_page',
                                     next=url_for('show_profile_page')))
         if session['email'] not in whitelist_email:
-            # return redirect(url_for('whitelist_error'))
-            pass
+            return redirect(url_for('whitelist_error'))
+            # pass
 
         return redirect(url_for('portal'))
 
@@ -427,7 +428,7 @@ def whitelist_error():
 # -----------------------------------------
 
 
-@app.route('/portal/', methods=['GET'])
+@app.route('/portal', methods=['GET'])
 @authenticated
 def portal():
     """Send the existing user to Portal Home."""
@@ -472,7 +473,7 @@ def portal():
                                sshpubstring=sshpubstring, resources=resources)
 
 
-@app.route('/new/', methods=['GET', 'POST'])
+@app.route('/new', methods=['GET', 'POST'])
 @authenticated
 @allocation_validated
 def create_project():
@@ -523,7 +524,7 @@ def create_project():
         return redirect(url_for('list_projects'))
 
 
-@app.route('/project/', methods=['GET'])
+@app.route('/project', methods=['GET'])
 @authenticated
 def list_projects():
     """ Project List View """
@@ -535,7 +536,7 @@ def list_projects():
     return render_template('project.html', projects=projects, users=users, allocations=allocations)
 
 
-@app.route('/project/<name>/', methods=['GET'])
+@app.route('/project/<name>', methods=['GET'])
 @authenticated
 def view_project(name):
     """
@@ -544,14 +545,11 @@ def view_project(name):
     :param name: name attribute of project
     :return: Project profile page specific to project name
     """
-    try:
-        project_validation = project_validated(name=name)
-        if project_validation is False:
-            flash('You do not appear to be a member of the project you are trying '
-                  'to view. Please contact owner to request membership.', 'warning')
-            return redirect(url_for('list_projects'))
-    except:
-        return render_template('error_page.html')
+    project_validation = project_validated(name=name)
+    if project_validation is False:
+        flash('You do not appear to be a member of the project you are trying'
+              'to view. Please contact owner to request membership.', 'warning')
+        return redirect(url_for('list_projects'))
 
     vc3_client = get_vc3_client()
     projects = vc3_client.listProjects()
@@ -571,12 +569,7 @@ def view_project(name):
         vc3_request.headnode = headnode
     # Scanning list of projects and matching with name of project argument
 
-    try:
-        project = vc3_client.getProject(projectname=name)
-    except:
-        project = None
-        return render_template('error_page.html')
-
+    project = vc3_client.getProject(projectname=name)
     if project:
         name = project.name
         owner = project.owner
@@ -738,7 +731,7 @@ def delete_project(name):
     return redirect(url_for('list_projects'))
 
 
-@app.route('/cluster/new/', methods=['GET', 'POST'])
+@app.route('/cluster/new', methods=['GET', 'POST'])
 @authenticated
 def create_cluster():
     """ Create New Cluster Template Form """
@@ -794,7 +787,7 @@ def create_cluster():
         return redirect(url_for('list_clusters'))
 
 
-@app.route('/cluster/', methods=['GET'])
+@app.route('/cluster', methods=['GET'])
 @authenticated
 def list_clusters():
     """ List Cluster Template View """
@@ -807,7 +800,7 @@ def list_clusters():
                            projects=projects, nodesets=nodesets)
 
 
-@app.route('/cluster/<name>/', methods=['GET'])
+@app.route('/cluster/<name>', methods=['GET'])
 @authenticated
 def view_cluster(name):
     """
@@ -823,11 +816,7 @@ def view_cluster(name):
     users = vc3_client.listUsers()
     cluster = None
 
-    try:
-        cluster = vc3_client.getCluster(clustername=name)
-    except:
-        return render_template('error_page.html')
-
+    cluster = vc3_client.getCluster(clustername=name)
     if cluster:
         cluster_name = cluster.name
         owner = cluster.owner
@@ -843,7 +832,7 @@ def view_cluster(name):
     raise LookupError('cluster')
 
 
-@app.route('/cluster/edit/<name>/', methods=['GET', 'POST'])
+@app.route('/cluster/edit/<name>', methods=['GET', 'POST'])
 @authenticated
 def edit_cluster(name):
     """
@@ -900,6 +889,14 @@ def edit_cluster(name):
             # could not find cluster, punt
             LookupError('cluster')
 
+        # if app_type == "htcondor":
+        #     nodeset.environment = "condor-glidein-password-env1"
+        # elif app_type == "workqueue":
+        #     nodeset.environment = []
+        # else:
+        #     app.logger.error("Got unsupported framework when viewing " +
+        #                      "cluster template: {0}".format(app_type))
+        #     raise ValueError('app_type not a recognized framework')
         # Store nodeset and cluster with new attributes into infoservice
         vc3_client.storeNodeset(nodeset)
         vc3_client.storeCluster(cluster)
@@ -933,7 +930,7 @@ def delete_cluster(name):
     return redirect(url_for('list_clusters'))
 
 
-@app.route('/allocation/', methods=['GET'])
+@app.route('/allocation', methods=['GET'])
 @authenticated
 def list_allocations():
     """ List Allocations Page """
@@ -953,7 +950,7 @@ def list_allocations():
                            allocationlist=allocation_list)
 
 
-@app.route('/allocation/new/', methods=['GET', 'POST'])
+@app.route('/allocation/new', methods=['GET', 'POST'])
 @authenticated
 def create_allocation():
     """ New Allocation Creation Form """
@@ -971,12 +968,12 @@ def create_allocation():
         owner = session['name']
         resource = request.form['resource']
         accountname = request.form['accountname']
-        allocationname = owner + "." + resource     # username.uchicago-midway
-        displayname = owner + '-' + resource        # username-uchicago-midway
+        allocationname = owner + "." + resource
+        displayname = owner + '-' + resource
         name = allocationname.lower()
         # description_input = request.form['description']
         # description = str(description_input)
-        # Grab pubtoken doc url from selected resource
+        # url = request.form['url']
         allocation_resource = vc3_client.getResource(resourcename=resource)
         pubtokendocurl = allocation_resource.pubtokendocurl
 
@@ -993,19 +990,16 @@ def create_allocation():
             # description = str(description_input)
             resources = vc3_client.listResources()
             flash(
-                'You have already registered an allocation on that resource.',
-                'warning')
-            return render_template('allocation_new.html',
-                                   displayname=displayname,
-                                   accountname=accountname,
-                                   resources=resources)
+                'You have already registered an allocation on that resource.', 'warning')
+            return render_template('allocation_new.html', displayname=displayname,
+                                   accountname=accountname, resources=resources)
 
         # flash('Your allocation has being registered.', 'success')
 
         return redirect(url_for('view_allocation', name=name))
 
 
-@app.route('/allocation/<name>/', methods=['GET', 'POST'])
+@app.route('/allocation/<name>', methods=['GET', 'POST'])
 @authenticated
 def view_allocation(name):
     """
@@ -1018,11 +1012,7 @@ def view_allocation(name):
     allocations = vc3_client.listAllocations()
     resources = vc3_client.listResources()
     users = vc3_client.listUsers()
-
-    try:
-        allocation = vc3_client.getAllocation(allocationname=name)
-    except:
-        return render_template('error_page.html')
+    allocation = vc3_client.getAllocation(allocationname=name)
 
     if request.method == 'GET':
         allocationname = allocation.name
@@ -1048,8 +1038,7 @@ def view_allocation(name):
                                    owner=owner, resource=resource,
                                    accountname=accountname,
                                    pubtoken=pubtoken, state=state,
-                                   resources=resources,
-                                   displayname=displayname,
+                                   resources=resources, displayname=displayname,
                                    users=users, accesshost=accesshost)
         else:
             return render_template('allocation_profile_specific.html',
@@ -1057,9 +1046,8 @@ def view_allocation(name):
                                    owner=owner, resource=resource,
                                    accountname=accountname,
                                    pubtoken=pubtoken, state=state,
-                                   resources=resources, displayname=displayname,
-                                   users=users, accesshost=accesshost,
-                                   pubtokendocurl=pubtokendocurl)
+                                   resources=resources, displayname=displayname, users=users,
+                                   accesshost=accesshost, pubtokendocurl=pubtokendocurl)
         app.logger.error(
             "Could not find allocation when viewing: {0}".format(name))
         raise LookupError('allocation')
@@ -1104,7 +1092,7 @@ def validate_allocation(name):
     return redirect(url_for('view_allocation', name=name))
 
 
-@app.route('/allocation/edit/<name>/', methods=['GET', 'POST'])
+@app.route('/allocation/edit/<name>', methods=['GET', 'POST'])
 @authenticated
 @allocation_validated
 def edit_allocation(name):
@@ -1170,7 +1158,7 @@ def delete_allocation(name):
     return redirect(url_for('list_allocations'))
 
 
-@app.route('/resource/', methods=['GET'])
+@app.route('/resource', methods=['GET'])
 @authenticated
 def list_resources():
     """ Route for HPC and Resources List View """
@@ -1180,7 +1168,7 @@ def list_resources():
     return render_template('resource.html', resources=resources)
 
 
-@app.route('/resource/<name>/', methods=['GET'])
+@app.route('/resource/<name>', methods=['GET'])
 @authenticated
 def view_resource(name):
     """
@@ -1191,38 +1179,33 @@ def view_resource(name):
     """
     vc3_client = get_vc3_client()
     # resources = vc3_client.listResources()
-    try:
-        resource = vc3_client.getResource(resourcename=name)
-    except:
-        return render_template('error_page.html')
+    resource = vc3_client.getResource(resourcename=name)
 
-    if resource:
-        resourcename = resource.name
-        owner = resource.owner
-        accessflavor = resource.accessflavor
-        description = resource.description
-        displayname = resource.displayname
-        url = resource.url
-        docurl = resource.docurl
-        organization = resource.organization
-        nodeinfo = resource.nodeinfo
+    resourcename = resource.name
+    owner = resource.owner
+    accessflavor = resource.accessflavor
+    description = resource.description
+    displayname = resource.displayname
+    url = resource.url
+    docurl = resource.docurl
+    organization = resource.organization
+    nodeinfo = resource.nodeinfo
 
-        nodeinfo = vc3_client.getNodeinfo(nodeinfoName=nodeinfo)
-        cores = nodeinfo.cores
-        memory_mb = nodeinfo.memory_mb
-        storage_mb = nodeinfo.storage_mb
+    nodeinfo = vc3_client.getNodeinfo(nodeinfoName=nodeinfo)
+    cores = nodeinfo.cores
+    memory_mb = nodeinfo.memory_mb
+    storage_mb = nodeinfo.storage_mb
 
-        return render_template('resource_profile.html', name=resourcename,
-                               owner=owner, accessflavor=accessflavor,
-                               resource=resource, description=description,
-                               displayname=displayname, url=url,
-                               docurl=docurl, organization=organization, nodeinfo=nodeinfo)
-        app.logger.error(
-            "Could not find Resource when viewing: {0}".format(name))
-        raise LookupError('resource')
+    return render_template('resource_profile.html', name=resourcename,
+                           owner=owner, accessflavor=accessflavor,
+                           resource=resource, description=description,
+                           displayname=displayname, url=url,
+                           docurl=docurl, organization=organization, nodeinfo=nodeinfo)
+    app.logger.error("Could not find Resource when viewing: {0}".format(name))
+    raise LookupError('resource')
 
 
-@app.route('/admin/', methods=['GET'])
+@app.route('/admin', methods=['GET'])
 @authenticated
 def admin():
     """ List View of All Virtual Clusters """
@@ -1244,14 +1227,6 @@ def admin():
 
         for vc3_request in vc3_requests:
             request_list.append(str(vc3_request.name))
-            headnode = None
-            if vc3_request.headnode:
-                try:
-                    headnode = vc3_client.getNodeset(vc3_request.headnode)
-                except:
-                    pass
-            # use headnode structure in the profile.
-            vc3_request.headnode = headnode
 
         return render_template('admin.html', requests=vc3_requests,
                                nodesets=nodesets, clusters=clusters,
@@ -1260,7 +1235,7 @@ def admin():
         return redirect(url_for('errorpage'))
 
 
-@app.route('/request/', methods=['GET'])
+@app.route('/request', methods=['GET'])
 @authenticated
 def list_requests():
     """ List View of Virtual Clusters """
@@ -1290,23 +1265,21 @@ def list_requests():
         # use headnode structure in the profile.
         vc3_request.headnode = headnode
 
-        expiration_utc = None
-        if vc3_request.expiration:
-            # convert expiration to readable format
-            expiration_utc = vc3_request.expiration
-            local_timezone = tzlocal.get_localzone()  # get pytz tzinfo
-            utc_time = datetime.strptime(expiration_utc, '%Y-%m-%dT%H:%M:%S')
-            local_time = utc_time.replace(
-                tzinfo=pytz.utc).astimezone(local_timezone)
-            # time_difference = expiration_utc - datetime.now()
-            local_time = local_time.strftime('%m/%d - %H:%M %Z')
+        # convert expiration to readable format
+        expiration_utc = vc3_request.expiration
+        local_timezone = tzlocal.get_localzone()  # get pytz tzinfo
+        utc_time = datetime.strptime(expiration_utc, '%Y-%m-%dT%H:%M:%S')
+        local_time = utc_time.replace(
+            tzinfo=pytz.utc).astimezone(local_timezone)
+        # time_difference = expiration_utc - datetime.now()
+        local_time = local_time.strftime('%m/%d - %H:%M %Z')
 
     return render_template('request.html', requests=vc3_requests,
                            nodesets=nodesets, clusters=clusters,
                            requestlist=request_list, projects=projects)
 
 
-@app.route('/request/new/', methods=['GET', 'POST'])
+@app.route('/request/new', methods=['GET', 'POST'])
 @authenticated
 def create_request_project():
     vc3_client = get_vc3_client()
@@ -1326,7 +1299,7 @@ def create_request_project():
         return redirect(url_for('create_request', project=project))
 
 
-@app.route('/request/new/<project>/', methods=['GET', 'POST'])
+@app.route('/request/new/<project>', methods=['GET', 'POST'])
 @authenticated
 def create_request(project):
     """
@@ -1377,6 +1350,45 @@ def create_request(project):
             expiration = now + t_delta
             expiration = expiration.replace(microsecond=0).isoformat()
 
+        # if request.form['hours']:
+        #     date_selected = request.form['hours']
+        #     local_datetime = datetime.strptime(date_selected, "%Y-%m-%dT%H:%M")
+        #     utc_datetime = local_datetime.strftime("%Y-%m-%dT%H:%M:%S")
+        #     now = datetime.utcnow()
+        #     expiration = utc_datetime
+        # else:
+        #     expiration = None
+        #     now = datetime.utcnow()
+        #     t_delta = timedelta(days=1)
+        #     expiration = now + t_delta
+
+        # date_and_time = date_selected.split("T")
+        #
+        # date_splits = date_and_time[0].split("-")
+        # time_splits = date_and_time[1].split(":")
+        #
+        # year = int(date_splits[0])
+        # month = int(date_splits[1])
+        # day = int(date_splits[2])
+        # hour = int(time_splits[0])
+        # minute = int(time_splits[1])
+
+        # if not date_selected:
+        #     expiration = None
+        #     now = datetime.utcnow()
+        #     t_delta = timedelta(days=1)
+        #     expiration = now + t_delta
+        # else:
+        #     now = datetime.utcnow()
+        #     # t_delta = timedelta(days=day, hours=hour, minutes=minute)
+        #     # expiration = now + t_delta
+        #     expiration = utc_datetime
+
+            # expiration = expiration.replace(microsecond=0).isoformat()
+
+        # description_input = request.form['description']
+        # description = str(description_input)
+
         for selected_environment in request.form.getlist('environment'):
             environments.append(selected_environment)
 
@@ -1394,18 +1406,9 @@ def create_request(project):
                                                   displayname=displayname)
             vc3_client.storeRequest(newrequest)
         except:
-            allocation = []
-            environment = []
-
-            for selected_environment in request.form.getlist('environment'):
-                environment.append(selected_environment)
-
-            for selected_allocation in request.form.getlist('allocation'):
-                allocation.append(selected_allocation)
-
-            inputname = request.form['name']
             owner = session['name']
             cluster = request.form['cluster']
+            environment = request.form['environment']
             project = project
             policy = "static-balanced"
             # description_input = request.form['description']
@@ -1415,20 +1418,19 @@ def create_request(project):
             clusters = vc3_client.listClusters()
             projects = vc3_client.listProjects()
             environments = vc3_client.listEnvironments()
-            flash('You have already launched a Virtual Cluster with that name. '
+            flash('You have already launched a Virtual Cluster with that name.'
                   'Please choose a different name.', 'warning')
             return render_template('request_new.html', cluster=cluster,
-                                   clusters=clusters, environment=environment,
-                                   environments=environments, project=project,
-                                   projects=projects, allocation=allocation,
-                                   allocations=allocations, inputname=inputname)
+                                   clusters=clusters, environments=environments,
+                                   project=project, projects=projects,
+                                   environment=environment, allocations=allocations)
 
         # flash('Your Virtual Cluster has been successfully launched.', 'success')
 
         return redirect(url_for('view_request', name=vc3requestname))
 
 
-@app.route('/request/<name>/', methods=['GET', 'POST'])
+@app.route('/request/<name>', methods=['GET', 'POST'])
 @authenticated
 def view_request(name):
     """
@@ -1439,11 +1441,11 @@ def view_request(name):
     associated attributes
     """
     # Checks if user is member of project associated with Virtual Cluster
-    # member_in_vc = project_in_vc(name=name)
-    # if member_in_vc is False:
-    #     flash('You do not appear to be have access to view this Virtual Cluster'
-    #           'Please contact owner to request membership.', 'warning')
-    #     return redirect(url_for('list_requests'))
+    member_in_vc = project_in_vc(name=name)
+    if member_in_vc is False:
+        flash('You do not appear to be have access to view this Virtual Cluster'
+              'Please contact owner to request membership.', 'warning')
+        return redirect(url_for('list_requests'))
 
     vc3_client = get_vc3_client()
     vc3_requests = vc3_client.listRequests()
@@ -1454,11 +1456,7 @@ def view_request(name):
     allocations = vc3_client.listAllocations()
 
     if request.method == 'GET':
-        try:
-            vc3_request = vc3_client.getRequest(requestname=name)
-        except:
-            vc3_request = None
-            return render_template('error_page.html')
+        vc3_request = vc3_client.getRequest(requestname=name)
         if vc3_request:
             requestname = vc3_request.name
             owner = vc3_request.owner
@@ -1501,6 +1499,8 @@ def view_request(name):
                                    allocations=allocations, description=description,
                                    profile=profile, vc3_request=vc3_request,
                                    displayname=displayname, expiration=local_time)
+        app.logger.error("Could not find VC when viewing: {0}".format(name))
+        raise LookupError('virtual cluster')
 
     elif request.method == 'POST':
         # Method to terminate running a specific Virtual Cluster
@@ -1520,7 +1520,7 @@ def view_request(name):
         return redirect(url_for('view_request', name=requestname))
 
 
-@app.route('/request/edit/<name>/', methods=['GET', 'POST'])
+@app.route('/request/edit/<name>', methods=['GET', 'POST'])
 @authenticated
 def edit_request(name):
     """
@@ -1611,13 +1611,13 @@ def relaunch_virtualcluster(name):
     return redirect(url_for('view_request', name=name))
 
 
-@app.route('/monitoring/', methods=['GET'])
+@app.route('/monitoring', methods=['GET'])
 @authenticated
 def dashboard():
     return render_template('dashboard.html')
 
 
-@app.route('/environments/', methods=['GET'])
+@app.route('/environments', methods=['GET'])
 @authenticated
 def list_environments():
     """ List View of Environments """
@@ -1631,7 +1631,7 @@ def list_environments():
                            environments=environments)
 
 
-@app.route('/environments/new/', methods=['GET', 'POST'])
+@app.route('/environments/new', methods=['GET', 'POST'])
 @authenticated
 def create_environment():
     """ New Environment Creation Form """
@@ -1703,7 +1703,7 @@ def create_environment():
         return redirect(url_for('list_environments'))
 
 
-@app.route('/environments/<name>/', methods=['GET'])
+@app.route('/environments/<name>', methods=['GET'])
 @authenticated
 def view_environment(name):
     """
@@ -1733,7 +1733,7 @@ def view_environment(name):
     raise LookupError('environment')
 
 
-@app.route('/environments/envmap/<name>/', methods=['GET', 'POST'])
+@app.route('/environments/envmap/<name>', methods=['GET', 'POST'])
 @authenticated
 def add_envmap(name):
     """ Add New Environment Mapping Form """
@@ -1760,7 +1760,7 @@ def add_envmap(name):
         return redirect(url_for('view_environment', name=name))
 
 
-@app.route('/environments/edit/<name>/', methods=['GET', 'POST'])
+@app.route('/environments/edit/<name>', methods=['GET', 'POST'])
 @authenticated
 def edit_environment_os(name):
     """
@@ -1831,7 +1831,7 @@ def timeline():
     return render_template('timeline.html')
 
 
-@app.route('/error/', methods=['GET'])
+@app.route('/error', methods=['GET'])
 @authenticated
 def errorpage():
 
