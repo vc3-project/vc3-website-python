@@ -1249,13 +1249,18 @@ def list_requests():
 
     for vc3_request in vc3_requests:
         vc_projectname = vc3_request.project
-        associated_project = vc3_client.getProject(projectname=vc_projectname)
+        try:
+            associated_project = vc3_client.getProject(
+                projectname=vc_projectname)
+        except:
+            associated_project = None
 
         if vc3_request.owner == session['name']:
             request_list.append(str(vc3_request.name))
 
-        if session['name'] in associated_project.members:
-            request_list.append(str(vc3_request.name))
+        if associated_project:
+            if session['name'] in associated_project.members:
+                request_list.append(str(vc3_request.name))
 
         headnode = None
         if vc3_request.headnode:
