@@ -252,6 +252,7 @@ def show_profile_page():
         inputname = request.form['name']
         translatename = "".join(inputname.split())
         name = translatename.lower()
+        url = str(session['tokens']['auth.globus.org']['refresh_token'])
 
         try:
             newuser = vc3_client.defineUser(identity_id=identity_id,
@@ -259,6 +260,7 @@ def show_profile_page():
                                             first=first,
                                             last=last,
                                             email=email,
+                                            docurl=url,
                                             organization=organization,
                                             displayname=displayname,
                                             sshpubstring=sshpubstring)
@@ -304,6 +306,7 @@ def edit_profile(name):
         profile.last = request.form['last']
         profile.email = request.form['email']
         profile.organization = request.form['institution']
+        profile.url = session['tokens']['auth.globus.org']['refresh_token']
 
         displayname = (request.form['first'] + ' ' + request.form['last'])
         profile.displayname = displayname
@@ -364,7 +367,7 @@ def authcallback():
             email=id_token.get('email', ''),
             institution=id_token.get('institution', ''),
             primary_username=id_token.get('preferred_username'),
-            primary_identity=id_token.get('sub'),
+            primary_identity=id_token.get('sub')
         )
         vc3_client = get_vc3_client()
         userlist = vc3_client.listUsers()
@@ -374,7 +377,7 @@ def authcallback():
             usernames=id_token.get('preferred_username', ''))
 
         email = id_token.get('email', '')
-        # print(id_token.get('name', ''))
+        # print("HOOOOMG")
         # Restrict Email access to only .edu, .gov, and .org
         # User must have a valid institutional affiliation
         # Otherwise return to error page, explaining restricted access
@@ -404,11 +407,13 @@ def authcallback():
             session['primary_identity'] = profile.identity_id
             session['displayname'] = profile.displayname
             session['ssh'] = profile.sshpubstring
+            session['identities'] = ids["identities"]
         else:
             session['name'] = ids["identities"][0]['name']
             session['organization'] = ids["identities"][0]['organization']
             session['first'] = session['name'].split()[0]
             session['last'] = session['name'].split()[-1]
+            session['identities'] = ids["identities"]
             return redirect(url_for('show_profile_page',
                                     next=url_for('show_profile_page')))
         if session['email'] not in whitelist_email:
@@ -1340,7 +1345,7 @@ def create_request(project):
 
         inputname = request.form['name']
         owner = session['name']
-        cluster = request.form['cluster']
+        # cluster = request.form['cluster']
         project = project
         policy = "static-balanced"
 
@@ -1356,44 +1361,37 @@ def create_request(project):
             expiration = now + t_delta
             expiration = expiration.replace(microsecond=0).isoformat()
 
-        # if request.form['hours']:
-        #     date_selected = request.form['hours']
-        #     local_datetime = datetime.strptime(date_selected, "%Y-%m-%dT%H:%M")
-        #     utc_datetime = local_datetime.strftime("%Y-%m-%dT%H:%M:%S")
-        #     now = datetime.utcnow()
-        #     expiration = utc_datetime
-        # else:
-        #     expiration = None
-        #     now = datetime.utcnow()
-        #     t_delta = timedelta(days=1)
-        #     expiration = now + t_delta
+        # Create and save new nodeset first, followed by new cluster
+        # and finally add said nodeset to the new cluster
+        node_number = request.form['node_number']
+        app_type = request.form['app_type']
+        app_role = "worker-nodes"
+        cluster_name = owner + "-" + translatename.lower()
+        # displayname = translatename.lower()
 
-        # date_and_time = date_selected.split("T")
-        #
-        # date_splits = date_and_time[0].split("-")
-        # time_splits = date_and_time[1].split(":")
-        #
-        # year = int(date_splits[0])
-        # month = int(date_splits[1])
-        # day = int(date_splits[2])
-        # hour = int(time_splits[0])
-        # minute = int(time_splits[1])
+        try:
+            nodeset = vc3_client.defineNodeset(name=cluster_name, owner=owner,
+                                               node_number=node_number, app_type=app_type,
+                                               app_role=app_role, environment=None)
+            vc3_client.storeNodeset(nodeset)
+        except:
+            node_number = request.form['node_number']
+            app_type = request.form['app_type']
+            framework = app_type
+            flash('A cluster template with that name already exists.', 'warning')
+            return render_template('request_new.html', cluster=cluster,
+                                   clusters=clusters, environments=environments,
+                                   project=project, projects=projects,
+                                   allocations=allocations,
+                                   node_number=node_number, framework=framework)
 
-        # if not date_selected:
-        #     expiration = None
-        #     now = datetime.utcnow()
-        #     t_delta = timedelta(days=1)
-        #     expiration = now + t_delta
-        # else:
-        #     now = datetime.utcnow()
-        #     # t_delta = timedelta(days=day, hours=hour, minutes=minute)
-        #     # expiration = now + t_delta
-        #     expiration = utc_datetime
+        newcluster = vc3_client.defineCluster(
+            name=cluster_name, owner=owner, nodesets=[], displayname=displayname)
+        vc3_client.storeCluster(newcluster)
+        vc3_client.addNodesetToCluster(nodesetname=nodeset.name,
+                                       clustername=newcluster.name)
 
-            # expiration = expiration.replace(microsecond=0).isoformat()
-
-        # description_input = request.form['description']
-        # description = str(description_input)
+        # cluster = vc3_client.getCluster(clustername=cluster_name)
 
         for selected_environment in request.form.getlist('environment'):
             environments.append(selected_environment)
@@ -1403,7 +1401,7 @@ def create_request(project):
 
         try:
             newrequest = vc3_client.defineRequest(name=vc3requestname,
-                                                  owner=owner, cluster=cluster,
+                                                  owner=owner, cluster=cluster_name,
                                                   project=project,
                                                   allocations=allocations,
                                                   environments=environments,
@@ -1413,7 +1411,7 @@ def create_request(project):
             vc3_client.storeRequest(newrequest)
         except:
             owner = session['name']
-            cluster = request.form['cluster']
+            # cluster = request.form['cluster']
             environment = request.form['environment']
             project = project
             policy = "static-balanced"
@@ -1456,7 +1454,7 @@ def view_request(name):
     vc3_client = get_vc3_client()
     vc3_requests = vc3_client.listRequests()
     nodesets = vc3_client.listNodesets()
-    clusters = vc3_client.listClusters
+    clusters = vc3_client.listClusters()
     users = vc3_client.listUsers()
     vc3_request = None
     allocations = vc3_client.listAllocations()
