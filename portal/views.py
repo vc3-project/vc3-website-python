@@ -1578,6 +1578,7 @@ def resize_request(name):
     associated attributes
     """
     vc3_client = get_vc3_client()
+    nodesets = vc3_client.listNodesets()
     if request.method == 'GET':
         nodeset = vc3_client.getNodeset(nodesetname=name)
         node_number = nodeset.node_number
@@ -1587,10 +1588,10 @@ def resize_request(name):
 
     elif request.method == 'POST':
         node_number = request.form['node_number']
-        if node_number:
-            nodeset = vc3_client.getNodeset(nodesetname=name)
-            nodeset.node_number = node_number
-            vc3_client.storeNodeset(nodeset)
+        for nodeset in nodesets:
+            if nodeset.displayname == name:
+                nodeset.node_number = node_number
+                vc3_client.storeNodeset(nodeset)
     return redirect(url_for('view_request', name=name))
 
 
