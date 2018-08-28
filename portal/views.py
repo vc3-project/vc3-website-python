@@ -1379,10 +1379,9 @@ def create_request(project):
             app_type = request.form['app_type']
             framework = app_type
             flash('A cluster template with that name already exists.', 'warning')
-            return render_template('request_new.html', cluster=cluster,
-                                   clusters=clusters, environments=environments,
-                                   project=project, projects=projects,
-                                   allocations=allocations,
+            return render_template('request_new.html', clusters=clusters,
+                                   environments=environments, project=project,
+                                   projects=projects, allocations=allocations,
                                    node_number=node_number, framework=framework)
 
         newcluster = vc3_client.defineCluster(
@@ -1567,6 +1566,44 @@ def edit_request(name):
 
             vc3_client.storeRequest(vc3_request)
         return redirect(url_for('view_request', name=name))
+
+
+@app.route('/request/resize/<name>', methods=['GET', 'POST'])
+@authenticated
+def resize_request(name):
+    """
+    Route to resize specific Virtual Clusters
+
+    :param name: name attribute of Virtual Cluster
+    :return: Directs to detailed page view of Virtual Clusters with updated
+    associated attributes
+    """
+    vc3_client = get_vc3_client()
+    if request.method == 'GET':
+        vc3_request = vc3_client.getRequest(requestname=name)
+        nodesetname = vc3_request.cluster
+        nodeset = vc3_client.getNodeset(nodesetname=nodesetname)
+        node_number = nodeset.node_number
+
+        return render_template('request_resize.html', node_number=node_number,
+                               name=name)
+
+    elif request.method == 'POST':
+        node_number = request.form['node_number']
+        if node_number:
+            vc3_request = vc3_client.getRequest(requestname=name)
+            nodesetname = vc3_request.cluster
+            nodeset = vc3_client.getNodeset(nodesetname=nodesetname)
+            nodeset.node_number = node_number
+            vc3_client.storeNodeset(nodeset)
+
+            # Code below may not be necessary since cluster reference to
+            # nodeset name doesn't change
+            # cluster = vc3_client.getCluster(clustername=nodesetname)
+            # vc3_client.storeCluster(cluster)
+            # vc3_client.addNodesetToCluster(nodesetname=nodeset.name,
+            #                                clustername=newcluster.name)
+    return redirect(url_for('view_request', name=name))
 
 
 @app.route('/request/delete/<name>', methods=['GET'])
