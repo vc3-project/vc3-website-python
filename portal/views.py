@@ -1579,8 +1579,6 @@ def resize_request(name):
     """
     vc3_client = get_vc3_client()
     if request.method == 'GET':
-        vc3_request = vc3_client.getRequest(requestname=name)
-        # nodesetname = vc3_request.cluster
         nodeset = vc3_client.getNodeset(nodesetname=name)
         node_number = nodeset.node_number
 
@@ -1590,18 +1588,9 @@ def resize_request(name):
     elif request.method == 'POST':
         node_number = request.form['node_number']
         if node_number:
-            vc3_request = vc3_client.getRequest(requestname=name)
-            # nodesetname = vc3_request.cluster
-            nodeset = vc3_client.getNodeset(nodesetname=vc3_request)
+            nodeset = vc3_client.getNodeset(nodesetname=name)
             nodeset.node_number = node_number
             vc3_client.storeNodeset(nodeset)
-
-            # Code below may not be necessary since cluster reference to
-            # nodeset name doesn't change
-            # cluster = vc3_client.getCluster(clustername=nodesetname)
-            # vc3_client.storeCluster(cluster)
-            # vc3_client.addNodesetToCluster(nodesetname=nodeset.name,
-            #                                clustername=newcluster.name)
     return redirect(url_for('view_request', name=name))
 
 
