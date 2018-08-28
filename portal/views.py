@@ -1350,8 +1350,8 @@ def create_request(project):
         policy = "static-balanced"
 
         translatename = "".join(inputname.split())
-        displayname = translatename.lower()
-        vc3requestname = owner + "-" + displayname
+        translate_lower = translatename.lower()
+        vc3requestname = owner + "-" + translate_lower
         h = int(request.form['hours'])
         if h == 0:
             expiration = None
@@ -1366,13 +1366,12 @@ def create_request(project):
         node_number = request.form['node_number']
         app_type = request.form['app_type']
         app_role = "worker-nodes"
-        cluster_name = owner + "-" + translatename.lower()
-        # displayname = translatename.lower()
+        displayname = owner + "-" + translate_lower
 
         try:
-            nodeset = vc3_client.defineNodeset(name=cluster_name, owner=owner,
+            nodeset = vc3_client.defineNodeset(name=displayname, owner=owner,
                                                node_number=node_number, app_type=app_type,
-                                               app_role=app_role, environment=None)
+                                               app_role=app_role, environment=None, displayname=displayname)
             vc3_client.storeNodeset(nodeset)
         except:
             node_number = request.form['node_number']
@@ -1385,7 +1384,7 @@ def create_request(project):
                                    node_number=node_number, framework=framework)
 
         newcluster = vc3_client.defineCluster(
-            name=cluster_name, owner=owner, nodesets=[], displayname=displayname)
+            name=displayname, owner=owner, nodesets=[], displayname=displayname)
         vc3_client.storeCluster(newcluster)
         vc3_client.addNodesetToCluster(nodesetname=nodeset.name,
                                        clustername=newcluster.name)
@@ -1400,7 +1399,7 @@ def create_request(project):
 
         try:
             newrequest = vc3_client.defineRequest(name=vc3requestname,
-                                                  owner=owner, cluster=cluster_name,
+                                                  owner=owner, cluster=displayname,
                                                   project=project,
                                                   allocations=allocations,
                                                   environments=environments,
@@ -1581,8 +1580,8 @@ def resize_request(name):
     vc3_client = get_vc3_client()
     if request.method == 'GET':
         vc3_request = vc3_client.getRequest(requestname=name)
-        nodesetname = vc3_request.cluster
-        nodeset = vc3_client.getNodeset(nodesetname=nodesetname)
+        # nodesetname = vc3_request.cluster
+        nodeset = vc3_client.getNodeset(nodesetname=vc3_request)
         node_number = nodeset.node_number
 
         return render_template('request_resize.html', node_number=node_number,
@@ -1592,8 +1591,8 @@ def resize_request(name):
         node_number = request.form['node_number']
         if node_number:
             vc3_request = vc3_client.getRequest(requestname=name)
-            nodesetname = vc3_request.cluster
-            nodeset = vc3_client.getNodeset(nodesetname=nodesetname)
+            # nodesetname = vc3_request.cluster
+            nodeset = vc3_client.getNodeset(nodesetname=vc3_request)
             nodeset.node_number = node_number
             vc3_client.storeNodeset(nodeset)
 
