@@ -1581,7 +1581,7 @@ def resize_request(name):
     if request.method == 'GET':
         vc3_request = vc3_client.getRequest(requestname=name)
         # nodesetname = vc3_request.cluster
-        nodeset = vc3_client.getNodeset(nodesetname=vc3_request)
+        nodeset = vc3_client.getNodeset(nodesetname=name)
         node_number = nodeset.node_number
 
         return render_template('request_resize.html', node_number=node_number,
