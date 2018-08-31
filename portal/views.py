@@ -1442,12 +1442,6 @@ def view_request(name):
     :return: Directs to detailed page view of Virtual Clusters with
     associated attributes
     """
-    # Checks if user is member of project associated with Virtual Cluster
-    member_in_vc = project_in_vc(name=name)
-    if member_in_vc is False:
-        flash('You do not appear to be have access to view this Virtual Cluster'
-              'Please contact owner to request membership.', 'warning')
-        return redirect(url_for('list_requests'))
 
     vc3_client = get_vc3_client()
     vc3_requests = vc3_client.listRequests()
@@ -1458,6 +1452,17 @@ def view_request(name):
     allocations = vc3_client.listAllocations()
 
     if request.method == 'GET':
+        # Checks if user is member of project associated with Virtual Cluster
+        try:
+            member_in_vc = project_in_vc(name=name)
+            if member_in_vc is False:
+                flash('You do not appear to be have access to view this Virtual Cluster'
+                      'Please contact owner to request membership.', 'warning')
+                return redirect(url_for('list_requests'))
+        except:
+            flash('The virtual clusters you are looking for does not exist', 'warning')
+            return redirect(url_for('list_requests'))
+
         vc3_request = vc3_client.getRequest(requestname=name)
         if vc3_request:
             requestname = vc3_request.name
@@ -1489,9 +1494,10 @@ def view_request(name):
             # time_difference = expiration_utc - datetime.now()
             local_time = local_time.strftime('%m/%d/%Y at %H:%M:%S %Z')
 
-            for user in users:
-                if user.name == owner:
-                    profile = user
+            profile = vc3_client.getUser(username=owner)
+            # for user in users:
+            #     if user.name == owner:
+            #         profile = user
 
             return render_template('request_profile.html', name=requestname,
                                    owner=owner, requests=vc3_requests,
@@ -1504,6 +1510,7 @@ def view_request(name):
                                    profile=profile, vc3_request=vc3_request,
                                    displayname=displayname,
                                    expiration=local_time, headnode=headnode)
+
         app.logger.error("Could not find VC when viewing: {0}".format(name))
         raise LookupError('virtual cluster')
 
