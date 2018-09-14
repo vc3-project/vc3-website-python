@@ -1,7 +1,7 @@
 CherryPy==3.2.4
 cryptography
 Cython
-flask ~> 0.12.3
+flask == 0.12.3
 Frozen-Flask
 Flask-FlatPages
 globus-sdk==1.1.1
