@@ -1634,8 +1634,7 @@ def relaunch_virtualcluster(name):
     if virtual_cluster.name == name:
         virtual_cluster.action = "relaunch"
 
-    # h = int(request.form['hours'])
-    h = 2
+    h = int(request.form['hours'])
     if h == 0:
         expiration = None
     else:
