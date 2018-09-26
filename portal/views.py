@@ -96,7 +96,7 @@ def blog():
     articles = (p for p in pages if 'date' in p.meta)
     """Show the 10 most recent articles, most recent first"""
     latest = sorted(articles, reverse=True, key=lambda p: p.meta['date'])
-    blog_pages = latest[:10]
+    blog_pages = latest[:20]
     taglist = []
     for p in blog_pages:
         if p.meta['tags'][0] not in taglist:
