@@ -1,11 +1,10 @@
   <article class="blog">
     {% for page in pages %}
-      {% if page %}
         <h2>
             <span id="blogtitle"><a href="{{ url_for('page', path=page.path) }}">{{ page.title }}</a></span>
         </h2>
         <em>{{ page.date }}</em>
-        <div class="pagepreview"> {{ page.body }}</div>
+        <div class="pagepreview">{{ page.body }}</div>
         {% if page.meta.tags|length %}
             {% for page_tag in page.meta.tags %}
                 <em>Tags: {{ page_tag }}</em>
@@ -15,9 +14,9 @@
           <em><a href="{{ url_for('page', path=page.path) }}">Read more &raquo;</a></em>
         </p>
 
-      {% else %}
+    {% else %}
+
         <li>Currently no articles.</li>
-      {% endif %}
 
     {% endfor %}
   </article>
