@@ -42,12 +42,12 @@
                         tabindex="1"
                         required
                         pattern="^[^\.]*$"
-                        value="{{request.name}}">
+                        value="{{inputname}}">
                     </div>
 
-                    <div class="form-group">
+                    <!-- <div class="form-group">
                       <label for="cluster">Cluster Template <span id="asterik">*</span></label>
-                      <select class="form-control border-input selectpicker" name="cluster" tabindex="2" id="form-resource-list" data-live-search="true" data-actions-box="true" data-header="Select Cluster Template" required>
+                      <select class="form-control border-input selectpicker" name="cluster" tabindex="2" id="form-framework-list" data-live-search="true" data-actions-box="true" data-header="Select Cluster Template" required>
                         <option value="" selected disabled>Select Cluster Template</option>
                         {% for cluster in clusters %}
                           {% if cluster.owner == session['name'] or cluster.public %}
@@ -55,7 +55,34 @@
                           {% endif %}
                         {% endfor %}
                       </select>
+                    </div> -->
+
+                    <div class="form-group">
+                      <label for="app_type">Cluster Template Framework <span id="asterik">*</span></label>
+                      <select class="form-control" name="app_type" tabindex="2" id="form-framework-list" required>
+                        <option value="" selected disabled>Please Select Framework</option>
+                        <option value="htcondor">HTCondor</option>
+                        <option value="workqueue">WorkQueue</option>
+                        <option value="jupyter">JupyterHub</option>
+                        <option value="spark">Spark</option>
+                      </select>
                     </div>
+
+                    <div class="form-group">
+                      <label for="node_number">Number of Compute Workers: <span id="asterik">*</span></label>
+                      <input
+                        placeholder="# Compute Workers"
+                        name="node_number"
+                        class="form-control border-input"
+                        type="number"
+                        min="1"
+                        max="1000000"
+                        tabindex="3"
+                        required
+                        style="width:20%"
+                        value="{{node_number}}">
+                    </div>
+
                     <div class="form-group">
                       <label for="environment">Environment</label>
                       <select class="form-control border-input selectpicker"
@@ -76,7 +103,7 @@
 
                     <div class="form-group">
                       <label for="allocation">Allocations<span id="asterik">*</span></label>
-                      <select class="form-control border-input selectpicker" multiple name="allocation" tabindex="4" id="allocation" data-live-search="true" data-actions-box="true" data-header="Select Allocations for Virtual Cluster" required>
+                      <select class="form-control border-input selectpicker" multiple name="allocation" tabindex="4" id="form-allocation-list" data-live-search="true" data-actions-box="true" data-header="Select Allocations for Virtual Cluster" required>
                         <!-- also disabled ".selectpicker" above <option disabled>Please Select Allocation</option> -->
                         {% for allocation in allocations %}
                         <option data-tokens="{{allocation.displayname}}" value="{{allocation.name}}">{{ allocation.displayname }}</option>
@@ -135,5 +162,32 @@
   </div><!-- ./container-fluid -->
 </div><!-- ./content -->
 
+<script>
 
+
+window.onload = function(){
+  autoSelect('form-framework-list', '{{cluster}}');
+  // autoSelectAllocation('form-allocation-list', '{{allocation}}');
+}
+
+function autoSelect(a,b) {
+  var selector = document.getElementById(a);
+  selector.value = b
+}
+
+function autoSelectAllocation(a, b){
+  var allocationToSelect = {{allocation}}
+  var selector = document.getElementById(a);
+  for (var i=0, i<selector.option.length; i++){
+    o = selector.option[i];
+    o.selected = true;
+  }
+}
+
+// var sel = document.forms[0].selectName;
+// for(var i=0; i<sel.options.length; i++){
+//   sel.options[i].selected = true;
+// }
+
+</script>
 {%endblock%}

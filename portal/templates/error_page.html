@@ -1,0 +1,43 @@
+{%extends "loginbase.html"%}
+
+{%block title%}Error{%endblock%}
+
+{%block body%}
+{%include 'messages.html'%}
+
+<div class="content">
+  <div class="container-fluid">
+
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card">
+            <div class="header">
+                <h4 class="title"><i class="fa fa-exclamation-circle" style="color:red"></i> Error </h4>
+                <div class="">
+                    <div class="description">
+                        <p>Unfortunately, the page you're looking for does not exist.</p>
+                        If you need help, please contact us at
+                        <a href="mailto:support@virtualclusters.org">support@virtualclusters.org</a> .
+                    </div>
+                </div>
+                <hr />
+            </div>
+
+          <div class="content description">
+
+            <div class="card">
+  						<div class="card-block">
+                <p class="btn btn-primary btn-sm" onclick="javascript:history.go(-1)">Return to previous page</p>
+  						</div>
+  					</div>
+
+          </div><!-- /.content description -->
+
+        </div>
+      </div>
+		</div>
+
+  </div>
+</div>
+
+{%endblock%}

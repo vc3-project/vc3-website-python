@@ -33,11 +33,16 @@ def virtual_cluster(name):
                              'action': vc.action,
                              'headnode': vc.headnode}
             if vc.statusinfo is not None:
-                sanitized_obj['statusinfo_error'] = vc.statusinfo[vc.cluster]['error']
-                sanitized_obj['statusinfo_idle'] = vc.statusinfo[vc.cluster]['idle']
-                sanitized_obj['statusinfo_node_number'] = vc.statusinfo[vc.cluster]['node_number']
-                sanitized_obj['statusinfo_requested'] = vc.statusinfo[vc.cluster]['requested']
-                sanitized_obj['statusinfo_running'] = vc.statusinfo[vc.cluster]['running']
+                sanitized_obj['statusinfo_error'] = vc.statusinfo[vc.statusinfo.keys()[
+                    0]]['error']
+                sanitized_obj['statusinfo_idle'] = vc.statusinfo[vc.statusinfo.keys()[
+                    0]]['idle']
+                sanitized_obj['statusinfo_node_number'] = vc.statusinfo[vc.statusinfo.keys()[
+                    0]]['node_number']
+                sanitized_obj['statusinfo_requested'] = vc.statusinfo[vc.statusinfo.keys()[
+                    0]]['requested']
+                sanitized_obj['statusinfo_running'] = vc.statusinfo[vc.statusinfo.keys()[
+                    0]]['running']
             for nodeset in nodesets:
                 if nodeset.name == vc.headnode:
                     sanitized_obj['headnode_app_host'] = nodeset.app_host
@@ -71,6 +76,7 @@ def allocation(name):
                              'statereason': x.state_reason,
                              'pubtoken': x.pubtoken}
             if x.pubtoken:
-                sanitized_obj['pubtoken'] = base64.b64decode(x.pubtoken).rstrip('\n')
+                sanitized_obj['pubtoken'] = base64.b64decode(
+                    x.pubtoken).rstrip('\n')
             return flask.jsonify(sanitized_obj)
     return flask.jsonify(result), 404

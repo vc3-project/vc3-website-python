@@ -11,7 +11,6 @@
     <div class="row">
       <div class="col-md-12">
         <div class="card">
-
           <div class="header">
             <ol class="breadcrumb">
               <li class="breadcrumb-item"><a href="{{url_for('portal')}}">Portal Home</a></li>
@@ -41,149 +40,150 @@
           <div class="content description">
             <div class="card">
     					<div class="card-block" id="detailed-page-block">
-                <div class="col-md-8">
-                  <!-- <a href="{{url_for('validate_allocation', name=name)}}" class="btn btn-create btn-xs" title="Validate Allocation">Validate Allocation</a> -->
+                <div class='row'>
+                  <div class="col-md-8">
+                    <!-- <a href="{{url_for('validate_allocation', name=name)}}" class="btn btn-create btn-xs" title="Validate Allocation">Validate Allocation</a> -->
 
-                  <div class="panel panel-info resource-profile" style="margin: 1em;">
-                    <div class="panel-heading">
-                      <h3 class="panel-title"><strong>Step 1: Log Into Resource</strong></h3>
-                    </div>
-                    <div class="panel-body disabled">
-                      In a terminal, type:
-                        <div>
-                          <kbd>ssh {{accountname}}@{{accesshost}}</kbd>
-                        </div>
-                      </li>
-                    </div>
-                  </div>
-
-                  <div class="panel panel-info resource-profile" style="margin: 1em;">
-                    <div class="panel-heading">
-                      <h3 class="panel-title"><strong>Step 2: Access Resource</strong></h3>
-                    </div>
-                    <div class="panel-body disabled">
-                      Enter your password for <kbd>{{accesshost}}</kbd> for access
-                    </div>
-                  </div>
-
-                  <div class="panel panel-info resource-profile" style="margin: 1em;">
-                    <div class="panel-heading">
-                      <h3 class="panel-title"><strong>Step 3: Add Allocation SSH Public Key to Resource</strong></h3>
-                    </div>
-                    <div class="panel-body pubtoken">
-                      <p>Once the SSH key is generated below, click
-                        `Copy to Clipboard` and paste the following line
-                        into your SSH session on your resource.
-                      </p>
-                      <textarea id="pubtoken" readonly disabled font-size="16"></textarea>
-                      <!-- <button onclick="copyToClipboard('#pubtoken')" class="btn btn-primary btn-sm">Copy to Clipboard</button> -->
-                      <div class="span10">
-                        <button class="btn btn-create btn-sm btn-copy" onclick="copyToClipboard('#pubtoken')">Copy to Clipboard</button>
+                    <div class="panel panel-info resource-profile" style="margin: 1em;">
+                      <div class="panel-heading">
+                        <h3 class="panel-title"><strong>Step 1: Log Into Resource</strong></h3>
                       </div>
-                      <div class="span4">
-                        <div class="alert alert-success fade">
-                          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                            <span aria-hidden="true" style="color:black">&times;</span>
-                          </button>
-                          SSH Key Copied!
-                        </div>
+                      <div class="panel-body disabled">
+                        In a terminal, type:
+                          <div>
+                            <kbd>ssh {{accountname}}@{{accesshost}}</kbd>
+                          </div>
+                        </li>
                       </div>
                     </div>
+
+                    <div class="panel panel-info resource-profile" style="margin: 1em;">
+                      <div class="panel-heading">
+                        <h3 class="panel-title"><strong>Step 2: Access Resource</strong></h3>
+                      </div>
+                      <div class="panel-body disabled">
+                        Enter your password for <kbd>{{accesshost}}</kbd> for access
+                      </div>
+                    </div>
+
+                    <div class="panel panel-info resource-profile" style="margin: 1em;">
+                      <div class="panel-heading">
+                        <h3 class="panel-title"><strong>Step 3: Add Allocation SSH Public Key to Resource</strong></h3>
+                      </div>
+                      <div class="panel-body pubtoken">
+                        <p>Once the SSH key is generated below, click
+                          `Copy to Clipboard` and paste the following line
+                          into your SSH session on your resource.
+                        </p>
+                        <textarea id="pubtoken" readonly disabled font-size="16"></textarea>
+                        <!-- <button onclick="copyToClipboard('#pubtoken')" class="btn btn-primary btn-sm">Copy to Clipboard</button> -->
+                        <div class="span10">
+                          <button class="btn btn-create btn-sm btn-copy" onclick="copyToClipboard('#pubtoken')">Copy to Clipboard</button>
+                        </div>
+                        <div class="span4">
+                          <div class="alert alert-success fade">
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                              <span aria-hidden="true" style="color:black">&times;</span>
+                            </button>
+                            SSH Key Copied!
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="panel panel-info resource-profile" style="margin: 1em;">
+                      <div class="panel-heading">
+                        <h3 class="panel-title"><strong>Step 4: Validate Allocation</strong></h3>
+                      </div>
+                      <div class="panel-body">
+                        <!-- If your allocation state is still in the "configured" state, please click the "Validate" button below: -->
+                        <!-- <br> -->
+                        <div id="validation-button"></div>
+                      </div>
+                    </div>
+
+                  </div><!-- /.col-md-6-->
+
+                  <div class="col-md-4">
+
+                    <div class="panel panel-info resource-profile" style="margin: 1em;">
+                      <div class="panel-heading">
+                        <h3 class="panel-title"><strong>Owner</strong></h3>
+                      </div>
+                      <div class="panel-body disabled">
+                      {% for user in users %}
+                        {% if user.name == owner %}
+                          {{user.first}} {{user.last}}
+                        {% endif %}
+                      {% endfor %}
+                      </div>
+                    </div>
+
+                    <div class="panel panel-info resource-profile" style="margin: 1em;">
+                      <div class="panel-heading">
+                        <h3 class="panel-title"><strong>Resource</strong></h3>
+                      </div>
+                      <div class="panel-body">
+                        <a href="{{ url_for('view_resource', name=resource) }}">
+                          {% for r in resources %}
+                            {% if resource == r.name %}
+                            <div>{{r.displayname}}</div>
+                            {% endif %}
+                          {% endfor %}
+                        </a>
+                        Account Name: {{accountname}}
+                      </div>
+                    </div>
+
+                    <!-- <div class="panel panel-info resource-profile" style="margin: 1em;">
+                      <div class="panel-heading">
+                        <h3 class="panel-title"><strong>Account Name on Resource:</strong></h3>
+                      </div>
+                      <div class="panel-body disabled">
+                        {{accountname}}
+                      </div>
+                    </div> -->
                   </div>
 
-                  <div class="panel panel-info resource-profile" style="margin: 1em;">
-                    <div class="panel-heading">
-                      <h3 class="panel-title"><strong>Step 4: Validate Allocation</strong></h3>
-                    </div>
-                    <div class="panel-body">
-                      <!-- If your allocation state is still in the "configured" state, please click the "Validate" button below: -->
-                      <!-- <br> -->
-                      <div id="validation-button"></div>
-                    </div>
-                  </div>
+                  <!-- <div class="col-md-6">
 
-                </div><!-- /.col-md-6-->
-
-                <div class="col-md-4">
-
-                  <div class="panel panel-info resource-profile" style="margin: 1em;">
-                    <div class="panel-heading">
-                      <h3 class="panel-title"><strong>Owner</strong></h3>
+                    <h2 class="title">
+                      <small>For VC3 to Resource SSH Access:</small>
+                    </h2>
+                    <div class="card-block panel-body disabled" style="font-size: 16px">
+                        To allow the VC3 system to access this resource on your behalf, you need to copy the new allocation ssh public on the remote resource. To do this:</p>
+                      <ol>
+                        <li>In a terminal, type:
+                          <div>
+                            <kbd>ssh {{accountname}}@{{accesshost}}</kbd>
+                          </div>
+                        </li>
+                        <li>
+                          Enter your password for <kbd>{{accesshost}}</kbd> for access
+                        </li>
+                        <li> Next you will need to add the allocation ssh public key to
+                          your authorized keys on the remote resource.
+                        {% if pubtoken == "None" %}
+                          Instructions will appear here when the key is
+                          ready.
+                        {% else %}
+                          Please copy and paste the following line into
+                          your ssh session:
+                          <div>
+                          <kbd>(umask 077 && mkdir -p ~/.ssh && echo '{{pubtoken}}' >> ~/.ssh/authorized_keys) </kbd>
+                          </div>
+                        {% endif %}
+                        </li>
+                        <li>
+                          You will only need to do this once per allocation.
+                        </li>
+                      </ol>
                     </div>
-                    <div class="panel-body disabled">
-                    {% for user in users %}
-                      {% if user.name == owner %}
-                        {{user.first}} {{user.last}}
-                      {% endif %}
-                    {% endfor %}
-                    </div>
-                  </div>
-
-                  <div class="panel panel-info resource-profile" style="margin: 1em;">
-                    <div class="panel-heading">
-                      <h3 class="panel-title"><strong>Resource</strong></h3>
-                    </div>
-                    <div class="panel-body">
-                      <a href="{{ url_for('view_resource', name=resource) }}">
-                        {% for r in resources %}
-                          {% if resource == r.name %}
-                          <div>{{r.displayname}}</div>
-                          {% endif %}
-                        {% endfor %}
-                      </a>
-                      Account Name: {{accountname}}
-                    </div>
-                  </div>
-
-                  <!-- <div class="panel panel-info resource-profile" style="margin: 1em;">
-                    <div class="panel-heading">
-                      <h3 class="panel-title"><strong>Account Name on Resource:</strong></h3>
-                    </div>
-                    <div class="panel-body disabled">
-                      {{accountname}}
+                    <div id="ajaxTesting">
+                      <h5 id="test"></h5>
                     </div>
                   </div> -->
                 </div>
-
-                <!-- <div class="col-md-6">
-
-                  <h2 class="title">
-                    <small>For VC3 to Resource SSH Access:</small>
-                  </h2>
-                  <div class="card-block panel-body disabled" style="font-size: 16px">
-                      To allow the VC3 system to access this resource on your behalf, you need to copy the new allocation ssh public on the remote resource. To do this:</p>
-                    <ol>
-                      <li>In a terminal, type:
-                        <div>
-                          <kbd>ssh {{accountname}}@{{accesshost}}</kbd>
-                        </div>
-                      </li>
-                      <li>
-                        Enter your password for <kbd>{{accesshost}}</kbd> for access
-                      </li>
-                      <li> Next you will need to add the allocation ssh public key to
-                        your authorized keys on the remote resource.
-                      {% if pubtoken == "None" %}
-                        Instructions will appear here when the key is
-                        ready.
-                      {% else %}
-                        Please copy and paste the following line into
-                        your ssh session:
-                        <div>
-                        <kbd>(umask 077 && mkdir -p ~/.ssh && echo '{{pubtoken}}' >> ~/.ssh/authorized_keys) </kbd>
-                        </div>
-                      {% endif %}
-                      </li>
-                      <li>
-                        You will only need to do this once per allocation.
-                      </li>
-                    </ol>
-                  </div>
-                  <div id="ajaxTesting">
-                    <h5 id="test"></h5>
-                  </div>
-                </div> -->
-
     					</div>
             </div>
           </div><!-- /.content description -->
