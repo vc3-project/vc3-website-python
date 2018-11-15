@@ -11,6 +11,8 @@
 			gtag('config', 'UA-113278114-1');
 		</script>
 		<meta charset="utf-8" />
+		<meta name="description" content="Virtual Clusters for Community Computation (VC3) - Virtual clusters as a service. Create HTCondor, Work Queue, and Spark clusters across clusters, grids, and clouds.">
+    <meta name="keywords" content="Virtual Clusters, UChicago, University of Chicago, Computation Institute, University of Notre Dame, Brookhaven National Laboratory, Argonne National Laboratory, data transfer, Globus, Scientific research, Collaboration">
 		<link rel="shortcut icon" type="image/x-icon" href="{{url_for('static', filename='img/favicon.ico')}}" />
 		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
 
@@ -57,44 +59,84 @@
           <img src="https://image.ibb.co/e59s3v/logosmall.png" alt="" title="" width="100px" height="100px" /></img>
         </a> -->
       </div>
+			{% if session['email'] in ['jeremyvan@uchicago.edu', 'briedel@uchicago.edu',
+			                   'btovar@nd.edu', 'burt@fnal.gov', 'czheng2@nd.edu',
+			                   'dthain@nd.edu', 'jcaballero@bnl.gov',
+			                   'jgentle@tacc.utexas.edu', 'jhover@bnl.gov',
+			                   'khurtado@nd.edu', 'Kyle.D.Sweeney.84@nd.edu',
+			                   'lincolnb@uchicago.edu', 'nhazekam@nd.edu',
+			                   'rwg@uchicago.edu', 'sthapa@ci.uchicago.edu',
+			                   'sthapa@uchicago.edu', 'tshaffe1@nd.edu',
+			                   'czheng2@nd.edu', 'pivie@nd.edu',
+			                   'jlstephen@uchicago.edu', 'balamurugan@uchicago.edu',
+			                   'gfarr@uchicago.edu', 'ddl@illinois.edu',
+			                   'ivukotic@uchicago.edu', 'ivukotic@cern.ch',
+			                   'klannon@nd.edu', 'rob.rwg@gmail.com',
+			                   'rwg@hep.uchicago.edu', 'robert.w.gardner@cern.ch',
+			                   'jzhou93@uchicago.edu', 'cnweaver@uchicago.edu',
+			                   'annawoodard@uchicago.edu', 'awoodard@nd.edu',
+												 'anna.elizabeth.woodard@cern.ch',
+												 'yiyangou@uchicago.edu', 'kevin.jerome.pedro@cern.ch',
+												 'ndev@nd.edu'] %}
       <ul class="nav" id="side-nav">
 				<li class="side-nav-list" id="resource">
+					<div class="floatcontainer">
+						<div id="nav-active-bar"></div>
+					</div>
           <a href="{{url_for('list_resources')}}">
             <i class="fa fa-database" aria-hidden="true"></i>
             <p class="tour-step tour-step-four">Resources</p>
           </a>
         </li>
         <li class="side-nav-list" id="allocation">
+					<div class="floatcontainer">
+						<div id="nav-active-bar"></div>
+					</div>
           <a href="{{url_for('list_allocations')}}">
             <i class="fa fa-cube" aria-hidden="true"></i>
             <p class="tour-step tour-step-five">Allocations</p>
           </a>
         </li>
         <li class="side-nav-list" id="project">
+					<div class="floatcontainer">
+						<div id="nav-active-bar"></div>
+					</div>
           <a href="{{url_for('list_projects')}}" methods="GET">
             <i class="fa fa-folder-open-o" aria-hidden="true"></i>
             <p class="tour-step tour-step-seven">Projects</p>
           </a>
         </li>
-				<li class="side-nav-list" id="cluster">
+				<!-- <li class="side-nav-list" id="cluster">
+					<div class="floatcontainer">
+						<div id="nav-active-bar"></div>
+					</div>
           <a href="{{url_for('list_clusters')}}">
             <i class="fa fa-cog" aria-hidden="true"></i>
             <p>Cluster Templates</p>
           </a>
-        </li>
-				<li class="side-nav-list">
+        </li> -->
+				<li class="side-nav-list" id="environment">
+					<div class="floatcontainer">
+						<div id="nav-active-bar"></div>
+					</div>
           <a href="{{url_for('list_environments')}}">
             <i class="fa fa-hdd-o" aria-hidden="true"></i>
-            <p>Environments</p>
+            <p>Environments (beta)</p>
           </a>
         </li>
 				<li class="side-nav-list" id="request">
+					<div class="floatcontainer">
+						<div id="nav-active-bar"></div>
+					</div>
           <a href="{{url_for('list_requests')}}">
             <i class="" aria-hidden="true"><img src="{{url_for('static', filename='img/favicon.ico')}}" style="width:100%;"></i>
             <p>Virtual Clusters</p>
           </a>
         </li>
 				<li class="side-nav-list" id="monitoring">
+					<div class="floatcontainer">
+						<div id="nav-active-bar"></div>
+					</div>
           <a href="{{url_for('dashboard')}}">
             <i class="fa fa-dashboard" aria-hidden="true"></i>
             <p>Monitoring</p>
@@ -110,14 +152,19 @@
 			                                       'c887eb90-d274-11e5-bf28-779c8998e810',
 			                                       'c456b77c-d274-11e5-b82c-23a245a48997',
 			                                       'c444a294-d274-11e5-b7f1-e3782ed16687',
-																						 'aebe29b8-d274-11e5-ba4b-ffec0df955f2'] %}
+																						 'aebe29b8-d274-11e5-ba4b-ffec0df955f2',
+																						 'd936740d-1970-42c2-9688-c6941fa0f153'] %}
 				<li class="side-nav-list">
+					<div class="floatcontainer">
+						<div id="nav-active-bar"></div>
+					</div>
           <a href="{{url_for('admin')}}">
 						<i class="fa fa-user-secret" aria-hidden="true"></i>
             <p>Admin</p>
           </a>
         </li>
 				{% endif %}
+			{% endif %}
       </ul>
     </div>
   </div>
@@ -135,15 +182,19 @@
 					<a class="navbar-brand-logo pull-left" href="{{url_for('home')}}"><strong id="title">VC3</strong></a>
 					<a class="navbar-brand" href="{{url_for('blog')}}">News</a>
 					<a class="navbar-brand" href="{{url_for('community')}}">Community</a>
-					<a class="navbar-brand" href="https://vc3-project.github.io/vc3-mkdocs/" target="_blank">Documentation</a>
+					<a class="navbar-brand" href="http://docs.virtualclusters.org/" target="_blank">Documentation</a>
 				</div>
 
 				<div class="collapse navbar-collapse">
 
 					<div class="nav navbar-nav navbar-right">
-						{% if session['name'] and session['first'] %}
+						{% if white_list_error %}
+						<a class="navbar-brand" href="http://docs.virtualclusters.org/" target="_blank">Release: closed-beta</a>
+						{% elif session['name'] and session['first']%}
+						<a class="navbar-brand" href="http://docs.virtualclusters.org/" target="_blank">Release: closed-beta</a>
 						<a class="navbar-brand" href="{{url_for('show_profile_page')}}">{{session['first']}} {{session['last']}}</a>
 						{% else %}
+						<a class="navbar-brand" href="https://docs.virtualclusters.org/" target="_blank">Release: closed-beta</a>
 						<a class="navbar-brand" href="{{url_for('show_profile_page')}}">Profile</a>
 						{% endif %}
 						<a class="navbar-brand" href="{{url_for('logout')}}"><i class="fa fa-fw fa-sign-out"></i> Logout</a>
@@ -166,7 +217,7 @@
 
   <!--   Core JS Files   -->
 	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0/jquery.min.js"></script>
-	<script type="text/javascript" src="https://www.jqueryscript.net/demo/Twitter-Like-Text-Box-Character-Counter-with-jQuery-Bootstrap/jquery.charactercounter.js"></script>
+	<!-- <script type="text/javascript" src="https://www.jqueryscript.net/demo/Twitter-Like-Text-Box-Character-Counter-with-jQuery-Bootstrap/jquery.charactercounter.js"></script> -->
 	<script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.4/js/bootstrap-select.min.js"></script>
 	<script type="text/javascript" src="https://raw.githubusercontent.com/mistic100/Bootstrap-Confirmation/master/bootstrap-confirmation.min.js"></script>
@@ -182,7 +233,15 @@
 	$(document).ready(function() {
 	// get current URL path and assign 'active' class
 	var pathname = window.location.pathname;
-	$('.nav > li > a[href="'+pathname+'"]').parent().addClass('active');
+	var pathsplit = pathname.split('/')
+	// console.log(pathsplit[1])
+	if(pathsplit.length > 1){
+		var parentpath = pathsplit[1];
+		$('.nav > li > a[href="/'+parentpath+'"]').parent().addClass('active');
+	} else {
+		// look to update the full a[href=''] uri below
+		$('.nav > li > a[href="'+pathname+'"]').parent().addClass('active');
+	}
 	})
 	</script>
 

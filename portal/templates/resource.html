@@ -17,7 +17,9 @@
             </ol>
           	<h4 class="title">Resources</h4>
             <div class="">
-							<h5>Browse current list of known resource profiles</h5>
+							<h5>Browse current list of known resource profiles. For more information
+                about VC3 resources, including adding new clusters,
+                see <strong><a href='https://docs.virtualclusters.org/resourceguide/newresource' target="_blank">here</a></strong>.</h5>
 						</div>
 						<hr />
           </div>
@@ -47,17 +49,37 @@
         									<thead>
         										<tr class="filters">
         											<th><input type="text" class="form-control" placeholder="Name" disabled></th>
-        											<th><input type="text" class="form-control" placeholder="Status" disabled></th>
         											<th><input type="text" class="form-control" placeholder="Organization" disabled></th>
+        											<th><input type="text" class="form-control" placeholder="Description" disabled></th>
+                              <th id="cores"><input type="text" class="form-control" placeholder="Cores/slot" disabled></th>
+                              <th id="mem_core"><input type="text" class="form-control" placeholder="Memory/core" disabled></th>
+                              <th id="disk_space"><input type="text" class="form-control" placeholder="Disk Space" disabled></th>
+                              <th><input type="text" class="form-control" placeholder="Native OS" disabled></th>
+                              <th id="containers"><input type="text" class="form-control" placeholder="Containers" disabled></th>
         										</tr>
         									</thead>
         									<tbody data-link="row" class="rowlink">
       											{% for resource in resources %}
                               {% if resource.public %}
+                              {% set vc3_client = get_vc3_client() %}
+                              {% set nodeinfo = vc3_client.getNodeinfo(nodeinfoName=resource.nodeinfo)%}
       											<tr>
       												<td><a href="{{ url_for('view_resource', name=resource.name) }}" title="View Resource Profile">{{ resource.displayname }}</a></td>
-      												<td><i class="fa fa-check" aria-hidden="true" style="color:green"></i> Healthy</td>
-      												<td>{{resource.organization}}</td>
+      												<!-- <td><i class="fa fa-check" aria-hidden="true" style="color:green"></i> Healthy</td> -->
+                              <td>{{resource.organization}}</td>
+      												<td>{{resource.description}}</td>
+                              <td>{{nodeinfo.cores}}</td>
+                              <td>{{nodeinfo.memory_mb}} MB</td>
+                              <td>{{nodeinfo.storage_mb}} MB</td>
+                              <td>{{nodeinfo.native_os}}</td>
+                              <td>{% if nodeinfo.features %}
+                                    {% for feature in nodeinfo.features %}
+                                      {{feature.capitalize()}}
+                                    {% endfor %}
+                                  {% else %}
+                                    N/A
+                                  {% endif %}
+                              </td>
       											</tr>
                               {% endif %}
       											{% endfor %}
@@ -80,8 +102,8 @@
                           <thead>
                             <tr class="filters">
                               <th><input type="text" class="form-control" placeholder="Name" disabled></th>
-                              <th><input type="text" class="form-control" placeholder="Status" disabled></th>
                               <th><input type="text" class="form-control" placeholder="Organization" disabled></th>
+                              <th><input type="text" class="form-control" placeholder="Description" disabled></th>
                             </tr>
                           </thead>
                           <tbody data-link="row" class="rowlink">
@@ -89,8 +111,9 @@
                               {% if not resource.public %}
                             <tr>
                               <td><a href="{{ url_for('view_resource', name=resource.name) }}" title="View Resource Profile">{{ resource.displayname }}</a></td>
-                              <td><i class="fa fa-check" aria-hidden="true" style="color:green"></i> Healthy</td>
+                              <!-- <td><i class="fa fa-check" aria-hidden="true" style="color:green"></i> Healthy</td> -->
                               <td>{{resource.organization}}</td>
+                              <td>{{resource.description}}</td>
                             </tr>
                               {% endif %}
                             {% endfor %}

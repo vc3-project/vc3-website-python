@@ -24,8 +24,14 @@
             {% if session['name'] == owner %}
             <row class="container">
               <div class="delete_entity pull-right">
-  							<a href="{{url_for('delete_project', name=name)}}" data-toggle="confirmation"  class="btn btn-danger btn-xs">Delete Project</a>
+  							<a href="#"
+                data-toggle="confirmation"
+                class="btn btn-danger btn-xs"
+                onclick="btnConfirm()">Delete Project</a>
   						</div>
+            </row>
+            {% else %}
+            <row class="container">
             </row>
             {% endif %}
 						<hr />
@@ -57,6 +63,7 @@
                       				<th><input type="text" class="form-control" placeholder="Name" disabled></th>
                       				<th><input type="text" class="form-control" placeholder="Email" disabled></th>
                       				<th><input type="text" class="form-control" placeholder="Organization" disabled></th>
+                              <th></th>
                       			</tr>
                       		</thead>
                       		<tbody data-link="row" class="rowlink">
@@ -84,17 +91,10 @@
                       			{% for user in users %}
                       				{% if user.name == member and user.name != project.owner %}
                       			<tr>
-                      				<td>
-                                <form role="form" action="{{url_for('remove_member_from_project', name=name)}}" method="POST">
-                        					<div>
-                                    {{user.first}} {{user.last}}
-                                  </div>
-                                {% if (session['name'] == owner or session['name'] == member) %}
-                                  <div>
-                                    <button type="submit" name="submit" value="{{user.name}}" class="btn btn-danger btn-xs pull-right" data-submit="Removing User...">Remove User</button>
-                                  </div>
-                                {% endif %}
-                              </form>
+                              <td>
+                                <div>
+                                  {{user.first}} {{user.last}}
+                                </div>
                       				</td>
                       				<td>
                       					<div>
@@ -105,6 +105,15 @@
                                 <div>
                                   {{ user.organization }}
                                 </div>
+                              </td>
+                              <td>
+                                <form role="form" action="{{url_for('remove_member_from_project', name=name)}}" method="POST">
+                                {% if (session['name'] == owner or session['name'] == member) %}
+                                  <div>
+                                    <button type="submit" name="submit" value="{{user.name}}" class="btn btn-danger btn-xs pull-right" data-submit="Removing User...">Remove User</button>
+                                  </div>
+                                {% endif %}
+                              </form>
                               </td>
                       			</tr>
                       				{% endif %}
@@ -117,7 +126,7 @@
 
         				    {% if session['name'] == owner %}
         						<form role="form" action="{{url_for('add_member_to_project', name=name)}}" method="POST" id="multiselect">
-        							<div class="input-group">
+        							<!-- <div class="input-group"> -->
                         <fieldset>
         					       <label for="newuser">Select New Users</label>
         					       <select class="form-control selectpicker input-group" multiple data-live-search="true" data-actions-box="true" data-header="Select Users" name="newuser" tabindex="1" id="form-resource-list" required>
@@ -129,10 +138,10 @@
         					         {% endfor %}
         					       </select>
                        </fieldset>
-                        <div class="input-group-addon input-group-button">
+                        <!-- <div class="input-group-addon input-group-button"> -->
            					      <button type="submit" name="btn" value="adduser" class="btn btn-create btn-wd" id="create-project" tabindex="2" data-submit="...Sending">Add User</button>
-                        </div>
-        					    </div>
+                        <!-- </div> -->
+        					    <!-- </div> -->
                     </form>
                     {% endif %}
                   </div>
@@ -152,6 +161,7 @@
                       				<th><input type="text" class="form-control" placeholder="Name" disabled></th>
                       				<th><input type="text" class="form-control" placeholder="Owner" disabled></th>
                       				<th><input type="text" class="form-control" placeholder="Organization" disabled></th>
+                              <th></th>
                       			</tr>
                       		</thead>
                       		<tbody data-link="row" class="rowlink">
@@ -165,13 +175,6 @@
                       			<tr>
                       				<td>
                       					<div>{{allocation.displayname}}</div>
-                                {% if (session['name'] == allocation.owner) %}
-                                <form role="form" action="{{url_for('remove_allocation_from_project', name=name)}}" method="POST">
-                                  <div>
-                                    <button type="submit" name="remove_allocation" value="{{allocation.name}}" class="btn btn-danger btn-xs" data-submit="Removing Allocation...">Remove Allocation</button>
-                                  </div>
-                                </form>
-                                {% endif %}
                       				</td>
                       				<td>
                       					<div>
@@ -182,6 +185,15 @@
                                 <div>
                                   {{ user.organization }}
                                 </div>
+                              </td>
+                              <td>
+                                {% if (session['name'] == allocation.owner) %}
+                                <form role="form" action="{{url_for('remove_allocation_from_project', name=name)}}" method="POST">
+                                  <div>
+                                    <button type="submit" name="remove_allocation" value="{{allocation.name}}" class="btn btn-danger btn-xs" data-submit="Removing Allocation...">Remove Allocation</button>
+                                  </div>
+                                </form>
+                                {% endif %}
                               </td>
                       			</tr>
                       								{% endif %}
@@ -197,7 +209,7 @@
                     </div>
 
         						<form role="form" action="{{url_for('add_allocation_to_project', name=name)}}" method="POST" id="multiselect">
-                      <div class="input-group">
+                      <!-- <div class="input-group"> -->
           							<fieldset>
           								<label for="allocation">Select Allocation:</label>
           								<select class="form-control selectpicker" multiple data-live-search="true" data-actions-box="true" data-header="Select Allocations" id="form-resource-list" name="allocation" tabindex="1" required>
@@ -210,10 +222,10 @@
             								{% endfor %}
           								</select>
           							</fieldset>
-                        <div class="input-group-addon input-group-button">
+                        <!-- <div class="input-group-addon input-group-button"> -->
         								  <button type="submit" name="btn" value="addallocation" class="btn btn-create btn-wd" id="create-project" tabindex="2" data-submit="...Sending">Add Allocation to Project</button>
-                        </div>
-                      </div>
+                        <!-- </div> -->
+                      <!-- </div> -->
                     </form>
                   </div>
                 </div><!-- ./tab content -->
@@ -228,17 +240,29 @@
   </div>
 </div>
 
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0/jquery.min.js"></script>
 <script>
-$(function() {
-    $('a[data-toggle="tab"]').on('click', function(e) {
-        window.localStorage.setItem('activeTab', $(e.target).attr('href'));
-    });
-    var activeTab = window.localStorage.getItem('activeTab');
-    if (activeTab) {
-        $('#projectTab a[href="' + activeTab + '"]').tab('show');
-        window.localStorage.removeItem("activeTab");
+
+
+$(document).ready(function() {
+    if (location.hash) {
+        $("a[href='" + location.hash + "']").tab("show");
     }
+    $(document.body).on("click", "a[data-toggle]", function(event) {
+        location.hash = this.getAttribute("href");
+    });
 });
+$(window).on("popstate", function() {
+    var anchor = location.hash || $("a[data-toggle='tab']").first().attr("href");
+    $("a[href='" + anchor + "']").tab("show");
+});
+
+function btnConfirm() {
+    var r = confirm("Are you sure you want to delete this project?");
+    if(r == true){
+      window.location.href = "{{url_for('delete_project', name=name)}}";
+    }
+}
 </script>
 
 {%endblock%}

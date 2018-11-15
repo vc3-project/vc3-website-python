@@ -1,0 +1,68 @@
+{%extends "loginbase.html"%}
+
+{%block title%}Resize Virtual Cluster{%endblock%}
+
+{%block body%}
+
+
+<div class="content">
+  <div class="container-fluid">
+    <div class="row">
+
+      <div class="col-md-12">
+        <div class="card">
+
+          <div class="header">
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item"><a href="{{url_for('portal')}}">Portal</a></li>
+              <li class="breadcrumb-item"><a href="{{url_for('list_requests')}}">Virtual Clusters</a></li>
+              <li class="breadcrumb-item"><a href="{{url_for('view_request', name=name)}}">{{name}}</a></li>
+              <li class="breadcrumb-item active">Resize Virtual Cluster</li>
+            </ol>
+            <h4 class="title">Resize Virtual Cluster</h4>
+            <h5>{{name}}</h5>
+            <label><span id="asterik">*</span> <small style="color:black">= indicates required field</small></label>
+						<hr/>
+          </div>
+
+          <div class="content description">
+  					<div class="card-block">
+
+              <div class="row">
+        				<div class="col-md-6">
+
+                  <form role="form" action="{{url_for('resize_request', name=name)}}" method="POST">
+
+                    <div class="form-group">
+                      <label for="node_number">Number of Compute Workers: <span id="asterik">*</span></label>
+                      <input
+                        placeholder="# Compute Workers"
+                        name="node_number"
+                        class="form-control border-input"
+                        type="number"
+                        min="1"
+                        max="1000000"
+                        tabindex="3"
+                        required
+                        style="width:20%"
+                        value="{{node_number}}">
+                    </div>
+
+                    <div class="form-group">
+                      <a href="{{url_for('view_request', name=name)}}" class="btn btn-primary" tabindex="3" title="Cancel">Cancel</a>
+                      <button type="submit" tabindex="4" class="btn btn-create">Resize Workers</button>
+                    </div>
+                  </form>
+        				</div>
+
+        			</div> <!-- row -->
+            </div><!-- /.card-block -->
+          </div><!-- /.card description-->
+        </div><!-- /.card -->
+  		</div><!-- /.col-md-6 -->
+    </div><!-- ./row -->
+  </div><!-- ./container-fluid -->
+</div><!-- ./content -->
+
+
+{%endblock%}

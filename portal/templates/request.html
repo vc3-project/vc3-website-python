@@ -18,13 +18,13 @@
             </ol>
           	<h4 class="title">Virtual Clusters</h4>
             <div>
-              <h5>A list of your virtual clusters</h5>
+              <!-- <h5>A list of your virtual clusters</h5> -->
               <a href="{{url_for('create_request_project')}}" class="btn btn-create btn-sm">
                 <i class="fa fa-cloud-upload" aria-hidden="true"></i>
                 New Virtual Cluster
               </a>
             </div>
-						<hr />
+						<!-- <hr /> -->
           </div>
 
           <div class="content description">
@@ -33,13 +33,17 @@
   						<div class="card-block">
 
                 <div class="row">
+                  <div id="accordion" role="tablist" aria-multiselectable="true">
 
-                  <div class="card panel panel-info resource-profile" style="margin: 1em;">
+                  <div class="card panel panel-info resource-profile state-description" style="margin: 1em;">
                     <div class="card-header panel-title" role="tab" id="headingTwo" style="margin: 1em;">
                       <h5 class="mb-0">
-                          Virtual Cluster States <i class="fa fa-info-circle" aria-hidden="true"></i>
+                          <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                            Virtual Cluster States <i class="fa fa-info-circle" aria-hidden="true"></i>
+                          </a>
                       </h5>
                     </div>
+                    <div id="collapseTwo" class="collapse" role="tabpanel" aria-labelledby="headingTwo">
                     <div class="card-block panel-body" style="font-size: 16px">
                 			<div style="display:inline-block;width:100%;overflow-y:auto;">
                   			<ul class="timeline timeline-horizontal">
@@ -67,7 +71,7 @@
                   					</div>
                   				</li>
                   				<li class="timeline-item">
-                  					<div class="timeline-badge success"><i class="glyphicon glyphicon-check"></i></div>
+                  					<div class="timeline-badge warning"><i class="glyphicon glyphicon-hourglass"></i></div>
                   					<div class="timeline-panel">
                   						<div class="timeline-heading">
                   							<h5 class="timeline-title">Pending</h5>
@@ -89,7 +93,7 @@
                   					</div>
                   				</li>
                   				<li class="timeline-item">
-                  					<div class="timeline-badge terminate"><i class="glyphicon glyphicon-remove-circle"></i></div>
+                  					<div class="timeline-badge danger"><i class="glyphicon glyphicon-hourglass"></i></div>
                   					<div class="timeline-panel">
                   						<div class="timeline-heading">
                   							<h5 class="timeline-title">Terminating</h5>
@@ -101,7 +105,7 @@
                   					</div>
                   				</li>
                           <li class="timeline-item">
-                  					<div class="timeline-badge cleanup"><i class="glyphicon glyphicon-cog"></i></div>
+                  					<div class="timeline-badge danger"><i class="glyphicon glyphicon-cog"></i></div>
                   					<div class="timeline-panel">
                   						<div class="timeline-heading">
                   							<h5 class="timeline-title">Cleanup</h5>
@@ -127,6 +131,8 @@
                 		  </div>
                     </div>
                   </div>
+                  </div>
+                </div>
 
           			</div><!--./row-->
 
@@ -142,10 +148,12 @@
     									<thead>
     										<tr class="filters">
     											<th><input type="text" class="form-control" placeholder="Name" disabled></th>
-    											<th><input type="text" class="form-control" placeholder="State" disabled></th>
-                          <th><input type="text" class="form-control" placeholder="Cluster Template" disabled></th>
-    											<th><input type="text" class="form-control" placeholder="Workers" disabled></th>
+    											<th><input type="text" class="form-control" placeholder="Project" disabled></th>
                           <th><input type="text" class="form-control" placeholder="Head Node" disabled></th>
+    											<th><input type="text" class="form-control" placeholder="Workers" disabled></th>
+                          <th><input type="text" class="form-control" placeholder="State" disabled></th>
+                          <th><input type="text" class="form-control" placeholder="Cluster Template" disabled></th>
+                          <!-- <th><input type="text" class="form-control" placeholder="Expiration" disabled></th> -->
     										</tr>
     									</thead>
     									<tbody data-link="row" class="rowlink">
@@ -155,59 +163,19 @@
     											<td>
                             <a href="{{ url_for('view_request', name=request.name) }}"
                             title="View Info on {{request.name}} Virtual Cluster">
-                            {{ request.name }}
+                            {{ request.displayname }}
                             </a>
                           </td>
 
+                          <td>
+                            {{ request.project }}
+                          </td>
+
                           {% set requestname = request.name.replace(".", "-") %}
-                          {% set request_statereason = requestname + '_statereason' %}
-                          {% set request_statusinfo = requestname + '_statusinfo' %}
-                          {% set request_statusinfo_requested = requestname + '_statusinfo_requested' %}
-                          {% set request_statusinfo_running = requestname + '_statusinfo_running' %}
-                          {% set request_statusinfo_idle = requestname + '_statusinfo_idle' %}
-                          {% set request_statusinfo_error = requestname + '_statusinfo_error' %}
-                          {% set request_headnode_app_host = requestname + '_headnode_app_host' %}
-                          <td>
-                            <br>
-                            <div id="{{requestname}}" class="progress"></div>
-                            <small id="{{request_statereason}}"></small>
-                          </td>
-
-                          <td>
-                            <div>{{request.cluster}}</div>
-                          </td>
-
-                          <td>
-                            <div class="row">
-                              <small class="pull-right" id="node-status">Requested:
-                                <span class="label label-info" style="color:white" id="{{request_statusinfo_requested}}">
-                                </span>
-                              </small>
-                            </div>
-                            <div class="row">
-                              <small class="pull-right" id="node-status">Running:
-                                <span class="label label-success" style="color:white" id="{{request_statusinfo_running}}">
-                                </span>
-                              </small>
-                            </div>
-                            <div class="row">
-                              <small class="pull-right" id="node-status">Queued:
-                                <span class="label label-warning" id="{{request_statusinfo_idle}}" style="color:white">
-                                </span>
-                              </small>
-                            </div>
-                            <div class="row">
-                              <small class="pull-right" id="node-status">Error:
-                                <span class="label label-danger" style="color:white" id="{{request_statusinfo_error}}">
-                                </span>
-                              </small>
-                            </div>
-                          </td>
-
                           {% set request_headnode_app_host = requestname + '_headnode_app_host' %}
                           <td>
                             <!-- <div class="row" id="{{request_headnode_app_host}}"> -->
-                            </div>
+                            <!-- </div> -->
                             <div class="row">
                               {% if request.headnode and request.headnode.app_host and request.headnode.state == 'running' %}
                               <a href="#"
@@ -227,6 +195,54 @@
                               {% endif %}
                             </div>
                           </td>
+
+                          {% set request_statereason = requestname + '_statereason' %}
+                          {% set request_statusinfo = requestname + '_statusinfo' %}
+                          {% set request_statusinfo_requested = requestname + '_statusinfo_requested' %}
+                          {% set request_statusinfo_running = requestname + '_statusinfo_running' %}
+                          {% set request_statusinfo_idle = requestname + '_statusinfo_idle' %}
+                          {% set request_statusinfo_error = requestname + '_statusinfo_error' %}
+                          {% set request_headnode_app_host = requestname + '_headnode_app_host' %}
+
+                          <td>
+                            <div class="row">
+                              <span class="label label-info" style="color:white" id="{{request_statusinfo_requested}}">
+                              </span>
+                              <small class="" id="node-status">Requested</small>
+                            </div>
+                            <div class="row">
+                              <span class="label label-success" style="color:white" id="{{request_statusinfo_running}}">
+                              </span>
+                              <small class="" id="node-status">Running</small>
+                            </div>
+                            <div class="row">
+                              <span class="label label-warning" id="{{request_statusinfo_idle}}" style="color:white">
+                              </span>
+                              <small class="" id="node-status">Queued</small>
+                            </div>
+                            <div class="row">
+                              <span class="label label-danger" style="color:white" id="{{request_statusinfo_error}}">
+                              </span>
+                              <small class="" id="node-status">Error</small>
+                            </div>
+                          </td>
+
+                          <td>
+                            <br>
+                            <div id="{{requestname}}" class="progress"></div>
+                            <small id="{{request_statereason}}"></small>
+                          </td>
+
+                          {% set vc3_client = get_vc3_client() %}
+                          {% set clusterinfo = vc3_client.getCluster(clustername=request.cluster)%}
+                          <td>
+                            <div>{{clusterinfo.displayname}}</div>
+                          </td>
+
+                          <!-- <td>
+                            <div>{{expiration}}</div>
+                          </td> -->
+
     										</tr>
                         <!-- endif  -->
                       {% endif %}
@@ -271,7 +287,10 @@ function get_states(name){
     success: function(data){
       var request_id = name.replace(".", "-");
       var request_statereason = (request_id+'_statereason');
-      if(data.action == "terminate" && data.state != "terminating" && data.state != "cleanup" && data.state != "terminated"){
+      if(data.action == "relaunch"){
+        $('#'+request_id).html("<div class='progress-bar progress-bar-striped progress-bar-info active' role='progressbar' style='width: 25%' aria-valuenow='25' aria-valuemin='0' aria-valuemax='100'>Relaunching</div>");
+        $('#'+request_statereason).html(data.statereason);
+      } else if(data.action == "terminate" && data.state != "terminating" && data.state != "cleanup" && data.state != "terminated"){
         $('#'+request_id).html("<div class='progress-bar progress-bar-striped progress-bar-danger active' role='progressbar' style='width: 33%' aria-valuenow='33' aria-valuemin='0' aria-valuemax='100'>Terminating</div>");
         $('#'+request_statereason).html("Scheduling virtual cluster termination");
       } else if(data.state == "new"){
@@ -296,12 +315,10 @@ function get_states(name){
         $('#'+request_id).html("<div class='progress-bar progress-bar-striped progress-bar-danger active' role='progressbar' style='width: 66%' aria-valuenow='66' aria-valuemin='0' aria-valuemax='100'>Clean Up</div>");
         $('#'+request_statereason).html(data.statereason);
       } else if(data.state == "terminated"){
-        $('#'+request_id).html("<div class='progress-bar progress-bar-striped progress-bar-danger active' role='progressbar' style='width: 100%' aria-valuenow='100' aria-valuemin='0' aria-valuemax='100'>Terminated</div>");
-        $('#'+request_statereason).html(data.statereason);
-      } else if(data.action == "relaunch"){
-        $('#'+request_id).html("<div class='progress-bar progress-bar-striped progress-bar-info active' role='progressbar' style='width: 25%' aria-valuenow='25' aria-valuemin='0' aria-valuemax='100'>Relaunching</div>");
+        $('#'+request_id).html("<div class='progress-bar progress-bar-danger' role='progressbar' style='width: 100%' aria-valuenow='100' aria-valuemin='0' aria-valuemax='100'>Terminated</div>");
         $('#'+request_statereason).html(data.statereason);
       }
+
       //  else if {
       //   $('#'+request_id).html((((data.state).charAt(0)).toUpperCase())+((data.state).slice(1)));
       //   $('#'+request_statereason).html(data.statereason);

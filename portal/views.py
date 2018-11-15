@@ -4,6 +4,11 @@ import sys
 import time
 import subprocess
 
+from datetime import datetime, timedelta, tzinfo
+# from dateutil import tz
+import pytz
+import tzlocal
+
 from flask import (flash, redirect, render_template, request,
                    session, url_for)
 
@@ -28,7 +33,8 @@ whitelist = ['c4686d14-d274-11e5-b866-0febeb7fd79e',
              'c887eb90-d274-11e5-bf28-779c8998e810',
              'c456b77c-d274-11e5-b82c-23a245a48997',
              'c444a294-d274-11e5-b7f1-e3782ed16687',
-             'aebe29b8-d274-11e5-ba4b-ffec0df955f2']
+             'aebe29b8-d274-11e5-ba4b-ffec0df955f2',
+             '385eaec0-0a96-4203-b7cc-57e96500764d']
 
 whitelist_email = ['jeremyvan@uchicago.edu', 'briedel@uchicago.edu',
                    'btovar@nd.edu', 'burt@fnal.gov', 'czheng2@nd.edu',
@@ -37,10 +43,17 @@ whitelist_email = ['jeremyvan@uchicago.edu', 'briedel@uchicago.edu',
                    'khurtado@nd.edu', 'Kyle.D.Sweeney.84@nd.edu',
                    'lincolnb@uchicago.edu', 'nhazekam@nd.edu',
                    'rwg@uchicago.edu', 'sthapa@ci.uchicago.edu',
-                   'tshaffe1@nd.edu', 'czheng2@nd.edu', 'pivie@nd.edu',
+                   'sthapa@uchicago.edu', 'tshaffe1@nd.edu',
+                   'czheng2@nd.edu', 'pivie@nd.edu',
                    'jlstephen@uchicago.edu', 'balamurugan@uchicago.edu',
                    'gfarr@uchicago.edu', 'ddl@illinois.edu',
-                   'ivukotic@uchicago.edu', 'klannon@nd.edu']
+                   'ivukotic@uchicago.edu', 'ivukotic@cern.ch',
+                   'klannon@nd.edu', 'rob.rwg@gmail.com',
+                   'rwg@hep.uchicago.edu', 'robert.w.gardner@cern.ch',
+                   'jzhou93@uchicago.edu', 'cnweaver@uchicago.edu',
+                   'annawoodard@uchicago.edu', 'awoodard@nd.edu',
+                   'anna.elizabeth.woodard@cern.ch', 'yiyangou@uchicago.edu',
+                   'kevin.jerome.pedro@cern.ch', 'ndev@nd.edu']
 
 # Create a custom error handler for Exceptions
 
@@ -83,7 +96,7 @@ def blog():
     articles = (p for p in pages if 'date' in p.meta)
     """Show the 10 most recent articles, most recent first"""
     latest = sorted(articles, reverse=True, key=lambda p: p.meta['date'])
-    blog_pages = latest[:10]
+    blog_pages = latest[:20]
     taglist = []
     for p in blog_pages:
         if p.meta['tags'][0] not in taglist:
@@ -104,6 +117,15 @@ def page(path):
     """Automatic routing and generates markdown flatpages in /pages directory"""
     page_path = pages.get_or_404(path)
     return render_template('blog_page.html', page=page_path)
+
+
+@app.route('/resources', methods=['GET'])
+def list_home_resources():
+    """ Route for HPC and Resources List View """
+    vc3_client = get_vc3_client()
+    resources = vc3_client.listResources()
+
+    return render_template('home_resource.html', resources=resources)
 
 
 @app.route('/community', methods=['GET'])
@@ -181,17 +203,11 @@ def show_profile_page():
 
     vc3_client = get_vc3_client()
     userlist = vc3_client.listUsers()
-    projects = vc3_client.listProjects()
-    nodesets = vc3_client.listNodesets()
-    virtualclusters = vc3_client.listRequests()
 
     if request.method == 'GET':
         profile = None
         sshpubstring = None
         name = None
-        user_projects = 0
-        user_virtualclusters = 0
-        user_nodes = 0
 
         for user in userlist:
             if session['primary_identity'] == user.identity_id:
@@ -208,19 +224,11 @@ def show_profile_page():
             session['primary_identity'] = profile.identity_id
             if profile.sshpubstring is not None:
                 sshpubstring = profile.sshpubstring
-            for project in projects:
-                if profile.name in project.members:
-                    user_projects += 1
-            for vc in virtualclusters:
-                if profile.name == vc.owner:
-                    user_virtualclusters += 1
-            for nodeset in nodesets:
-                if profile.name == nodeset.owner:
-                    user_nodes += nodeset.node_number
+                session['ssh'] = sshpubstring
         else:
             if session['email'] not in whitelist_email:
                 return redirect(url_for('whitelist_error'))
-                pass
+                # pass
             else:
                 flash('Please complete any missing profile fields before '
                       'launching a cluster.', 'warning')
@@ -229,10 +237,7 @@ def show_profile_page():
             session['next'] = get_safe_redirect()
 
         return render_template('profile.html', userlist=userlist,
-                               profile=profile, name=name,
-                               user_projects=user_projects,
-                               user_virtualclusters=user_virtualclusters,
-                               user_nodes=user_nodes)
+                               profile=profile, name=name)
     elif request.method == 'POST':
         first = request.form['first']
         last = request.form['last']
@@ -247,6 +252,7 @@ def show_profile_page():
         inputname = request.form['name']
         translatename = "".join(inputname.split())
         name = translatename.lower()
+        url = str(session['tokens']['auth.globus.org']['refresh_token'])
 
         try:
             newuser = vc3_client.defineUser(identity_id=identity_id,
@@ -254,6 +260,7 @@ def show_profile_page():
                                             first=first,
                                             last=last,
                                             email=email,
+                                            docurl=url,
                                             organization=organization,
                                             displayname=displayname,
                                             sshpubstring=sshpubstring)
@@ -299,6 +306,7 @@ def edit_profile(name):
         profile.last = request.form['last']
         profile.email = request.form['email']
         profile.organization = request.form['institution']
+        profile.url = session['tokens']['auth.globus.org']['refresh_token']
 
         displayname = (request.form['first'] + ' ' + request.form['last'])
         profile.displayname = displayname
@@ -359,7 +367,7 @@ def authcallback():
             email=id_token.get('email', ''),
             institution=id_token.get('institution', ''),
             primary_username=id_token.get('preferred_username'),
-            primary_identity=id_token.get('sub'),
+            primary_identity=id_token.get('sub')
         )
         vc3_client = get_vc3_client()
         userlist = vc3_client.listUsers()
@@ -369,7 +377,7 @@ def authcallback():
             usernames=id_token.get('preferred_username', ''))
 
         email = id_token.get('email', '')
-        # print(id_token.get('name', ''))
+        # print("HOOOOMG")
         # Restrict Email access to only .edu, .gov, and .org
         # User must have a valid institutional affiliation
         # Otherwise return to error page, explaining restricted access
@@ -382,7 +390,7 @@ def authcallback():
         # if not inst_username:
         #     return render_template('email_error.html')
 
-        if not (email.split("@")[-1].split(".")[-1] in ["edu", "gov", "org"]):
+        if not (email.split("@")[-1].split(".")[-1] in ["edu", "gov", "org", "ch", 'com']):
             return render_template('email_error.html')
 
         for user in userlist:
@@ -398,16 +406,19 @@ def authcallback():
             session['institution'] = profile.organization
             session['primary_identity'] = profile.identity_id
             session['displayname'] = profile.displayname
+            session['ssh'] = profile.sshpubstring
+            session['identities'] = ids["identities"]
         else:
             session['name'] = ids["identities"][0]['name']
             session['organization'] = ids["identities"][0]['organization']
             session['first'] = session['name'].split()[0]
             session['last'] = session['name'].split()[-1]
+            session['identities'] = ids["identities"]
             return redirect(url_for('show_profile_page',
                                     next=url_for('show_profile_page')))
         if session['email'] not in whitelist_email:
             return redirect(url_for('whitelist_error'))
-            pass
+            # pass
 
         return redirect(url_for('portal'))
 
@@ -415,7 +426,8 @@ def authcallback():
 @app.route('/beta', methods=['GET'])
 def whitelist_error():
     """Whitelist Erorr Page - for users not within alpha testing scope"""
-    return render_template('whitelist_error.html')
+    white_list_error = True
+    return render_template('whitelist_error.html', white_list_error=white_list_error)
 
 # -----------------------------------------
 # LOGGED IN PORTAL ROUTES
@@ -428,18 +440,12 @@ def portal():
     """Send the existing user to Portal Home."""
     vc3_client = get_vc3_client()
     userlist = vc3_client.listUsers()
-    projects = vc3_client.listProjects()
-    virtualclusters = vc3_client.listRequests()
-    nodesets = vc3_client.listNodesets()
     resources = vc3_client.listResources()
 
     if request.method == 'GET':
         profile = None
         sshpubstring = None
         name = None
-        user_projects = 0
-        user_virtualclusters = 0
-        user_nodes = 0
 
         for user in userlist:
             if session['primary_identity'] == user.identity_id:
@@ -456,6 +462,8 @@ def portal():
             session['primary_identity'] = profile.identity_id
             if profile.sshpubstring is not None:
                 sshpubstring = profile.sshpubstring
+                session['ssh'] = sshpubstring
+            # removed count here
         else:
             # if session['primary_identity'] not in ["c887eb90-d274-11e5-bf28-779c8998e810", "05e05adf-e9d4-487f-8771-b6b8a25e84d3", "c4686d14-d274-11e5-b866-0febeb7fd79e", "be58c8e2-fc13-11e5-82f7-f7141a8b0c16", "c456b77c-d274-11e5-b82c-23a245a48997", "f1f26455-cbd5-4933-986b-47c57ee20987", "aebe29b8-d274-11e5-ba4b-ffec0df955f2", "c444a294-d274-11e5-b7f1-e3782ed16687", "9c1c1643-8726-414f-85dc-aca266099304"]:
             #     next
@@ -463,25 +471,12 @@ def portal():
             flash('Please complete any missing profile fields before '
                   'launching a cluster.', 'warning')
 
-        for project in projects:
-            if profile.name in project.members:
-                user_projects += 1
-        for vc in virtualclusters:
-            if profile.name == vc.owner:
-                user_virtualclusters += 1
-        for nodeset in nodesets:
-            if profile.name == nodeset.owner:
-                user_nodes += nodeset.node_number
-
         if request.args.get('next'):
             session['next'] = get_safe_redirect()
 
         return render_template('portal_home.html', userlist=userlist,
                                profile=profile, name=name,
-                               sshpubstring=sshpubstring,
-                               user_projects=user_projects,
-                               user_virtualclusters=user_virtualclusters,
-                               user_nodes=user_nodes, resources=resources)
+                               sshpubstring=sshpubstring, resources=resources)
 
 
 @app.route('/new', methods=['GET', 'POST'])
@@ -530,7 +525,7 @@ def create_project():
         for selected_allocation in request.form.getlist('allocation'):
             vc3_client.addAllocationToProject(allocation=selected_allocation,
                                               projectname=newproject.name)
-        flash('Your project has been successfully created.', 'success')
+        # flash('Your project has been successfully created.', 'success')
 
         return redirect(url_for('list_projects'))
 
@@ -566,8 +561,18 @@ def view_project(name):
     projects = vc3_client.listProjects()
     allocations = vc3_client.listAllocations()
     users = vc3_client.listUsers()
+    requests = vc3_client.listRequests()
     project = None
+    headnode = None
 
+    for vc3_request in requests:
+        if vc3_request.headnode:
+            try:
+                headnode = vc3_client.getNodeset(vc3_request.headnode)
+            except:
+                pass
+        # use headnode structure in the profile.
+        vc3_request.headnode = headnode
     # Scanning list of projects and matching with name of project argument
 
     project = vc3_client.getProject(projectname=name)
@@ -581,7 +586,7 @@ def view_project(name):
         return render_template('projects_pages.html', name=name, owner=owner,
                                members=members, allocations=allocations,
                                projects=projects, users=users, project=project,
-                               description=description)
+                               description=description, requests=requests)
     app.logger.error("Could not find project when viewing: {0}".format(name))
     raise LookupError('project')
 
@@ -672,6 +677,7 @@ def add_allocation_to_project(name):
     for project in projects:
         if project.name == name:
             name = project.name
+            allocationhash = (str(name) + '#' + 'project-allocations')
             for selected_allocation in request.form.getlist('allocation'):
                 vc3_client.addAllocationToProject(allocation=selected_allocation,
                                                   projectname=name)
@@ -680,7 +686,7 @@ def add_allocation_to_project(name):
     app.logger.error("Could not find project when adding allocation: " +
                      "alloc: {0} project:{1}".format(new_allocation, name))
     flash('Project not found, could not add allocation to project', 'warning')
-    return redirect(url_for('view_project', name=name))
+    return redirect(url_for('view_project', name=allocationhash))
 
 
 @app.route('/project/<name>/removeallocation', methods=['POST'])
@@ -758,34 +764,32 @@ def create_cluster():
         translatename = "".join(inputname.split())
         name = owner + "-" + translatename.lower()
         displayname = translatename.lower()
-        description_input = request.form['description']
-        description = str(description_input)
+        # description_input = request.form['description']
+        # description = str(description_input)
 
         try:
             nodeset = vc3_client.defineNodeset(name=name, owner=owner,
                                                node_number=node_number, app_type=app_type,
-                                               app_role=app_role, environment=None,
-                                               displayname=displayname)
+                                               app_role=app_role, environment=None)
             vc3_client.storeNodeset(nodeset)
         except:
             node_number = request.form['node_number']
             app_type = request.form['app_type']
-            description_input = request.form['description']
-            description = str(description_input)
+            # description_input = request.form['description']
+            # description = str(description_input)
             framework = app_type
             flash('A cluster template with that name already exists.', 'warning')
             return render_template('cluster_new.html', clusters=clusters,
                                    projects=projects, nodesets=nodesets,
-                                   description=description, node_number=node_number,
-                                   framework=framework)
+                                   node_number=node_number, framework=framework)
 
         newcluster = vc3_client.defineCluster(
-            name=name, owner=owner, nodesets=[], description=description, displayname=displayname)
+            name=name, owner=owner, nodesets=[], displayname=displayname)
         vc3_client.storeCluster(newcluster)
         vc3_client.addNodesetToCluster(nodesetname=nodeset.name,
                                        clustername=newcluster.name)
 
-        flash('Your cluster template has been successfully defined.', 'success')
+        # flash('Your cluster template has been successfully defined.', 'success')
         return redirect(url_for('list_clusters'))
 
 
@@ -823,12 +827,12 @@ def view_cluster(name):
         cluster_name = cluster.name
         owner = cluster.owner
         state = cluster.state
-        description = cluster.description
+        # description = cluster.description
         displayname = cluster.displayname
 
         return render_template('cluster_profile.html', name=cluster_name,
                                owner=owner, state=state,
-                               nodesets=nodesets, description=description,
+                               nodesets=nodesets,
                                users=users, clusters=clusters,
                                projects=projects, displayname=displayname)
     raise LookupError('cluster')
@@ -856,7 +860,7 @@ def edit_cluster(name):
                 clustername = cluster.name
                 owner = cluster.owner
                 state = cluster.state
-                description = cluster.description
+                # description = cluster.description
         for nodeset in nodesets:
             if nodeset.name == name:
                 node_number = nodeset.node_number
@@ -868,7 +872,7 @@ def edit_cluster(name):
                                        owner=owner, nodesets=nodesets,
                                        state=state, projects=projects,
                                        frameworks=frameworks, node_number=node_number,
-                                       description=description, framework=framework)
+                                       framework=framework)
         app.logger.error(
             "Could not find cluster when editing: {0}".format(name))
         raise LookupError('cluster')
@@ -884,7 +888,7 @@ def edit_cluster(name):
         # Assign new attribute to selected cluster
         if cluster.name == name:
             cluster_name = cluster.name
-            cluster.description = request.form['description']
+            # cluster.description = request.form['description']
             nodeset.node_number = request.form['node_number']
             nodeset.app_type = request.form['app_type']
         if cluster_name is None:
@@ -903,7 +907,7 @@ def edit_cluster(name):
         vc3_client.storeNodeset(nodeset)
         vc3_client.storeCluster(cluster)
         # Redirect to updated cluster profile page
-        flash('Cluster has been successfully updated', 'success')
+        # flash('Cluster has been successfully updated', 'success')
         return redirect(url_for('view_cluster', name=name))
 
 
@@ -927,7 +931,7 @@ def delete_cluster(name):
 
     cluster = vc3_client.getCluster(clustername=name)
     vc3_client.deleteCluster(clustername=cluster.name)
-    flash('Cluster Template has been successfully deleted', 'success')
+    # flash('Cluster Template has been successfully deleted', 'success')
 
     return redirect(url_for('list_clusters'))
 
@@ -966,14 +970,15 @@ def create_allocation():
         # into info-service
         # Description from text input stored as string to avoid malicious input
 
-        displayname = request.form['displayname']
+        # displayname = request.form['displayname']
         owner = session['name']
         resource = request.form['resource']
         accountname = request.form['accountname']
         allocationname = owner + "." + resource
+        displayname = owner + '-' + resource
         name = allocationname.lower()
-        description_input = request.form['description']
-        description = str(description_input)
+        # description_input = request.form['description']
+        # description = str(description_input)
         # url = request.form['url']
         allocation_resource = vc3_client.getResource(resourcename=resource)
         pubtokendocurl = allocation_resource.pubtokendocurl
@@ -982,28 +987,26 @@ def create_allocation():
             newallocation = vc3_client.defineAllocation(
                 name=name, owner=owner, resource=resource,
                 accountname=accountname, displayname=displayname,
-                description=description, pubtokendocurl=pubtokendocurl)
+                pubtokendocurl=pubtokendocurl)
             vc3_client.storeAllocation(newallocation)
         except:
-            displayname = request.form['displayname']
+            # displayname = request.form['displayname']
             accountname = request.form['accountname']
-            description_input = request.form['description']
-            description = str(description_input)
+            # description_input = request.form['description']
+            # description = str(description_input)
             resources = vc3_client.listResources()
             flash(
                 'You have already registered an allocation on that resource.', 'warning')
             return render_template('allocation_new.html', displayname=displayname,
-                                   accountname=accountname, description=description,
-                                   resources=resources)
+                                   accountname=accountname, resources=resources)
 
-        flash('Your allocation has been added.', 'success')
+        # flash('Your allocation has being registered.', 'success')
 
         return redirect(url_for('view_allocation', name=name))
 
 
 @app.route('/allocation/<name>', methods=['GET', 'POST'])
 @authenticated
-# @allocation_validated
 def view_allocation(name):
     """
     Allocation Detailed Page View
@@ -1023,7 +1026,7 @@ def view_allocation(name):
         resource = allocation.resource
         state = allocation.state
         displayname = allocation.displayname
-        description = allocation.description
+        # description = allocation.description
         accountname = allocation.accountname
         encodedpubtoken = allocation.pubtoken
         pubtokendocurl = allocation.pubtokendocurl
@@ -1042,16 +1045,14 @@ def view_allocation(name):
                                    accountname=accountname,
                                    pubtoken=pubtoken, state=state,
                                    resources=resources, displayname=displayname,
-                                   description=description, users=users,
-                                   accesshost=accesshost)
+                                   users=users, accesshost=accesshost)
         else:
             return render_template('allocation_profile_specific.html',
                                    name=allocationname,
                                    owner=owner, resource=resource,
                                    accountname=accountname,
                                    pubtoken=pubtoken, state=state,
-                                   resources=resources, displayname=displayname,
-                                   description=description, users=users,
+                                   resources=resources, displayname=displayname, users=users,
                                    accesshost=accesshost, pubtokendocurl=pubtokendocurl)
         app.logger.error(
             "Could not find allocation when viewing: {0}".format(name))
@@ -1076,7 +1077,7 @@ def view_allocation(name):
                                                             resource=resource,
                                                             accountname=accountname)
                 vc3_client.storeAllocation(newallocation)
-                flash('Allocation created', 'success')
+                # flash('Allocation created', 'success')
                 return render_template('allocation_profile.html', name=allocationname,
                                        owner=owner, accountname=accountname,
                                        resource=resource, allocations=allocations,
@@ -1114,14 +1115,13 @@ def edit_allocation(name):
             resource = allocation.resource
             accountname = allocation.accountname
             pubtoken = allocation.pubtoken
-            description = allocation.description
+            # description = allocation.description
             displayname = allocation.displayname
 
             return render_template('allocation_edit.html', name=allocationname,
                                    owner=owner, resources=resources,
                                    resource=resource, accountname=accountname,
-                                   pubtoken=pubtoken, description=description,
-                                   displayname=displayname)
+                                   pubtoken=pubtoken, displayname=displayname)
         app.logger.error(
             "Could not find allocation when editing: {0}".format(name))
         raise LookupError('allocation')
@@ -1129,11 +1129,11 @@ def edit_allocation(name):
     elif request.method == 'POST':
         allocation = vc3_client.getAllocation(allocationname=name)
         if allocation.name == name:
-            allocation.description = request.form['description']
+            # allocation.description = request.form['description']
             allocation.displayname = request.form['displayname']
 
         vc3_client.storeAllocation(allocation)
-        flash('Allocation successfully updated', 'success')
+        # flash('Allocation successfully updated', 'success')
         return redirect(url_for('view_allocation', name=name))
 
 
@@ -1184,24 +1184,29 @@ def view_resource(name):
     :return: Directs to detailed profile view of said Resource
     """
     vc3_client = get_vc3_client()
-    resources = vc3_client.listResources()
+    # resources = vc3_client.listResources()
+    resource = vc3_client.getResource(resourcename=name)
 
-    for resource in resources:
-        if resource.name == name:
-            resourcename = resource.name
-            owner = resource.owner
-            accessflavor = resource.accessflavor
-            description = resource.description
-            displayname = resource.displayname
-            url = resource.url
-            docurl = resource.docurl
-            organization = resource.organization
+    resourcename = resource.name
+    owner = resource.owner
+    accessflavor = resource.accessflavor
+    description = resource.description
+    displayname = resource.displayname
+    url = resource.url
+    docurl = resource.docurl
+    organization = resource.organization
+    nodeinfo = resource.nodeinfo
 
-            return render_template('resource_profile.html', name=resourcename,
-                                   owner=owner, accessflavor=accessflavor,
-                                   resource=resource, description=description,
-                                   displayname=displayname, url=url,
-                                   docurl=docurl, organization=organization)
+    nodeinfo = vc3_client.getNodeinfo(nodeinfoName=nodeinfo)
+    cores = nodeinfo.cores
+    memory_mb = nodeinfo.memory_mb
+    storage_mb = nodeinfo.storage_mb
+
+    return render_template('resource_profile.html', name=resourcename,
+                           owner=owner, accessflavor=accessflavor,
+                           resource=resource, description=description,
+                           displayname=displayname, url=url,
+                           docurl=docurl, organization=organization, nodeinfo=nodeinfo)
     app.logger.error("Could not find Resource when viewing: {0}".format(name))
     raise LookupError('resource')
 
@@ -1243,12 +1248,24 @@ def list_requests():
     vc3_client = get_vc3_client()
     vc3_requests = vc3_client.listRequests()
     nodesets = vc3_client.listNodesets()
-    clusters = vc3_client.listClusters
+    clusters = vc3_client.listClusters()
     request_list = []
+    projects = []
 
     for vc3_request in vc3_requests:
+        vc_projectname = vc3_request.project
+        try:
+            associated_project = vc3_client.getProject(
+                projectname=vc_projectname)
+        except:
+            associated_project = None
+
         if vc3_request.owner == session['name']:
             request_list.append(str(vc3_request.name))
+
+        if associated_project:
+            if session['name'] in associated_project.members:
+                request_list.append(str(vc3_request.name))
 
         headnode = None
         if vc3_request.headnode:
@@ -1259,12 +1276,21 @@ def list_requests():
         # use headnode structure in the profile.
         vc3_request.headnode = headnode
 
+        # convert expiration to readable format
+        expiration_utc = vc3_request.expiration
+        local_timezone = tzlocal.get_localzone()  # get pytz tzinfo
+        utc_time = datetime.strptime(expiration_utc, '%Y-%m-%dT%H:%M:%S')
+        local_time = utc_time.replace(
+            tzinfo=pytz.utc).astimezone(local_timezone)
+        # time_difference = expiration_utc - datetime.now()
+        local_time = local_time.strftime('%m/%d - %H:%M %Z')
+
     return render_template('request.html', requests=vc3_requests,
                            nodesets=nodesets, clusters=clusters,
-                           requestlist=request_list)
+                           requestlist=request_list, projects=projects)
 
 
-@app.route('/request/newproject', methods=['GET', 'POST'])
+@app.route('/request/new', methods=['GET', 'POST'])
 @authenticated
 def create_request_project():
     vc3_client = get_vc3_client()
@@ -1274,7 +1300,7 @@ def create_request_project():
         projects = []
 
         for project in list_projects:
-            if session['name'] in project.members:
+            if (session['name'] in project.members and len(project.allocations) > 0):
                 projects.append(project)
 
         return render_template('request_new_init.html', projects=projects)
@@ -1319,14 +1345,51 @@ def create_request(project):
 
         inputname = request.form['name']
         owner = session['name']
-        expiration = None
-        cluster = request.form['cluster']
+        # cluster = request.form['cluster']
         project = project
         policy = "static-balanced"
+
         translatename = "".join(inputname.split())
-        vc3requestname = translatename.lower()
-        description_input = request.form['description']
-        description = str(description_input)
+        translate_lower = translatename.lower()
+        vc3requestname = owner + "-" + translate_lower
+        h = int(request.form['hours'])
+        if h == 0:
+            expiration = None
+        else:
+            now = datetime.utcnow()
+            t_delta = timedelta(hours=h)
+            expiration = now + t_delta
+            expiration = expiration.replace(microsecond=0).isoformat()
+
+        # Create and save new nodeset first, followed by new cluster
+        # and finally add said nodeset to the new cluster
+        node_number = request.form['node_number']
+        app_type = request.form['app_type']
+        app_role = "worker-nodes"
+        displayname = owner + "-" + translate_lower
+
+        try:
+            nodeset = vc3_client.defineNodeset(name=displayname, owner=owner,
+                                               node_number=node_number, app_type=app_type,
+                                               app_role=app_role, environment=None, displayname=displayname)
+            vc3_client.storeNodeset(nodeset)
+        except:
+            node_number = request.form['node_number']
+            app_type = request.form['app_type']
+            framework = app_type
+            flash('A cluster template with that name already exists.', 'warning')
+            return render_template('request_new.html', clusters=clusters,
+                                   environments=environments, project=project,
+                                   projects=projects, allocations=allocations,
+                                   node_number=node_number, framework=framework)
+
+        newcluster = vc3_client.defineCluster(
+            name=displayname, owner=owner, nodesets=[], displayname=displayname)
+        vc3_client.storeCluster(newcluster)
+        vc3_client.addNodesetToCluster(nodesetname=nodeset.name,
+                                       clustername=newcluster.name)
+
+        # cluster = vc3_client.getCluster(clustername=cluster_name)
 
         for selected_environment in request.form.getlist('environment'):
             environments.append(selected_environment)
@@ -1336,22 +1399,22 @@ def create_request(project):
 
         try:
             newrequest = vc3_client.defineRequest(name=vc3requestname,
-                                                  owner=owner, cluster=cluster,
+                                                  owner=owner, cluster=displayname,
                                                   project=project,
                                                   allocations=allocations,
                                                   environments=environments,
                                                   policy=policy,
                                                   expiration=expiration,
-                                                  description=description)
+                                                  displayname=displayname)
             vc3_client.storeRequest(newrequest)
         except:
             owner = session['name']
-            cluster = request.form['cluster']
+            # cluster = request.form['cluster']
             environment = request.form['environment']
             project = project
             policy = "static-balanced"
-            description_input = request.form['description']
-            description = str(description_input)
+            # description_input = request.form['description']
+            # description = str(description_input)
 
             allocations = vc3_client.listAllocations()
             clusters = vc3_client.listClusters()
@@ -1362,12 +1425,11 @@ def create_request(project):
             return render_template('request_new.html', cluster=cluster,
                                    clusters=clusters, environments=environments,
                                    project=project, projects=projects,
-                                   description=description, environment=environment,
-                                   allocations=allocations)
+                                   environment=environment, allocations=allocations)
 
-        flash('Your Virtual Cluster has been successfully launched.', 'success')
+        # flash('Your Virtual Cluster has been successfully launched.', 'success')
 
-        return redirect(url_for('list_requests'))
+        return redirect(url_for('view_request', name=vc3requestname))
 
 
 @app.route('/request/<name>', methods=['GET', 'POST'])
@@ -1380,22 +1442,27 @@ def view_request(name):
     :return: Directs to detailed page view of Virtual Clusters with
     associated attributes
     """
-    # Checks if user is member of project associated with Virtual Cluster
-    member_in_vc = project_in_vc(name=name)
-    if member_in_vc is False:
-        flash('You do not appear to be have access to view this Virtual Cluster'
-              'Please contact owner to request membership.', 'warning')
-        return redirect(url_for('list_requests'))
 
     vc3_client = get_vc3_client()
     vc3_requests = vc3_client.listRequests()
     nodesets = vc3_client.listNodesets()
-    clusters = vc3_client.listClusters
+    clusters = vc3_client.listClusters()
     users = vc3_client.listUsers()
     vc3_request = None
     allocations = vc3_client.listAllocations()
 
     if request.method == 'GET':
+        # Checks if user is member of project associated with Virtual Cluster
+        try:
+            member_in_vc = project_in_vc(name=name)
+            if member_in_vc is False:
+                flash('You do not appear to be have access to view this Virtual Cluster'
+                      'Please contact owner to request membership.', 'warning')
+                return redirect(url_for('list_requests'))
+        except:
+            flash('The virtual clusters you are looking for does not exist', 'warning')
+            return redirect(url_for('list_requests'))
+
         vc3_request = vc3_client.getRequest(requestname=name)
         if vc3_request:
             requestname = vc3_request.name
@@ -1405,6 +1472,7 @@ def view_request(name):
             vc3allocations = vc3_request.allocations
             description = vc3_request.description
             project = vc3_request.project
+            displayname = vc3_request.displayname
 
             headnode = None
             if vc3_request.headnode:
@@ -1418,17 +1486,31 @@ def view_request(name):
             # use headnode structure in the profile.
             vc3_request.headnode = headnode
 
-            for user in users:
-                if user.name == owner:
-                    profile = user
+            expiration_utc = vc3_request.expiration
+            local_timezone = tzlocal.get_localzone()  # get pytz tzinfo
+            utc_time = datetime.strptime(expiration_utc, '%Y-%m-%dT%H:%M:%S')
+            local_time = utc_time.replace(
+                tzinfo=pytz.utc).astimezone(local_timezone)
+            # time_difference = expiration_utc - datetime.now()
+            local_time = local_time.strftime('%m/%d/%Y at %H:%M:%S %Z')
+
+            profile = vc3_client.getUser(username=owner)
+            # for user in users:
+            #     if user.name == owner:
+            #         profile = user
 
             return render_template('request_profile.html', name=requestname,
                                    owner=owner, requests=vc3_requests,
                                    clusters=clusters, nodesets=nodesets,
                                    action=action, state=state, users=users,
-                                   vc3allocations=vc3allocations, project=project,
-                                   allocations=allocations, description=description,
-                                   profile=profile, vc3_request=vc3_request)
+                                   vc3allocations=vc3allocations,
+                                   project=project,
+                                   allocations=allocations,
+                                   description=description,
+                                   profile=profile, vc3_request=vc3_request,
+                                   displayname=displayname,
+                                   expiration=local_time, headnode=headnode)
+
         app.logger.error("Could not find VC when viewing: {0}".format(name))
         raise LookupError('virtual cluster')
 
@@ -1441,13 +1523,13 @@ def view_request(name):
 
                 vc3_client.terminateRequest(requestname=requestname)
 
-                flash('Your Virtual Cluster has begun terminating.',
-                      'success')
-                return redirect(url_for('list_requests'))
+                # flash('Your Virtual Cluster has begun termination.',
+                # 'success')
+                return redirect(url_for('view_request', name=requestname))
         flash('Could not find specified Virtual Cluster', 'warning')
         app.logger.error(
             "Could not find VC when terminating: {0}".format(name))
-        return redirect(url_for('list_requests'))
+        return redirect(url_for('view_request', name=requestname))
 
 
 @app.route('/request/edit/<name>', methods=['GET', 'POST'])
@@ -1463,17 +1545,64 @@ def edit_request(name):
     vc3_client = get_vc3_client()
     if request.method == 'GET':
         vc3_request = vc3_client.getRequest(requestname=name)
-        return render_template('request_edit.html', request=vc3_request, name=name)
+        # Get current expiration and re-format to display on edit VC expiration
+        # page
+        current_expiration = vc3_request.expiration
+        local_timezone = tzlocal.get_localzone()  # get pytz tzinfo
+        utc_time = datetime.strptime(current_expiration, '%Y-%m-%dT%H:%M:%S')
+        local_time = utc_time.replace(
+            tzinfo=pytz.utc).astimezone(local_timezone)
+        # time_difference = expiration_utc - datetime.now()
+        local_time = local_time.strftime('%m/%d/%Y at %H:%M:%S %Z')
+        return render_template('request_edit.html', request=vc3_request,
+                               name=name, current_expiration=local_time)
 
     elif request.method == 'POST':
         vc3_request = None
         vc3_request = vc3_client.getRequest(requestname=name)
         if vc3_request:
-            vc3_request.description = request.form['description']
-            # vc3_request.displayname = request.form['displayname']
+            # vc3_request.description = request.form['description']
+
+            h = int(request.form['hours'])
+            if h == 0:
+                expiration = None
+            else:
+                now = datetime.utcnow()
+                t_delta = timedelta(hours=h)
+                expiration = now + t_delta
+                vc3_request.expiration = expiration.replace(
+                    microsecond=0).isoformat()
 
             vc3_client.storeRequest(vc3_request)
         return redirect(url_for('view_request', name=name))
+
+
+@app.route('/request/resize/<name>', methods=['GET', 'POST'])
+@authenticated
+def resize_request(name):
+    """
+    Route to resize specific Virtual Clusters
+
+    :param name: name attribute of Virtual Cluster
+    :return: Directs to detailed page view of Virtual Clusters with updated
+    associated attributes
+    """
+    vc3_client = get_vc3_client()
+    nodesets = vc3_client.listNodesets()
+    if request.method == 'GET':
+        nodeset = vc3_client.getNodeset(nodesetname=name)
+        node_number = nodeset.node_number
+
+        return render_template('request_resize.html', node_number=node_number,
+                               name=name)
+
+    elif request.method == 'POST':
+        node_number = request.form['node_number']
+        for nodeset in nodesets:
+            if nodeset.displayname == name:
+                nodeset.node_number = node_number
+                vc3_client.storeNodeset(nodeset)
+    return redirect(url_for('view_request', name=name))
 
 
 @app.route('/request/delete/<name>', methods=['GET'])
@@ -1504,6 +1633,17 @@ def relaunch_virtualcluster(name):
     virtual_cluster = vc3_client.getRequest(requestname=name)
     if virtual_cluster.name == name:
         virtual_cluster.action = "relaunch"
+
+    # h = int(request.form['hours'])
+    # if h == 0:
+    #     expiration = None
+    # else:
+    #     now = datetime.utcnow()
+    #     t_delta = timedelta(hours=h)
+    #     expiration = now + t_delta
+    #     expiration = expiration.replace(microsecond=0).isoformat()
+    #
+    # virtual_cluster.expiration = expiration
 
     vc3_client.storeRequest(virtual_cluster)
     # flash('Allocation is validating', 'warning')
@@ -1537,13 +1677,27 @@ def create_environment():
     vc3_client = get_vc3_client()
     recipes = subprocess.check_output(["/usr/bin/vc3-builder", "--list"])
     recipe_list = recipes.split()
+
+    recipes_section = subprocess.check_output(
+        ["/usr/bin/vc3-builder", "--list=section"])
+    recipe_list_section = recipes_section.split()
+
+    # expected_sections = ["--- bioinformatics tools", "--- compilation tools",
+    # "--- data management tools", "--- data transfer tools", "--- databases",
+    # "--- demos", "--- environment tools", "--- environments", "--- file systems",
+    # "--- file utilities", "--- hpc", "--- job execution engines",
+    # "--- numerical methods tools", "--- perl packages", "--- programming languages",
+    # "--- python packages", "--- scripting languages", "--- software building",
+    # "--- source version control", "--- workflow tools"]
+
     oss = subprocess.check_output(["/usr/bin/vc3-builder", "--list=os"])
     os_list = oss.split()
 
     if request.method == 'GET':
         environments = vc3_client.listEnvironments()
         return render_template('environment_new.html',
-                               environments=environments, recipes=recipe_list, oss=os_list)
+                               environments=environments, recipes=recipe_list,
+                               recipe_list_section=recipes_section, oss=os_list)
 
     elif request.method == 'POST':
         # Gathering and storing information from new allocation form
@@ -1556,11 +1710,12 @@ def create_environment():
         # packagelist = []
         envmap = {}
         files = {}
-        description_input = request.form['description']
-        description = str(description_input)
+        # description_input = request.form['description']
+        # description = str(description_input)
         packagelist = request.form.getlist('packagelist')
         required_os = request.form.get('required_os', None)
         required_os_strict = None
+
         if required_os is not None:
             os, version = required_os.split(":")
             required_os_strict = "{0}:{1}:{1}".format(os, version)
@@ -1569,19 +1724,20 @@ def create_environment():
             new_environment = vc3_client.defineEnvironment(
                 name=name, owner=owner, packagelist=packagelist,
                 envmap=envmap, files=files, required_os=required_os_strict,
-                displayname=displayname, description=description)
+                displayname=displayname)
             vc3_client.storeEnvironment(new_environment)
         except:
             name = request.form['name']
-            description_input = request.form['description']
-            description = str(description_input)
+            # description_input = request.form['description']
+            # description = str(description_input)
             environments = vc3_client.listEnvironments()
             flash('You have already created an environment with that name.', 'warning')
             return render_template('environment_new.html', name=name,
                                    packagelist=packagelist, required_os=required_os,
-                                   description=description, environments=environments)
+                                   environments=environments,
+                                   recipes=recipe_list, oss=os_list)
 
-        flash('Successfully created a new environment', 'success')
+        # flash('Successfully created a new environment', 'success')
 
         return redirect(url_for('list_environments'))
 
@@ -1605,15 +1761,87 @@ def view_environment(name):
         environment_name = environment.name
         owner = environment.owner
         packagelist = environment.packagelist
-        description = environment.description
+        # description = environment.description
         displayname = environment.displayname
         required_os = environment.required_os
+        envmap = environment.envmap
 
         return render_template('environment_profile.html', name=environment_name,
-                               owner=owner, description=description,
-                               users=users, displayname=displayname,
-                               packagelist=packagelist, required_os=required_os)
+                               owner=owner, users=users, displayname=displayname,
+                               packagelist=packagelist, required_os=required_os, envmap=envmap)
     raise LookupError('environment')
+
+
+@app.route('/environments/envmap/<name>', methods=['GET', 'POST'])
+@authenticated
+def add_envmap(name):
+    """ Add New Environment Mapping Form """
+    if request.method == 'GET':
+        vc3_client = get_vc3_client()
+        environment = vc3_client.getEnvironment(environmentname=name)
+        envtype = type(environment.envmap)
+
+        return render_template('environment_new_envmap.html', environment=environment, envtype=envtype, name=name)
+
+    elif request.method == 'POST':
+
+        vc3_client = get_vc3_client()
+        environment = vc3_client.getEnvironment(environmentname=name)
+        env_name = request.form['envmap_name']
+        env_var = request.form['envmap_val']
+        envmap = environment.envmap
+        envmap[env_name] = env_var
+        environment.envmap = envmap
+        vc3_client.storeEnvironment(environment)
+
+        # flash('Successfully created added new environment variable', 'success')
+
+        return redirect(url_for('view_environment', name=name))
+
+
+@app.route('/environments/edit/<name>', methods=['GET', 'POST'])
+@authenticated
+def edit_environment_os(name):
+    """
+    Route to edit specific Environment OS
+
+    :param name: name attribute of Environment
+    :return: Directs to detailed page view of Environments with updated attributes
+    """
+    vc3_client = get_vc3_client()
+
+    oss = subprocess.check_output(["/usr/bin/vc3-builder", "--list=os"])
+    os_list = oss.split()
+
+    if request.method == 'GET':
+        environment = vc3_client.getEnvironment(environmentname=name)
+        return render_template('environment_update_os.html',
+                               environment=environment, name=name,
+                               oss=os_list)
+
+    elif request.method == 'POST':
+
+        required_os = request.form.get('required_os', None)
+        required_os_strict = None
+
+        if required_os is not None:
+            os, version = required_os.split(":")
+            required_os_strict = "{0}:{1}:{1}".format(os, version)
+
+        try:
+            updated_environment = vc3_client.getEnvironment(
+                environmentname=name)
+            updated_environment.required_os = required_os_strict
+            vc3_client.storeEnvironment(updated_environment)
+        except:
+            environments = vc3_client.listEnvironments()
+            flash('You have already created an environment with that name.', 'warning')
+            return render_template('environment_new.html', name=name,
+                                   required_os=required_os,
+                                   environments=environments,
+                                   oss=os_list)
+
+        return redirect(url_for('list_environments'))
 
 
 @app.route('/environments/delete/<name>', methods=['GET'])

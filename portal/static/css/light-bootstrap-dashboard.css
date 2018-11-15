@@ -138,7 +138,8 @@ body,
 
 a {
   /* color: #2fa4e7; */
-  color: #777;
+  color: #337ab7;
+  /* color: #777; */
   font-weight: 600;
  }
   a:hover, a:focus {
@@ -220,7 +221,7 @@ body > .navbar-collapse {
     position: fixed;
     max-height: calc(100vh - 75px);
     min-height: 100%;
-    overflow: auto;
+    /* overflow: visible; */
     width: 260px;
     z-index: 4;
     padding-top: 70px;
@@ -292,17 +293,31 @@ body > .navbar-collapse {
       -webkit-font-smoothing: antialiased;
       border-radius: 4px;
       display: block; }
+      .sidebar .nav li .floatcontainer {
+        float: right;
+      }
+      .sidebar .nav li .floatcontainer #nav-active-bar {
+        width: 6px;
+        height: 50px;
+        position: fixed;
+        background-color: #3cba54;
+        opacity: 0;
+      }
+      .sidebar .nav li:hover .floatcontainer #nav-active-bar {
+        opacity: 0.86;
+      }
+      .sidebar .nav li.active .floatcontainer #nav-active-bar {
+        opacity: 1;
+      }
+
     .sidebar .nav li:hover > a,
     body > .navbar-collapse .nav li:hover > a {
-      /* background: rgba(255, 255, 255, 0.13); */
       background-color: #24292e;
       color: #fcc500;
       opacity: 0.86; }
     .sidebar .nav li.active > a,
     body > .navbar-collapse .nav li.active > a {
-      /* color: #24292e; */
       opacity: 1;
-      /* background: rgba(255, 255, 255, 0.23); */
      }
     .sidebar .nav li.separator,
     body > .navbar-collapse .nav li.separator {
@@ -606,6 +621,7 @@ body > .navbar-collapse {
   color: #FFFFFF;
   background-color: #337ab7;
   opacity: 0.86;
+  box-shadow: 1px 1px 1px 1px #888888;
 }
 .btn-create:hover, .btn-create:focus, .btn-create:active, .btn-create.active, .open > .btn-create.dropdown-toggle {
   background-color: #337ab7;
@@ -2341,7 +2357,7 @@ body > .navbar-collapse {
     .card .card-block {
       padding-bottom: 10px;
       padding-left: 15px;
-      padding-right: 10px;
+      /* padding-right: 10px; */
       /*text-align: center;*/
     }
     .card #portal-home-block {
@@ -2406,7 +2422,7 @@ RESOURCE PROFILE INDEX PAGE
 .filterable {
     margin-top: 15px;
     border-color: #b3b3b3;
-    font-size: 14px;
+    font-size: 12px;
 }
 .filterable .panel-heading .pull-right {
     margin-top: -25px;
@@ -2447,6 +2463,22 @@ RESOURCE PROFILE INDEX PAGE
   /* background-color: rgba(0,0,0,0.03); */
   color: #fdfcf7;
   border-color: #2b2b2b;
+}
+
+.filterable .form-control {
+  font-size: 12px;
+}
+.filterable #cores {
+  min-width: 100px;
+}
+.filterable #mem_core {
+  min-width: 100px;
+}
+.filterable #disk_space {
+  min-width: 100px;
+}
+.filterable #containers {
+  min-width: 100px;
 }
 .filterable button {
   font-size: 12px;
@@ -2491,7 +2523,7 @@ RESOURCE PROFILE INDEX PAGE
   border-color: #fff;
 }
 .filterable a {
-  color: rgba(30, 26, 18,0.9);
+  /* color: rgba(30, 26, 18,0.9); black link */
   font-weight: 600;
 }
 .filterable a:hover {
@@ -2536,7 +2568,7 @@ textarea {
 .resource-profile {
   background-color: transparent;
   border-color: rgba(0,0,0,0.09);
-  font-size: 18px;
+  /* font-size: 18px; */
 }
 .resource-profile .panel-heading {
   background-color: rgba(0,0,0,0.03);
@@ -2608,6 +2640,7 @@ ALLOCATION LIST PAGE
 
 .progress-bar {
   line-height: 22px;
+  color: black;
 }
 
 .panel .pubtoken .span4 {
@@ -2634,13 +2667,13 @@ ALLOCATION LIST PAGE
 
 #vc3diagram {
   padding-top: 20px;
-  width: 80%;
-  height: 80%;
+  width: 65%;
+  /* height: 50%; */
 }
 
 #vc3diagram-portal {
-  max-width: 65%;
-  /* height: 50%; */
+  max-width: 100%;
+  max-height: 420px;
 }
 
 #portal-diagram #accordion {
@@ -2744,10 +2777,12 @@ footer a:hover {
   background-color: #59ba1f;
 }
 .timeline .timeline-item .timeline-badge.warning {
-  background-color: #d1bd10;
+  /* background-color: #d1bd10; */
+  background-color: #f0ad4e;
 }
 .timeline .timeline-item .timeline-badge.danger {
-  background-color: #ba1f1f;
+  /* background-color: #ba1f1f; */
+  background-color: #d9534f;
 }
 .timeline .timeline-item .timeline-panel {
   position: relative;
@@ -2757,7 +2792,7 @@ footer a:hover {
   border: 1px solid #c0c0c0;
   background: #ffffff;
   border-radius: 2px;
-  padding: 20px;
+  padding: 12px;
   -webkit-box-shadow: 0 1px 6px rgba(0, 0, 0, 0.175);
   box-shadow: 0 1px 6px rgba(0, 0, 0, 0.175);
 }
@@ -2779,6 +2814,7 @@ footer a:hover {
 .timeline .timeline-item .timeline-panel .timeline-body > p,
 .timeline .timeline-item .timeline-panel .timeline-body > ul {
   margin-bottom: 0;
+  font-size: 12px;
 }
 .timeline .timeline-item .timeline-panel .timeline-body > p + p {
   margin-top: 5px;
@@ -2813,7 +2849,7 @@ footer a:hover {
 }
 .timeline-horizontal .timeline-item {
   display: table-cell;
-  height: 285px;
+  height: 195px;
   /* width: 20%; */
   min-width: 320px;
   float: none !important;
@@ -2850,4 +2886,12 @@ footer a:hover {
   top: auto;
   bottom: 0px;
   left: 43px;
+}
+
+/* Override panel padding for States Explanation */
+
+.state-description .panel-body {
+  padding: 0px;
+  padding-left: 10px;
+  padding-right: 10px;
 }

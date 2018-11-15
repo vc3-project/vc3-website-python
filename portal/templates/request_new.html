@@ -19,7 +19,7 @@
               <li class="breadcrumb-item active">New Virtual Cluster</li>
             </ol>
             <h4 class="title">Launch New Virtual Cluster</h4>
-            <!-- <h5>A project connects your allocations to your team members</h5> -->
+            <h4>Project: {{project}}</h4>
             <label><span id="asterik">*</span> <small style="color:black">= indicates required field</small></label>
 						<hr/>
           </div>
@@ -33,7 +33,7 @@
                   <form role="form" action="{{url_for('create_request', project=project)}}" method="POST">
 
                     <div class="form-group">
-                      <label for="name">Virtual Cluster Name <span id="asterik">*</span></label>
+                      <label for="name">Virtual Cluster Name (A-z, 0-9, _ and -)<span id="asterik">*</span></label>
                       <input
                         placeholder="Your Virtual Cluster name"
                         name="name"
@@ -41,13 +41,13 @@
                         type="text"
                         tabindex="1"
                         required
-                        autofocus
-                        value="{{request.name}}">
+                        pattern="^[^\.]*$"
+                        value="{{inputname}}">
                     </div>
 
-                    <div class="form-group">
+                    <!-- <div class="form-group">
                       <label for="cluster">Cluster Template <span id="asterik">*</span></label>
-                      <select class="form-control border-input selectpicker" name="cluster" tabindex="2" id="form-resource-list" data-live-search="true" data-actions-box="true" data-header="Select Cluster Template" required>
+                      <select class="form-control border-input selectpicker" name="cluster" tabindex="2" id="form-framework-list" data-live-search="true" data-actions-box="true" data-header="Select Cluster Template" required>
                         <option value="" selected disabled>Select Cluster Template</option>
                         {% for cluster in clusters %}
                           {% if cluster.owner == session['name'] or cluster.public %}
@@ -55,7 +55,34 @@
                           {% endif %}
                         {% endfor %}
                       </select>
+                    </div> -->
+
+                    <div class="form-group">
+                      <label for="app_type">Cluster Template Framework <span id="asterik">*</span></label>
+                      <select class="form-control" name="app_type" tabindex="2" id="form-framework-list" required>
+                        <option value="" selected disabled>Please Select Framework</option>
+                        <option value="htcondor">HTCondor</option>
+                        <option value="workqueue">WorkQueue</option>
+                        <option value="jupyter">JupyterHub</option>
+                        <option value="spark">Spark</option>
+                      </select>
                     </div>
+
+                    <div class="form-group">
+                      <label for="node_number">Number of Compute Workers: <span id="asterik">*</span></label>
+                      <input
+                        placeholder="# Compute Workers"
+                        name="node_number"
+                        class="form-control border-input"
+                        type="number"
+                        min="1"
+                        max="1000000"
+                        tabindex="3"
+                        required
+                        style="width:20%"
+                        value="{{node_number}}">
+                    </div>
+
                     <div class="form-group">
                       <label for="environment">Environment</label>
                       <select class="form-control border-input selectpicker"
@@ -76,7 +103,7 @@
 
                     <div class="form-group">
                       <label for="allocation">Allocations<span id="asterik">*</span></label>
-                      <select class="form-control border-input selectpicker" multiple name="allocation" tabindex="5" id="allocation" data-live-search="true" data-actions-box="true" data-header="Select Allocations for Virtual Cluster" required>
+                      <select class="form-control border-input selectpicker" multiple name="allocation" tabindex="4" id="form-allocation-list" data-live-search="true" data-actions-box="true" data-header="Select Allocations for Virtual Cluster" required>
                         <!-- also disabled ".selectpicker" above <option disabled>Please Select Allocation</option> -->
                         {% for allocation in allocations %}
                         <option data-tokens="{{allocation.displayname}}" value="{{allocation.name}}">{{ allocation.displayname }}</option>
@@ -84,26 +111,43 @@
                       </select>
                     </div>
 
-
                     <div class="form-group">
+                      <label for="expiration">Expiration</label>
+                      <p>If not specified, expiration defaults to 6 hours from
+                        launch, when your virtual cluster will automatically be terminated.</p>
+                        <!-- <label for="hours">Date/Time Select:</label>
+                        <input type="datetime-local" name="hours"
+                        class="form-control border-input"
+                        tabindex="7"
+                        style="width:100%"
+                        autofocus> -->
+                        <label for="hours">Hours:</label>
+                        <input type="number" name="hours" min="1" max="10000"
+                        class="form-control border-input"
+                        tabindex="5"
+                        style="width:100%"
+                        value="6">
+                    </div>
+
+
+                    <!-- <div class="form-group">
                       <label for="description">Description (optional)</label>
                       <textarea
                         placeholder="A brief description..."
                         name="description"
                         class="form-control border-input"
                         id="form-textarea"
-                        tabindex="6"
+                        tabindex="9"
                         rows="5"
-                        autofocus
                         maxlength="144"
                         value="{{request.description}}"
                         >{{description}}</textarea>
                       <span class="help-block exceeded"></span>
-                    </div>
+                    </div> -->
 
                     <div class="form-group">
-                      <a href="{{url_for('list_requests')}}" class="btn btn-primary" tabindex="7" title="Cancel">Cancel</a>
-                      <button type="submit" tabindex="8" class="btn btn-create btn-wd">Launch Virtual Cluster</button>
+                      <a href="{{url_for('list_requests')}}" class="btn btn-primary" tabindex="6" title="Cancel">Cancel</a>
+                      <button type="submit" tabindex="7" class="btn btn-create btn-wd">Launch Virtual Cluster</button>
                     </div>
                   </form>
 
@@ -118,5 +162,32 @@
   </div><!-- ./container-fluid -->
 </div><!-- ./content -->
 
+<script>
 
+
+window.onload = function(){
+  autoSelect('form-framework-list', '{{cluster}}');
+  // autoSelectAllocation('form-allocation-list', '{{allocation}}');
+}
+
+function autoSelect(a,b) {
+  var selector = document.getElementById(a);
+  selector.value = b
+}
+
+function autoSelectAllocation(a, b){
+  var allocationToSelect = {{allocation}}
+  var selector = document.getElementById(a);
+  for (var i=0, i<selector.option.length; i++){
+    o = selector.option[i];
+    o.selected = true;
+  }
+}
+
+// var sel = document.forms[0].selectName;
+// for(var i=0; i<sel.options.length; i++){
+//   sel.options[i].selected = true;
+// }
+
+</script>
 {%endblock%}

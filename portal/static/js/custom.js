@@ -671,3 +671,9 @@ $(function() {
 //    $(".nav").find(".active").removeClass("active");
 //    $(this).parent().addClass("active");
 // });
+
+// DataTable Bootstrap for Resource List Table on Splash Page
+//
+// $(document).ready(function() {
+//   $('#example').DataTable();
+// });

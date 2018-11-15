@@ -18,7 +18,11 @@
             </ol>
           	<h4 class="title">Environments</h4>
             <div class="">
-							<h5>A list of your current environments</h5>
+							<h5>
+                Configure the software environment for your virtual cluster.
+                The VC3 Builder will create this environment on your head node
+                and workers.
+              </h5>
 							<a href="{{url_for('create_environment')}}" class="btn btn-create btn-sm" title="Create New Environment">+ New Environment</a>
 						</div>
 						<hr />
@@ -29,62 +33,129 @@
             <div class="card">
   						<div class="card-block">
 
-                <div class="panel panel-primary filterable">
-  								<div class="panel-heading">
-  									<h3 class="panel-title">My Environments</h3>
-  									<div class="pull-right">
-  										<button class="btn btn-primary btn-sm btn-filter"><span class="glyphicon glyphicon-filter"></span> Filter</button>
-  									</div>
-  								</div>
-                  <div class="table-responsive" style="overflow-x:auto;">
-    								<table class="display table table-hover" width="100%">
-    									<thead>
-    										<tr class="filters">
-    											<th><input type="text" class="form-control" placeholder="Environment Name" disabled></th>
-    											<th><input type="text" class="form-control" placeholder="Package List" disabled></th>
-    											<th><input type="text" class="form-control" placeholder="Owner" disabled></th>
-                          <th><input type="text" class="form-control" placeholder="Description" disabled></th>
-    										</tr>
-    									</thead>
-    									<tbody data-link="row" class="rowlink">
-    										{% for environment in environments %}
-                          {% if environment.owner == session['name'] %}
-    										<tr>
-    											<td>
-                            <a href="{{url_for('view_environment', name=environment.name)}}" title="View Environment">{{ environment.displayname }}</a>
-                          </td>
+                <ul class="nav nav-tabs">
+                  <li class="active"><a data-toggle="tab" href="#my-env">My Environments</a></li>
+                  <li><a data-toggle="tab" href="#public-env">Public Environment Templates</a></li>
+                </ul>
 
-                          <td>
-                            <div class="members">
-                            {% for package in environment.packagelist %}
-                              <div>
-                                <small>{{package}}</small>
-                              </div>
-                            {% endfor %}
-                            </div>
-                          </td>
+                <div class="tab-content">
 
-                          <td>
-                            {{environment.owner}}
-                          </td>
+                  <div id="my-env" class="tab-pane fade in active">
+                    <div class="panel panel-primary filterable">
+      								<div class="panel-heading">
+      									<h3 class="panel-title">My Environments</h3>
+      									<div class="pull-right">
+      										<button class="btn btn-primary btn-sm btn-filter"><span class="glyphicon glyphicon-filter"></span> Filter</button>
+      									</div>
+      								</div>
+                      <div class="table-responsive" style="overflow-x:auto;">
+        								<table class="display table table-hover" width="100%">
+        									<thead>
+        										<tr class="filters">
+        											<th><input type="text" class="form-control" placeholder="Environment Name" disabled></th>
+        											<th><input type="text" class="form-control" placeholder="Package List" disabled></th>
+        											<th><input type="text" class="form-control" placeholder="Owner" disabled></th>
+                              <!-- <th><input type="text" class="form-control" placeholder="Description" disabled></th> -->
+        										</tr>
+        									</thead>
+        									<tbody data-link="row" class="rowlink">
+        										{% for environment in environments %}
+                              {% if environment.owner == session['name'] %}
+        										<tr>
+        											<td>
+                                <a href="{{url_for('view_environment', name=environment.name)}}" title="View Environment">{{ environment.displayname }}</a>
+                              </td>
 
-                          <td>
-                            {% if environment.description == None or environment.description == "" %}
-                              Currently no description
-                            {% else %}
-                              <div id="environment-description">{{environment.description}}</div>
-                            {% endif %}
-                          </td>
-    										</tr>
-                          {% endif %}
-    										{% endfor %}
-    									</tbody>
-    								</table>
-                  </div><!-- /.table-responsive -->
-  							</div><!-- /.panel filterable -->
+                              <td>
+                                <div class="members">
+                                {% for package in environment.packagelist %}
+                                  <div>
+                                    <small>{{package}}</small>
+                                  </div>
+                                {% endfor %}
+                                </div>
+                              </td>
 
-  						</div>
-  					</div>
+                              <td>
+                                {{environment.owner}}
+                              </td>
+
+                              <!-- <td>
+                                {% if environment.description == None or environment.description == "" %}
+                                  Currently no description
+                                {% else %}
+                                  <div id="environment-description">{{environment.description}}</div>
+                                {% endif %}
+                              </td> -->
+        										</tr>
+                              {% endif %}
+        										{% endfor %}
+        									</tbody>
+        								</table>
+                      </div><!-- /.table-responsive -->
+      							</div><!-- /.panel filterable -->
+                  </div>
+
+                  <div id="public-env" class="tab-pane fade in">
+
+                    <div class="panel panel-primary filterable">
+      								<div class="panel-heading">
+      									<h3 class="panel-title">Public Environment Templates</h3>
+      									<div class="pull-right">
+      										<button class="btn btn-primary btn-sm btn-filter"><span class="glyphicon glyphicon-filter"></span> Filter</button>
+      									</div>
+      								</div>
+                      <div class="table-responsive" style="overflow-x:auto;">
+        								<table class="display table table-hover" width="100%">
+        									<thead>
+        										<tr class="filters">
+        											<th><input type="text" class="form-control" placeholder="Environment Name" disabled></th>
+        											<th><input type="text" class="form-control" placeholder="Package List" disabled></th>
+        											<th><input type="text" class="form-control" placeholder="Owner" disabled></th>
+                              <!-- <th><input type="text" class="form-control" placeholder="Description" disabled></th> -->
+        										</tr>
+        									</thead>
+        									<tbody data-link="row" class="rowlink">
+        										{% for environment in environments %}
+                              {% if environment.public %}
+        										<tr>
+        											<td>
+                                <a href="{{url_for('view_environment', name=environment.name)}}" title="View Environment">{{ environment.displayname }}</a>
+                              </td>
+
+                              <td>
+                                <div class="members">
+                                {% for package in environment.packagelist %}
+                                  <div>
+                                    <small>{{package}}</small>
+                                  </div>
+                                {% endfor %}
+                                </div>
+                              </td>
+
+                              <td>
+                                {{environment.owner}}
+                              </td>
+
+                              <!-- <td>
+                                {% if environment.description == None or environment.description == "" %}
+                                  Currently no description
+                                {% else %}
+                                  <div id="environment-description">{{environment.description}}</div>
+                                {% endif %}
+                              </td> -->
+        										</tr>
+                              {% endif %}
+        										{% endfor %}
+        									</tbody>
+        								</table>
+                      </div><!-- /.table-responsive -->
+      							</div><!-- /.panel filterable -->
+                  </div>
+                </div>
+
+  						</div><!-- /.card-block -->
+  					</div><!-- /.card -->
 
           </div><!-- /.content description -->
 

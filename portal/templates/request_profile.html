@@ -14,31 +14,17 @@
             <ol class="breadcrumb">
               <li class="breadcrumb-item"><a href="{{url_for('portal')}}">Portal Home</a></li>
               <li class="breadcrumb-item"><a href="{{url_for('list_requests')}}">Virtual Clusters</a></li>
-              <li class="breadcrumb-item active">{{name}}</li>
+              <li class="breadcrumb-item active">{{displayname}}</li>
             </ol>
           	<h4 class="title row">Virtual Cluster:
-              {{name}}
+              {{displayname}}
             </h4>
-            <h5>Description: {{description}}</h5>
+            <h5></h5>
 
-            <div class="row">
-              <div class="pull-left col-sm-12 col-md-6">
-                <a href="{{url_for('edit_request', name=name)}}" class="btn btn-create btn-xs">Update Description</a>
-  						</div>
-              <div class="delete_entity col-sm-12 col-md-6">
+            <div class="title row">
               {% if profile.name == owner %}
-                {% if state == "terminating" %}
-                {% elif state == "terminated" %}
-                <div class="delete_entity">
-    							<a href="{{url_for('delete_virtualcluster', name=name)}}" class="btn btn-danger btn-xs">Delete Virtual Cluster</a>
-        				</div>
-                {% elif state != ("new" or "cleanup") %}
-                <form action="{{url_for('view_request', name=name)}}" method="POST">
-                  <button type="submit" class="btn btn-danger btn-xs" data-submit="...Terminating Cluster" title="Terminate your Virtual Cluster">Terminate Cluster</button>
-                </form>
-                {% endif %}
+              <div class="delete_entity" id="request_delete"></div>
               {% endif %}
-  						</div>
             </div><!-- /.row -->
 
             <div class="row">
@@ -57,170 +43,209 @@
 
           <div class="content description">
   					<div class="card-block">
-              <div class="col-md-6">
-                <div class="panel panel-info resource-profile" style="margin: 1em;">
-                  <div class="panel-heading">
-                    <h3 class="panel-title"><strong>Owner</strong></h3>
-                  </div>
-                  <div class="panel-body disabled">
-                  {% for user in users %}
-                    {% if user.name == owner %}
-                      {{user.first }} {{user.last}}
-                    {% endif %}
-                  {% endfor %}
-                  </div>
-                </div>
-
-                <div class="panel panel-info resource-profile" style="margin: 1em;">
-                  <div class="panel-heading">
-                    <h3 class="panel-title"><strong>Project</strong></h3>
-                  </div>
-                  <div class="panel-body disabled">
-                    {{vc3_request.project}}
-                  </div>
-                </div>
-
-                <div class="panel panel-info resource-profile" style="margin: 1em;">
-                  <div class="panel-heading">
-                    <h3 class="panel-title"><strong>Your VC3 Username</strong></h3>
-                  </div>
-                  <div class="panel-body disabled">
-                    {{profile.name}}
-                  </div>
-                </div>
-
-                <div class="panel panel-info resource-profile" style="margin: 1em;">
-                  <div class="panel-heading">
-                    <h3 class="panel-title"><strong>Head Node IP</strong></h3>
-                  </div>
-
-                  <div class="panel-body">
-                    {% if vc3_request.headnode and vc3_request.headnode.app_host and vc3_request.headnode.state == 'running' %}
-                    <a href="#"
-                      data-toggle="popover"
-                      title="To access your node via terminal"
-                      data-content="Type: ssh -i ~/.ssh/id_rsa {{session['name']}}@{{vc3_request.headnode.app_host}}"
-                      data-placement="top">
-                      {{vc3_request.headnode.app_host}}
-                    </a>
-                    {% else %}
-                    <div>IP address not yet available</div>
-                    {% endif %}
-                  </div>
-                </div>
-
-                <div class="panel panel-info resource-profile" style="margin: 1em;">
-                  <div class="panel-heading">
-                    <h3 class="panel-title"><strong>Cluster Template</strong></h3>
-                  </div>
-                  <div class="panel-body disabled">
-                    {{vc3_request.cluster}}
-                  </div>
-                </div>
-
-                <div class="panel panel-info resource-profile" style="margin: 1em;">
-                  <div class="panel-heading">
-                    <h3 class="panel-title"><strong>Expiration</strong></h3>
-                  </div>
-                  <div class="panel-body disabled">
-                    {{vc3_request.expiration}}
-                  </div>
-                </div>
-
-                <div class="panel panel-info resource-profile" style="margin: 1em;">
-                  <div class="panel-heading">
-                    <h3 class="panel-title"><strong>Policy</strong></h3>
-                  </div>
-                  <div class="panel-body disabled">
-                    {{vc3_request.policy}}
-                  </div>
-                </div>
-
-                <div class="panel panel-info resource-profile" style="margin: 1em;">
-                  <div class="panel-heading">
-                    <h3 class="panel-title"><strong>Allocations</strong></h3>
-                  </div>
-                  <div class="panel-body disabled">
-                    {% for allocation in allocations %}
-                      {% if allocation.name in vc3_request.allocations %}
-                      <div title="View {{allocation}}">
-                        <row>{{allocation.displayname}}</row>
-                      </div>
+                <div class="col-md-5">
+                  <div class="panel panel-info resource-profile" style="margin: 1em;">
+                    <div class="panel-heading">
+                      <h3 class="panel-title"><strong>Owner</strong></h3>
+                    </div>
+                    <div class="panel-body disabled">
+                    {% for user in users %}
+                      {% if user.name == owner %}
+                        {{user.first }} {{user.last}}
                       {% endif %}
                     {% endfor %}
-                  </div>
-                </div>
-
-                <div class="panel panel-info resource-profile" style="margin: 1em;">
-                  <div class="panel-heading">
-                    <h3 class="panel-title"><strong>Environments</strong></h3>
-                  </div>
-
-                  <div class="panel-body disabled">
-                    {% if vc3_request.environments == [] %}
-                      <div>No specified environment on this Virtual Cluster</div>
-                    {% else %}
-                      {% for env in vc3_request.environments %}
-                      <div>{{env}}</div>
-                      {% endfor %}
-                    {% endif %}
-                  </div>
-                </div>
-
-                <div class="panel panel-info resource-profile" style="margin: 1em;">
-                  <div class="panel-heading">
-                    <h3 class="panel-title"><strong>Status</strong></h3>
-                  </div>
-                  <div class="panel-body disabled">
-                    {% if vc3_request.statusinfo|default() %}
-                    <label>{{vc3_request.cluster}}:</label>
-                      {% for key, value in vc3_request.statusinfo.values()[0].iteritems() %}
-                        <option>{{ key }}: {{ value }}</option>
-                      {% endfor %}
-                    {% else %}
-                    <label>Status not yet available</label>
-                    {% endif %}
-                  </div>
-                </div>
-              </div><!-- /.col-md-6-->
-
-              <div class="col-md-6">
-
-                <h2 class="title">
-                  <small>Node Access</small>
-                </h2>
-                <div id="accordion" role="tablist" aria-multiselectable="true">
-
-                  <div class="card panel panel-info resource-profile" style="margin: 1em;">
-                    <div class="card-header panel-title" role="tab" id="headingOne" style="margin: 1em">
-                      <h5 class="mb-0">
-                        <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
-                          To access your node... <i class="fa fa-info-circle" aria-hidden="true"></i>
-                        </a>
-                      </h5>
                     </div>
-                    <div id="collapseOne" class="collapse" role="tabpanel" aria-labelledby="headingOne">
-                      <div class="card-block panel-body disabled" style="font-size: 16px">
-                        <ol>
-                          {% if vc3_request.headnode and vc3_request.headnode.app_host and vc3_request.headnode.state == 'running' %}
-                          <li>In a terminal, type:
-                            <div>
-                              <kbd>
-                                ssh -i ~/.ssh/id_rsa {{session['name']}}@{{vc3_request.headnode.app_host}}
-                              </kbd>
-                            </div>
-                          </li>
-                          <li>Members of your project can log in using their SSH keys and VC3 usernames</li>
-                          {% else %}
-                          <li>Please allow a few moments for your head node to be generated.</li>
-                          {% endif %}
-                        </ol>
+                  </div>
+
+                  <div class="panel panel-info resource-profile" style="margin: 1em;">
+                    <div class="panel-heading">
+                      <h3 class="panel-title"><strong>Project</strong></h3>
+                    </div>
+                    <div class="panel-body disabled">
+                      {{vc3_request.project}}
+                    </div>
+                  </div>
+
+                  <div class="panel panel-info resource-profile" style="margin: 1em;">
+                    <div class="panel-heading">
+                      <h3 class="panel-title"><strong>Your VC3 Username</strong></h3>
+                    </div>
+                    <div class="panel-body disabled">
+                      {{profile.name}}
+                    </div>
+                  </div>
+
+                  <!-- <div class="panel panel-info resource-profile" style="margin: 1em;">
+                    <div class="panel-heading">
+                      <h3 class="panel-title"><strong>Cluster Template</strong></h3>
+                    </div>
+                    <div class="panel-body disabled">
+                      {{headnode.app_type}}
+                    </div>
+                  </div> -->
+
+                  <div class="panel panel-info resource-profile" style="margin: 1em;">
+                    <div class="panel-heading">
+                      <h3 class="panel-title"><strong>Expiration</strong></h3>
+                    </div>
+                    <div class="panel-body">
+                      {{expiration}}
+                      <div class="pull-right">
+                        <a href="{{url_for('edit_request', name=name)}}" class="btn btn-create btn-xs">Update Expiration</a>
+          						</div>
+                    </div>
+                  </div>
+
+                  <div class="panel panel-info resource-profile" style="margin: 1em;">
+                    <div class="panel-heading">
+                      <h3 class="panel-title"><strong>Policy</strong></h3>
+                    </div>
+                    <div class="panel-body disabled">
+                      {{vc3_request.policy}}
+                    </div>
+                  </div>
+
+                  <div class="panel panel-info resource-profile" style="margin: 1em;">
+                    <div class="panel-heading">
+                      <h3 class="panel-title"><strong>Allocations</strong></h3>
+                    </div>
+                    <div class="panel-body disabled">
+                      {% for allocation in allocations %}
+                        {% if allocation.name in vc3_request.allocations %}
+                        <div title="View {{allocation}}">
+                          <row>{{allocation.displayname}}</row>
+                        </div>
+                        {% endif %}
+                      {% endfor %}
+                    </div>
+                  </div>
+
+                  <div class="panel panel-info resource-profile" style="margin: 1em;">
+                    <div class="panel-heading">
+                      <h3 class="panel-title"><strong>Environments</strong></h3>
+                    </div>
+
+                    <div class="panel-body disabled">
+                      {% if vc3_request.environments == [] %}
+                        <div>No specified environment on this Virtual Cluster</div>
+                      {% else %}
+                        {% for env in vc3_request.environments %}
+                        <div>{{env}}</div>
+                        {% endfor %}
+                      {% endif %}
+                    </div>
+                  </div>
+
+                </div><!-- /.col-md-6-->
+
+                <div class="col-md-7">
+
+                  {% set request_statereason = requestname + '_statereason' %}
+                  {% set request_statusinfo = requestname + '_statusinfo' %}
+                  {% set request_statusinfo_requested = requestname + '_statusinfo_requested' %}
+                  {% set request_statusinfo_running = requestname + '_statusinfo_running' %}
+                  {% set request_statusinfo_idle = requestname + '_statusinfo_idle' %}
+                  {% set request_statusinfo_error = requestname + '_statusinfo_error' %}
+                  {% set request_headnode_app_host = requestname + '_headnode_app_host' %}
+                  {% set request_headnode_app_host_status = requestname + '_headnode_app_host_status'%}
+                  {% set request_headnode_steps = requestname + '_headnode_steps'%}
+
+                  <div class="panel panel-info resource-profile" style="margin: 1em;">
+                    <div class="panel-heading">
+                      <h3 class="panel-title"><strong>Status</strong></h3>
+                    </div>
+                    <div class="panel-body">
+
+                      {% set vc3_client = get_vc3_client() %}
+                      {% set clusterinfo = vc3_client.getCluster(clustername=vc3_request.cluster)%}
+                      <label>{{clusterinfo.displayname}}</label>
+                      <p>Cluster Framework: {{headnode.app_type}}</p>
+                      <div class="">
+                        <small class="" id="node-status">Requested
+                          <span class="label label-info" style="color:white" id="{{request_statusinfo_requested}}">
+                          </span>
+                        </small>
+                      </div>
+                      <div class="">
+                        <small class="" id="node-status">Running
+                          <span class="label label-success" style="color:white" id="{{request_statusinfo_running}}">
+                          </span>
+                        </small>
+                      </div>
+                      <div class="">
+                        <small class="" id="node-status">Queued
+                          <span class="label label-warning" id="{{request_statusinfo_idle}}" style="color:white">
+                          </span>
+                        </small>
+                      </div>
+                      <div class="">
+                        <small class="" id="node-status">Error
+                          <span class="label label-danger" style="color:white" id="{{request_statusinfo_error}}">
+                          </span>
+                        </small>
+                      </div>
+                      <hr/>
+                      <div class="">
+                        <a href="{{url_for('resize_request', name=name)}}" class="btn btn-create btn-xs">Resize Workers</a>
+                      </div>
+
+                    </div>
+                  </div>
+
+                  <div class="panel panel-info resource-profile" style="margin: 1em;">
+                    <div class="panel-heading">
+                      <h3 class="panel-title">
+                        <strong>Head Node IP and Access</strong>
+                        <div class="pull-right">
+                          <p id="{{request_headnode_app_host_status}}"></p>
+                        </div>
+                      </h3>
+                    </div>
+
+                    <div class="panel-body">
+                      <!-- <div id="{{request_headnode_app_host}}"></div> -->
+                      <ol id="{{request_headnode_steps}}"></ol>
+
+                      <!-- {% if vc3_request.headnode and vc3_request.headnode.app_host and vc3_request.headnode.state == 'running' %}
+                      <a href="#"
+                        data-toggle="popover"
+                        title="To access your node via terminal"
+                        data-content="Type: ssh -i ~/.ssh/id_rsa {{session['name']}}@{{vc3_request.headnode.app_host}}"
+                        data-placement="top">
+                        {{vc3_request.headnode.app_host}}
+                      </a>
+                      {% else %}
+                      <div>IP address not yet available</div>
+                      {% endif %} -->
+                    </div>
+                  </div>
+
+                  <!-- <h2 class="title">
+                    <small>Head Node Access</small>
+                  </h2>
+                  <div id="accordion" role="tablist" aria-multiselectable="true">
+
+                    <div class="card panel panel-info resource-profile" style="margin: 1em;">
+                      <div class="card-header panel-title" role="tab" id="headingOne" style="margin: 1em">
+                        <h5 class="mb-0">
+                          <a class="" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                            To access our head node...
+                            <i class="fa fa-info-circle" aria-hidden="true"></i>
+                          </a>
+                          <div class="pull-right">
+                            <p id="{{request_headnode_app_host_status}}"></p>
+                          </div>
+                        </h5>
+                      </div>
+                      <div id="collapseOne" class="collapse" role="tabpanel" aria-labelledby="headingOne">
+                        <div class="card-block panel-body disabled">
+                          <ol id="{{request_headnode_steps}}"></ol>
+                        </div>
                       </div>
                     </div>
-                  </div>
 
-                </div><!-- /.accordion-->
-              </div><!-- /.col-md-6 -->
+                  </div> -->
+                </div><!-- /.col-md-6 -->
 
             </div><!-- /.card-block -->
           </div><!-- /.content description-->
@@ -245,6 +270,13 @@ window.onload = function (){
   }.bind(this), 4000);
 }
 
+function deleteConfirm() {
+    var r = confirm("Are you sure you want to delete this virtual cluster?");
+    if(r == true){
+      window.location.href = "{{url_for('delete_virtualcluster', name=name)}}";
+    }
+}
+
 function get_states(name){
   $.ajax({
     url: "/rest/virtual_cluster/" + name,
@@ -258,34 +290,45 @@ function get_states(name){
         $('#'+request_statereason).html("Scheduling virtual cluster termination");
       } else if(data.state == "new"){
         $('#'+request_id).html("<div class='progress-bar progress-bar-striped progress-bar-info active' role='progressbar' style='width: 25%' aria-valuenow='25' aria-valuemin='0' aria-valuemax='100'>New</div>");
+        $('#request_delete').html("<form action='{{url_for('view_request', name=name)}}' method='POST'><button type='submit' class='btn btn-danger btn-xs' data-submit='...Terminating Cluster' title='Terminate your Virtual Cluster'>Terminate Cluster</button></form>");
         $('#'+request_statereason).html(data.statereason);
       } else if(data.state == "initializing"){
         $('#'+request_id).html("<div class='progress-bar progress-bar-striped progress-bar-warning active' role='progressbar' style='width: 50%' aria-valuenow='50' aria-valuemin='0' aria-valuemax='100'>Initializing</div>");
         $('#'+request_statereason).html(data.statereason);
+        $('#request_delete').html("<form action='{{url_for('view_request', name=name)}}' method='POST'><button type='submit' class='btn btn-danger btn-xs' data-submit='...Terminating Cluster' title='Terminate your Virtual Cluster'>Terminate Cluster</button></form>");
       } else if(data.state == "pending"){
         $('#'+request_id).html("<div class='progress-bar progress-bar-striped progress-bar-warning active' role='progressbar' style='width: 75%' aria-valuenow='75' aria-valuemin='0' aria-valuemax='100'>Pending</div>");
         $('#'+request_statereason).html(data.statereason);
+        $('#request_delete').html("<form action='{{url_for('view_request', name=name)}}' method='POST'><button type='submit' class='btn btn-danger btn-xs' data-submit='...Terminating Cluster' title='Terminate your Virtual Cluster'>Terminate Cluster</button></form>");
       } else if(data.state == "failure"){
         $('#'+request_id).html("<div class='progress-bar progress-bar-striped progress-bar-danger active' role='progressbar' style='width: 100%' aria-valuenow='100' aria-valuemin='0' aria-valuemax='100'>Failure</div>");
         $('#'+request_statereason).html(data.statereason);
+        $('#request_delete').html("<form action='{{url_for('view_request', name=name)}}' method='POST'><button type='submit' class='btn btn-danger btn-xs' data-submit='...Terminating Cluster' title='Terminate your Virtual Cluster'>Terminate Cluster</button></form>");
       } else if(data.state == "running"){
         $('#'+request_id).html("<div class='progress-bar progress-bar-striped progress-bar-success active' role='progressbar' style='width: 100%' aria-valuenow='100' aria-valuemin='0' aria-valuemax='100'>Running</div>");
         $('#'+request_statereason).html(data.statereason);
+        $('#request_delete').html("<form action='{{url_for('view_request', name=name)}}' method='POST'><button type='submit' class='btn btn-danger btn-xs' data-submit='...Terminating Cluster' title='Terminate your Virtual Cluster'>Terminate Cluster</button></form>");
       } else if(data.state == "cleanup"){
         $('#'+request_id).html("<div class='progress-bar progress-bar-striped progress-bar-danger active' role='progressbar' style='width: 66%' aria-valuenow='66' aria-valuemin='0' aria-valuemax='100'>Clean Up</div>");
         $('#'+request_statereason).html(data.statereason);
+        $('#request_delete').html("");
+      } else if(data.state == "terminating"){
+        $('#'+request_id).html("<div class='progress-bar progress-bar-striped progress-bar-danger active' role='progressbar' style='width: 33%' aria-valuenow='33' aria-valuemin='0' aria-valuemax='100'>Terminating</div>");
+        $('#'+request_statereason).html(data.statereason);
       } else if(data.state == "terminated"){
-        $('#'+request_id).html("<div class='progress-bar progress-bar-striped progress-bar-danger active' role='progressbar' style='width: 100%' aria-valuenow='100' aria-valuemin='0' aria-valuemax='100'>Terminated</div>");
+        $('#'+request_id).html("<div class='progress-bar progress-bar progress-bar-danger' role='progressbar' style='width: 100%' aria-valuenow='100' aria-valuemin='0' aria-valuemax='100'>Terminated</div>");
         $('#'+request_statereason).html(data.statereason);
         $('#relaunch-btn').html("<a href='{{url_for('relaunch_virtualcluster', name=name)}}' class='btn btn-create btn-xs' title='Relaunch Virtual Cluster'>Relaunch</a>");
-      } else if(data.action == "relaunch"){
-        $('#'+request_id).html("<div class='progress-bar progress-bar-striped progress-bar-info active' role='progressbar' style='width: 25%' aria-valuenow='25' aria-valuemin='0' aria-valuemax='100'>Relaunching</div>");
-        $('#'+request_statereason).html(data.statereason);
+        $('#request_delete').html("<a href='#' onclick='deleteConfirm()' class='btn btn-danger btn-xs'>Delete Virtual Cluster</a>");
       }
-      //  else if {
-      //   $('#'+request_id).html((((data.state).charAt(0)).toUpperCase())+((data.state).slice(1)));
-      //   $('#'+request_statereason).html(data.statereason);
-      // }
+
+      if(data.action == "relaunch"){
+        $('#'+request_id).html("<div class='progress-bar progress-bar-striped progress-bar-info active' role='progressbar' style='width: 25%' aria-valuenow='25' aria-valuemin='0' aria-valuemax='100'>Relaunching</div>");
+        $('#'+request_statereason).html("Attempting to relaunch your virtual cluster.");
+        $('#request_delete').html(" ");
+        $('#relaunch-btn').html(" ");
+
+      }
 
       var request_statusinfo = (request_id+'_statusinfo');
       var request_statusinfo_requested = (request_id+'_statusinfo_requested');
@@ -309,12 +352,24 @@ function get_states(name){
       }
 
       var request_headnode_app_host = (request_id + '_headnode_app_host');
+      var request_headnode_app_host_status = (request_id + '_headnode_app_host_status');
+      var request_headnode_steps = (request_id + '_headnode_steps');
       if(data.headnode_state == 'running'){
-        $('#'+request_headnode_app_host).html("<a href='#' data-toggle='popover' title='To access your node via terminal' data-target-selector='#children-age' data-content='Type: ssh -i ~/.ssh/id_rsa {{session['name']}}@"+data.headnode_app_host+" data-placement='top'>"+data.headnode_app_host+"</a>");
-      } else if(data.headnode_state == ("terminated" || "failure")){
+        $('#'+request_headnode_app_host).html(data.headnode_app_host);
+        $('#'+request_headnode_app_host_status).html('Ready');
+        $('#'+request_headnode_steps).html("<li>Head Node IP: "+data.headnode_app_host+"</li><li>In a terminal, type: <div><kbd>ssh -i ~/.ssh/id_rsa {{session['name']}}@"+data.headnode_app_host+"</kbd></div></li><li>Members of your project can log in using their SSH keys and VC3 usernames</li>");
+      } else if(data.action == ("relaunch")){
+        $('#'+request_headnode_app_host_status).html('Relaunching...');
         $('#'+request_headnode_app_host).html("N/A");
+        $('#'+request_headnode_steps).html("N/A");
+      } else if(data.state == ("terminated" || "failure")){
+        $('#'+request_headnode_app_host_status).html('Terminated');
+        $('#'+request_headnode_app_host).html("N/A");
+        $('#'+request_headnode_steps).html("N/A");
       } else {
-        $('#'+request_headnode_app_host).html("IP not yet available");
+        $('#'+request_headnode_app_host).html("IP not yet available. Please wait a few moments... "+data.headnode_state);
+        $('#'+request_headnode_app_host_status).html("Building...");
+        $('#'+request_headnode_steps).html("Please allow a few moments for your head node to be generated.");
       }
     },
     error: function(xhr){
