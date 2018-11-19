@@ -174,10 +174,20 @@
                           {% set requestname = request.name.replace(".", "-") %}
                           {% set request_headnode_app_host = requestname + '_headnode_app_host' %}
                           <td>
-                            <!-- <div class="row" id="{{request_headnode_app_host}}"> -->
-                            <!-- </div> -->
+                            <!-- <div class="row" id="{{request_headnode_app_host}}"></div> -->
                             <div class="row">
                               {% if request.headnode and request.headnode.app_host and request.headnode.state == 'running' %}
+                                {% if request.headnode.app_type == 'jupyter' %}
+                                <a href="#"
+                                data-toggle="popover"
+                                title="To access JupyterHub node"
+                                data-target-selector="#children-age"
+                                data-content="Go to: https://{{request.headnode.app_host}}:8080"
+                                data-placement="top">
+                                  JupyterHub
+                                </a>
+                                <br>
+                                {% endif %}
                               <a href="#"
                               data-toggle="popover"
                               title="To access your node via terminal"
@@ -238,10 +248,6 @@
                           <td>
                             <div>{{clusterinfo.displayname}}</div>
                           </td>
-
-                          <!-- <td>
-                            <div>{{expiration}}</div>
-                          </td> -->
 
     										</tr>
                         <!-- endif  -->
