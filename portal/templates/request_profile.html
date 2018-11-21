@@ -207,46 +207,8 @@
                       <!-- <div id="{{request_headnode_app_host}}"></div> -->
                       <div id="{{request_jupyter_steps}}"></div>
                       <div id="{{request_headnode_steps}}"></div>
-
-                      <!-- {% if vc3_request.headnode and vc3_request.headnode.app_host and vc3_request.headnode.state == 'running' %}
-                      <a href="#"
-                        data-toggle="popover"
-                        title="To access your node via terminal"
-                        data-content="Type: ssh -i ~/.ssh/id_rsa {{session['name']}}@{{vc3_request.headnode.app_host}}"
-                        data-placement="top">
-                        {{vc3_request.headnode.app_host}}
-                      </a>
-                      {% else %}
-                      <div>IP address not yet available</div>
-                      {% endif %} -->
                     </div>
                   </div>
-
-                  <!-- <h2 class="title">
-                    <small>Head Node Access</small>
-                  </h2>
-                  <div id="accordion" role="tablist" aria-multiselectable="true">
-
-                    <div class="card panel panel-info resource-profile" style="margin: 1em;">
-                      <div class="card-header panel-title" role="tab" id="headingOne" style="margin: 1em">
-                        <h5 class="mb-0">
-                          <a class="" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                            To access our head node...
-                            <i class="fa fa-info-circle" aria-hidden="true"></i>
-                          </a>
-                          <div class="pull-right">
-                            <p id="{{request_headnode_app_host_status}}"></p>
-                          </div>
-                        </h5>
-                      </div>
-                      <div id="collapseOne" class="collapse" role="tabpanel" aria-labelledby="headingOne">
-                        <div class="card-block panel-body disabled">
-                          <ol id="{{request_headnode_steps}}"></ol>
-                        </div>
-                      </div>
-                    </div>
-
-                  </div> -->
                 </div><!-- /.col-md-6 -->
 
             </div><!-- /.card-block -->
@@ -359,7 +321,7 @@ function get_states(name){
       var request_jupyter_steps = (request_id + '_jupyter_steps');
       if(data.headnode_state == 'running'){
         if(data.headnode_app_type == 'jupyter'){
-          $('#'+request_jupyter_steps).html("<ol>To access Jupyterhub node: <li>Go to: https://"+data.headnode_app_host+":8080</li></ol>");
+          $('#'+request_jupyter_steps).html("<ol>To access Jupyterhub node: <li>Go to: <a href='https://"+data.headnode_app_host+":8080' target='_blank'>https://"+data.headnode_app_host+":8080</a></li></ol>");
         }
         $('#'+request_headnode_app_host).html(data.headnode_app_host);
         $('#'+request_headnode_app_host_status).html('Ready');
