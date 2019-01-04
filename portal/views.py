@@ -53,7 +53,7 @@ whitelist_email = ['jeremyvan@uchicago.edu', 'briedel@uchicago.edu',
                    'jzhou93@uchicago.edu', 'cnweaver@uchicago.edu',
                    'annawoodard@uchicago.edu', 'awoodard@nd.edu',
                    'anna.elizabeth.woodard@cern.ch', 'yiyangou@uchicago.edu',
-                   'kevin.jerome.pedro@cern.ch', 'ndev@nd.edu']
+                   'kevin.jerome.pedro@cern.ch', 'ndev@nd.edu', 'ckankel@nd.edu']
 
 # Create a custom error handler for Exceptions
 
@@ -202,7 +202,10 @@ def show_profile_page():
     """User profile information. Assocated with a Globus Auth identity."""
 
     vc3_client = get_vc3_client()
-    userlist = vc3_client.listUsers()
+    try:
+        userlist = vc3_client.listUsers()
+    except Exception as e:
+        app.logger.error("Exception: %s" % e)
 
     if request.method == 'GET':
         profile = None
@@ -1366,7 +1369,8 @@ def create_request(project):
         node_number = request.form['node_number']
         app_type = request.form['app_type']
         app_role = "worker-nodes"
-        displayname = owner + "-" + translate_lower
+        # displayname = owner + "-" + translate_lower
+        displayname = translatename
 
         try:
             nodeset = vc3_client.defineNodeset(name=displayname, owner=owner,
@@ -1473,6 +1477,10 @@ def view_request(name):
             description = vc3_request.description
             project = vc3_request.project
             displayname = vc3_request.displayname
+            environments = vc3_request.environments
+
+            if environments == []:
+                environments = None
 
             headnode = None
             if vc3_request.headnode:
@@ -1509,7 +1517,8 @@ def view_request(name):
                                    description=description,
                                    profile=profile, vc3_request=vc3_request,
                                    displayname=displayname,
-                                   expiration=local_time, headnode=headnode)
+                                   expiration=local_time, headnode=headnode,
+                                   environments=environments)
 
         app.logger.error("Could not find VC when viewing: {0}".format(name))
         raise LookupError('virtual cluster')
@@ -1663,9 +1672,9 @@ def list_environments():
     vc3_client = get_vc3_client()
     environments = vc3_client.listEnvironments()
     # Call list of build recipes from vc3-builder
-    recipes = subprocess.check_output(["/usr/bin/vc3-builder", "--list"])
-    recipe_list = recipes.split()
-
+    # recipes = subprocess.check_output(["/usr/bin/vc3-builder", "--list"])
+    # recipe_list = recipes.split()
+    recipe_list = None
     return render_template('environments.html', recipes=recipe_list,
                            environments=environments)
 
@@ -1675,23 +1684,18 @@ def list_environments():
 def create_environment():
     """ New Environment Creation Form """
     vc3_client = get_vc3_client()
-    recipes = subprocess.check_output(["/usr/bin/vc3-builder", "--list"])
-    recipe_list = recipes.split()
+    # recipes = subprocess.check_output(["/usr/bin/vc3-builder", "--list"])
+    # recipe_list = recipes.split()
+    #
+    # recipes_section = subprocess.check_output(
+    #     ["/usr/bin/vc3-builder", "--list=section"])
+    # recipe_list_section = recipes_section.split()
 
-    recipes_section = subprocess.check_output(
-        ["/usr/bin/vc3-builder", "--list=section"])
-    recipe_list_section = recipes_section.split()
-
-    # expected_sections = ["--- bioinformatics tools", "--- compilation tools",
-    # "--- data management tools", "--- data transfer tools", "--- databases",
-    # "--- demos", "--- environment tools", "--- environments", "--- file systems",
-    # "--- file utilities", "--- hpc", "--- job execution engines",
-    # "--- numerical methods tools", "--- perl packages", "--- programming languages",
-    # "--- python packages", "--- scripting languages", "--- software building",
-    # "--- source version control", "--- workflow tools"]
-
-    oss = subprocess.check_output(["/usr/bin/vc3-builder", "--list=os"])
-    os_list = oss.split()
+    # oss = subprocess.check_output(["/usr/bin/vc3-builder", "--list=os"])
+    # os_list = oss.split()
+    os_list = []
+    recipe_list = []
+    recipes_section = []
 
     if request.method == 'GET':
         environments = vc3_client.listEnvironments()
