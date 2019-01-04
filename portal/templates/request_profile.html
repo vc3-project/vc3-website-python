@@ -126,12 +126,40 @@
                     </div>
 
                     <div class="panel-body disabled">
-                      {% if vc3_request.environments == [] %}
-                        <div>No specified environment on this Virtual Cluster</div>
+                      {% if vc3_request.environments %}
+                        {% set vc3_client = get_vc3_client() %}
+                        <div class="table-responsive">
+                          <table class="table" id="#" data-toggle="table" data-sort-name="name" data-sort-order="desc">
+                            <thead>
+                              <tr>
+                                <th data-field="" data-sortable="true">Environment</th>
+                                <th data-field="" data-sortable="true">Package List</th>
+                                <th data-field="" data-sortable="true">Required OS</th>
+                                <th data-field="" data-sortable="true">Env Map</th>
+                                <th data-field="" data-sortable="true">Files</th>
+                              </tr>
+                            </thead>
+                            <tbody data-link="row" class="rowlink" style="font-size:12px;">
+                              {% for env in vc3_request.environments %}
+                              {% set env_info = vc3_client.getEnvironment(environmentname=env)%}
+                              <tr>
+                                <td>{{env_info.displayname}}</td>
+                                <td>
+                                  {% for package in env_info.packagelist %}
+                                    <li>{{package}}</li>
+                                  {% endfor %}
+                                </td>
+                                <td>{{env_info.required_os}}</td>
+                                <td>{{env_info.envmap}}</td>
+                                <td>{{env_info.files}}</td>
+                              </tr>
+                              {% endfor %}
+                            </tbody>
+
+                          </table>
+                        </div>
                       {% else %}
-                        {% for env in vc3_request.environments %}
-                        <div>{{env}}</div>
-                        {% endfor %}
+                        <div>No specified environment on this Virtual Cluster</div>
                       {% endif %}
                     </div>
                   </div>

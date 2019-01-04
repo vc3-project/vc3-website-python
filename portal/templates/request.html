@@ -244,9 +244,9 @@
                           </td>
 
                           {% set vc3_client = get_vc3_client() %}
-                          {% set clusterinfo = vc3_client.getCluster(clustername=request.cluster)%}
+                          {% set nodesetinfo = vc3_client.getNodeset(nodesetname=request.cluster)%}
                           <td>
-                            <div>{{clusterinfo.displayname}}</div>
+                            <div>{{nodesetinfo.app_type}}</div>
                           </td>
 
     										</tr>
