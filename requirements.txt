@@ -4,7 +4,6 @@ Cython
 Flask==0.12.3
 Frozen-Flask
 Flask-FlatPages
-Flask-Markdown
 globus-sdk==1.1.1
 Markdown
 MarkupSafe
