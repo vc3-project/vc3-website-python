@@ -7,9 +7,12 @@
 <section id="blog_article">
   <div id="blog_article" class="container content wow fadeInUp">
 
-    <h2>{{ page.title }}</h2>
+    <h1>{{ page.title }}</h1>
     <p>{{ page.date}}</p>
+    {% filter markdown %}
     {{ page.body }}
+    {% endfilter %}
+
 
   </div>
 </section>

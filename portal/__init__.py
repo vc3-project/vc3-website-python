@@ -6,6 +6,7 @@ import logging
 
 from vc3client import client
 from ConfigParser import SafeConfigParser
+from flaskext.markdown import Markdown
 
 __author__ = 'Jeremy Van <jeremyvan@uchicago.edu>'
 
@@ -15,7 +16,8 @@ app.config.from_pyfile('portal.conf')
 app.config['TEMPLATES_AUTO_RELOAD'] = True
 
 # set up logging
-handler = logging.handlers.RotatingFileHandler(filename=app.config['VC3_WEBSITE_LOGFILE'])
+handler = logging.handlers.RotatingFileHandler(
+    filename=app.config['VC3_WEBSITE_LOGFILE'])
 handler.setLevel(logging.DEBUG)
 app.logger.addHandler(handler)
 formatter = logging.Formatter('%(asctime)s - %(levelname)s: %(message)s')
@@ -23,6 +25,8 @@ handler.setFormatter(formatter)
 
 pages = FlatPages(app)
 freezer = Freezer(app)
+Markdown(app)
+
 
 def get_vc3_client():
     """
