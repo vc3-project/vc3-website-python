@@ -6,7 +6,7 @@ import logging
 
 from vc3client import client
 from ConfigParser import SafeConfigParser
-from flaskext.markdown import Markdown
+# from flaskext.markdown import Markdown
 
 __author__ = 'Jeremy Van <jeremyvan@uchicago.edu>'
 
