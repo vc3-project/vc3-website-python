@@ -6,7 +6,7 @@ import logging
 
 from vc3client import client
 from ConfigParser import SafeConfigParser
-# from flaskext.markdown import Markdown
+from flaskext.markdown import Markdown
 
 __author__ = 'Jeremy Van <jeremyvan@uchicago.edu>'
 
@@ -25,7 +25,7 @@ handler.setFormatter(formatter)
 
 pages = FlatPages(app)
 freezer = Freezer(app)
-# Markdown(app)
+Markdown(app)
 
 
 def get_vc3_client():
