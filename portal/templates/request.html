@@ -177,7 +177,7 @@
                             <!-- <div class="row" id="{{request_headnode_app_host}}"></div> -->
                             <div class="row">
                               {% if request.headnode and request.headnode.app_host and request.headnode.state == 'running' %}
-                                {% if request.headnode.app_type == 'jupyter' %}
+                                {% if request.headnode.app_type == 'jupyter+htcondor' or request.headnode.app_type == 'jupyter+spark' %}
                                 <a href="#"
                                 data-toggle="popover"
                                 title="To access JupyterHub node"
