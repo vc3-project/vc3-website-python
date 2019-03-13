@@ -348,7 +348,7 @@ function get_states(name){
       var request_headnode_steps = (request_id + '_headnode_steps');
       var request_jupyter_steps = (request_id + '_jupyter_steps');
       if(data.headnode_state == 'running'){
-        if(data.headnode_app_type == 'jupyter+htcondor' or data.headnode_app_type == 'jupyter+spark'){
+        if(data.headnode_app_type == 'jupyter+htcondor' || data.headnode_app_type == 'jupyter+spark'){
           $('#'+request_jupyter_steps).html("<ol>To access Jupyterhub node: <li>Go to: <a href='https://"+data.headnode_app_host+":8080' target='_blank'>https://"+data.headnode_app_host+":8080</a></li></ol>");
         }
         $('#'+request_headnode_app_host).html(data.headnode_app_host);
