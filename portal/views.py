@@ -1018,7 +1018,6 @@ def create_allocation_gsissh(resource, accountname):
         allocation_resource = vc3_client.getResource(resourcename=resource)
         pubtokendocurl = allocation_resource.pubtokendocurl
 
-        print(name, owner, resource, accountname, displayname, pubtokendocurl)
 
         try:
             newallocation = vc3_client.defineAllocation(
@@ -1026,8 +1025,9 @@ def create_allocation_gsissh(resource, accountname):
                 accountname=accountname, displayname=displayname,
                 pubtokendocurl=pubtokendocurl, privtoken=privtoken)
             vc3_client.storeAllocation(newallocation)
-        except:
+        except Exception as e:
             resources = vc3_client.listResources()
+            print(e)
             flash(
                 'You have already registered an allocation on that resource.', 'warning')
             return render_template('allocation_new.html', displayname=displayname,

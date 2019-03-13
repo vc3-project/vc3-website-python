@@ -155,8 +155,8 @@ def allocation_script_for_resource(allocation_name, output_path):
 
     vc3_client = get_vc3_client()
     allocation = vc3_client.getAllocation(allocation_name)
-    pubkey    = vc3_client.decode(allocation.pubtoken)
-    dir_name   = os.path.dirname(output_path)
+    pubkey = vc3_client.decode(allocation.pubtoken)
+    dir_name = os.path.dirname(output_path)
 
     try:
         os.makedirs(dir_name, 0755)
@@ -213,4 +213,3 @@ exit 0
 
 """.format(pubkey)
         fh.write(script)
-
