@@ -53,7 +53,9 @@ whitelist_email = ['jeremyvan@uchicago.edu', 'briedel@uchicago.edu',
                    'jzhou93@uchicago.edu', 'cnweaver@uchicago.edu',
                    'annawoodard@uchicago.edu', 'awoodard@nd.edu',
                    'anna.elizabeth.woodard@cern.ch', 'yiyangou@uchicago.edu',
-                   'kevin.jerome.pedro@cern.ch', 'ndev@nd.edu']
+                   'kevin.jerome.pedro@cern.ch', 'ndev@nd.edu',
+                   'ckankel@nd.edu', 'manglano@uchicago.edu',
+                   'chard@uchicago.edu', 'djordan66@uchicago.edu']
 
 # Create a custom error handler for Exceptions
 
@@ -968,42 +970,71 @@ def create_allocation():
     elif request.method == 'POST':
         # Gathering and storing information from new allocation form
         # into info-service
-        # Description from text input stored as string to avoid malicious input
-
-        # displayname = request.form['displayname']
         owner = session['name']
-        resource = request.form['resource']
         accountname = request.form['accountname']
+        resource = request.form['resource']
         allocationname = owner + "." + resource
         displayname = owner + '-' + resource
         name = allocationname.lower()
-        # description_input = request.form['description']
-        # description = str(description_input)
-        # url = request.form['url']
         allocation_resource = vc3_client.getResource(resourcename=resource)
         pubtokendocurl = allocation_resource.pubtokendocurl
+
+        # If resource requires GSISSH access method, redirect to add x509 proxy field
+        if allocation_resource.accessmethod == 'gsissh':
+            return render_template('allocation_gsissh.html', resource=resource,
+                                    displayname=displayname, accountname=accountname,
+                                    owner=owner, name=name, pubtokendocurl=pubtokendocurl)
+        else:
+            print(name, owner, resource, accountname, displayname, pubtokendocurl)
+            try:
+                newallocation = vc3_client.defineAllocation(
+                    name=name, owner=owner, resource=resource,
+                    accountname=accountname, displayname=displayname,
+                    pubtokendocurl=pubtokendocurl)
+                vc3_client.storeAllocation(newallocation)
+            except:
+                accountname = request.form['accountname']
+                resources = vc3_client.listResources()
+                flash(
+                    'Failed to register your allocation on that resource.', 'warning')
+                return render_template('allocation_new.html', displayname=displayname,
+                                       accountname=accountname, resources=resources)
+            # flash('Your allocation has being registered.', 'success')
+            return redirect(url_for('view_allocation', name=name))
+
+
+@app.route('/allocation/new/<resource>/<accountname>', methods=['POST'])
+@authenticated
+def create_allocation_gsissh(resource, accountname):
+    """ GSISSH Allocation Creation Form """
+    vc3_client = get_vc3_client()
+    if request.method == 'POST':
+
+        privtokenString = request.form['privtoken']
+        privtoken = base64.b64encode(privtokenString)
+
+        owner = session['name']
+        allocationname = owner + "." + resource
+        displayname = owner + '-' + resource
+        name = allocationname.lower()
+        allocation_resource = vc3_client.getResource(resourcename=resource)
+        pubtokendocurl = allocation_resource.pubtokendocurl
+
 
         try:
             newallocation = vc3_client.defineAllocation(
                 name=name, owner=owner, resource=resource,
                 accountname=accountname, displayname=displayname,
-                pubtokendocurl=pubtokendocurl)
+                pubtokendocurl=pubtokendocurl, privtoken=privtoken)
             vc3_client.storeAllocation(newallocation)
-        except:
-            # displayname = request.form['displayname']
-            accountname = request.form['accountname']
-            # description_input = request.form['description']
-            # description = str(description_input)
+        except Exception as e:
             resources = vc3_client.listResources()
+            print(e)
             flash(
                 'You have already registered an allocation on that resource.', 'warning')
             return render_template('allocation_new.html', displayname=displayname,
                                    accountname=accountname, resources=resources)
-
-        # flash('Your allocation has being registered.', 'success')
-
         return redirect(url_for('view_allocation', name=name))
-
 
 @app.route('/allocation/<name>', methods=['GET', 'POST'])
 @authenticated
