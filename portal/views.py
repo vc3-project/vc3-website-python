@@ -1138,21 +1138,30 @@ def edit_allocation(name):
     resources = vc3_client.listResources()
 
     allocation = vc3_client.getAllocation(allocationname=name)
+    resource = allocation.resource
+    allocation_resource = vc3_client.getResource(resourcename=resource)
 
     if request.method == 'GET':
         if allocation.name == name:
             allocationname = allocation.name
             owner = allocation.owner
-            resource = allocation.resource
+            allocation_resource = vc3_client.getResource(resourcename=resource)
             accountname = allocation.accountname
             pubtoken = allocation.pubtoken
+            privtoken = base64.b64decode(allocation.privtoken)
             # description = allocation.description
             displayname = allocation.displayname
 
-            return render_template('allocation_edit.html', name=allocationname,
-                                   owner=owner, resources=resources,
-                                   resource=resource, accountname=accountname,
-                                   pubtoken=pubtoken, displayname=displayname)
+            if allocation_resource.accessmethod == 'gsissh':
+                return render_template('allocation_edit_gsissh.html', name=allocationname,
+                                       owner=owner, resources=resources,
+                                       resource=resource, accountname=accountname,
+                                       privtoken=privtoken, displayname=displayname)
+            else:
+                return render_template('allocation_edit.html', name=allocationname,
+                                       owner=owner, resources=resources,
+                                       resource=resource, accountname=accountname,
+                                       pubtoken=pubtoken, displayname=displayname)
         app.logger.error(
             "Could not find allocation when editing: {0}".format(name))
         raise LookupError('allocation')
@@ -1162,6 +1171,10 @@ def edit_allocation(name):
         if allocation.name == name:
             # allocation.description = request.form['description']
             allocation.displayname = request.form['displayname']
+        if allocation_resource.accessmethod == 'gsissh':
+            privtokenString = request.form['privtoken']
+            privtoken = base64.b64encode(privtokenString)
+            allocation.privtoken = privtoken
 
         vc3_client.storeAllocation(allocation)
         # flash('Allocation successfully updated', 'success')
