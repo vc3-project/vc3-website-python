@@ -1171,10 +1171,10 @@ def edit_allocation(name):
         if allocation.name == name:
             # allocation.description = request.form['description']
             allocation.displayname = request.form['displayname']
-        if allocation_resource.accessmethod == 'gsissh':
-            privtokenString = request.form['privtoken']
-            privtoken = base64.b64encode(privtokenString)
-            allocation.privtoken = privtoken
+            if allocation_resource.accessmethod == 'gsissh':
+                privtokenString = request.form['privtoken']
+                privtoken = base64.b64encode(privtokenString)
+                allocation.privtoken = privtoken
 
         vc3_client.storeAllocation(allocation)
         # flash('Allocation successfully updated', 'success')
