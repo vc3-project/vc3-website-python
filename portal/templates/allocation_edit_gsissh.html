@@ -38,6 +38,7 @@
                       <input
                         placeholder="{{displayname}}"
                         name="displayname"
+                        id="displayname"
                         class="form-control border-input"
                         type="text"
                         tabindex="1"
@@ -68,13 +69,13 @@
 </div><!-- ./content -->
 
 <script>
-var name = {{name|tojson}};
+var displayname = {{displayname|tojson}};
 var privtoken = {{privtoken|tojson}};
 
-window.onload = setEditGroupFields(name, privtoken);
+window.onload = setEditGroupFields(displayname, privtoken);
 
-function setEditGroupFields(name, privtoken){
-  document.getElementById('displayname').value = name;
+function setEditGroupFields(displayname, privtoken){
+  document.getElementById('displayname').value = displayname;
   document.getElementById('privtoken').value = privtoken;
 }
 
