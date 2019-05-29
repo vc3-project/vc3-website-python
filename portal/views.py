@@ -55,7 +55,8 @@ whitelist_email = ['jeremyvan@uchicago.edu', 'briedel@uchicago.edu',
                    'anna.elizabeth.woodard@cern.ch', 'yiyangou@uchicago.edu',
                    'kevin.jerome.pedro@cern.ch', 'ndev@nd.edu',
                    'ckankel@nd.edu', 'manglano@uchicago.edu',
-                   'chard@uchicago.edu', 'djordan66@uchicago.edu']
+                   'chard@uchicago.edu', 'djordan66@uchicago.edu',
+                   'swallen2@nd.edu']
 
 # Create a custom error handler for Exceptions
 
@@ -1169,7 +1170,6 @@ def edit_allocation(name):
     elif request.method == 'POST':
         allocation = vc3_client.getAllocation(allocationname=name)
         if allocation.name == name:
-            # allocation.description = request.form['description']
             allocation.displayname = request.form['displayname']
             if allocation_resource.accessmethod == 'gsissh':
                 privtokenString = request.form['privtoken']
