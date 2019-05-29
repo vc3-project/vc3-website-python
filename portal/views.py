@@ -1067,6 +1067,8 @@ def view_allocation(name):
         if allocation_resource.accessmethod == 'gsissh':
             privtoken = base64.b64decode(allocation.privtoken)
             expiration = get_proxy_expiration_time(privtoken)
+        else:
+            expiration = None
 
         if encodedpubtoken is None:
             pubtoken = 'None'
@@ -1082,15 +1084,16 @@ def view_allocation(name):
                                    accountname=accountname,
                                    pubtoken=pubtoken, state=state,
                                    resources=resources, displayname=displayname,
-                                   users=users, accesshost=accesshost)
+                                   users=users, accesshost=accesshost, expiration=expiration)
         else:
             return render_template('allocation_profile_specific.html',
                                    name=allocationname,
                                    owner=owner, resource=resource,
                                    accountname=accountname,
                                    pubtoken=pubtoken, state=state,
-                                   resources=resources, displayname=displayname, users=users,
-                                   accesshost=accesshost, pubtokendocurl=pubtokendocurl)
+                                   resources=resources, displayname=displayname,
+                                   users=users, accesshost=accesshost,
+                                   pubtokendocurl=pubtokendocurl, expiration=expiration)
         app.logger.error(
             "Could not find allocation when viewing: {0}".format(name))
         raise LookupError('allocation')
