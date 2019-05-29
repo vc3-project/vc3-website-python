@@ -14,6 +14,10 @@ try:
 except ImportError:
     from urlparse import urlparse, urljoin
 
+from cryptography import x509
+from cryptography.hazmat.backends import default_backend
+import datetime
+
 from portal import app
 
 
@@ -213,3 +217,20 @@ exit 0
 
 """.format(pubkey)
         fh.write(script)
+
+def get_proxy_expiration_time(proxystr):
+    try:
+        cert = x509.load_pem_x509_certificate(proxystr, default_backend())
+    except Exception as e:
+        app.logger.error("Error while reading proxy {0}".format(e))
+        return 'Could not read proxy expiration time'
+        
+    cert_expire = cert.not_valid_after
+    now = datetime.datetime.utcnow()
+    exp_time = cert_expire - now
+    time_s = exp_time.total_seconds()
+    expiration = "{hours} hours, {minutes} minutes and {seconds} seconds.".format(hours=int(time_s / 3600),
+                                                                                  minutes=int(time_s % 3600 / 60),
+                                                                                  seconds=int(time_s % 60))
+
+    return expiration 
