@@ -950,6 +950,11 @@ section #blog_article {
   /* color: rgb(3, 196, 235); */
   color: #337ab7;
 }
+
+section #blog_article #blog_body img{
+  align-content: center;
+  width: 100%;
+}
 .container .demo-videos {
 	width: 100%;
 }

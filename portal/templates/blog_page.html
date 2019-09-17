@@ -9,11 +9,23 @@
 
     <h2>{{ page.title }}</h2>
     <p>{{ page.date}}</p>
-    {% filter markdown %}
-    {{ page.body }}
-    {% endfilter %}
+
+    <span id='blog_body'></span>
 
   </div>
 </section>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/remarkable/1.7.4/remarkable.js"></script>
+<script type="text/javascript">
+
+var md = new Remarkable('full');
+
+jQuery(document).ready(function($){
+  var page_body = {{page.body|tojson}};
+  var page_body_render = md.render(page_body);
+  $('#blog_body').html(page_body_render);
+});
+
+</script>
 
 {% endblock %}
