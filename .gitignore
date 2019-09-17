@@ -32,6 +32,8 @@ var/
 .venv/
 venv/
 venv27/
+venv-vc3/
+vc3-dependencies/
 vc3-website-python-venv/
 *.egg-info/
 .installed.cfg
