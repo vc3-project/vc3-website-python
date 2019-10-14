@@ -1044,6 +1044,8 @@ def create_allocation_gsissh(resource, accountname):
         return redirect(url_for('view_allocation', name=name))
 
 
+@app.route('/allocation/new/<resource>/<accountname>', methods=['POST'])
+@authenticated
 def create_allocation_sshproxy(resource, accountname):
     """ SSHProxy Allocation Creation Form """
     return create_allocation_gsissh(resource, accountname)
