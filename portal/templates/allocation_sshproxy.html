@@ -1,0 +1,58 @@
+{%extends "loginbase.html"%}
+
+{%block title%}Register Allocations{%endblock%}
+
+{%block body%}
+{%include 'messages.html'%}
+
+
+<div class="content">
+  <div class="container-fluid">
+    <div class="row">
+
+      <div class="col-md-12">
+        <div class="card">
+
+          <div class="header">
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item"><a href="{{url_for('portal')}}">Portal</a></li>
+              <li class="breadcrumb-item"><a href="{{url_for('list_allocations')}}">Allocations</a></li>
+              <li class="breadcrumb-item active">Register New Allocation</li>
+            </ol>
+            <h4 class="title">Register New Allocation</h4>
+            <h5>An allocation is an allotted amount of CPU hours or service units (SU) of computing time on a specific resource</h5>
+            <label><span id="asterik">*</span> <small style="color:black">= indicates required field</small></label>
+						<hr/>
+          </div>
+
+          <div class="content description">
+  					<div class="card-block">
+
+              <div class="row">
+        				<div class="col-md-6">
+
+                  <form role="form" action="{{url_for('create_allocation_sshproxy', resource=resource, accountname=accountname)}}" method="POST">
+
+                    <div class="form-group">
+                      <label for="privtoken">Private Token SSHProxy <span id="asterik">*</span></label>
+                      <textarea name="privtoken" id="privtoken" rows="8" cols="80" class="form-control border-input" placeholder="SSH Proxy" required></textarea>
+                    </div>
+
+                    <div class="form-group">
+                      <a href="{{url_for('list_allocations')}}" class="btn btn-primary" tabindex="2" title="Cancel">Cancel</a>
+                      <button type="submit" tabindex="3" class="btn btn-create btn-wd">Register Allocation</button>
+                    </div>
+                  </form>
+        				</div>
+
+        			</div> <!-- row -->
+            </div><!-- /.card-block -->
+          </div><!-- /.card description-->
+        </div><!-- /.card -->
+  		</div><!-- /.col-md-6 -->
+    </div><!-- ./row -->
+  </div><!-- ./container-fluid -->
+</div><!-- ./content -->
+
+
+{%endblock%}
