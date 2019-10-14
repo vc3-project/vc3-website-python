@@ -986,6 +986,11 @@ def create_allocation():
             return render_template('allocation_gsissh.html', resource=resource,
                                     displayname=displayname, accountname=accountname,
                                     owner=owner, name=name, pubtokendocurl=pubtokendocurl)
+        # If resource requires SSHProxy access method, redirect to add SSH proxy field
+        elif allocation_resource.accessmethod == 'sshproxy':
+            return render_template('allocation_sshproxy.html', resource=resource,
+                                    displayname=displayname, accountname=accountname,
+                                    owner=owner, name=name, pubtokendocurl=pubtokendocurl)
         else:
             print(name, owner, resource, accountname, displayname, pubtokendocurl)
             try:
@@ -1038,6 +1043,11 @@ def create_allocation_gsissh(resource, accountname):
                                    accountname=accountname, resources=resources)
         return redirect(url_for('view_allocation', name=name))
 
+
+def create_allocation_sshproxy(resource, accountname):
+    """ SSHProxy Allocation Creation Form """
+    return create_allocation_gsissh(resource, accountname)
+
 @app.route('/allocation/<name>', methods=['GET', 'POST'])
 @authenticated
 def view_allocation(name):
@@ -1065,9 +1075,10 @@ def view_allocation(name):
         encodedpubtoken = allocation.pubtoken
         pubtokendocurl = allocation.pubtokendocurl
 
-        if allocation_resource.accessmethod == 'gsissh':
+        if allocation_resource.accessmethod in ('gsissh', 'sshproxy'):
             privtoken = base64.b64decode(allocation.privtoken)
-            expiration = get_proxy_expiration_time(privtoken)
+            expiration = get_proxy_expiration_time(privtoken, 
+                                                   allocation_resource.accessmethod)
         else:
             expiration = None
 
@@ -1155,7 +1166,6 @@ def edit_allocation(name):
         if allocation.name == name:
             allocationname = allocation.name
             owner = allocation.owner
-            allocation_resource = vc3_client.getResource(resourcename=resource)
             accountname = allocation.accountname
             pubtoken = allocation.pubtoken
             privtoken = base64.b64decode(allocation.privtoken)
@@ -1164,6 +1174,11 @@ def edit_allocation(name):
 
             if allocation_resource.accessmethod == 'gsissh':
                 return render_template('allocation_edit_gsissh.html', name=allocationname,
+                                       owner=owner, resources=resources,
+                                       resource=resource, accountname=accountname,
+                                       privtoken=privtoken, displayname=displayname)
+            elif allocation_resource.accessmethod == 'sshproxy':
+                return render_template('allocation_edit_sshproxy.html', name=allocationname,
                                        owner=owner, resources=resources,
                                        resource=resource, accountname=accountname,
                                        privtoken=privtoken, displayname=displayname)
@@ -1180,7 +1195,7 @@ def edit_allocation(name):
         allocation = vc3_client.getAllocation(allocationname=name)
         if allocation.name == name:
             allocation.displayname = request.form['displayname']
-            if allocation_resource.accessmethod == 'gsissh':
+            if allocation_resource.accessmethod in ('gsissh', 'sshproxy'):
                 privtokenString = request.form['privtoken']
                 privtoken = base64.b64encode(privtokenString)
                 allocation.privtoken = privtoken

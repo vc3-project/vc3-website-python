@@ -218,7 +218,15 @@ exit 0
 """.format(pubkey)
         fh.write(script)
 
-def get_proxy_expiration_time(proxystr):
+def get_proxy_expiration_time(proxystr, method):
+    if method == 'gsissh':
+        return get_proxy_expiration_time_gsissh(proxystr)
+    elif method == 'sshproxy':
+        return get_proxy_expiration_time_sshproxy(proxystr)
+    else
+        return "None"
+
+def get_proxy_expiration_time_gsissh(proxystr):
     try:
         cert = x509.load_pem_x509_certificate(proxystr, default_backend())
     except Exception as e:
@@ -234,3 +242,6 @@ def get_proxy_expiration_time(proxystr):
                                                                                   seconds=int(time_s % 60))
 
     return expiration 
+
+def get_proxy_expiration_time_sshproxy(proxystr):
+    return "Not implementet yet"
