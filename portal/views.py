@@ -1048,7 +1048,37 @@ def create_allocation_gsissh(resource, accountname):
 @authenticated
 def create_allocation_sshproxy(resource, accountname):
     """ SSHProxy Allocation Creation Form """
-    return create_allocation_gsissh(resource, accountname)
+    vc3_client = get_vc3_client()
+    if request.method == 'POST':
+
+        privtokenString = request.form['privtoken']
+        privtoken = base64.b64encode(privtokenString)
+
+        owner = session['name']
+        allocationname = owner + "." + resource
+        displayname = owner + '-' + resource
+        name = allocationname.lower()
+        allocation_resource = vc3_client.getResource(resourcename=resource)
+        pubtokendocurl = allocation_resource.pubtokendocurl
+
+
+        try:
+            newallocation = vc3_client.defineAllocation(
+                name=name, owner=owner, resource=resource,
+                accountname=accountname, displayname=displayname,
+                pubtokendocurl=pubtokendocurl, privtoken=privtoken)
+            # Pubtoken is not needed, but defined to preserver logic
+            pubtoken = base64.b64encode('SSHProxy')
+            newallocation.pubtoken = pubtoken
+            vc3_client.storeAllocation(newallocation)
+        except Exception as e:
+            resources = vc3_client.listResources()
+            print(e)
+            flash(
+                'You have already registered an allocation on that resource.', 'warning')
+            return render_template('allocation_new.html', displayname=displayname,
+                                   accountname=accountname, resources=resources)
+        return redirect(url_for('view_allocation', name=name))
 
 @app.route('/allocation/<name>', methods=['GET', 'POST'])
 @authenticated
