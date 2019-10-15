@@ -1044,7 +1044,7 @@ def create_allocation_gsissh(resource, accountname):
         return redirect(url_for('view_allocation', name=name))
 
 
-@app.route('/allocation/new/<resource>/<accountname>', methods=['POST'])
+@app.route('/allocation/new/sshproxy/<resource>/<accountname>', methods=['POST'])
 @authenticated
 def create_allocation_sshproxy(resource, accountname):
     """ SSHProxy Allocation Creation Form """
@@ -1068,7 +1068,8 @@ def create_allocation_sshproxy(resource, accountname):
                 accountname=accountname, displayname=displayname,
                 pubtokendocurl=pubtokendocurl, privtoken=privtoken)
             # Pubtoken is not needed, but defined to preserver logic
-            pubtoken = base64.b64encode('SSHProxy')
+            newallocation.sectype = 'ssh-rsa'
+            pubtoken = base64.b64encode('ssh-rsa SSHProxy')
             newallocation.pubtoken = pubtoken
             vc3_client.storeAllocation(newallocation)
         except Exception as e:
