@@ -1111,7 +1111,7 @@ def view_allocation(name):
 
         if allocation_resource.accessmethod in ('gsissh', 'sshproxy'):
             privtoken = base64.b64decode(allocation.privtoken)
-            expiration = get_proxy_expiration_time(privtoken, 
+            expiration = get_proxy_expiration_time(privtoken,
                                                    allocation_resource.accessmethod)
         else:
             expiration = None
