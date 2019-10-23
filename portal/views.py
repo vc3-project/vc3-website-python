@@ -54,10 +54,11 @@ whitelist_email = ['jeremyvan@uchicago.edu', 'briedel@uchicago.edu',
                    'annawoodard@uchicago.edu', 'awoodard@nd.edu',
                    'anna.elizabeth.woodard@cern.ch', 'yiyangou@uchicago.edu',
                    'kevin.jerome.pedro@cern.ch', 'ndev@nd.edu',
-                   'ckankel@nd.edu', 'manglano@uchicago.edu',
-                   'chard@uchicago.edu', 'djordan66@uchicago.edu',
-                   'swallen2@nd.edu', 'Samuel.O.WallenRussell.1@nd.edu',
-                   'paschos@uchicago.edu', 'mweinberg@uchicago.edu', 'marc.gabriel.weinberg@cern.ch']
+                   'ckankel@nd.edu', 'chard@uchicago.edu',
+                   'djordan66@uchicago.edu', 'swallen2@nd.edu',
+                   'Samuel.O.WallenRussell.1@nd.edu',
+                   'paschos@uchicago.edu', 'mweinberg@uchicago.edu',
+                   'marc.gabriel.weinberg@cern.ch', 'spiperov@purdue.edu']
 
 # Create a custom error handler for Exceptions
 
