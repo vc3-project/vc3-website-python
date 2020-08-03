@@ -27,7 +27,6 @@ pages = FlatPages(app)
 freezer = Freezer(app)
 Markdown(app)
 
-
 def get_vc3_client():
     """
     Return a VC3 client instance

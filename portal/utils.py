@@ -241,7 +241,11 @@ def get_proxy_expiration_time_gsissh(proxystr):
                                                                                   minutes=int(time_s % 3600 / 60),
                                                                                   seconds=int(time_s % 60))
 
+<<<<<<< HEAD
+    return expiration
+=======
     return expiration 
 
 def get_proxy_expiration_time_sshproxy(proxystr):
     return "Not implementet yet"
+>>>>>>> master
