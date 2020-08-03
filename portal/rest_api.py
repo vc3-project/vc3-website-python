@@ -46,6 +46,7 @@ def virtual_cluster(name):
             for nodeset in nodesets:
                 if nodeset.name == vc.headnode:
                     sanitized_obj['headnode_app_host'] = nodeset.app_host
+                    sanitized_obj['headnode_app_type'] = nodeset.app_type
                     sanitized_obj['headnode_state'] = nodeset.state
                     sanitized_obj['headnode_state_reason'] = nodeset.state_reason
 

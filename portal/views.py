@@ -54,12 +54,12 @@ whitelist_email = ['jeremyvan@uchicago.edu', 'briedel@uchicago.edu',
                    'annawoodard@uchicago.edu', 'awoodard@nd.edu',
                    'anna.elizabeth.woodard@cern.ch', 'yiyangou@uchicago.edu',
                    'kevin.jerome.pedro@cern.ch', 'ndev@nd.edu',
-                   'ckankel@nd.edu', 'chard@uchicago.edu',
-                   'djordan66@uchicago.edu', 'swallen2@nd.edu',
-                   'Samuel.O.WallenRussell.1@nd.edu',
+                   'ckankel@nd.edu', 'manglano@uchicago.edu',
+                   'chard@uchicago.edu', 'djordan66@uchicago.edu',
+                   'swallen2@nd.edu', 'Samuel.O.WallenRussell.1@nd.edu',
                    'paschos@uchicago.edu', 'mweinberg@uchicago.edu',
-                   'marc.gabriel.weinberg@cern.ch', 'spiperov@purdue.edu',
-                   'lagray@fnal.gov', 'lindsey.gray@cern.ch']
+                   'marc.gabriel.weinberg@cern.ch', 'lagray@fnal.gov',
+                   'lindsey.gray@cern.ch', 'tibor.simko@cern.ch', 'diego.rodriguez@cern.ch']
 
 # Create a custom error handler for Exceptions
 
@@ -977,42 +977,114 @@ def create_allocation():
     elif request.method == 'POST':
         # Gathering and storing information from new allocation form
         # into info-service
-        # Description from text input stored as string to avoid malicious input
-
-        # displayname = request.form['displayname']
         owner = session['name']
-        resource = request.form['resource']
         accountname = request.form['accountname']
+        resource = request.form['resource']
         allocationname = owner + "." + resource
         displayname = owner + '-' + resource
         name = allocationname.lower()
-        # description_input = request.form['description']
-        # description = str(description_input)
-        # url = request.form['url']
         allocation_resource = vc3_client.getResource(resourcename=resource)
         pubtokendocurl = allocation_resource.pubtokendocurl
+
+        # If resource requires GSISSH access method, redirect to add x509 proxy field
+        if allocation_resource.accessmethod == 'gsissh':
+            return render_template('allocation_gsissh.html', resource=resource,
+                                    displayname=displayname, accountname=accountname,
+                                    owner=owner, name=name, pubtokendocurl=pubtokendocurl)
+        # If resource requires SSHProxy access method, redirect to add SSH proxy field
+        elif allocation_resource.accessmethod == 'sshproxy':
+            return render_template('allocation_sshproxy.html', resource=resource,
+                                    displayname=displayname, accountname=accountname,
+                                    owner=owner, name=name, pubtokendocurl=pubtokendocurl)
+        else:
+            print(name, owner, resource, accountname, displayname, pubtokendocurl)
+            try:
+                newallocation = vc3_client.defineAllocation(
+                    name=name, owner=owner, resource=resource,
+                    accountname=accountname, displayname=displayname,
+                    pubtokendocurl=pubtokendocurl)
+                vc3_client.storeAllocation(newallocation)
+            except:
+                accountname = request.form['accountname']
+                resources = vc3_client.listResources()
+                flash(
+                    'Failed to register your allocation on that resource.', 'warning')
+                return render_template('allocation_new.html', displayname=displayname,
+                                       accountname=accountname, resources=resources)
+            # flash('Your allocation has being registered.', 'success')
+            return redirect(url_for('view_allocation', name=name))
+
+
+@app.route('/allocation/new/<resource>/<accountname>', methods=['POST'])
+@authenticated
+def create_allocation_gsissh(resource, accountname):
+    """ GSISSH Allocation Creation Form """
+    vc3_client = get_vc3_client()
+    if request.method == 'POST':
+
+        privtokenString = request.form['privtoken']
+        privtoken = base64.b64encode(privtokenString)
+
+        owner = session['name']
+        allocationname = owner + "." + resource
+        displayname = owner + '-' + resource
+        name = allocationname.lower()
+        allocation_resource = vc3_client.getResource(resourcename=resource)
+        pubtokendocurl = allocation_resource.pubtokendocurl
+
 
         try:
             newallocation = vc3_client.defineAllocation(
                 name=name, owner=owner, resource=resource,
                 accountname=accountname, displayname=displayname,
-                pubtokendocurl=pubtokendocurl)
+                pubtokendocurl=pubtokendocurl, privtoken=privtoken)
             vc3_client.storeAllocation(newallocation)
-        except:
-            # displayname = request.form['displayname']
-            accountname = request.form['accountname']
-            # description_input = request.form['description']
-            # description = str(description_input)
+        except Exception as e:
             resources = vc3_client.listResources()
+            print(e)
             flash(
                 'You have already registered an allocation on that resource.', 'warning')
             return render_template('allocation_new.html', displayname=displayname,
                                    accountname=accountname, resources=resources)
-
-        # flash('Your allocation has being registered.', 'success')
-
         return redirect(url_for('view_allocation', name=name))
 
+
+@app.route('/allocation/new/sshproxy/<resource>/<accountname>', methods=['POST'])
+@authenticated
+def create_allocation_sshproxy(resource, accountname):
+    """ SSHProxy Allocation Creation Form """
+    vc3_client = get_vc3_client()
+    if request.method == 'POST':
+
+        privtokenString = request.form['privtoken']
+        privtoken = base64.b64encode(privtokenString)
+
+        owner = session['name']
+        allocationname = owner + "." + resource
+        displayname = owner + '-' + resource
+        name = allocationname.lower()
+        allocation_resource = vc3_client.getResource(resourcename=resource)
+        pubtokendocurl = allocation_resource.pubtokendocurl
+
+
+        try:
+            newallocation = vc3_client.defineAllocation(
+                name=name, owner=owner, resource=resource,
+                accountname=accountname, displayname=displayname,
+                pubtokendocurl=pubtokendocurl, privtoken=privtoken)
+            # Pubtoken is not needed, but defined to preserver logic
+            newallocation.sectype = 'ssh-rsa'
+            pubtoken = base64.b64encode('ssh-rsa SSHProxy')
+            newallocation.pubtoken = pubtoken
+            vc3_client.storeAllocation(newallocation)
+        except Exception as e:
+            resources = vc3_client.listResources()
+            print(e)
+            flash(
+                'You have already registered an allocation on that resource.', 'warning')
+            return render_template('allocation_new.html', displayname=displayname,
+                                   accountname=accountname, resources=resources)
+        return redirect(url_for('view_allocation', name=name))
 
 @app.route('/allocation/<name>', methods=['GET', 'POST'])
 @authenticated
@@ -1041,9 +1113,10 @@ def view_allocation(name):
         encodedpubtoken = allocation.pubtoken
         pubtokendocurl = allocation.pubtokendocurl
 
-        if allocation_resource.accessmethod == 'gsissh':
+        if allocation_resource.accessmethod in ('gsissh', 'sshproxy'):
             privtoken = base64.b64decode(allocation.privtoken)
-            expiration = get_proxy_expiration_time(privtoken)
+            expiration = get_proxy_expiration_time(privtoken,
+                                                   allocation_resource.accessmethod)
         else:
             expiration = None
 
@@ -1061,8 +1134,7 @@ def view_allocation(name):
                                    accountname=accountname,
                                    pubtoken=pubtoken, state=state,
                                    resources=resources, displayname=displayname,
-                                   users=users, accesshost=accesshost,
-                                   expiration=expiration)
+                                   users=users, accesshost=accesshost, expiration=expiration)
         else:
             return render_template('allocation_profile_specific.html',
                                    name=allocationname,
@@ -1125,21 +1197,34 @@ def edit_allocation(name):
     resources = vc3_client.listResources()
 
     allocation = vc3_client.getAllocation(allocationname=name)
+    resource = allocation.resource
+    allocation_resource = vc3_client.getResource(resourcename=resource)
 
     if request.method == 'GET':
         if allocation.name == name:
             allocationname = allocation.name
             owner = allocation.owner
-            resource = allocation.resource
             accountname = allocation.accountname
             pubtoken = allocation.pubtoken
+            privtoken = base64.b64decode(allocation.privtoken)
             # description = allocation.description
             displayname = allocation.displayname
 
-            return render_template('allocation_edit.html', name=allocationname,
-                                   owner=owner, resources=resources,
-                                   resource=resource, accountname=accountname,
-                                   pubtoken=pubtoken, displayname=displayname)
+            if allocation_resource.accessmethod == 'gsissh':
+                return render_template('allocation_edit_gsissh.html', name=allocationname,
+                                       owner=owner, resources=resources,
+                                       resource=resource, accountname=accountname,
+                                       privtoken=privtoken, displayname=displayname)
+            elif allocation_resource.accessmethod == 'sshproxy':
+                return render_template('allocation_edit_sshproxy.html', name=allocationname,
+                                       owner=owner, resources=resources,
+                                       resource=resource, accountname=accountname,
+                                       privtoken=privtoken, displayname=displayname)
+            else:
+                return render_template('allocation_edit.html', name=allocationname,
+                                       owner=owner, resources=resources,
+                                       resource=resource, accountname=accountname,
+                                       pubtoken=pubtoken, displayname=displayname)
         app.logger.error(
             "Could not find allocation when editing: {0}".format(name))
         raise LookupError('allocation')
@@ -1147,9 +1232,8 @@ def edit_allocation(name):
     elif request.method == 'POST':
         allocation = vc3_client.getAllocation(allocationname=name)
         if allocation.name == name:
-            # allocation.description = request.form['description']
             allocation.displayname = request.form['displayname']
-            if allocation_resource.accessmethod == 'gsissh':
+            if allocation_resource.accessmethod in ('gsissh', 'sshproxy'):
                 privtokenString = request.form['privtoken']
                 privtoken = base64.b64encode(privtokenString)
                 allocation.privtoken = privtoken

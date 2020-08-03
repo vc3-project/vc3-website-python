@@ -16,7 +16,8 @@ app.config.from_pyfile('portal.conf')
 app.config['TEMPLATES_AUTO_RELOAD'] = True
 
 # set up logging
-handler = logging.handlers.RotatingFileHandler(filename=app.config['VC3_WEBSITE_LOGFILE'])
+handler = logging.handlers.RotatingFileHandler(
+    filename=app.config['VC3_WEBSITE_LOGFILE'])
 handler.setLevel(logging.DEBUG)
 app.logger.addHandler(handler)
 formatter = logging.Formatter('%(asctime)s - %(levelname)s: %(message)s')

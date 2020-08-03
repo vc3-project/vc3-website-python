@@ -31,35 +31,16 @@
               <div class="row">
         				<div class="col-md-6">
 
-                  <form role="form" action="{{url_for('create_allocation')}}" method="POST">
+                  <form role="form" action="{{url_for('create_allocation_sshproxy', resource=resource, accountname=accountname)}}" method="POST">
 
                     <div class="form-group">
-                      <label for="resource">Resource <span id="asterik">*</span></label>
-                      <select class="form-control border-input" name="resource" tabindex="2" id="form-resource-list" required>
-                        <option value="" selected disabled>Please Select Resource</option>
-                        {% for resource in resources %}
-                          {% if resource.public %}
-                        <option value="{{resource.name}}">{{ resource.displayname }}</option>
-                          {% endif %}
-                        {% endfor %}
-                      </select>
+                      <label for="privtoken">Private Token SSHProxy <span id="asterik">*</span></label>
+                      <textarea name="privtoken" id="privtoken" rows="8" cols="80" class="form-control border-input" placeholder="SSH Proxy" required></textarea>
                     </div>
 
                     <div class="form-group">
-                      <label for="accountname">Account Name on Resource <span id="asterik">*</span></label>
-                      <input
-                        placeholder="Account Name"
-                        name="accountname"
-                        class="form-control border-input"
-                        type="text"
-                        tabindex="3"
-                        value="{{accountname}}"
-                        required>
-                    </div>
-
-                    <div class="form-group">
-                      <a href="{{url_for('list_allocations')}}" class="btn btn-primary" tabindex="5" title="Cancel">Cancel</a>
-                      <button type="submit" tabindex="6" class="btn btn-create btn-wd">Register Allocation</button>
+                      <a href="{{url_for('list_allocations')}}" class="btn btn-primary" tabindex="2" title="Cancel">Cancel</a>
+                      <button type="submit" tabindex="3" class="btn btn-create btn-wd">Register Allocation</button>
                     </div>
                   </form>
         				</div>

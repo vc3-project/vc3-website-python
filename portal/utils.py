@@ -218,13 +218,21 @@ exit 0
 """.format(pubkey)
         fh.write(script)
 
-def get_proxy_expiration_time(proxystr):
+def get_proxy_expiration_time(proxystr, method):
+    if method == 'gsissh':
+        return get_proxy_expiration_time_gsissh(proxystr)
+    elif method == 'sshproxy':
+        return get_proxy_expiration_time_sshproxy(proxystr)
+    else:
+        return "None"
+
+def get_proxy_expiration_time_gsissh(proxystr):
     try:
         cert = x509.load_pem_x509_certificate(proxystr, default_backend())
     except Exception as e:
         app.logger.error("Error while reading proxy {0}".format(e))
         return 'Could not read proxy expiration time'
-
+        
     cert_expire = cert.not_valid_after
     now = datetime.datetime.utcnow()
     exp_time = cert_expire - now
@@ -233,4 +241,11 @@ def get_proxy_expiration_time(proxystr):
                                                                                   minutes=int(time_s % 3600 / 60),
                                                                                   seconds=int(time_s % 60))
 
+<<<<<<< HEAD
     return expiration
+=======
+    return expiration 
+
+def get_proxy_expiration_time_sshproxy(proxystr):
+    return "Not implementet yet"
+>>>>>>> master

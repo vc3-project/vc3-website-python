@@ -9,8 +9,9 @@
 
     <h2>{{ page.title }}</h2>
     <p>{{ page.date}}</p>
-
-    <span id='blog_body'></span>
+    {% filter markdown %}
+    {{ page.body }}
+    {% endfilter %}
 
   </div>
 </section>
