@@ -3,18 +3,18 @@ cryptography
 Cython
 flask>=1.0.0
 Frozen-Flask
-Flask-FlatPages
-Flask-Markdown
+Flask-FlatPages==0.7.0
+Flask-Markdown==0.3
 globus-sdk==1.1.1
-# Markdown==3.2.2
-MarkupSafe
+Markdown==3.0.1
+MarkupSafe==1.1.1
 packaging
-pluginmanager
-PyYAML
+pluginmanager=0.4.1
+PyYAML==3.13
 pygal==2.1.1
 pyOpenSSL
 python-jose==1.3.2
-requests
-WSGIserver
+requests==2.21.0
+WSGIserver==1.3
 pytz
 tzlocal
