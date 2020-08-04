@@ -6,7 +6,7 @@ Frozen-Flask
 Flask-FlatPages
 Flask-Markdown
 globus-sdk==1.1.1
-# Markdown
+Markdown>=2.5
 MarkupSafe
 packaging
 pluginmanager
