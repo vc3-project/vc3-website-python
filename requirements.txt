@@ -13,7 +13,7 @@ pluginmanager
 PyYAML
 pygal==2.1.1
 pyOpenSSL
-python-jose==1.3.2
+python-jose==3.4.0
 requests
 WSGIserver
 pytz
